@@ -5,8 +5,6 @@
  */
 class StoreAttribute extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -36,13 +34,7 @@ class StoreAttribute extends SwatDBDataObject
      */
     public $displayorder;
 
-    // }}}
-    // {{{ private properties
-
     private static $attribute_type_cache = [];
-
-    // }}}
-    // {{{ public function loadFromShortname()
 
     /**
      * Loads an attribute by its shortname.
@@ -79,9 +71,6 @@ class StoreAttribute extends SwatDBDataObject
         return true;
     }
 
-    // }}}
-    // {{{ public function getSearchAnchorTag()
-
     public function getSearchAnchorTag()
     {
         $anchor = new SwatHtmlTag('a');
@@ -95,9 +84,6 @@ class StoreAttribute extends SwatDBDataObject
         return $anchor;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'Attribute';
@@ -108,9 +94,6 @@ class StoreAttribute extends SwatDBDataObject
             SwatDBClassMap::get('StoreAttributeType')
         );
     }
-
-    // }}}
-    // {{{ protected function hasSubDataObject()
 
     protected function hasSubDataObject($key)
     {
@@ -133,9 +116,6 @@ class StoreAttribute extends SwatDBDataObject
         return $found;
     }
 
-    // }}}
-    // {{{ protected function setSubDataObject()
-
     protected function setSubDataObject($name, $value)
     {
         if ($name === 'attribute_type') {
@@ -145,9 +125,6 @@ class StoreAttribute extends SwatDBDataObject
         parent::setSubDataObject($name, $value);
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return array_merge(
@@ -156,10 +133,7 @@ class StoreAttribute extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // display methods
-    // {{{ public function display()
 
     public function display($link_to_search = false)
     {
@@ -174,6 +148,4 @@ class StoreAttribute extends SwatDBDataObject
             echo SwatString::minimizeEntities($this->title);
         }
     }
-
-    // }}}
 }

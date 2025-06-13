@@ -21,8 +21,6 @@
  */
 class StoreItemStatusList extends StoreStatusList
 {
-    // {{{ private properties
-
     /**
      * Static collection of available statuses for this class of status list.
      *
@@ -38,9 +36,6 @@ class StoreItemStatusList extends StoreStatusList
      * @see StoreItemStatusList::statuses()
      */
     private static $instance;
-
-    // }}}
-    // {{{ public static function status()
 
     /**
      * Convenience function to get a status by shortname without having to
@@ -61,9 +56,6 @@ class StoreItemStatusList extends StoreStatusList
     {
         return self::statuses()->getByShortname($status_shortname);
     }
-
-    // }}}
-    // {{{ public static function statuses()
 
     /**
      * Gets the list of defined item statuses.
@@ -87,9 +79,6 @@ class StoreItemStatusList extends StoreStatusList
 
         return self::$instance;
     }
-
-    // }}}
-    // {{{ protected function getDefinedStatuses()
 
     /**
      * Gets an array of defined item statuses for this class of list.
@@ -119,6 +108,4 @@ class StoreItemStatusList extends StoreStatusList
 
         return self::$defined_statuses;
     }
-
-    // }}}
 }

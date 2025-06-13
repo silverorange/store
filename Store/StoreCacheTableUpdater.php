@@ -11,8 +11,6 @@
  */
 class StoreCacheTableUpdater extends SiteCommandLineApplication
 {
-    // {{{ public function run()
-
     public function run()
     {
         $this->initModules();
@@ -29,9 +27,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
         $this->updateCacheTables();
         $this->unlock();
     }
-
-    // }}}
-    // {{{ protected function updateCacheTables()
 
     protected function updateCacheTables()
     {
@@ -67,9 +62,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
             $this->debug(Store::_('No dirty cache tables found.') . "\n");
         }
     }
-
-    // }}}
-    // {{{ protected function getCacheTableUpdateFunction()
 
     /**
      * Gets the SQL function to run for a dirty cache table entry.
@@ -108,9 +100,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
         return $update_function;
     }
 
-    // }}}
-    // {{{ protected function getDefaultModuleList()
-
     protected function getDefaultModuleList()
     {
         return array_merge(
@@ -121,9 +110,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
             ]
         );
     }
-
-    // }}}
-    // {{{ protected function addConfigDefinitions()
 
     /**
      * Adds configuration definitions to the config module of this application.
@@ -136,9 +122,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
         parent::addConfigDefinitions($config);
         $config->addDefinitions(Store::getConfigDefinitions());
     }
-
-    // }}}
-    // {{{ protected function configure()
 
     /**
      * Configures modules of this application before they are initialized.
@@ -155,9 +138,6 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
             $this->memcache->app_ns = $config->memcache->app_ns;
         }
     }
-
-    // }}}
-    // {{{ protected function flushMemcache()
 
     protected function flushMemcache()
     {
@@ -178,6 +158,4 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
             }
         }
     }
-
-    // }}}
 }

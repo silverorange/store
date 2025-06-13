@@ -14,8 +14,6 @@
  */
 class StoreProductSearch
 {
-    // {{{ protected properties
-
     /**
      * @var MDB2_Driver_Common
      */
@@ -29,9 +27,6 @@ class StoreProductSearch
     protected $order_by_clause;
     protected $join_clause;
     protected $where_clause;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Performs a search on products.
@@ -53,32 +48,20 @@ class StoreProductSearch
         $this->buildOrderByClause();
     }
 
-    // }}}
-    // {{{ public function getOrderByClause()
-
     public function getOrderByClause()
     {
         return $this->order_by_clause;
     }
-
-    // }}}
-    // {{{ public function getJoinClause()
 
     public function getJoinClause()
     {
         return $this->join_clause;
     }
 
-    // }}}
-    // {{{ public function getWhereClause()
-
     public function getWhereClause()
     {
         return $this->where_clause;
     }
-
-    // }}}
-    // {{{ protected function getSearchType()
 
     /**
      * Gets the search type for products for this web-application.
@@ -92,9 +75,6 @@ class StoreProductSearch
         return 'product';
     }
 
-    // }}}
-    // {{{ protected function buildJoinClause()
-
     /**
      * Builds the SQL join clause for a product search.
      *
@@ -104,9 +84,6 @@ class StoreProductSearch
     {
         $this->join_clause = '';
     }
-
-    // }}}
-    // {{{ protected function buildWhereClause()
 
     /**
      * Builds the SQL where clause for a product search.
@@ -127,9 +104,6 @@ class StoreProductSearch
 
         $this->where_clause = $where;
     }
-
-    // }}}
-    // {{{ protected function buildKeywordsWhereClause()
 
     protected function buildKeywordsWhereClause()
     {
@@ -157,9 +131,6 @@ class StoreProductSearch
 
         return $where;
     }
-
-    // }}}
-    // {{{ protected function buildSkuWhereClause()
 
     protected function buildSkuWhereClause()
     {
@@ -191,9 +162,6 @@ class StoreProductSearch
 
         return $where;
     }
-
-    // }}}
-    // {{{ protected function buildCategoryWhereClause()
 
     protected function buildCategoryWhereClause()
     {
@@ -227,9 +195,6 @@ class StoreProductSearch
         return $where;
     }
 
-    // }}}
-    // {{{ protected function buildCatalogWhereClause()
-
     protected function buildCatalogWhereClause()
     {
         $where = '';
@@ -242,9 +207,6 @@ class StoreProductSearch
 
         return $where;
     }
-
-    // }}}
-    // {{{ protected function buildSaleDiscountWhereClause()
 
     protected function buildSaleDiscountWhereClause()
     {
@@ -261,9 +223,6 @@ class StoreProductSearch
 
         return $where;
     }
-
-    // }}}
-    // {{{ protected function buildMinimumQuantityGroupWhereClause()
 
     protected function buildMinimumQuantityGroupWhereClause()
     {
@@ -283,9 +242,6 @@ class StoreProductSearch
         return $where;
     }
 
-    // }}}
-    // {{{ protected function buildItemStatusWhereClause()
-
     protected function buildItemStatusWhereClause()
     {
         $where = '';
@@ -302,9 +258,6 @@ class StoreProductSearch
         return $where;
     }
 
-    // }}}
-    // {{{ protected function buildOrderByClause()
-
     /**
      * Builds the SQL join clause for a product search.
      *
@@ -314,6 +267,4 @@ class StoreProductSearch
     {
         $this->order_by_clause = 'Product.title, Product.id';
     }
-
-    // }}}
 }

@@ -9,13 +9,8 @@
  */
 class StoreOrderChart extends SwatControl
 {
-    // {{{ public properties
-
     public $width = '100%';
     public $height = '250px';
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * SiteApplication.
@@ -25,9 +20,6 @@ class StoreOrderChart extends SwatControl
     protected $app;
 
     protected $instance;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new calendar.
@@ -59,24 +51,15 @@ class StoreOrderChart extends SwatControl
         );
     }
 
-    // }}}
-    // {{{ public function setApplication()
-
     public function setApplication(SiteApplication $app)
     {
         $this->app = $app;
     }
 
-    // }}}
-    // {{{ public function setInstance()
-
     public function setInstance(SiteInstance $instance)
     {
         $this->instance = $instance;
     }
-
-    // }}}
-    // {{{ public function display()
 
     /**
      * Displays this calendar widget.
@@ -111,9 +94,6 @@ class StoreOrderChart extends SwatControl
         $this->displayLegend();
     }
 
-    // }}}
-    // {{{ protected function displayLegend()
-
     protected function displayLegend()
     {
         $div_tag = new SwatHtmlTag('div');
@@ -122,9 +102,6 @@ class StoreOrderChart extends SwatControl
         $div_tag->open();
         $div_tag->close();
     }
-
-    // }}}
-    // {{{ protected function getOrdersByDay()
 
     protected function getOrdersByDay($year)
     {
@@ -162,9 +139,6 @@ class StoreOrderChart extends SwatControl
         return $return;
     }
 
-    // }}}
-    // {{{ protected function getChartData()
-
     protected function getChartData($orders, $remove_current_week = false)
     {
         $now = new SwatDate();
@@ -193,9 +167,6 @@ class StoreOrderChart extends SwatControl
 
         return $data;
     }
-
-    // }}}
-    // {{{ protected function getInlineJavaScript()
 
     /**
      * Gets inline calendar JavaScript.
@@ -252,6 +223,4 @@ class StoreOrderChart extends SwatControl
 
         return ob_get_clean();
     }
-
-    // }}}
 }

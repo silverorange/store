@@ -26,15 +26,11 @@ function StoreProductPage(product_id, item_ids, source, source_category) {
 StoreProductPage.enter_quantity_message = 'Please enter a quantity.';
 
 // base methods
-// {{{ StoreProductPage.prototype.setCart
 
 StoreProductPage.prototype.setCart = function (cart) {
   this.cart = cart;
   this.cart.product_id = this.product_id;
 };
-
-// }}}
-// {{{ StoreProductPage.prototype.init
 
 StoreProductPage.prototype.init = function () {
   this.quantity_boxes = YAHOO.util.Dom.getElementsByClassName(
@@ -72,9 +68,6 @@ StoreProductPage.prototype.init = function () {
   }
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.handleFormSubmit
-
 StoreProductPage.prototype.handleFormSubmit = function (e) {
   if (this.cart === null) {
     if (!this.hasQuantity()) {
@@ -92,9 +85,6 @@ StoreProductPage.prototype.handleFormSubmit = function (e) {
   }
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.hasQuantity
-
 StoreProductPage.prototype.hasQuantity = function () {
   var has_quantity = false;
 
@@ -109,10 +99,7 @@ StoreProductPage.prototype.hasQuantity = function () {
   return this.quantity_boxes.length === 0 || has_quantity;
 };
 
-// }}}
-
 // cart handling methods
-// {{{ StoreProductPage.prototype.openQuantityMessage
 
 StoreProductPage.prototype.openQuantityMessage = function () {
   this.cart.setContent(
@@ -121,9 +108,6 @@ StoreProductPage.prototype.openQuantityMessage = function () {
 
   this.cart.open();
 };
-
-// }}}
-// {{{ StoreProductPage.prototype.addEntriesToCart
 
 StoreProductPage.prototype.addEntriesToCart = function () {
   this.changeButtonText();
@@ -140,18 +124,12 @@ StoreProductPage.prototype.addEntriesToCart = function () {
   this.cart.addEntries(entries, this.source, this.source_category);
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.changeButtonText
-
 StoreProductPage.prototype.changeButtonText = function () {
   var button = document.getElementById(this.add_button_id);
   button.disabled = true;
   this.saveButtonValue(button);
   button.value = StoreCartLightbox.submit_message;
 };
-
-// }}}
-// {{{ StoreProductPage.prototype.getEntry
 
 StoreProductPage.prototype.getEntry = function (item_id) {
   var renderer = document.getElementById(
@@ -169,9 +147,6 @@ StoreProductPage.prototype.getEntry = function (item_id) {
   return entry;
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.updateCartMessage
-
 StoreProductPage.prototype.updateCartMessage = function (response) {
   var div = document.getElementById(this.cart_message_id);
 
@@ -186,9 +161,6 @@ StoreProductPage.prototype.updateCartMessage = function (response) {
     this.closeCartMessage();
   }
 };
-
-// }}}
-// {{{ StoreProductPage.prototype.openCartMessage
 
 StoreProductPage.prototype.openCartMessage = function (cart_message) {
   var div = document.getElementById(this.cart_message_id);
@@ -221,9 +193,6 @@ StoreProductPage.prototype.openCartMessage = function (cart_message) {
   height_animation.animate();
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.closeCartMessage
-
 StoreProductPage.prototype.closeCartMessage = function () {
   var div = document.getElementById(this.cart_message_id);
 
@@ -242,9 +211,6 @@ StoreProductPage.prototype.closeCartMessage = function () {
   fade_animation.animate();
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.addCartMessageEvents
-
 StoreProductPage.prototype.addCartMessageEvents = function (div) {
   var cart_links = YAHOO.util.Dom.getElementsByClassName(
     'store-open-cart-link',
@@ -257,9 +223,6 @@ StoreProductPage.prototype.addCartMessageEvents = function (div) {
   }
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.resetForm
-
 StoreProductPage.prototype.resetForm = function () {
   this.restoreButtonValue(document.getElementById(this.add_button_id));
 
@@ -268,9 +231,6 @@ StoreProductPage.prototype.resetForm = function () {
     this.quantity_boxes[i].value = 0;
   }
 };
-
-// }}}
-// {{{ StoreProductPage.prototype.saveButtonValue
 
 StoreProductPage.prototype.saveButtonValue = function (button) {
   var value = {
@@ -281,9 +241,6 @@ StoreProductPage.prototype.saveButtonValue = function (button) {
   this.button_values.push(value);
 };
 
-// }}}
-// {{{ StoreProductPage.prototype.restoreButtonValue
-
 StoreProductPage.prototype.restoreButtonValue = function (button) {
   for (var i = 0; i < this.button_values.length; i++) {
     if (this.button_values[i].id == button.id) {
@@ -293,5 +250,3 @@ StoreProductPage.prototype.restoreButtonValue = function (button) {
     }
   }
 };
-
-// }}}

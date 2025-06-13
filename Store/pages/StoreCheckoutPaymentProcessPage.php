@@ -16,18 +16,13 @@
  */
 abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 {
-    // {{{ public function getUiXml()
-
     public function getUiXml()
     {
         // this page does not have a ui
         return null;
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -57,18 +52,9 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
         $this->relocate();
     }
 
-    // }}}
-    // {{{ abstract protected function processPayment()
-
     abstract protected function processPayment();
 
-    // }}}
-    // {{{ abstract protected function relocate()
-
     abstract protected function relocate();
-
-    // }}}
-    // {{{ protected function clearPaymentMethods()
 
     protected function clearPaymentMethods()
     {
@@ -78,26 +64,15 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected funciton handleException()
-
     protected function handleException(Throwable $e)
     {
         return false;
     }
-
-    // }}}
-    // {{{ protected function updateProgress()
 
     protected function updateProgress()
     {
         $this->app->checkout->setProgress($this->getCheckoutSource() . '/first');
     }
 
-    // }}}
-    // {{{ protected function cancelPayment()
-
     protected function cancelPayment() {}
-
-    // }}}
 }

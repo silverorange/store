@@ -8,17 +8,12 @@
  */
 class StoreAttributeEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * @var StoreAttribute
      */
     protected $attribute;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -40,9 +35,6 @@ class StoreAttributeEdit extends AdminDBEdit
         );
     }
 
-    // }}}
-    // {{{ protected function initAttribute()
-
     protected function initAttribute()
     {
         $class_name = SwatDBClassMap::get('StoreAttribute');
@@ -61,18 +53,12 @@ class StoreAttributeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -91,10 +77,6 @@ class StoreAttributeEdit extends AdminDBEdit
             }
         }
     }
-
-    // }}}
-
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -115,9 +97,6 @@ class StoreAttributeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateAttribute()
-
     protected function updateAttribute()
     {
         $values = $this->ui->getValues(
@@ -133,10 +112,7 @@ class StoreAttributeEdit extends AdminDBEdit
         $this->attribute->attribute_type = $values['attribute_type'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -146,15 +122,10 @@ class StoreAttributeEdit extends AdminDBEdit
         $form->subtitle = $this->attribute->title;
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->attribute->getAttributes());
         $this->ui->getWidget('attribute_type')->value =
             $this->attribute->getInternalValue('attribute_type');
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreRegionWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public static function loadSetFromDB()
-
     public static function loadSetFromDB($db, $id_set)
     {
         $sql = 'select * from Region where id in (%s)';
@@ -19,9 +17,6 @@ class StoreRegionWrapper extends SwatDBRecordsetWrapper
         return SwatDB::query($db, $sql, 'RegionWrapper');
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -30,6 +25,4 @@ class StoreRegionWrapper extends SwatDBRecordsetWrapper
 
         $this->index_field = 'id';
     }
-
-    // }}}
 }

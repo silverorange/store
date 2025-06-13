@@ -5,8 +5,6 @@
  */
 class StoreCartImageTableViewGroup extends SwatTableViewGroup
 {
-    // {{{ protected function displayGroupHeader()
-
     /**
      * Displays the group header for this grouping column.
      *
@@ -56,13 +54,8 @@ class StoreCartImageTableViewGroup extends SwatTableViewGroup
         $tr_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayRenderersInternal()
-
     protected function displayRenderersInternal($data)
     {
         $this->getRenderer('product_title')->render();
     }
-
-    // }}}
 }

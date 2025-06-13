@@ -8,8 +8,6 @@
  */
 class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 {
-    // {{{ public function getBaseCSSClassNames()
-
     /**
      * Gets the base CSS class names for this cell renderer.
      *
@@ -22,9 +20,6 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 
         return $classes;
     }
-
-    // }}}
-    // {{{ public function render()
 
     /**
      * Renders the contents of this cell.
@@ -43,9 +38,6 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
             $this->display_currency
         );
     }
-
-    // }}}
-    // {{{ public static function moneyFormat()
 
     /**
      * Renders the contents of this cell.
@@ -111,6 +103,4 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
 
         return preg_replace($search, $replace, $money);
     }
-
-    // }}}
 }

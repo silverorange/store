@@ -6,8 +6,6 @@
  */
 class StoreCheckoutProgress extends SwatControl
 {
-    // {{{ public properties
-
     /**
      * @var int
      */
@@ -17,9 +15,6 @@ class StoreCheckoutProgress extends SwatControl
      * @var array
      */
     public $steps = [];
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct($id = null)
     {
@@ -44,9 +39,6 @@ class StoreCheckoutProgress extends SwatControl
             'packages/store/styles/store-checkout-progress.css'
         );
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -100,6 +92,4 @@ class StoreCheckoutProgress extends SwatControl
         echo '<div class="store-checkout-progress-clear"></div>';
         echo '</div>';
     }
-
-    // }}}
 }

@@ -17,13 +17,8 @@
  */
 class StoreCartModule extends SiteApplicationModule
 {
-    // {{{ class constants
-
     public const ENTRY_ADDED = 1;
     public const ENTRY_SAVED = 2;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * A collection of carts managed by this module.
@@ -67,9 +62,6 @@ class StoreCartModule extends SiteApplicationModule
      */
     protected $entries_added = [];
 
-    // }}}
-    // {{{ public function __construct()
-
     /**
      * Creates a new cart module.
      *
@@ -88,9 +80,6 @@ class StoreCartModule extends SiteApplicationModule
         parent::__construct($app);
         $this->entries = new ArrayIterator([]);
     }
-
-    // }}}
-    // {{{ public function init()
 
     /**
      * Initializes this cart module.
@@ -114,9 +103,6 @@ class StoreCartModule extends SiteApplicationModule
             );
         }
     }
-
-    // }}}
-    // {{{ public function depends()
 
     /**
      * Gets the module features this module depends on.
@@ -145,9 +131,6 @@ class StoreCartModule extends SiteApplicationModule
         return $depends;
     }
 
-    // }}}
-    // {{{ public function load()
-
     /**
      * Loads this cart module.
      *
@@ -163,9 +146,6 @@ class StoreCartModule extends SiteApplicationModule
             $cart->load();
         }
     }
-
-    // }}}
-    // {{{ public function save()
 
     /**
      * Saves this cart module.
@@ -191,9 +171,6 @@ class StoreCartModule extends SiteApplicationModule
         $transaction->commit();
     }
 
-    // }}}
-    // {{{ public function registerRemovedEntry()
-
     /**
      * Notifies this cart module that an entry was removed from a cart.
      *
@@ -209,9 +186,6 @@ class StoreCartModule extends SiteApplicationModule
             $this->removed_entries[] = $entry;
         }
     }
-
-    // }}}
-    // {{{ public function registerAddedEntry()
 
     /**
      * Notifies this cart module that an entry was added to a cart.
@@ -229,9 +203,6 @@ class StoreCartModule extends SiteApplicationModule
             }
         }
     }
-
-    // }}}
-    // {{{ public function addCart()
 
     /**
      * Adds a cart to be managed by this cart module.
@@ -260,9 +231,6 @@ class StoreCartModule extends SiteApplicationModule
         $this->carts[$id] = $cart;
         $this->carts[$id]->setCartModule($this);
     }
-
-    // }}}
-    // {{{ public function handleLogin()
 
     /**
      * Manages moving around cart entries when a user logs into an account.
@@ -299,9 +267,6 @@ class StoreCartModule extends SiteApplicationModule
         }
     }
 
-    // }}}
-    // {{{ protected function handleAccountCartEntries()
-
     /**
      * Manages account cart entries that exist when logging into an account.
      *
@@ -329,9 +294,6 @@ class StoreCartModule extends SiteApplicationModule
         }
     }
 
-    // }}}
-    // {{{ public function handleRegenerateId()
-
     /**
      * Updates the session ID in the database when it changes.
      *
@@ -350,9 +312,6 @@ class StoreCartModule extends SiteApplicationModule
         SwatDB::exec($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ public function getEntries()
-
     /**
      * Gets all cart entries belonging to this cart module.
      *
@@ -370,9 +329,6 @@ class StoreCartModule extends SiteApplicationModule
         return $this->entries;
     }
 
-    // }}}
-    // {{{ public function getEntriesAdded()
-
     /**
      * Gets all cart entries that have been added using the cart module.
      *
@@ -382,9 +338,6 @@ class StoreCartModule extends SiteApplicationModule
     {
         return $this->entries_added;
     }
-
-    // }}}
-    // {{{ public function getEntryCount()
 
     /**
      * Gets the number of StoreCartEntry objects in all carts.
@@ -401,9 +354,6 @@ class StoreCartModule extends SiteApplicationModule
     {
         return count($this->entries);
     }
-
-    // }}}
-    // {{{ public function getCartsByClass()
 
     /**
      * Gets all carts registered with this module of a particular class.
@@ -426,9 +376,6 @@ class StoreCartModule extends SiteApplicationModule
         return $carts;
     }
 
-    // }}}
-    // {{{ public function createCartEntry()
-
     public function createCartEntry($id, $quantity = 1)
     {
         $class_name = SwatDBClassMap::get('StoreItem');
@@ -450,9 +397,6 @@ class StoreCartModule extends SiteApplicationModule
 
         return $entry;
     }
-
-    // }}}
-    // {{{ public function addEntryToCart()
 
     /**
      * Add an entry to the cart.
@@ -497,9 +441,6 @@ class StoreCartModule extends SiteApplicationModule
         return $status;
     }
 
-    // }}}
-    // {{{ public function getUpdatedCartMessage()
-
     public function getUpdatedCartMessage()
     {
         $count = count($this->getEntriesAdded());
@@ -522,9 +463,6 @@ class StoreCartModule extends SiteApplicationModule
 
         return $message;
     }
-
-    // }}}
-    // {{{ public function getProductCartMessage()
 
     public function getProductCartMessage(StoreProduct $product)
     {
@@ -623,9 +561,6 @@ class StoreCartModule extends SiteApplicationModule
         return $message;
     }
 
-    // }}}
-    // {{{ public function __get()
-
     /**
      * Gets a cart from this cart module.
      *
@@ -644,9 +579,6 @@ class StoreCartModule extends SiteApplicationModule
             "the name '{$name}', and no cart with the identifier '{$name}' " .
             'is loaded.');
     }
-
-    // }}}
-    // {{{ public function __isset()
 
     /**
      * Checks if a property of this cart module is set.
@@ -669,9 +601,6 @@ class StoreCartModule extends SiteApplicationModule
 
         return $isset;
     }
-
-    // }}}
-    // {{{ protected function loadEntries()
 
     /**
      * Loads the entries used by this cart module.
@@ -728,9 +657,6 @@ class StoreCartModule extends SiteApplicationModule
         $this->entries->attachSubDataObjects('item', $items);
     }
 
-    // }}}
-    // {{{ protected function loadEntryItems()
-
     protected function loadEntryItems(StoreCartEntryWrapper $entries)
     {
         $item_ids = $entries->getInternalValues('item');
@@ -748,9 +674,6 @@ class StoreCartModule extends SiteApplicationModule
         );
     }
 
-    // }}}
-    // {{{ protected function loadEntryItemGroups()
-
     protected function loadEntryItemGroups(StoreItemWrapper $items)
     {
         return $items->loadAllSubDataObjects(
@@ -760,9 +683,6 @@ class StoreCartModule extends SiteApplicationModule
             SwatDBClassMap::get('StoreItemGroupWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadEntryQuantityDiscounts()
 
     protected function loadEntryQuantityDiscounts(StoreItemWrapper $items)
     {
@@ -793,9 +713,6 @@ class StoreCartModule extends SiteApplicationModule
         return $quantity_discounts;
     }
 
-    // }}}
-    // {{{ protected function loadEntryProducts()
-
     protected function loadEntryProducts(StoreItemWrapper $items)
     {
         return $items->loadAllSubDataObjects(
@@ -805,9 +722,6 @@ class StoreCartModule extends SiteApplicationModule
             SwatDBClassMap::get('StoreProductWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadEntryPrimaryImages()
 
     protected function loadEntryPrimaryImages(StoreProductWrapper $products)
     {
@@ -838,9 +752,6 @@ class StoreCartModule extends SiteApplicationModule
         return $primary_images;
     }
 
-    // }}}
-    // {{{ protected function loadEntryPrimaryCategories()
-
     protected function loadEntryPrimaryCategories(StoreProductWrapper $products)
     {
         $category_sql = 'select id, getCategoryPath(id) as path
@@ -854,9 +765,6 @@ class StoreCartModule extends SiteApplicationModule
         );
     }
 
-    // }}}
-    // {{{ protected function loadEntryCatalogs()
-
     protected function loadEntryCatalogs(StoreProductWrapper $products)
     {
         $catalog_sql = 'select * from Catalog where id in (%s)';
@@ -869,9 +777,6 @@ class StoreCartModule extends SiteApplicationModule
         );
     }
 
-    // }}}
-    // {{{ protected function getProductSql()
-
     protected function getProductSql()
     {
         return 'select id, shortname, title, catalog,
@@ -883,9 +788,6 @@ class StoreCartModule extends SiteApplicationModule
 				on ProductPrimaryCategoryView.product = id
 			where id in (%s)';
     }
-
-    // }}}
-    // {{{ protected function getEntryWhereClause()
 
     /**
      * Gets the SQL where clause of cart entries.
@@ -929,9 +831,6 @@ class StoreCartModule extends SiteApplicationModule
         return $where_clause;
     }
 
-    // }}}
-    // {{{ protected function getEntryOrderByClause()
-
     /**
      * Gets the SQL order by clause of cart entries.
      *
@@ -941,9 +840,6 @@ class StoreCartModule extends SiteApplicationModule
     {
         return 'Item.product, Item.displayorder';
     }
-
-    // }}}
-    // {{{ protected function getEntrySql()
 
     protected function getEntrySql(
         $where_clause,
@@ -957,9 +853,6 @@ class StoreCartModule extends SiteApplicationModule
 
         return sprintf($entry_sql, $where_clause, $order_by_clause);
     }
-
-    // }}}
-    // {{{ protected function deleteRemovedEntries()
 
     /**
      * Cleans up cart entries that were removed from this cart.
@@ -980,9 +873,6 @@ class StoreCartModule extends SiteApplicationModule
             SwatDB::query($this->app->db, $sql);
         }
     }
-
-    // }}}
-    // {{{ protected function getCheckoutCart()
 
     /**
      * Convenience method to make a best guess at getting the checkout
@@ -1012,9 +902,6 @@ class StoreCartModule extends SiteApplicationModule
         return $cart;
     }
 
-    // }}}
-    // {{{ protected function getSavedCart()
-
     /**
      * Convenience method to make a best guess at getting the saved
      * cart registered with this module.
@@ -1042,6 +929,4 @@ class StoreCartModule extends SiteApplicationModule
 
         return $cart;
     }
-
-    // }}}
 }

@@ -6,8 +6,6 @@
  */
 class StoreContactMessage extends SiteContactMessage
 {
-    // {{{ public static function getSubjects()
-
     public static function getSubjects()
     {
         return [
@@ -18,6 +16,4 @@ class StoreContactMessage extends SiteContactMessage
             'privacy'  => Store::_('Privacy'),
         ];
     }
-
-    // }}}
 }

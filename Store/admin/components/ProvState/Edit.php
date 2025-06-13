@@ -8,14 +8,9 @@
  */
 class StoreProvStateEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $prov_state;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInteral()
 
     protected function initInternal()
     {
@@ -36,9 +31,6 @@ class StoreProvStateEdit extends AdminDBEdit
         ));
     }
 
-    // }}}
-    // {{{ protected function initProvState()
-
     protected function initProvState()
     {
         $class_name = SwatDBClassMap::get('StoreProvState');
@@ -55,18 +47,12 @@ class StoreProvStateEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -81,9 +67,6 @@ class StoreProvStateEdit extends AdminDBEdit
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function updateProvState()
-
     protected function updateProvState()
     {
         $values = $this->ui->getValues([
@@ -97,16 +80,11 @@ class StoreProvStateEdit extends AdminDBEdit
         $this->prov_state->country = $values['country'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
         $this->ui->setValues($this->prov_state->getAttributes());
         $this->ui->getWidget('country')->value = $this->prov_state->country->id;
     }
-
-    // }}}
 }

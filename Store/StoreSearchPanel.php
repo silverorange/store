@@ -8,8 +8,6 @@
  */
 class StoreSearchPanel extends SwatObject
 {
-    // {{{ protected properties
-
     /**
      * @var MDB2_Driver_Common
      */
@@ -55,9 +53,6 @@ class StoreSearchPanel extends SwatObject
      */
     protected $process_search_state = [];
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct(
         MDB2_Driver_Common $db,
         StoreRegion $region,
@@ -71,18 +66,12 @@ class StoreSearchPanel extends SwatObject
         $this->ui->loadFromXML($this->ui_xml);
     }
 
-    // }}}
-    // {{{ public function init()
-
     public function init()
     {
         $this->ui->init();
         $form = $this->getForm();
         $this->init_search_state = $form->getDescendantStates();
     }
-
-    // }}}
-    // {{{ public function process()
 
     public function process()
     {
@@ -94,9 +83,6 @@ class StoreSearchPanel extends SwatObject
         $this->process_search_state = $form->getDescendantStates();
     }
 
-    // }}}
-    // {{{ public function build()
-
     public function build()
     {
         $this->buildKeywords();
@@ -105,17 +91,11 @@ class StoreSearchPanel extends SwatObject
         $this->buildAttributes();
     }
 
-    // }}}
-    // {{{ public function display()
-
     public function display()
     {
         $this->build();
         $this->ui->display();
     }
-
-    // }}}
-    // {{{ public function getRoot()
 
     /**
      * @return SwatContainer
@@ -125,32 +105,20 @@ class StoreSearchPanel extends SwatObject
         return $this->ui->getRoot();
     }
 
-    // }}}
-    // {{{ public function getHtmlHeadEntrySet()
-
     public function getHtmlHeadEntrySet()
     {
         return $this->ui->getRoot()->getHtmlHeadEntrySet();
     }
-
-    // }}}
-    // {{{ public function setPriceRange()
 
     public function setPriceRange(?StorePriceRange $range = null)
     {
         $this->price_range = $range;
     }
 
-    // }}}
-    // {{{ public function setCategory()
-
     public function setCategory(?StoreCategory $category = null)
     {
         $this->category = $category;
     }
-
-    // }}}
-    // {{{ protected function buildKeywords()
 
     protected function buildKeywords()
     {
@@ -160,9 +128,6 @@ class StoreSearchPanel extends SwatObject
             $entry->parent->classes[] = 'highlight';
         }
     }
-
-    // }}}
-    // {{{ protected function buildCategories()
 
     protected function buildCategories()
     {
@@ -184,9 +149,6 @@ class StoreSearchPanel extends SwatObject
             $flydown->parent->classes[] = 'highlight';
         }
     }
-
-    // }}}
-    // {{{ protected function buildPriceRanges()
 
     protected function buildPriceRanges()
     {
@@ -214,9 +176,6 @@ class StoreSearchPanel extends SwatObject
         }
     }
 
-    // }}}
-    // {{{ protected function buildAttributes()
-
     protected function buildAttributes()
     {
         $attributes = $this->getAttributes();
@@ -238,9 +197,6 @@ class StoreSearchPanel extends SwatObject
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getPriceRanges()
 
     protected function getPriceRanges()
     {
@@ -266,9 +222,6 @@ class StoreSearchPanel extends SwatObject
 
         return $ranges;
     }
-
-    // }}}
-    // {{{ protected function getCategories()
 
     protected function getCategories()
     {
@@ -300,9 +253,6 @@ class StoreSearchPanel extends SwatObject
 
         return $categories;
     }
-
-    // }}}
-    // {{{ protected function getAttributes()
 
     protected function getAttributes($type = null)
     {
@@ -341,9 +291,6 @@ class StoreSearchPanel extends SwatObject
         return $attributes;
     }
 
-    // }}}
-    // {{{ protected function hasInitialState()
-
     protected function hasInitialState($name)
     {
         if (!array_key_exists($name, $this->init_search_state)
@@ -355,13 +302,8 @@ class StoreSearchPanel extends SwatObject
                 $this->process_search_state[$name];
     }
 
-    // }}}
-    // {{{ protected function getForm()
-
     protected function getForm()
     {
         return $this->ui->getWidget('search_form');
     }
-
-    // }}}
 }

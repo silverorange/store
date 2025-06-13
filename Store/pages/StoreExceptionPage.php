@@ -6,7 +6,6 @@
 class StoreExceptionPage extends SiteXhtmlExceptionPage
 {
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -14,9 +13,6 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
 
         $this->attemptRedirection();
     }
-
-    // }}}
-    // {{{ protected function getSuggestions()
 
     protected function getSuggestions()
     {
@@ -41,9 +37,6 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
         return $suggestions;
     }
 
-    // }}}
-    // {{{ protected function attemptRedirection()
-
     protected function attemptRedirection()
     {
         $source = SiteApplication::initVar('source', SiteApplication::VAR_GET);
@@ -62,9 +55,6 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
         }
     }
 
-    // }}}
-    // {{{ protected function getNewStorePath()
-
     protected function getNewStorePath(array $source_array)
     {
         $path = null;
@@ -80,9 +70,6 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
 
         return $path;
     }
-
-    // }}}
-    // {{{ protected function getNewStoreProductPath()
 
     protected function getNewStoreProductPath(array $source_array)
     {
@@ -115,9 +102,6 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
 
         return $path;
     }
-
-    // }}}
-    // {{{ protected function getNewStoreCategoryPath()
 
     protected function getNewStoreCategoryPath(array $source_array)
     {
@@ -159,6 +143,4 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
 
         return $path;
     }
-
-    // }}}
 }

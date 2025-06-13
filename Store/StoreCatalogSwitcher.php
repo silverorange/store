@@ -9,15 +9,10 @@
  */
 class StoreCatalogSwitcher extends SwatControl
 {
-    // {{{ public properties
-
     /**
      * @var MDB2_Driver_Common
      */
     public $db;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new catalog selector widget.
@@ -33,9 +28,6 @@ class StoreCatalogSwitcher extends SwatControl
             'packages/store/admin/styles/store-catalog-switcher.css'
         );
     }
-
-    // }}}
-    // {{{ public function init()
 
     public function init()
     {
@@ -101,9 +93,6 @@ class StoreCatalogSwitcher extends SwatControl
         }
     }
 
-    // }}}
-    // {{{ public function process()
-
     public function process()
     {
         parent::process();
@@ -113,9 +102,6 @@ class StoreCatalogSwitcher extends SwatControl
                 $this->getCompositeWidget('selector')->getState();
         }
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -138,16 +124,10 @@ class StoreCatalogSwitcher extends SwatControl
         $div_tag->close();
     }
 
-    // }}}
-    // {{{ public function getSubQuery()
-
     public function getSubQuery()
     {
         return $this->getCompositeWidget('selector')->getSubQuery();
     }
-
-    // }}}
-    // {{{ protected function createCompositeWidgets()
 
     protected function createCompositeWidgets()
     {
@@ -159,6 +139,4 @@ class StoreCatalogSwitcher extends SwatControl
         $button->title = Store::_('Switch');
         $this->addCompositeWidget($button, 'button');
     }
-
-    // }}}
 }

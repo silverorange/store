@@ -8,8 +8,6 @@
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation
 {
-    // {{{ protected properties
-
     protected $id;
     protected $order;
 
@@ -21,10 +19,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
      */
     protected $account;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -35,9 +30,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
         $this->getOrder();
     }
-
-    // }}}
-    // {{{ protected function getOrder()
 
     protected function getOrder()
     {
@@ -70,10 +62,7 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         return $this->order;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processResponse()
 
     protected function processResponse(): void
     {
@@ -100,18 +89,12 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         }
     }
 
-    // }}}
-    // {{{ protected function sendOrderConfirmation()
-
     protected function sendOrderConfirmation()
     {
         $this->order->sendConfirmationEmail($this->app);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -127,9 +110,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         $this->ui->getWidget('yes_button')->title =
             Store::_('Resend Confirmation');
     }
-
-    // }}}
-    // {{{ protected function getConfirmationMessage()
 
     protected function getConfirmationMessage()
     {
@@ -173,9 +153,6 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         return ob_get_clean();
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -213,13 +190,8 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         $this->navbar->createEntry(Store::_('Resend Confirmation Email'));
     }
 
-    // }}}
-    // {{{ protected function getOrderTitle()
-
     protected function getOrderTitle()
     {
         return sprintf(Store::_('Order %s'), $this->order->id);
     }
-
-    // }}}
 }

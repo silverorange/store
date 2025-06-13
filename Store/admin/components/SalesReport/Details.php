@@ -8,8 +8,6 @@
  */
 class StoreSalesReportDetails extends AdminIndex
 {
-    // {{{ protected properties
-
     /**
      * The starting date for this report.
      *
@@ -26,18 +24,12 @@ class StoreSalesReportDetails extends AdminIndex
 
     protected $display_shipping = false;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -54,9 +46,6 @@ class StoreSalesReportDetails extends AdminIndex
         $this->appendRegionColumns($view, $regions);
     }
 
-    // }}}
-    // {{{ protected function initReportValues()
-
     protected function initReportValues()
     {
         $id = SiteApplication::initVar('id');
@@ -71,9 +60,6 @@ class StoreSalesReportDetails extends AdminIndex
         $this->initStartDate($parts[0], $parts[1]);
     }
 
-    // }}}
-    // {{{ protected function initStartDate()
-
     protected function initStartDate($year, $month)
     {
         $this->start_date = new SwatDate('now', $this->app->default_time_zone);
@@ -85,9 +71,6 @@ class StoreSalesReportDetails extends AdminIndex
             ));
         }
     }
-
-    // }}}
-    // {{{ protected function appendRegionColumns()
 
     protected function appendRegionColumns(
         SwatTableView $view,
@@ -116,9 +99,6 @@ class StoreSalesReportDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getCreatedColumn()
-
     protected function getCreatedColumn($region, $show_title = true)
     {
         $column = new SwatTableViewColumn('created_' . $region->id);
@@ -139,9 +119,6 @@ class StoreSalesReportDetails extends AdminIndex
         return $column;
     }
 
-    // }}}
-    // {{{ protected function getCancelledColumn()
-
     protected function getCancelledColumn($region, $show_title = true)
     {
         $column = new SwatTableViewColumn('cancelled_' . $region->id);
@@ -161,9 +138,6 @@ class StoreSalesReportDetails extends AdminIndex
 
         return $column;
     }
-
-    // }}}
-    // {{{ protected function getSubtotalColumn()
 
     protected function getSubtotalColumn(
         StoreRegion $region,
@@ -194,9 +168,6 @@ class StoreSalesReportDetails extends AdminIndex
         return $column;
     }
 
-    // }}}
-    // {{{ protected function getShippingColumn()
-
     protected function getShippingColumn(
         StoreRegion $region,
         $show_title = true
@@ -226,10 +197,7 @@ class StoreSalesReportDetails extends AdminIndex
         return $column;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -244,9 +212,6 @@ class StoreSalesReportDetails extends AdminIndex
         // and navbar entry
         $this->layout->navbar->createEntry($report_title);
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -324,9 +289,6 @@ class StoreSalesReportDetails extends AdminIndex
         return $store;
     }
 
-    // }}}
-    // {{{ protected function queryOrderStats()
-
     protected function queryOrderStats($date_field)
     {
         $time_zone_name = $this->start_date->getTimezone()->getName();
@@ -360,16 +322,10 @@ class StoreSalesReportDetails extends AdminIndex
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getShippingSelectClause()
-
     protected function getShippingSelectClause()
     {
         return 'sum(shipping_total)';
     }
-
-    // }}}
-    // {{{ protected function getInstanceWhereClause()
 
     protected function getInstanceWhereClause()
     {
@@ -386,9 +342,6 @@ class StoreSalesReportDetails extends AdminIndex
         );
     }
 
-    // }}}
-    // {{{ protected function getRegions()
-
     protected function getRegions()
     {
         if ($this->regions === null) {
@@ -403,13 +356,8 @@ class StoreSalesReportDetails extends AdminIndex
         return $this->regions;
     }
 
-    // }}}
-    // {{{ protected function getReportTitle()
-
     protected function getReportTitle()
     {
         return $this->start_date->formatLikeIntl(SwatDate::DF_MY);
     }
-
-    // }}}
 }

@@ -8,25 +8,17 @@
  */
 class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-shipping-type.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function processCommon()
 
     public function processCommon()
     {
         $this->saveDataToSession();
     }
-
-    // }}}
-    // {{{ protected function saveDataToSession()
 
     protected function saveDataToSession()
     {
@@ -39,18 +31,12 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
         $this->app->session->order->shipping_type = $shipping_type;
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function buildCommon()
 
     public function buildCommon()
     {
         $this->buildForm();
     }
-
-    // }}}
-    // {{{ protected function buildForm()
 
     protected function buildForm()
     {
@@ -60,9 +46,6 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
             $this->loadDataFromSession();
         }
     }
-
-    // }}}
-    // {{{ protected function buildShippingTypes()
 
     protected function buildShippingTypes()
     {
@@ -76,9 +59,6 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getShippingTypeTitle()
 
     protected function getShippingTypeTitle(StoreShippingType $type)
     {
@@ -94,9 +74,6 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
         return $title;
     }
 
-    // }}}
-    // {{{ protected function loadDataFromSession()
-
     protected function loadDataFromSession()
     {
         $order = $this->app->session->order;
@@ -106,9 +83,6 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
                 $order->shipping_type->shortname;
         }
     }
-
-    // }}}
-    // {{{ protected function getShippingTypes()
 
     /**
      * Gets available shipping types for new shipping methods.
@@ -133,10 +107,7 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
         return SwatDB::query($this->app->db, $sql, $wrapper);
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -146,6 +117,4 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
             $this->ui->getRoot()->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

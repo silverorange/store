@@ -9,7 +9,6 @@
 class StoreSaleDiscountDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -49,10 +48,7 @@ class StoreSaleDiscountDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -81,6 +77,4 @@ class StoreSaleDiscountDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
 }

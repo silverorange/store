@@ -10,8 +10,6 @@
  */
 class StoreAdDetails extends SiteAdDetails
 {
-    // {{{ private properties
-
     /**
      * Cache of regions used by queryRegions().
      *
@@ -19,20 +17,14 @@ class StoreAdDetails extends SiteAdDetails
      */
     private $regions;
 
-    // }}}
-
     // init phase
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -44,9 +36,6 @@ class StoreAdDetails extends SiteAdDetails
                 return parent::getTableModel($view);
         }
     }
-
-    // }}}
-    // {{{ protected function getOrdersTableModel()
 
     protected function getOrdersTableModel(): SwatTableStore
     {
@@ -84,9 +73,6 @@ class StoreAdDetails extends SiteAdDetails
 
         return $store;
     }
-
-    // }}}
-    // {{{ protected function appendRegionColumns()
 
     protected function appendRegionColumns($regions)
     {
@@ -143,9 +129,6 @@ class StoreAdDetails extends SiteAdDetails
         $view->appendColumn($orders_column);
     }
 
-    // }}}
-    // {{{ private function queryRegions()
-
     private function queryRegions()
     {
         if ($this->regions === null) {
@@ -161,6 +144,4 @@ class StoreAdDetails extends SiteAdDetails
 
         return $this->regions;
     }
-
-    // }}}
 }

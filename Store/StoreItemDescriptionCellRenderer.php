@@ -14,15 +14,10 @@
  */
 class StoreItemDescriptionCellRenderer extends SwatCellRenderer
 {
-    // {{{ public properties
-
     public $sku;
 
     public $description;
     public $description_content_type = 'text/plain';
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -48,6 +43,4 @@ class StoreItemDescriptionCellRenderer extends SwatCellRenderer
             }
         }
     }
-
-    // }}}
 }

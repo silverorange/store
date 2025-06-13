@@ -8,8 +8,6 @@
  */
 class StoreCartEntryWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -17,6 +15,4 @@ class StoreCartEntryWrapper extends SwatDBRecordsetWrapper
 
         $this->index_field = 'id';
     }
-
-    // }}}
 }

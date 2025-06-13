@@ -10,8 +10,6 @@
  */
 class StoreFeatureWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public static function getFeatures()
-
     public static function getFeatures($app)
     {
         $features = false;
@@ -84,14 +82,9 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
         return $features;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->row_wrapper_class = SwatDBClassMap::get('StoreFeature');
     }
-
-    // }}}
 }

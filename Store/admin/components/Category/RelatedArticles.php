@@ -8,14 +8,9 @@
  */
 class StoreCategoryRelatedArticles extends AdminSearch
 {
-    // {{{ private properties
-
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -33,18 +28,12 @@ class StoreCategoryRelatedArticles extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/relatedarticles.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -104,10 +93,7 @@ class StoreCategoryRelatedArticles extends AdminSearch
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -124,9 +110,6 @@ class StoreCategoryRelatedArticles extends AdminSearch
         $index_form->action = $this->source;
         $index_form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -161,9 +144,6 @@ class StoreCategoryRelatedArticles extends AdminSearch
         return $rs;
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -186,9 +166,6 @@ class StoreCategoryRelatedArticles extends AdminSearch
 
         $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Add Articles')));
     }
-
-    // }}}
-    // {{{ private function getWhereClause()
 
     private function getWhereClause()
     {
@@ -233,6 +210,4 @@ class StoreCategoryRelatedArticles extends AdminSearch
 
         return $where;
     }
-
-    // }}}
 }

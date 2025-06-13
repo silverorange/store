@@ -5,16 +5,11 @@
  */
 class StoreCategoryPage extends StorePage
 {
-    // {{{ protected properties
-
     protected $category;
     protected $products;
     protected $out_of_stock_products;
 
-    // }}}
-
     // init phase
-    // {{{ public function isVisibleInRegion()
 
     public function isVisibleInRegion(StoreRegion $region)
     {
@@ -49,9 +44,6 @@ class StoreCategoryPage extends StorePage
         return $category !== null;
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal()
     {
         $category_id = $this->getSelectedCategoryId();
@@ -64,9 +56,6 @@ class StoreCategoryPage extends StorePage
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getSelectedCategoryId()
 
     protected function getSelectedCategoryId()
     {
@@ -82,10 +71,7 @@ class StoreCategoryPage extends StorePage
         return $category_id;
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -127,9 +113,6 @@ class StoreCategoryPage extends StorePage
         $this->buildPage();
     }
 
-    // }}}
-    // {{{ protected function buildTitle()
-
     protected function buildTitle()
     {
         $this->layout->data->title =
@@ -141,9 +124,6 @@ class StoreCategoryPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function buildBodytext()
-
     protected function buildBodytext()
     {
         if ($this->category->bodytext != '') {
@@ -153,9 +133,6 @@ class StoreCategoryPage extends StorePage
             );
         }
     }
-
-    // }}}
-    // {{{ protected function buildPage()
 
     protected function buildPage()
     {
@@ -175,9 +152,6 @@ class StoreCategoryPage extends StorePage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected function isTwigPage()
-
     protected function isTwigPage()
     {
         $twig_page = false;
@@ -189,9 +163,6 @@ class StoreCategoryPage extends StorePage
 
         return $twig_page;
     }
-
-    // }}}
-    // {{{ protected function querySubCategories()
 
     protected function querySubCategories(?StoreCategory $category = null)
     {
@@ -247,9 +218,6 @@ class StoreCategoryPage extends StorePage
         return $sub_categories;
     }
 
-    // }}}
-    // {{{ protected function displaySubCategories()
-
     protected function displaySubCategories(StoreCategoryWrapper $categories)
     {
         if (count($categories) == 0) {
@@ -268,9 +236,6 @@ class StoreCategoryPage extends StorePage
         echo '</ul>';
     }
 
-    // }}}
-    // {{{ protected function displayProducts()
-
     protected function displayProducts($products, $path = null)
     {
         if ($path === null) {
@@ -288,9 +253,6 @@ class StoreCategoryPage extends StorePage
 
         echo '</ul>';
     }
-
-    // }}}
-    // {{{ protected function displayPage()
 
     protected function displayPage()
     {
@@ -312,9 +274,6 @@ class StoreCategoryPage extends StorePage
             $this->displayProducts($this->products);
         }
     }
-
-    // }}}
-    // {{{ protected function displayTwigPage()
 
     protected function displayTwigPage()
     {
@@ -378,9 +337,6 @@ class StoreCategoryPage extends StorePage
         echo '</div>';
     }
 
-    // }}}
-    // {{{ protected function displayFeaturedProducts()
-
     protected function displayFeaturedProducts(StoreCategory $category)
     {
         // we only show featured products on pages with sub-categories
@@ -423,9 +379,6 @@ class StoreCategoryPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayOutOfStockProductsAsTwig()
-
     protected function displayOutOfStockProductsAsTwig()
     {
         if (count($this->out_of_stock_products) > 0) {
@@ -458,16 +411,10 @@ class StoreCategoryPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayRelatedContent()
-
     protected function displayRelatedContent(StoreCategory $category)
     {
         $this->displayRelatedArticles($category);
     }
-
-    // }}}
-    // {{{ protected function displayRelatedArticles()
 
     protected function displayRelatedArticles(StoreCategory $category)
     {
@@ -499,32 +446,20 @@ class StoreCategoryPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayRelatedArticlesTitle()
-
     protected function displayRelatedArticlesTitle()
     {
         echo Store::_('Related Articles: ');
     }
-
-    // }}}
-    // {{{ protected function getRelatedArticleTitle()
 
     protected function getRelatedArticleTitle($article)
     {
         return $article->title;
     }
 
-    // }}}
-    // {{{ protected function instantiateProductSearchEngine()
-
     protected function instantiateProductSearchEngine()
     {
         return new StoreProductSearchEngine($this->app);
     }
-
-    // }}}
-    // {{{ protected function getProducts()
 
     protected function getProducts()
     {
@@ -536,9 +471,6 @@ class StoreCategoryPage extends StorePage
 
         return $engine->search();
     }
-
-    // }}}
-    // {{{ protected function getProductsByCategory()
 
     protected function getProductsByCategory()
     {
@@ -560,9 +492,6 @@ class StoreCategoryPage extends StorePage
         return $products;
     }
 
-    // }}}
-    // {{{ protected function getFeaturedProducts()
-
     protected function getFeaturedProducts(StoreCategory $category)
     {
         $engine = $this->instantiateProductSearchEngine();
@@ -571,9 +500,6 @@ class StoreCategoryPage extends StorePage
 
         return $engine->search();
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -589,6 +515,4 @@ class StoreCategoryPage extends StorePage
             }
         }
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 abstract class StoreOrderDetails extends AdminPage
 {
-    // {{{ protected properties
-
     protected $id;
     protected $order;
 
@@ -21,10 +19,7 @@ abstract class StoreOrderDetails extends AdminPage
      */
     protected $account;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -39,16 +34,10 @@ abstract class StoreOrderDetails extends AdminPage
         $this->getOrder();
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
-
-    // }}}
-    // {{{ protected function getOrder()
 
     protected function getOrder()
     {
@@ -81,10 +70,7 @@ abstract class StoreOrderDetails extends AdminPage
         return $this->order;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -106,9 +92,6 @@ abstract class StoreOrderDetails extends AdminPage
         $this->buildMessages();
         $this->buildToolBar();
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -132,9 +115,6 @@ abstract class StoreOrderDetails extends AdminPage
 
         $this->navbar->addEntry(new SwatNavBarEntry($this->getOrderTitle()));
     }
-
-    // }}}
-    // {{{ protected function buildToolBar()
 
     protected function buildToolBar()
     {
@@ -164,9 +144,6 @@ abstract class StoreOrderDetails extends AdminPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildCancelledMessage()
-
     protected function buildCancelledMessage()
     {
         if ($this->order->cancel_date instanceof SwatDate) {
@@ -187,23 +164,14 @@ abstract class StoreOrderDetails extends AdminPage
         }
     }
 
-    // }}}
-    // {{{ protected function getOrderTitle()
-
     protected function getOrderTitle()
     {
         return $this->order->getTitle();
     }
 
-    // }}}
-    // {{{ protected abstract function buildOrderDetails()
-
     abstract protected function buildOrderDetails();
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -212,6 +180,4 @@ abstract class StoreOrderDetails extends AdminPage
             'packages/store/admin/styles/store-order-details.css'
         );
     }
-
-    // }}}
 }

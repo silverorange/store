@@ -8,8 +8,6 @@
  */
 class StoreMoneyCellRenderer extends SwatMoneyCellRenderer
 {
-    // {{{ public function __construct
-
     public function __construct()
     {
         parent::__construct();
@@ -18,6 +16,4 @@ class StoreMoneyCellRenderer extends SwatMoneyCellRenderer
 
         $this->addStyleSheet('packages/swat/styles/swat.css');
     }
-
-    // }}}
 }

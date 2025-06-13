@@ -8,8 +8,6 @@
  */
 class StoreSalesReportIndex extends AdminSearch
 {
-    // {{{ protected properties
-
     /**
      * Cache of regions used by getRegions().
      *
@@ -24,18 +22,12 @@ class StoreSalesReportIndex extends AdminSearch
      */
     protected $year;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -67,9 +59,6 @@ class StoreSalesReportIndex extends AdminSearch
 
         $this->year = $today->getYear() - $pager->current_record;
     }
-
-    // }}}
-    // {{{ protected function appendRegionColumns()
 
     protected function appendRegionColumns(
         SwatTableView $view,
@@ -145,10 +134,7 @@ class StoreSalesReportIndex extends AdminSearch
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -206,9 +192,6 @@ class StoreSalesReportIndex extends AdminSearch
         return $store;
     }
 
-    // }}}
-    // {{{ protected function queryOrderStats()
-
     protected function queryOrderStats($date_field)
     {
         $sql = 'select count(Orders.id) as num_orders, Locale.region,
@@ -235,9 +218,6 @@ class StoreSalesReportIndex extends AdminSearch
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getInstanceWhereClause()
-
     protected function getInstanceWhereClause()
     {
         if ($this->app->isMultipleInstanceAdmin()) {
@@ -252,9 +232,6 @@ class StoreSalesReportIndex extends AdminSearch
             $this->app->db->quote($instance_id, 'integer')
         );
     }
-
-    // }}}
-    // {{{ protected function getRegions()
 
     protected function getRegions()
     {
@@ -271,6 +248,4 @@ class StoreSalesReportIndex extends AdminSearch
 
         return $this->regions;
     }
-
-    // }}}
 }

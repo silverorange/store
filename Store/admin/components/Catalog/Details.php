@@ -8,14 +8,9 @@
  */
 class StoreCatalogDetails extends AdminPage
 {
-    // {{{ protected properties
-
     protected $id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -26,18 +21,12 @@ class StoreCatalogDetails extends AdminPage
         $this->id = SiteApplication::initVar('id');
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -116,9 +105,6 @@ class StoreCatalogDetails extends AdminPage
         $this->buildMessages();
     }
 
-    // }}}
-    // {{{ protected function getDetailsStore()
-
     protected function getDetailsStore()
     {
         $sql = 'select Catalog1.id, Catalog1.title,
@@ -147,6 +133,4 @@ class StoreCatalogDetails extends AdminPage
 
         return $row;
     }
-
-    // }}}
 }

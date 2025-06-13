@@ -8,14 +8,9 @@
  */
 class StoreAttributeOrder extends AdminDBOrder
 {
-    // {{{ private properties
-
     private $parent;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -26,10 +21,7 @@ class StoreAttributeOrder extends AdminDBOrder
         $form->addHiddenField('parent', $this->parent);
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveIndex()
 
     protected function saveIndex($id, $index)
     {
@@ -47,19 +39,14 @@ class StoreAttributeOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
+
     protected function buildInternal()
     {
         $frame = $this->ui->getWidget('order_frame');
         $frame->title = Store::_('Order Attributes');
         parent::buildInternal();
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -85,6 +72,4 @@ class StoreAttributeOrder extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
 }

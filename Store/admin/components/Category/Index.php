@@ -8,14 +8,9 @@
  */
 class StoreCategoryIndex extends AdminIndex
 {
-    // {{{ protected properties
-
     protected $id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -60,16 +55,10 @@ class StoreCategoryIndex extends AdminIndex
                 (count($options) > 0);
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
-
-    // }}}
-    // {{{ private function initCatalogSwitcher()
 
     /**
      * Builds the catalog switcher. Switcher does not get shown unless there is
@@ -85,9 +74,6 @@ class StoreCategoryIndex extends AdminIndex
             $this->ui->getWidget('catalog_switcher_form')->visible = false;
         }
     }
-
-    // }}}
-    // {{{ private function initAttributeList()
 
     /**
      * Builds the list of attributes using an image and a title.
@@ -118,10 +104,7 @@ class StoreCategoryIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -158,9 +141,6 @@ class StoreCategoryIndex extends AdminIndex
             $this->app->memcache->flushNs('product');
         }
     }
-
-    // }}}
-    // {{{ protected function processCategoryActions()
 
     protected function processCategoryActions($view, $actions)
     {
@@ -346,9 +326,6 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ protected function getProductsByCategories()
-
     protected function getProductsByCategories($category_array)
     {
         $sql = sprintf(
@@ -383,9 +360,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $product_array;
     }
-
-    // }}}
-    // {{{ protected function processProductActions()
 
     protected function processProductActions($view, $actions)
     {
@@ -670,9 +644,6 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ private function processFeaturedProductActions()
-
     private function processFeaturedProductActions($view, $actions)
     {
         $flush_memcache = false;
@@ -709,9 +680,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $flush_memcache;
     }
-
-    // }}}
-    // {{{ private function processRelatedArticles()
 
     private function processRelatedArticles($view, $actions)
     {
@@ -750,9 +718,6 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ protected function getAttributeArray()
-
     protected function getAttributeArray($widget_title, $form_field_title = '')
     {
         $attribute_array = [];
@@ -770,9 +735,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $attribute_array;
     }
-
-    // }}}
-    // {{{ private function addProductAttributes()
 
     private function addProductAttributes($products, $attributes)
     {
@@ -843,9 +805,6 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ private function removeProductAttributes()
-
     private function removeProductAttributes($products, $attributes)
     {
         $flush_memcache = false;
@@ -908,9 +867,6 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ private function addSaleDiscount()
-
     private function addSaleDiscount($products, $sale_discount)
     {
         $flush_memcache = false;
@@ -951,9 +907,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return true;
     }
-
-    // }}}
-    // {{{ private function removeSaleDiscount()
 
     private function removeSaleDiscount($products)
     {
@@ -1010,9 +963,6 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ private function addItemMinimumQuantityGroup()
-
     private function addItemMinimumQuantityGroup($products, $group)
     {
         $flush_memcache = false;
@@ -1055,9 +1005,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return true;
     }
-
-    // }}}
-    // {{{ private function removeItemMinimumQuantityGroup()
 
     private function removeItemMinimumQuantityGroup($products)
     {
@@ -1111,10 +1058,7 @@ class StoreCategoryIndex extends AdminIndex
         return $flush_memcache;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     public function buildInternal()
     {
@@ -1184,9 +1128,6 @@ class StoreCategoryIndex extends AdminIndex
         $this->buildActions();
         $this->buildMessages();
     }
-
-    // }}}
-    // {{{ protected function buildActions()
 
     public function buildActions()
     {
@@ -1270,9 +1211,6 @@ class StoreCategoryIndex extends AdminIndex
         $flydown->addOptionsByArray($sale_discounts);
     }
 
-    // }}}
-    // {{{ protected function getTableModel()
-
     protected function getTableModel(SwatView $view): ?SwatDBDefaultRecordsetWrapper
     {
         switch ($view->id) {
@@ -1292,24 +1230,15 @@ class StoreCategoryIndex extends AdminIndex
         return null;
     }
 
-    // }}}
-    // {{{ protected function getItemStatuses()
-
     protected function getItemStatuses()
     {
         return StoreItemStatusList::statuses();
     }
 
-    // }}}
-    // {{{ protected function displayAttribute()
-
     protected function displayAttribute(StoreAttribute $attribute)
     {
         $attribute->display();
     }
-
-    // }}}
-    // {{{ private function buildAttributes()
 
     private function buildAttributes($form_field_id, $check_list_id)
     {
@@ -1340,9 +1269,6 @@ class StoreCategoryIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function getCategoryCount()
-
     /**
      * use this query instead of the table store because of the
      * where clause that filters by catalog.
@@ -1357,9 +1283,6 @@ class StoreCategoryIndex extends AdminIndex
             )
         );
     }
-
-    // }}}
-    // {{{ private function getProductCount()
 
     /**
      * use this query instead of the table store because of the
@@ -1376,10 +1299,7 @@ class StoreCategoryIndex extends AdminIndex
         return SwatDB::queryOne($this->app->db, $sql);
     }
 
-    // }}}
-
     // build phase - category details
-    // {{{ protected function buildDetails()
 
     protected function buildDetails()
     {
@@ -1395,9 +1315,6 @@ class StoreCategoryIndex extends AdminIndex
         $details_frame->subtitle = $category->title;
     }
 
-    // }}}
-    // {{{ protected function buildCategoryDetails()
-
     protected function buildCategoryDetails($category)
     {
         $this->buildImageDetails($category);
@@ -1405,9 +1322,6 @@ class StoreCategoryIndex extends AdminIndex
         $details_view = $this->ui->getWidget('details_view');
         $details_view->data = $this->getCategoryDetailsStore($category);
     }
-
-    // }}}
-    // {{{ protected function getCategoryDetailsStore()
 
     protected function getCategoryDetailsStore(StoreCategory $category)
     {
@@ -1419,9 +1333,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $ds;
     }
-
-    // }}}
-    // {{{ private function loadCategory()
 
     private function loadCategory()
     {
@@ -1439,9 +1350,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $category;
     }
-
-    // }}}
-    // {{{ private function buildCategoryNavBar()
 
     private function buildCategoryNavBar($category)
     {
@@ -1470,10 +1378,7 @@ class StoreCategoryIndex extends AdminIndex
         $this->title = $category->title;
     }
 
-    // }}}
-
     // build phase - table views
-    // {{{ protected function getCategoryTableModel()
 
     protected function getCategoryTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
     {
@@ -1514,9 +1419,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $rs;
     }
-
-    // }}}
-    // {{{ protected function getProductTableModel()
 
     protected function getProductTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
     {
@@ -1559,9 +1461,6 @@ class StoreCategoryIndex extends AdminIndex
 
         return $rs;
     }
-
-    // }}}
-    // {{{ protected function setCategoryVisibility()
 
     protected function setCategoryVisibility(SwatTableModel $model)
     {
@@ -1624,9 +1523,6 @@ class StoreCategoryIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function setProductVisibility()
-
     protected function setProductVisibility(SwatTableModel $model)
     {
         if (count($model) > 0) {
@@ -1655,9 +1551,6 @@ class StoreCategoryIndex extends AdminIndex
             }
         }
     }
-
-    // }}}
-    // {{{ private function getFeaturedProductTableModel()
 
     private function getFeaturedProductTableModel(
         SwatTableView $view
@@ -1689,9 +1582,6 @@ class StoreCategoryIndex extends AdminIndex
         return $rs;
     }
 
-    // }}}
-    // {{{ private function getRelatedArticleTableModel()
-
     private function getRelatedArticleTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
     {
         $sql = 'select Article.id,
@@ -1718,9 +1608,6 @@ class StoreCategoryIndex extends AdminIndex
         return $rs;
     }
 
-    // }}}
-    // {{{ private function buildImageDetails()
-
     private function buildImageDetails($category)
     {
         $this->ui->getWidget('image_toolbar')->setToolLinkValues($this->id);
@@ -1738,10 +1625,7 @@ class StoreCategoryIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -1750,6 +1634,4 @@ class StoreCategoryIndex extends AdminIndex
             'packages/store/admin/styles/store-category-index.css'
         );
     }
-
-    // }}}
 }

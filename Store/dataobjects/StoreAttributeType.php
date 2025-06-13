@@ -7,8 +7,6 @@
  */
 class StoreAttributeType extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -23,17 +21,11 @@ class StoreAttributeType extends SwatDBDataObject
      */
     public $shortname;
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'AttributeType';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ public function loadFromShortname()
 
     /**
      * Loads an attribute type by its shortname.
@@ -71,9 +63,6 @@ class StoreAttributeType extends SwatDBDataObject
         return true;
     }
 
-    // }}}
-    // {{{ protected function loadAttributes()
-
     protected function loadAttributes()
     {
         $sql = sprintf(
@@ -87,6 +76,4 @@ class StoreAttributeType extends SwatDBDataObject
             SwatDBClassMap::get('StoreAttributeWrapper')
         );
     }
-
-    // }}}
 }

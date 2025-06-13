@@ -8,8 +8,6 @@
  */
 class StoreProductImageDisplay extends SwatImageDisplay
 {
-    // {{{ public properties
-
     /**
      * Image Id.
      *
@@ -51,10 +49,6 @@ class StoreProductImageDisplay extends SwatImageDisplay
      */
     public $show_delete_link = true;
 
-    // }}}
-
-    // {{{ public function display()
-
     /**
      * Displays this image.
      */
@@ -90,24 +84,15 @@ class StoreProductImageDisplay extends SwatImageDisplay
         $div_tag->close();
     }
 
-    // }}}
-    // {{{ public function showEditLink()
-
     public function showEditLink($show)
     {
         $this->show_edit_link = $show;
     }
 
-    // }}}
-    // {{{ public function showDeleteLink()
-
     public function showDeleteLink($show)
     {
         $this->show_delete_link = $show;
     }
-
-    // }}}
-    // {{{ protected function createCompositeWidgets()
 
     protected function createCompositeWidgets()
     {
@@ -129,6 +114,4 @@ class StoreProductImageDisplay extends SwatImageDisplay
 
         $this->addCompositeWidget($toolbar, 'toolbar');
     }
-
-    // }}}
 }

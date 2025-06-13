@@ -8,8 +8,6 @@
  */
 class StoreShippingType extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier of this shipping type.
      *
@@ -47,9 +45,6 @@ class StoreShippingType extends SwatDBDataObject
      */
     public $displayorder;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The region to use when loading shipping rates.
      *
@@ -58,9 +53,6 @@ class StoreShippingType extends SwatDBDataObject
      * @see StoreShippingType::setRegion()
      */
     protected $region;
-
-    // }}}
-    // {{{ public function setRegion()
 
     /**
      * Sets the region to use when loading shipping rates.
@@ -71,9 +63,6 @@ class StoreShippingType extends SwatDBDataObject
     {
         $this->region = $region;
     }
-
-    // }}}
-    // {{{ public function loadByShortname()
 
     /**
      * Loads a shipping type by its shortname.
@@ -98,9 +87,6 @@ class StoreShippingType extends SwatDBDataObject
 
         return $this->load($id);
     }
-
-    // }}}
-    // {{{ public function calculateShippingRate()
 
     public function calculateShippingRate(
         $item_total,
@@ -164,9 +150,6 @@ class StoreShippingType extends SwatDBDataObject
         return $total;
     }
 
-    // }}}
-    // {{{ public function hasFuelSurcharge()
-
     /**
      * Whether this shipping type has a shipping rate with a fuel surcharge.
      */
@@ -185,19 +168,13 @@ class StoreShippingType extends SwatDBDataObject
         return $surcharge;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'ShippingType';
         $this->id_field = 'integer:id';
     }
 
-    // }}}
-
     // loader methods
-    // {{{ public function loadShippingRates()
 
     public function loadShippingRates(?StoreRegion $region = null)
     {
@@ -229,10 +206,7 @@ class StoreShippingType extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // display methods
-    // {{{ public function display()
 
     /**
      * Displays this shipping type.
@@ -249,9 +223,6 @@ class StoreShippingType extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function displayAsText()
-
     /**
      * Displays this shipping type as text.
      */
@@ -263,6 +234,4 @@ class StoreShippingType extends SwatDBDataObject
             echo ' - ' . $this->note;
         }
     }
-
-    // }}}
 }

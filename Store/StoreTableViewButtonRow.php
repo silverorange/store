@@ -7,8 +7,6 @@
  */
 class StoreTableViewButtonRow extends SwatTableViewRow
 {
-    // {{{ class constants
-
     /**
      * Display the button in the left cell.
      */
@@ -18,9 +16,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
      * Display the button in the right cell.
      */
     public const POSITION_RIGHT = 1;
-
-    // }}}
-    // {{{ public properties
 
     /**
      * Button title.
@@ -63,9 +58,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
      */
     public $position = self::POSITION_LEFT;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * Whether or not the internal widgets used by this row have been created
      * or not.
@@ -81,26 +73,17 @@ class StoreTableViewButtonRow extends SwatTableViewRow
      */
     protected $button;
 
-    // }}}
-    // {{{ public function init()
-
     public function init()
     {
         $this->createEmbeddedWidgets();
         $this->button->init();
     }
 
-    // }}}
-    // {{{ public function process()
-
     public function process()
     {
         $this->createEmbeddedWidgets();
         $this->button->process();
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -149,18 +132,12 @@ class StoreTableViewButtonRow extends SwatTableViewRow
         $tr_tag->close();
     }
 
-    // }}}
-    // {{{ public function hasBeenClicked()
-
     public function hasBeenClicked()
     {
         $this->createEmbeddedWidgets();
 
         return $this->button->hasBeenClicked();
     }
-
-    // }}}
-    // {{{ public function getHtmlHeadEntrySet()
 
     public function getHtmlHeadEntrySet()
     {
@@ -170,9 +147,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
 
         return $set;
     }
-
-    // }}}
-    // {{{ protected function displayButton()
 
     /**
      * Displays the button contained by this row.
@@ -185,9 +159,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
         $this->button->display();
     }
 
-    // }}}
-    // {{{ protected function displayEmptyCell()
-
     /**
      * Displays the empty cell in this row.
      */
@@ -195,9 +166,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
     {
         echo '&nbsp;';
     }
-
-    // }}}
-    // {{{ protected function getCSSClassNames()
 
     /**
      * Gets the array of CSS classes that are applied to this row.
@@ -211,9 +179,6 @@ class StoreTableViewButtonRow extends SwatTableViewRow
         return array_merge($classes, $this->classes);
     }
 
-    // }}}
-    // {{{ protected function createEmbeddedWidgets()
-
     protected function createEmbeddedWidgets()
     {
         if (!$this->widgets_created) {
@@ -222,6 +187,4 @@ class StoreTableViewButtonRow extends SwatTableViewRow
             $this->widgets_created = true;
         }
     }
-
-    // }}}
 }

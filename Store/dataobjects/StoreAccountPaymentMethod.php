@@ -10,8 +10,6 @@
  */
 class StoreAccountPaymentMethod extends StorePaymentMethod
 {
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -21,6 +19,4 @@ class StoreAccountPaymentMethod extends StorePaymentMethod
             SwatDBClassMap::get('StoreAccount')
         );
     }
-
-    // }}}
 }

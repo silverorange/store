@@ -10,17 +10,12 @@
  */
 class StoreAccountDetailsPage extends SiteUiPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/account-details.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -38,9 +33,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         parent::init();
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal()
     {
         $account = $this->app->session->account;
@@ -54,9 +46,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function initAddressViews()
-
     protected function initAddressViews(StoreAccount $account)
     {
         $container = $this->ui->getWidget('account_address_views');
@@ -69,9 +58,6 @@ class StoreAccountDetailsPage extends SiteUiPage
             $container->addChild($view);
         }
     }
-
-    // }}}
-    // {{{ protected function initPaymentMethodViews()
 
     protected function initPaymentMethodViews(StoreAccount $account)
     {
@@ -92,9 +78,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function getPaymentMethodText()
-
     protected function getPaymentMethodText($text)
     {
         switch ($text) {
@@ -107,10 +90,7 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -132,16 +112,10 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         $this->app->relocate('account');
     }
-
-    // }}}
-    // {{{ protected function processAddressViews()
 
     protected function processAddressViews(StoreAccount $account)
     {
@@ -168,9 +142,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function processPaymentMethodViews()
-
     protected function processPaymentMethodViews(StoreAccount $account)
     {
         $container = $this->ui->getWidget('account_payment_method_container');
@@ -196,10 +167,7 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -222,9 +190,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildAccountDetails()
-
     protected function buildAccountDetails()
     {
         $account = $this->app->session->account;
@@ -242,9 +207,6 @@ class StoreAccountDetailsPage extends SiteUiPage
             $details_view->getField('company')->visible = false;
         }
     }
-
-    // }}}
-    // {{{ protected function buildSavedCartMessage()
 
     protected function buildSavedCartMessage()
     {
@@ -276,9 +238,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildOrders()
-
     protected function buildOrders()
     {
         $block = $this->ui->getWidget('account_order');
@@ -288,9 +247,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         $this->displayOrders();
         $block->content = ob_get_clean();
     }
-
-    // }}}
-    // {{{ protected function displayOrders()
 
     protected function displayOrders()
     {
@@ -317,9 +273,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function displayOrder()
-
     protected function displayOrder(StoreOrder $order)
     {
         $createdate = clone $order->createdate;
@@ -335,16 +288,10 @@ class StoreAccountDetailsPage extends SiteUiPage
         );
     }
 
-    // }}}
-    // {{{ protected function getOrderDetailsURI()
-
     protected function getOrderDetailsURI(StoreOrder $order)
     {
         return sprintf('account/order%s', $order->id);
     }
-
-    // }}}
-    // {{{ protected function getAccountDetailsStore()
 
     /**
      * Gets the details store for the account to display on this details page.
@@ -359,9 +306,6 @@ class StoreAccountDetailsPage extends SiteUiPage
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getOrders()
-
     /**
      * Gets the orders of the account to display on this account details page.
      *
@@ -373,10 +317,7 @@ class StoreAccountDetailsPage extends SiteUiPage
         return $this->app->session->account->orders;
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -386,6 +327,4 @@ class StoreAccountDetailsPage extends SiteUiPage
             'packages/store/styles/store-account-details-page.css'
         );
     }
-
-    // }}}
 }

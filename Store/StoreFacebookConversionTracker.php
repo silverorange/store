@@ -14,8 +14,6 @@
  */
 class StoreFacebookConversionTracker
 {
-    // {{{ protected properties
-
     /**
      * @var float
      */
@@ -36,40 +34,25 @@ class StoreFacebookConversionTracker
      */
     protected $show_tracking_pixel = true;
 
-    // }}}
-    // {{{ public function setTrackedValue()
-
     public function setTrackedValue($tracked_value)
     {
         $this->tracked_value = $tracked_value;
     }
-
-    // }}}
-    // {{{ public function setTrackingId()
 
     public function setTrackingId($tracking_id)
     {
         $this->tracking_id = $tracking_id;
     }
 
-    // }}}
-    // {{{ public function setTrackedValueCurrency()
-
     public function setTrackedValueCurrency($tracked_value_currency)
     {
         $this->tracked_value_currency = $tracked_value_currency;
     }
 
-    // }}}
-    // {{{ public function showTrackingPixel()
-
     public function showTrackingPixel($show_tracking_pixel)
     {
         $this->show_tracking_pixel = (bool) $show_tracking_pixel;
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -81,9 +64,6 @@ class StoreFacebookConversionTracker
             }
         }
     }
-
-    // }}}
-    // {{{ protected function displayJavascriptTracker()
 
     protected function displayJavascriptTracker()
     {
@@ -113,9 +93,6 @@ class StoreFacebookConversionTracker
         );
     }
 
-    // }}}
-    // {{{ protected function displayTrackingPixel()
-
     protected function displayTrackingPixel()
     {
         // @codingStandardsIgnoreStart
@@ -130,6 +107,4 @@ class StoreFacebookConversionTracker
             SwatString::minimizeEntities($this->tracked_value_currency)
         );
     }
-
-    // }}}
 }

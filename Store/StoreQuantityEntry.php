@@ -9,8 +9,6 @@
  */
 class StoreQuantityEntry extends SwatIntegerEntry
 {
-    // {{{ public function __construct()
-
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -22,9 +20,6 @@ class StoreQuantityEntry extends SwatIntegerEntry
         $this->size = 3;
         $this->show_thousands_separator = false;
     }
-
-    // }}}
-    // {{{ protected function getCSSClassNames()
 
     /**
      * Gets the array of CSS classes that are applied to this entry widget.
@@ -39,9 +34,6 @@ class StoreQuantityEntry extends SwatIntegerEntry
 
         return array_merge($classes, $this->classes);
     }
-
-    // }}}
-    // {{{ protected function getValidationMessage()
 
     /**
      * Get validation message.
@@ -75,6 +67,4 @@ class StoreQuantityEntry extends SwatIntegerEntry
 
         return $message;
     }
-
-    // }}}
 }

@@ -9,7 +9,6 @@
 class StoreRegionDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -36,10 +35,7 @@ class StoreRegionDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     public function buildInternal()
     {
@@ -108,6 +104,4 @@ class StoreRegionDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
 }

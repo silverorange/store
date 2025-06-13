@@ -9,7 +9,6 @@
 class StoreCountryDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -39,10 +38,7 @@ class StoreCountryDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -129,6 +125,4 @@ class StoreCountryDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
 }

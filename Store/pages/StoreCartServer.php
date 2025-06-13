@@ -7,14 +7,9 @@
  */
 class StoreCartServer extends SiteXMLRPCServer
 {
-    // {{{ protected properties
-
     protected $processor;
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     /**
      * Load the cart.
@@ -30,10 +25,7 @@ class StoreCartServer extends SiteXMLRPCServer
         $this->app->cart->load();
     }
 
-    // }}}
-
     // xml-rpc methods
-    // {{{ public function addEntries()
 
     /**
      * Adds entries to the cart.
@@ -125,9 +117,6 @@ class StoreCartServer extends SiteXMLRPCServer
         return $response;
     }
 
-    // }}}
-    // {{{ public function removeEntry()
-
     /**
      * Remove an entry from the cart.
      *
@@ -161,9 +150,6 @@ class StoreCartServer extends SiteXMLRPCServer
 
         return $response;
     }
-
-    // }}}
-    // {{{ public function getCartInfo()
 
     /**
      * Get information about what's in the user's cart.
@@ -246,16 +232,10 @@ class StoreCartServer extends SiteXMLRPCServer
         return $return;
     }
 
-    // }}}
-    // {{{ protected function setupCartEntry()
-
     protected function setupCartEntry(StoreCartEntry $entry, array $e)
     {
         // Do custom entry manipulation here
     }
-
-    // }}}
-    // {{{ protected function getMiniCart()
 
     /**
      * Get a mini cart to display.
@@ -266,9 +246,6 @@ class StoreCartServer extends SiteXMLRPCServer
     {
         return new StoreCartLightbox(null, $this->app, $this->processor);
     }
-
-    // }}}
-    // {{{ protected function getCartLink()
 
     protected function getCartLink(array $cart_info)
     {
@@ -296,6 +273,4 @@ class StoreCartServer extends SiteXMLRPCServer
 
         return $link;
     }
-
-    // }}}
 }

@@ -8,12 +8,7 @@
  */
 class StoreGiftCertificateRadioList extends SwatRadioList
 {
-    // {{{ public properties
-
     public $custom_value = 'custom';
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new radiolist.
@@ -30,9 +25,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
             'packages/store/javascript/store-gift-certificate-radio-list.js'
         );
     }
-
-    // }}}
-    // {{{ public function process()
 
     /**
      * Processes this radio list.
@@ -57,9 +49,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
         }
     }
 
-    // }}}
-    // {{{ public function getPrice()
-
     public function getPrice()
     {
         if ($this->value == $this->custom_value) {
@@ -71,9 +60,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
         return $price;
     }
 
-    // }}}
-    // {{{ public function display()
-
     /**
      * Displays this radio list.
      */
@@ -82,9 +68,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
         parent::display();
         Swat::displayInlineJavaScript($this->getInlineJavaScript());
     }
-
-    // }}}
-    // {{{ public function getState()
 
     public function getState()
     {
@@ -96,9 +79,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
         ];
     }
 
-    // }}}
-    // {{{ public function getState()
-
     public function setState($state)
     {
         $this->value = $state['value'];
@@ -106,9 +86,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
             $state['custom_price']
         );
     }
-
-    // }}}
-    // {{{ protected function displayOptionLabel()
 
     /**
      * Displays an option in the radio list.
@@ -124,9 +101,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
         }
     }
 
-    // }}}
-    // {{{ protected function createCompositeWidgets()
-
     protected function createCompositeWidgets()
     {
         $entry = new SwatMoneyEntry($this->id . '_custom_price');
@@ -135,9 +109,6 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 
         $this->addCompositeWidget($entry, 'custom_price');
     }
-
-    // }}}
-    // {{{ protected function getInlineJavaScript()
 
     /**
      * Gets the inline JavaScript required for this control.
@@ -154,6 +125,4 @@ class StoreGiftCertificateRadioList extends SwatRadioList
             $this->custom_value
         );
     }
-
-    // }}}
 }

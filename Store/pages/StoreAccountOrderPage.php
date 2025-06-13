@@ -13,31 +13,20 @@
  */
 class StoreAccountOrderPage extends SiteUiPage
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrder
      */
     protected $order;
-
-    // }}}
-    // {{{ private properties
 
     /**
      * @var array
      */
     private $items_added = [];
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/account-order.xml';
     }
-
-    // }}}
-    // {{{ protected function getArgumentMap()
 
     protected function getArgumentMap()
     {
@@ -46,10 +35,7 @@ class StoreAccountOrderPage extends SiteUiPage
         ];
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -70,9 +56,6 @@ class StoreAccountOrderPage extends SiteUiPage
         parent::init();
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal()
     {
         $order_id = intval($this->getArgument('order'));
@@ -80,9 +63,6 @@ class StoreAccountOrderPage extends SiteUiPage
 
         $this->initAddButtonColumn();
     }
-
-    // }}}
-    // {{{ protected function initAddButtonColumn()
 
     protected function initAddButtonColumn()
     {
@@ -114,9 +94,6 @@ class StoreAccountOrderPage extends SiteUiPage
         $items_view->appendColumn($add_item_column);
     }
 
-    // }}}
-    // {{{ protected function loadOrder()
-
     protected function loadOrder($id)
     {
         $this->order = $this->app->session->account->orders->getByIndex($id);
@@ -128,18 +105,12 @@ class StoreAccountOrderPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function getOrdersPageUri()
-
     protected function getOrdersPageUri()
     {
         return 'account/orders';
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function processInternal()
 
     protected function processInternal()
     {
@@ -152,9 +123,6 @@ class StoreAccountOrderPage extends SiteUiPage
             }
         }
     }
-
-    // }}}
-    // {{{ protected function addItem()
 
     /**
      * @param mixed $item_id
@@ -192,9 +160,6 @@ class StoreAccountOrderPage extends SiteUiPage
         return null;
     }
 
-    // }}}
-    // {{{ protected function createCartEntry()
-
     /**
      * @return StoreCartEntry the entry that was created
      */
@@ -217,9 +182,6 @@ class StoreAccountOrderPage extends SiteUiPage
         return $cart_entry;
     }
 
-    // }}}
-    // {{{ protected function addAllItems()
-
     protected function addAllItems()
     {
         foreach ($this->order->items as $order_item) {
@@ -227,9 +189,6 @@ class StoreAccountOrderPage extends SiteUiPage
             $this->addItem($item_id, $order_item);
         }
     }
-
-    // }}}
-    // {{{ protected function addOneItem()
 
     protected function addOneItem()
     {
@@ -246,9 +205,6 @@ class StoreAccountOrderPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function findItem()
-
     /**
      * @return int
      */
@@ -257,10 +213,7 @@ class StoreAccountOrderPage extends SiteUiPage
         return $order_item->getAvailableItemId($this->app->getRegion());
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -270,9 +223,6 @@ class StoreAccountOrderPage extends SiteUiPage
         $this->buildOrderDetails();
         $this->buildOrderItemsView();
     }
-
-    // }}}
-    // {{{ protected function buildOrderDetails()
 
     protected function buildOrderDetails()
     {
@@ -307,9 +257,6 @@ class StoreAccountOrderPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildOrderItemsView()
-
     protected function buildOrderItemsView()
     {
         $items_view = $this->ui->getWidget('items_view');
@@ -342,9 +289,6 @@ class StoreAccountOrderPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function getOrderDetailsTableStore()
-
     protected function getOrderDetailsTableStore()
     {
         $store = $this->order->getOrderDetailsTableStore();
@@ -352,9 +296,6 @@ class StoreAccountOrderPage extends SiteUiPage
 
         return $store;
     }
-
-    // }}}
-    // {{{ protected function buildCartMessages()
 
     protected function buildCartMessages()
     {
@@ -378,9 +319,6 @@ class StoreAccountOrderPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -392,25 +330,16 @@ class StoreAccountOrderPage extends SiteUiPage
         $this->layout->navbar->createEntry($this->order->getTitle());
     }
 
-    // }}}
-    // {{{ protected function buildTitle()
-
     protected function buildTitle()
     {
         parent::buildTitle();
         $this->layout->data->title = $this->order->getTitle();
     }
 
-    // }}}
-    // {{{ protected function orderIsBlank()
-
     protected function orderIsBlank()
     {
         return $this->order->billing_address->fullname == '';
     }
-
-    // }}}
-    // {{{ private function setItemPaths()
 
     private function setItemPaths($store)
     {
@@ -456,10 +385,7 @@ class StoreAccountOrderPage extends SiteUiPage
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -467,6 +393,4 @@ class StoreAccountOrderPage extends SiteUiPage
 
         $this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
     }
-
-    // }}}
 }

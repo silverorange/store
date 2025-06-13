@@ -8,12 +8,7 @@
  */
 class Store
 {
-    // {{{ constants
-
     public const GETTEXT_DOMAIN = 'store';
-
-    // }}}
-    // {{{ private properties
 
     /**
      * Whether or not this package is initialized.
@@ -22,24 +17,15 @@ class Store
      */
     private static $is_initialized = false;
 
-    // }}}
-    // {{{ public static function _()
-
     public static function _($message)
     {
         return self::gettext($message);
     }
 
-    // }}}
-    // {{{ public static function gettext()
-
     public static function gettext($message)
     {
         return dgettext(self::GETTEXT_DOMAIN, $message);
     }
-
-    // }}}
-    // {{{ public static function ngettext()
 
     public static function ngettext(
         $singular_message,
@@ -54,17 +40,11 @@ class Store
         );
     }
 
-    // }}}
-    // {{{ public static function setupGettext()
-
     public static function setupGettext()
     {
         bindtextdomain(self::GETTEXT_DOMAIN, '@DATA-DIR@/Store/locale');
         bind_textdomain_codeset(self::GETTEXT_DOMAIN, 'UTF-8');
     }
-
-    // }}}
-    // {{{ public static function getConfigDefinitions()
 
     /**
      * Gets configuration definitions used by the Store package.
@@ -140,9 +120,6 @@ class Store
         ];
     }
 
-    // }}}
-    // {{{ public static function init()
-
     public static function init()
     {
         if (self::$is_initialized) {
@@ -167,13 +144,8 @@ class Store
         self::$is_initialized = true;
     }
 
-    // }}}
-    // {{{ private function __construct()
-
     /**
      * Prevent instantiation of this static class.
      */
     private function __construct() {}
-
-    // }}}
 }

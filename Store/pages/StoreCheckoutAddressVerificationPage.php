@@ -8,8 +8,6 @@
  */
 abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPage
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrderAddress
      *
@@ -19,9 +17,6 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
 
     protected $verified_address;
 
-    // }}}
-    // {{{ protected function getWidget()
-
     protected function getWidget($name)
     {
         $name = $this->getWidgetPrefix() . $name;
@@ -29,15 +24,9 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
         return $this->ui->getWidget($name);
     }
 
-    // }}}
-    // {{{ abstract protected function getWidgetPrefix()
-
     abstract protected function getWidgetPrefix();
 
-    // }}}
-
     // process phase
-    // {{{ public function processCommon()
 
     public function processCommon()
     {
@@ -67,10 +56,7 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function buildCommon()
 
     public function buildCommon()
     {
@@ -81,9 +67,6 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
             $this->buildList();
         }
     }
-
-    // }}}
-    // {{{ protected function buildList()
 
     protected function buildList()
     {
@@ -182,10 +165,7 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -198,6 +178,4 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
         $yui = new SwatYUI(['dom', 'event']);
         $this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
     }
-
-    // }}}
 }

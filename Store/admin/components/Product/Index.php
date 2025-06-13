@@ -8,20 +8,12 @@
  */
 class StoreProductIndex extends AdminSearch
 {
-    // {{{ protected properties
-
     protected $index_xml = __DIR__ . '/index.xml';
     protected $search_xml = __DIR__ . '/search.xml';
 
-    // }}}
-    // {{{ private properties
-
     private $quick_sku_search = false;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -89,9 +81,6 @@ class StoreProductIndex extends AdminSearch
             (count($options) > 0);
     }
 
-    // }}}
-    // {{{ private function initCatalogSelector()
-
     /**
      * Builds the catalog selector. Selector does not get shown unless there is
      * more than one catalog, as its not useful when there is only one.
@@ -107,9 +96,6 @@ class StoreProductIndex extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ private function initSaleDiscountFlydown()
-
     private function initSaleDiscountFlydown()
     {
         $flydown = $this->ui->getWidget('search_sale_discount');
@@ -124,9 +110,6 @@ class StoreProductIndex extends AdminSearch
         $field = $this->ui->getWidget('sale_discount_field');
         $field->visible = $this->app->hasComponent('SaleDiscount');
     }
-
-    // }}}
-    // {{{ private function initAttributeList()
 
     /**
      * Builds the list of attributes using an image and a title.
@@ -156,10 +139,7 @@ class StoreProductIndex extends AdminSearch
         $attributes_field->replicators = $replicators;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -192,9 +172,6 @@ class StoreProductIndex extends AdminSearch
         $pager->process();
     }
 
-    // }}}
-    // {{{ protected function quickSKUSearch()
-
     protected function quickSKUSearch()
     {
         $search_item = $this->ui->getWidget('search_item');
@@ -212,9 +189,6 @@ class StoreProductIndex extends AdminSearch
             $this->app->relocate('Product/Details?id=' . $product->id);
         }
     }
-
-    // }}}
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -449,9 +423,6 @@ class StoreProductIndex extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getAttributeArray()
-
     protected function getAttributeArray($widget_title, $form_field_title = '')
     {
         $attribute_array = [];
@@ -469,9 +440,6 @@ class StoreProductIndex extends AdminSearch
 
         return $attribute_array;
     }
-
-    // }}}
-    // {{{ private function addProductAttributes()
 
     private function addProductAttributes(array $products, array $attributes)
     {
@@ -533,9 +501,6 @@ class StoreProductIndex extends AdminSearch
         return $flush_memcache;
     }
 
-    // }}}
-    // {{{ private function removeProductAttributes()
-
     private function removeProductAttributes(array $products, array $attributes)
     {
         $flush_memcache = false;
@@ -589,10 +554,7 @@ class StoreProductIndex extends AdminSearch
         return $flush_memcache;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -624,9 +586,6 @@ class StoreProductIndex extends AdminSearch
             'remove_attributes'
         );
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -674,9 +633,6 @@ class StoreProductIndex extends AdminSearch
         return $rs;
     }
 
-    // }}}
-    // {{{ protected function setProductVisibility()
-
     protected function setProductVisibility(SwatTableModel $model)
     {
         if (count($model) > 0) {
@@ -706,9 +662,6 @@ class StoreProductIndex extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getProductSearch()
-
     /**
      * Gets the product search object.
      *
@@ -719,16 +672,10 @@ class StoreProductIndex extends AdminSearch
         return new StoreProductSearch($this->ui, $this->app->db);
     }
 
-    // }}}
-    // {{{ protected function displayAttribute()
-
     protected function displayAttribute(StoreAttribute $attribute)
     {
         $attribute->display();
     }
-
-    // }}}
-    // {{{ private function buildAttributes()
 
     private function buildAttributes($form_field_id, $check_list_id)
     {
@@ -759,10 +706,7 @@ class StoreProductIndex extends AdminSearch
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -771,6 +715,4 @@ class StoreProductIndex extends AdminSearch
             'packages/store/admin/styles/store-product-index.css'
         );
     }
-
-    // }}}
 }

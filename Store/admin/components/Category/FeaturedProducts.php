@@ -8,14 +8,9 @@
  */
 class StoreCategoryFeaturedProducts extends AdminIndex
 {
-    // {{{ private properties
-
     private $parent;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -24,18 +19,12 @@ class StoreCategoryFeaturedProducts extends AdminIndex
         $this->parent = SiteApplication::initVar('parent');
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/featured-products.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -89,10 +78,8 @@ class StoreCategoryFeaturedProducts extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
+
     protected function buildInternal()
     {
         parent::buildInternal();
@@ -119,9 +106,6 @@ class StoreCategoryFeaturedProducts extends AdminIndex
         $index_form->action = $this->source;
         $index_form->addHiddenField('parent', $this->parent);
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -155,9 +139,6 @@ class StoreCategoryFeaturedProducts extends AdminIndex
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -181,6 +162,4 @@ class StoreCategoryFeaturedProducts extends AdminIndex
             Store::_('Featured Products')
         ));
     }
-
-    // }}}
 }

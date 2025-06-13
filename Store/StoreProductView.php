@@ -8,8 +8,6 @@
  */
 abstract class StoreProductView extends SwatControl
 {
-    // {{{ public properties
-
     /**
      * The category path of products displayed in this product view.
      *
@@ -22,18 +20,12 @@ abstract class StoreProductView extends SwatControl
      */
     public $path;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The products displayed by this product view.
      *
      * @var StoreProductWrapper
      */
     protected $products;
-
-    // }}}
-    // {{{ public function setProducts()
 
     /**
      * Sets the products of this product view.
@@ -44,6 +36,4 @@ abstract class StoreProductView extends SwatControl
     {
         $this->products = $products;
     }
-
-    // }}}
 }

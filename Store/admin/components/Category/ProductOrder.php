@@ -8,14 +8,9 @@
  */
 class StoreCategoryProductOrder extends AdminDBOrder
 {
-    // {{{ private properties
-
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -23,10 +18,7 @@ class StoreCategoryProductOrder extends AdminDBOrder
         $this->category_id = SiteApplication::initVar('category');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData()
     {
@@ -49,9 +41,6 @@ class StoreCategoryProductOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-    // {{{ protected function saveIndex()
-
     protected function saveIndex($id, $index)
     {
         SwatDB::query(
@@ -66,10 +55,7 @@ class StoreCategoryProductOrder extends AdminDBOrder
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -77,9 +63,6 @@ class StoreCategoryProductOrder extends AdminDBOrder
         $form = $this->ui->getWidget('order_form');
         $form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -90,9 +73,9 @@ class StoreCategoryProductOrder extends AdminDBOrder
 
         $order_widget = $this->ui->getWidget('order');
 
-        $rs = SwatDB::query($this->app->db, sprintf('select id, title 
+        $rs = SwatDB::query($this->app->db, sprintf('select id, title
 			from Product
-				inner join CategoryProductBinding on 
+				inner join CategoryProductBinding on
 					Product.id = CategoryProductBinding.product
 			where %s
 			order by displayorder, title', $where_clause));
@@ -110,9 +93,6 @@ class StoreCategoryProductOrder extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -138,6 +118,4 @@ class StoreCategoryProductOrder extends AdminDBOrder
 
         $this->navbar->addEntry($order_entry);
     }
-
-    // }}}
 }

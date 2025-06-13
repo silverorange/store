@@ -8,14 +8,9 @@
  */
 class StoreItemGroupDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -23,10 +18,7 @@ class StoreItemGroupDelete extends AdminDBDelete
         $this->category_id = SiteApplication::initVar('category');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -63,10 +55,7 @@ class StoreItemGroupDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -103,9 +92,6 @@ class StoreItemGroupDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getDependencyEntries()
-
     protected function getDependencyEntries()
     {
         $item_list = $this->getItemList('integer');
@@ -121,9 +107,6 @@ class StoreItemGroupDelete extends AdminDBDelete
             AdminDependency::DELETE
         );
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -185,6 +168,4 @@ class StoreItemGroupDelete extends AdminDBDelete
         $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Group')));
         $this->title = $product_title;
     }
-
-    // }}}
 }

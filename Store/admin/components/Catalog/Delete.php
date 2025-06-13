@@ -11,7 +11,6 @@
 class StoreCatalogDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -46,10 +45,7 @@ class StoreCatalogDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -87,9 +83,6 @@ class StoreCatalogDelete extends AdminDBDelete
         $this->buildCatalogNavBar($id);
     }
 
-    // }}}
-    // {{{ protected function getDependencies()
-
     protected function getDependencies($dep, $id)
     {
         // dependent products
@@ -114,9 +107,6 @@ class StoreCatalogDelete extends AdminDBDelete
         $dep->addDependency($dep_products);
     }
 
-    // }}}
-    // {{{ protected function getNoteContent()
-
     protected function getNoteContent()
     {
         return sprintf(
@@ -125,9 +115,6 @@ class StoreCatalogDelete extends AdminDBDelete
             Store::_('catalog')
         );
     }
-
-    // }}}
-    // {{{ private function buildCatalogNavBar()
 
     private function buildCatalogNavBar($id)
     {
@@ -138,9 +125,6 @@ class StoreCatalogDelete extends AdminDBDelete
         $this->navbar->createEntry($title, $link);
         $this->navbar->addEntry($last_entry);
     }
-
-    // }}}
-    // {{{ private function catalogIsEnabled()
 
     /**
      * Whether or not there are enabled catalogues.
@@ -157,6 +141,4 @@ class StoreCatalogDelete extends AdminDBDelete
 
         return $count > 0;
     }
-
-    // }}}
 }

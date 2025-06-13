@@ -9,8 +9,6 @@
  */
 class StoreItemMinimumQuantityGroup extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -60,9 +58,6 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
      */
     public $part_unit_plural;
 
-    // }}}
-    // {{{ public function getSearchLink()
-
     public function getSearchLink()
     {
         return sprintf(
@@ -71,9 +66,6 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
             SwatString::minimizeEntities($this->title)
         );
     }
-
-    // }}}
-    // {{{ public function loadByShortname()
 
     /**
      * Loads a group by its shortname.
@@ -106,14 +98,9 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
         return true;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'ItemMinimumQuantityGroup';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
 }

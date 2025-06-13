@@ -14,8 +14,6 @@
  */
 class StorePaymentMethodTransaction extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Payment transaction identifier.
      *
@@ -46,9 +44,6 @@ class StorePaymentMethodTransaction extends SwatDBDataObject
      */
     public $transaction_type;
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->id_field = 'integer:id';
@@ -59,6 +54,4 @@ class StorePaymentMethodTransaction extends SwatDBDataObject
             SwatDBClassMap::get('StoreOrderPaymentMethod')
         );
     }
-
-    // }}}
 }

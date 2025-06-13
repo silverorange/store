@@ -13,23 +13,15 @@
  */
 class StoreCartImageTableView extends SwatTableView
 {
-    // {{{ public function getVisibleColumnCount()
-
     public function getVisibleColumnCount()
     {
         return parent::getVisibleColumnCount() + 1;
     }
 
-    // }}}
-    // {{{ public function getXhtmlColspan()
-
     public function getXhtmlColspan()
     {
         return parent::getXhtmlColspan() + 1;
     }
-
-    // }}}
-    // {{{ protected function displayHeader()
 
     /**
      * Displays the column headers for this table-view.
@@ -51,6 +43,4 @@ class StoreCartImageTableView extends SwatTableView
         echo '</tr>';
         echo '</thead>';
     }
-
-    // }}}
 }

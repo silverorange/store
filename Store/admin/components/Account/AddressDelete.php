@@ -8,15 +8,10 @@
  */
 class StoreAccountAddressDelete extends AdminDBDelete
 {
-    // {{{ protected properties
-
     protected $account;
     protected $account_id;
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -50,19 +45,13 @@ class StoreAccountAddressDelete extends AdminDBDelete
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         // we don't want the fancy relocate to index thats in AdminDBDelete.
         AdminConfirmation::relocate();
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -72,8 +61,6 @@ class StoreAccountAddressDelete extends AdminDBDelete
         parent::build();
     }
 
-    // }}}
-    // {{{ protected function buildInternal()
     protected function buildInternal()
     {
         parent::buildInternal();
@@ -122,9 +109,6 @@ class StoreAccountAddressDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -138,9 +122,6 @@ class StoreAccountAddressDelete extends AdminDBDelete
 
         $this->title = $this->account->getFullname();
     }
-
-    // }}}
-    // {{{ protected function buildAccount()
 
     protected function buildAccount()
     {
@@ -168,6 +149,4 @@ class StoreAccountAddressDelete extends AdminDBDelete
             }
         }
     }
-
-    // }}}
 }

@@ -9,7 +9,6 @@
 class StoreAttributeIndex extends AdminIndex
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -19,10 +18,7 @@ class StoreAttributeIndex extends AdminIndex
         $this->ui->loadFromXML(__DIR__ . '/index.xml');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -38,10 +34,7 @@ class StoreAttributeIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -71,6 +64,4 @@ class StoreAttributeIndex extends AdminIndex
 
         return $store;
     }
-
-    // }}}
 }

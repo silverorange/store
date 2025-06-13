@@ -9,7 +9,6 @@
 class StoreFeatureDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -38,9 +37,6 @@ class StoreFeatureDelete extends AdminDBDelete
             $this->app->memcache->flushNs('StoreFeature');
         }
     }
-
-    // }}}
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -73,6 +69,4 @@ class StoreFeatureDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreProductImageOrder extends AdminDBOrder
 {
-    // {{{ private properties
-
     /**
      * @var StoreProduct
      */
@@ -24,10 +22,7 @@ class StoreProductImageOrder extends AdminDBOrder
      */
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -47,10 +42,7 @@ class StoreProductImageOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveIndexes()
 
     /**
      * Saves the updated ordering indexes of each option.
@@ -72,9 +64,6 @@ class StoreProductImageOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-    // {{{ protected function saveIndex()
-
     protected function saveIndex($id, $index)
     {
         SwatDB::updateColumn(
@@ -87,18 +76,12 @@ class StoreProductImageOrder extends AdminDBOrder
         );
     }
 
-    // }}}
-    // {{{ protected function getUpdatedMessage()
-
     protected function getUpdatedMessage()
     {
         return new SwatMessage(Store::_('Image order updated.'));
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -121,9 +104,6 @@ class StoreProductImageOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-    // {{{ protected function buildForm()
-
     protected function buildForm()
     {
         parent::buildForm();
@@ -132,9 +112,6 @@ class StoreProductImageOrder extends AdminDBOrder
         $form->addHiddenField('product', $this->product->id);
         $form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -148,9 +125,6 @@ class StoreProductImageOrder extends AdminDBOrder
             );
         }
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -198,9 +172,6 @@ class StoreProductImageOrder extends AdminDBOrder
         $this->title = $this->product->title;
     }
 
-    // }}}
-    // {{{ protected function getImageDimension()
-
     protected function getImageDimension()
     {
         $sql = 'select * from ImageDimension
@@ -214,6 +185,4 @@ class StoreProductImageOrder extends AdminDBOrder
             SwatDBClassMap::get('SiteImageDimensionWrapper')
         )->getFirst();
     }
-
-    // }}}
 }

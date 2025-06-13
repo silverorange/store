@@ -6,8 +6,6 @@
  */
 class StoreFeature extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * @var int
      */
@@ -64,9 +62,6 @@ class StoreFeature extends SwatDBDataObject
      */
     public $priority;
 
-    // }}}
-    // {{{ public function isActive()
-
     /**
      * Checks if this feature is currently active.
      *
@@ -90,9 +85,6 @@ class StoreFeature extends SwatDBDataObject
                 || SwatDate::compare($date, $this->end_date) <= 0);
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'Feature';
@@ -111,9 +103,6 @@ class StoreFeature extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return array_merge(
@@ -121,6 +110,4 @@ class StoreFeature extends SwatDBDataObject
             ['region', 'instance']
         );
     }
-
-    // }}}
 }

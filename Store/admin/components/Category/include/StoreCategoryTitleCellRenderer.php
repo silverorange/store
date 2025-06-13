@@ -9,14 +9,9 @@
  */
 class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 {
-    // {{{ public properties
-
     public $product_count = 0;
     public $currently_visible = true;
     public $always_visible = false;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -37,9 +32,6 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 
         parent::render();
     }
-
-    // }}}
-    // {{{ protected function getTitle()
 
     protected function getTitle()
     {
@@ -73,6 +65,4 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
 
         return implode(', ', $out);
     }
-
-    // }}}
 }

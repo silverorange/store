@@ -8,25 +8,17 @@
  */
 class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 {
-    // {{{ protected properties
-
     /**
      * @var StoreCountry
      */
     protected $country;
-
-    // }}}
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-shipping-address.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -38,9 +30,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         $country_flydown = $this->ui->getWidget('shipping_address_country');
         $country_flydown->value = $this->app->getCountry();
     }
-
-    // }}}
-    // {{{ protected function initForm()
 
     protected function initForm()
     {
@@ -114,10 +103,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         $provstate_flydown->setCountryFlydown($country_flydown);
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function preProcessCommon()
 
     public function preProcessCommon()
     {
@@ -137,9 +123,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function getCountry()
-
     protected function getCountry()
     {
         if (!$this->country instanceof StoreCountry) {
@@ -155,9 +138,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
         return $this->country;
     }
-
-    // }}}
-    // {{{ protected function setupPostalCode()
 
     protected function setupPostalCode()
     {
@@ -188,9 +168,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function saveDataToSession()
-
     protected function saveDataToSession()
     {
         $address = $this->getAddress();
@@ -202,18 +179,12 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         $this->app->session->order->shipping_address = $address;
     }
 
-    // }}}
-    // {{{ protected function validateAddress()
-
     protected function validateAddress()
     {
         $this->validateAddressCountry();
         $this->validateAddressProvState();
         parent::validateAddress();
     }
-
-    // }}}
-    // {{{ protected function shouldVerifyAddress()
 
     protected function shouldVerifyAddress()
     {
@@ -226,9 +197,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
         return $verify;
     }
-
-    // }}}
-    // {{{ protected function validateAddressCountry()
 
     protected function validateAddressCountry()
     {
@@ -252,9 +220,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
             )));
         }
     }
-
-    // }}}
-    // {{{ protected function validateAddressProvState()
 
     protected function validateAddressProvState()
     {
@@ -291,9 +256,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getAddress()
 
     protected function getAddress()
     {
@@ -365,9 +327,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         return $this->address;
     }
 
-    // }}}
-    // {{{ protected function getRequiredAddressFields()
-
     protected function getRequiredAddressFields(StoreOrderAddress $address)
     {
         $fields = [
@@ -385,10 +344,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         return $fields;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDataFromSession()
 
     protected function loadDataFromSession()
     {
@@ -448,9 +404,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function getDefaultShippingAddress()
-
     protected function getDefaultShippingAddress()
     {
         $address = null;
@@ -473,9 +426,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
         return $address;
     }
-
-    // }}}
-    // {{{ protected function buildList()
 
     protected function buildList()
     {
@@ -506,9 +456,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildAccountShippingAddresses()
-
     protected function buildAccountShippingAddresses(
         SwatOptionControl $address_list
     ) {
@@ -525,17 +472,11 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildAccountBillingAddressRegionMessage()
-
     protected function buildAccountBillingAddressRegionMessage(
         SwatContentBlock $content_block
     ) {
         // TODO: pull parts of this up from Veseys
     }
-
-    // }}}
-    // {{{ protected function getAccountAddresses()
 
     protected function getAccountAddresses()
     {
@@ -602,9 +543,6 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         return $out_addresses;
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScript()
-
     protected function getInlineJavaScript()
     {
         $id = 'checkout_shipping_address';
@@ -616,10 +554,7 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -629,6 +564,4 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
             'packages/store/javascript/store-checkout-shipping-address-page.js'
         );
     }
-
-    // }}}
 }

@@ -9,7 +9,6 @@
 class StoreCatalogClone extends AdminDBEdit
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -19,18 +18,12 @@ class StoreCatalogClone extends AdminDBEdit
         $this->ui->loadFromXML($this->getUiXml());
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/clone.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -71,10 +64,7 @@ class StoreCatalogClone extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -127,23 +117,11 @@ class StoreCatalogClone extends AdminDBEdit
         );
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData() {}
-
-    // }}}
-    // {{{ protected function buildButton()
 
     protected function buildButton() {}
 
-    // }}}
-    // {{{ protected function buildFrame()
-
     protected function buildFrame() {}
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -153,6 +131,4 @@ class StoreCatalogClone extends AdminDBEdit
         $this->navbar->createEntry($title, $link);
         $this->navbar->createEntry(Store::_('Clone'));
     }
-
-    // }}}
 }

@@ -8,15 +8,10 @@
  */
 class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-first.xml';
     }
-
-    // }}}
-    // {{{ protected function instantiateEmbeddedEditPages()
 
     protected function instantiateEmbeddedEditPages()
     {
@@ -37,19 +32,13 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         return $pages;
     }
 
-    // }}}
-    // {{{ protected function isPayOnAccountEnabled()
-
     protected function isPayOnAccountEnabled()
     {
         return $this->app->session->isLoggedIn()
             && $this->app->session->account->canPayOnAccount();
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -65,18 +54,12 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         }
     }
 
-    // }}}
-    // {{{ protected function getProgressDependencies()
-
     protected function getProgressDependencies()
     {
         return [$this->getCheckoutSource()];
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -92,9 +75,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected function buildInternal()
-
     protected function buildInternal()
     {
         parent::buildInternal();
@@ -102,9 +82,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         $this->buildBillingAndShippingAddressUi();
         $this->buildShippingandPaymentUi();
     }
-
-    // }}}
-    // {{{ protected function buildBillingAndShippingAddressUi()
 
     protected function buildBillingAndShippingAddressUi()
     {
@@ -124,9 +101,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         $billing_container = $ui->getWidget('billing_address_container');
         $shipping_container = $ui->getWidget('shipping_address_container');
     }
-
-    // }}}
-    // {{{ protected function buildShippingAndPaymentUi()
 
     protected function buildShippingAndPaymentUi()
     {
@@ -156,9 +130,6 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         }
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScript()
-
     protected function getInlineJavaScript()
     {
         $id = 'checkout_first_page';
@@ -169,10 +140,7 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -185,6 +153,4 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
             'packages/store/javascript/store-checkout-first-page.js'
         );
     }
-
-    // }}}
 }

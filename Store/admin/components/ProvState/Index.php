@@ -9,7 +9,6 @@
 class StoreProvStateIndex extends AdminIndex
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -19,18 +18,12 @@ class StoreProvStateIndex extends AdminIndex
         $this->ui->loadFromXML($this->getUiXml());
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -42,10 +35,7 @@ class StoreProvStateIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -62,6 +52,4 @@ class StoreProvStateIndex extends AdminIndex
 
         return SwatDB::query($this->app->db, $sql);
     }
-
-    // }}}
 }

@@ -8,17 +8,12 @@
  */
 class StoreCardNumberEntry extends SwatEntry
 {
-    // {{{ public properties
-
     /**
      * Whether or not to show a blank_value.
      *
      * @var bool
      */
     public $show_blank_value = false;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * Selected card type as determined during the process step.
@@ -39,9 +34,6 @@ class StoreCardNumberEntry extends SwatEntry
      */
     protected $card_types;
 
-    // }}}
-    // {{{ public function __construct()
-
     /**
      * Creates a new card entry widget.
      *
@@ -54,9 +46,6 @@ class StoreCardNumberEntry extends SwatEntry
         parent::__construct($id);
         $this->size = 17;
     }
-
-    // }}}
-    // {{{ public function process()
 
     public function process()
     {
@@ -96,9 +85,6 @@ class StoreCardNumberEntry extends SwatEntry
         }
     }
 
-    // }}}
-    // {{{ public function display()
-
     public function display()
     {
         if (!$this->visible) {
@@ -116,16 +102,10 @@ class StoreCardNumberEntry extends SwatEntry
         }
     }
 
-    // }}}
-    // {{{ public function setCardTypes()
-
     public function setCardTypes(StoreCardTypeWrapper $card_types)
     {
         $this->card_types = $card_types;
     }
-
-    // }}}
-    // {{{ public function getCardType()
 
     /**
      * @return StoreCardType
@@ -134,9 +114,6 @@ class StoreCardNumberEntry extends SwatEntry
     {
         return $this->card_type;
     }
-
-    // }}}
-    // {{{ protected function processCardType()
 
     protected function processCardType()
     {
@@ -180,18 +157,12 @@ class StoreCardNumberEntry extends SwatEntry
         }
     }
 
-    // }}}
-    // {{{ protected function getBlankValue()
-
     protected function getBlankValue()
     {
         $length = 16;
 
         return str_repeat('●', $length);
     }
-
-    // }}}
-    // {{{ protected function getInputTag()
 
     protected function getInputTag()
     {
@@ -200,9 +171,6 @@ class StoreCardNumberEntry extends SwatEntry
 
         return $tag;
     }
-
-    // }}}
-    // {{{ protected function getDisplayValue()
 
     protected function getDisplayValue($value)
     {
@@ -214,6 +182,4 @@ class StoreCardNumberEntry extends SwatEntry
 
         return $value;
     }
-
-    // }}}
 }

@@ -8,17 +8,12 @@
  */
 class StoreFeatureEdit extends AdminDBEdit
 {
-    // {{{ private properties
-
     /**
      * @var StoreFeature
      */
     private $feature;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -55,9 +50,6 @@ class StoreFeatureEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ private function initFeature()
-
     private function initFeature()
     {
         $class_name = SwatDBClassMap::get('StoreFeature');
@@ -78,10 +70,7 @@ class StoreFeatureEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -113,9 +102,6 @@ class StoreFeatureEdit extends AdminDBEdit
             $this->ui->getWidget('end_date_field')->display_messages = false;
         }
     }
-
-    // }}}
-    // {{{ protected function updateFeature()
 
     protected function updateFeature()
     {
@@ -160,9 +146,6 @@ class StoreFeatureEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateFeature();
@@ -180,10 +163,7 @@ class StoreFeatureEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -207,9 +187,6 @@ class StoreFeatureEdit extends AdminDBEdit
         $this->ui->getWidget('end_date_field')->note = $note;
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $values = $this->feature->getAttributes();
@@ -227,6 +204,4 @@ class StoreFeatureEdit extends AdminDBEdit
             $end_date->value->convertTZ($this->app->default_time_zone);
         }
     }
-
-    // }}}
 }

@@ -9,7 +9,6 @@
 class StoreAdDelete extends SiteAdDelete
 {
     // process phase
-    // {{{ protected function getDeleteSql()
 
     protected function getDeleteSql()
     {
@@ -22,10 +21,7 @@ class StoreAdDelete extends SiteAdDelete
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getDependencies()
 
     protected function getDependencies()
     {
@@ -48,6 +44,4 @@ class StoreAdDelete extends SiteAdDelete
 
         return $dep;
     }
-
-    // }}}
 }

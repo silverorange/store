@@ -9,15 +9,10 @@
  */
 abstract class StoreNotVisiblePage extends StorePage
 {
-    // {{{ protected properties
-
     /**
      * @var SwatUI
      */
     protected $ui;
-
-    // }}}
-    // {{{ public function init()
 
     public function init()
     {
@@ -27,10 +22,7 @@ abstract class StoreNotVisiblePage extends StorePage
         $this->ui->loadFromXML(__DIR__ . '/not-visible-page.xml');
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -44,18 +36,9 @@ abstract class StoreNotVisiblePage extends StorePage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected abstract function buildInternal()
-
     abstract protected function buildInternal();
 
-    // }}}
-    // {{{ protected abstract function getAvailableRegions()
-
     abstract protected function getAvailableRegions();
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar($link_prefix = '')
     {
@@ -74,9 +57,6 @@ abstract class StoreNotVisiblePage extends StorePage
             }
         }
     }
-
-    // }}}
-    // {{{ private function buildAvailableRegions()
 
     private function buildAvailableRegions()
     {
@@ -131,9 +111,6 @@ abstract class StoreNotVisiblePage extends StorePage
         $this->ui->getWidget('available_regions')->add($message);
     }
 
-    // }}}
-    // {{{ private function getLocaleLink()
-
     private function getLocaleLink($locale)
     {
         $a_tag = new SwatHtmlTag('a');
@@ -147,10 +124,7 @@ abstract class StoreNotVisiblePage extends StorePage
         return ob_get_clean();
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -159,6 +133,4 @@ abstract class StoreNotVisiblePage extends StorePage
             $this->ui->getRoot()->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

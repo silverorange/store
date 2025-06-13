@@ -8,8 +8,6 @@
  */
 class StoreProductDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     /**
      * The category we came from for the deleted product.
      *
@@ -19,18 +17,12 @@ class StoreProductDelete extends AdminDBDelete
      */
     private $category_id;
 
-    // }}}
-    // {{{ public function setCategory()
-
     public function setCategory($category_id)
     {
         $this->category_id = $category_id;
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -38,10 +30,7 @@ class StoreProductDelete extends AdminDBDelete
         $this->category_id = SiteApplication::initVar('category');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -72,9 +61,6 @@ class StoreProductDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{  protected function relocate()
-
     protected function relocate()
     {
         if ($this->single_delete) {
@@ -96,10 +82,7 @@ class StoreProductDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -133,9 +116,6 @@ class StoreProductDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -190,9 +170,6 @@ class StoreProductDelete extends AdminDBDelete
         $this->navbar->addEntry($last_entry);
     }
 
-    // }}}
-    // {{{ private function getDependentItems()
-
     private function getDependentItems($dep, $item_list)
     {
         $dep_items = new StoreProductItemDependency();
@@ -207,6 +184,4 @@ class StoreProductDelete extends AdminDBDelete
 
         $dep->addDependency($dep_items);
     }
-
-    // }}}
 }

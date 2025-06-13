@@ -5,8 +5,6 @@
  */
 class StoreArticleWrapper extends SiteArticleWrapper
 {
-    // {{{ protected properties
-
     /**
      * The region to use when loading region-specific sub-articles.
      *
@@ -15,9 +13,6 @@ class StoreArticleWrapper extends SiteArticleWrapper
      * @see StoreProduct::setRegion()
      */
     protected $region;
-
-    // }}}
-    // {{{ public function setRegion()
 
     /**
      * Sets the region to use when loading region-specific sub-articles.
@@ -32,6 +27,4 @@ class StoreArticleWrapper extends SiteArticleWrapper
             $article->setRegion($region);
         }
     }
-
-    // }}}
 }

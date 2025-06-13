@@ -8,8 +8,6 @@
  */
 class StorePaymentMethodCellRenderer extends SwatCellRenderer
 {
-    // {{{ public properties
-
     /**
      * The StorePaymentMethod dataobject to display.
      *
@@ -45,9 +43,6 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
      */
     public $show_card_fullname = true;
 
-    // }}}
-    // {{{ public function render()
-
     public function render()
     {
         if (!$this->visible) {
@@ -68,6 +63,4 @@ class StorePaymentMethodCellRenderer extends SwatCellRenderer
             $span_tag->display();
         }
     }
-
-    // }}}
 }

@@ -8,25 +8,17 @@
  */
 abstract class StoreCheckoutPage extends SiteUiPage
 {
-    // {{{ public function setUI()
-
     public function setUI($ui = null)
     {
         $this->ui = $ui;
     }
-
-    // }}}
-    // {{{ protected function getBaseUiXml()
 
     protected function getBaseUiXml()
     {
         return __DIR__ . '/checkout.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -71,9 +63,6 @@ abstract class StoreCheckoutPage extends SiteUiPage
         $this->ui->init();
     }
 
-    // }}}
-    // {{{ protected function loadUI()
-
     protected function loadUI()
     {
         $this->ui = new SwatUI();
@@ -92,41 +81,26 @@ abstract class StoreCheckoutPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal()
     {
         $form = $this->ui->getWidget('form');
         $form->action = $this->source;
     }
 
-    // }}}
-    // {{{ protected function getProgressDependencies()
-
     protected function getProgressDependencies()
     {
         return [];
     }
-
-    // }}}
-    // {{{ protected function initDataObjects()
 
     protected function initDataObjects()
     {
         $this->app->checkout->initDataObjects();
     }
 
-    // }}}
-    // {{{ protected function checkCart()
-
     protected function checkCart()
     {
         return $this->app->cart->checkout->checkoutEnabled();
     }
-
-    // }}}
-    // {{{ protected function checkProgress()
 
     /**
      * Enforces dependencies for progressing through the checkout.
@@ -143,32 +117,20 @@ abstract class StoreCheckoutPage extends SiteUiPage
         }
     }
 
-    // }}}
-    // {{{ protected function getCheckoutSource()
-
     protected function getCheckoutSource()
     {
         return 'checkout';
     }
-
-    // }}}
-    // {{{ protected function getConfirmationSource()
 
     protected function getConfirmationSource()
     {
         return $this->getCheckoutSource() . '/confirmation';
     }
 
-    // }}}
-    // {{{ protected function getThankYouSource()
-
     protected function getThankYouSource()
     {
         return $this->getCheckoutSource() . '/thankyou';
     }
-
-    // }}}
-    // {{{ protected function getCartSource()
 
     protected function getCartSource()
     {
@@ -180,23 +142,15 @@ abstract class StoreCheckoutPage extends SiteUiPage
         return 'about/contact';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function updateProgress()
 
     protected function updateProgress()
     {
         $this->app->checkout->setProgress($this->getSource());
     }
 
-    // }}}
-    // {{{ protected function resetProgress()
-
     protected function resetProgress()
     {
         $this->app->checkout->resetProgress();
     }
-
-    // }}}
 }

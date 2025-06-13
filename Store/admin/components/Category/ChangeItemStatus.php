@@ -9,8 +9,6 @@
  */
 class StoreCategoryChangeItemStatus extends AdminDBConfirmation
 {
-    // {{{ private properties
-
     private $category_id;
 
     /**
@@ -19,26 +17,17 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
     private $status;
     private StoreCatalogSwitcher $catalog_switcher;
 
-    // }}}
-    // {{{ public function setCategory()
-
     public function setCategory($category_id)
     {
         $this->category_id = $category_id;
     }
-
-    // }}}
-    // {{{ public function setStatus()
 
     public function setStatus($status_id)
     {
         $this->status = StoreItemStatusList::statuses()->getById($status_id);
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -51,10 +40,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
         $this->catalog_switcher->init();
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -92,10 +78,7 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -139,9 +122,6 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
         $form->addHiddenField('status', $this->status->id);
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -168,9 +148,6 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
         ));
     }
 
-    // }}}
-    // {{{ private function getItemQuerySQL()
-
     private function getItemQuerySQL()
     {
         $item_list = $this->getItemList('integer');
@@ -193,6 +170,4 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
             $this->catalog_switcher->getSubquery()
         );
     }
-
-    // }}}
 }

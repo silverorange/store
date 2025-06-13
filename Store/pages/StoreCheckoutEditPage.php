@@ -8,12 +8,7 @@
  */
 abstract class StoreCheckoutEditPage extends StoreCheckoutPage
 {
-    // {{{ protected properties
-
     protected $is_embedded = true;
-
-    // }}}
-    // {{{ protected function getOptionalStringValue()
 
     protected function getOptionalStringValue($id)
     {
@@ -27,10 +22,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         return $value;
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -38,18 +30,9 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         $this->postInitCommon();
     }
 
-    // }}}
-    // {{{ public function initCommon()
-
     public function initCommon() {}
 
-    // }}}
-    // {{{ public function postInitCommon()
-
     public function postInitCommon() {}
-
-    // }}}
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -63,16 +46,10 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function getEditUiXml()
-
     protected function getEditUiXml()
     {
         return __DIR__ . '/checkout-edit.xml';
     }
-
-    // }}}
-    // {{{ protected function loadUI()
 
     protected function loadUI()
     {
@@ -86,18 +63,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         $this->ui->loadFromXML($this->getUiXml(), $container);
     }
 
-    // }}}
-    // {{{ protected function getProgressDependencies()
-
     protected function getProgressDependencies()
     {
         return [$this->getCheckoutSource() . '/first'];
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -138,9 +109,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ public function preProcessCommon()
-
     /**
      * Sets up additional properties on this checkout edit page to allow
      * proper processing of data.
@@ -156,9 +124,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
      */
     public function preProcessCommon() {}
 
-    // }}}
-    // {{{ public function validateCommon()
-
     /**
      * Validates the data submitted by this edit page.
      *
@@ -169,9 +134,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
      */
     public function validateCommon() {}
 
-    // }}}
-    // {{{ public function processCommon()
-
     /**
      * Processes the data submitted by this checkout edit page.
      *
@@ -181,9 +143,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
      * By default, no additional processing is performed.
      */
     public function processCommon() {}
-
-    // }}}
-    // {{{ public function handleExceptionCommon()
 
     /**
      * By default, exceptions are thrown in Store.
@@ -196,9 +155,6 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         return false;
     }
 
-    // }}}
-    // {{{ protected function processInternal()
-
     /**
      * Processes the data submitted by this checkout edit page.
      *
@@ -209,18 +165,12 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
      */
     protected function processInternal() {}
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         $this->app->relocate($this->getConfirmationSource());
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -229,15 +179,7 @@ abstract class StoreCheckoutEditPage extends StoreCheckoutPage
         $this->postBuildCommon();
     }
 
-    // }}}
-    // {{{ public function buildCommon()
-
     public function buildCommon() {}
 
-    // }}}
-    // {{{ public function postBuildCommon()
-
     public function postBuildCommon() {}
-
-    // }}}
 }

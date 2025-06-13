@@ -8,14 +8,9 @@
  */
 class StorePaymentTypeIndex extends AdminIndex
 {
-    // {{{ private variables
-
     private $regions;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -30,10 +25,7 @@ class StorePaymentTypeIndex extends AdminIndex
         );
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -126,10 +118,7 @@ class StorePaymentTypeIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -142,9 +131,6 @@ class StorePaymentTypeIndex extends AdminIndex
         $this->ui->getWidget('enable_region')->addOptionsByArray($regions);
         $this->ui->getWidget('disable_region')->addOptionsByArray($regions);
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -162,6 +148,4 @@ class StorePaymentTypeIndex extends AdminIndex
 
         return $rs;
     }
-
-    // }}}
 }

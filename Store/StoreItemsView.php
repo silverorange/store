@@ -8,13 +8,8 @@
  */
 class StoreItemsView extends SwatControl
 {
-    // {{{ public properties
-
     public $ui_xml = __DIR__ . '/items-view.xml';
     public $ui;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * The product displayed by this items view.
@@ -34,9 +29,6 @@ class StoreItemsView extends SwatControl
      */
     protected $has_same_part_count;
 
-    // }}}
-    // {{{ public function setProduct()
-
     /**
      * Sets the product of this view.
      *
@@ -47,9 +39,6 @@ class StoreItemsView extends SwatControl
         $this->product = $product;
     }
 
-    // }}}
-    // {{{ public function setSource()
-
     /**
      * Sets the page source for this view's form action.
      *
@@ -59,9 +48,6 @@ class StoreItemsView extends SwatControl
     {
         $this->source = $source;
     }
-
-    // }}}
-    // {{{ public function init()
 
     public function init()
     {
@@ -84,17 +70,11 @@ class StoreItemsView extends SwatControl
         $view->model = $this->getItemTableStore($view);
     }
 
-    // }}}
-    // {{{ public function process()
-
     public function process()
     {
         parent::process();
         $this->ui->process();
     }
-
-    // }}}
-    // {{{ public function getCartEntries()
 
     public function getCartEntries()
     {
@@ -117,18 +97,12 @@ class StoreItemsView extends SwatControl
         return $entries;
     }
 
-    // }}}
-    // {{{ public function hasMessage()
-
     public function hasMessage()
     {
         $form = $this->ui->getWidget('form');
 
         return $form->isProcessed() && $form->hasMessage();
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -142,9 +116,6 @@ class StoreItemsView extends SwatControl
 
         $this->ui->display();
     }
-
-    // }}}
-    // {{{ public function getHtmlHeadEntrySet()
 
     /**
      * Gets the SwatHtmlHeadEntry objects needed by this view.
@@ -163,9 +134,6 @@ class StoreItemsView extends SwatControl
         return $set;
     }
 
-    // }}}
-    // {{{ protected function createCartEntry()
-
     protected function createCartEntry($item_id, $quantity)
     {
         $cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
@@ -176,9 +144,6 @@ class StoreItemsView extends SwatControl
 
         return $cart_entry;
     }
-
-    // }}}
-    // {{{ protected function getItemTableStore()
 
     protected function getItemTableStore(SwatTableView $view)
     {
@@ -211,9 +176,6 @@ class StoreItemsView extends SwatControl
         return $store;
     }
 
-    // }}}
-    // {{{ protected function getItemDetailsStore()
-
     protected function getItemDetailsStore(StoreItem $item)
     {
         $ds = new SwatDetailsStore($item);
@@ -243,9 +205,6 @@ class StoreItemsView extends SwatControl
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getItemDescription()
-
     protected function getItemDescription(StoreItem $item)
     {
         $parts = $item->getDescriptionArray();
@@ -263,9 +222,6 @@ class StoreItemsView extends SwatControl
 
         return implode(' - ', $description);
     }
-
-    // }}}
-    // {{{ protected function hasSamePartCount()
 
     /**
      * Gets whether all the items in the product have the same part count.
@@ -296,9 +252,6 @@ class StoreItemsView extends SwatControl
         return $this->has_same_part_count;
     }
 
-    // }}}
-    // {{{ protected function getQuantityRenderer()
-
     protected function getQuantityRenderer()
     {
         $view = $this->ui->getWidget('items_view');
@@ -310,6 +263,4 @@ class StoreItemsView extends SwatControl
 
         return $column->getRenderer('quantity_renderer');
     }
-
-    // }}}
 }

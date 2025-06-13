@@ -15,16 +15,11 @@
  */
 abstract class StoreCheckoutCart extends StoreCart
 {
-    // {{{ public function init()
-
     public function init()
     {
         parent::init();
         $this->restoreAbandonedCartEntries();
     }
-
-    // }}}
-    // {{{ public function load()
 
     /**
      * Loads this cart.
@@ -53,9 +48,6 @@ abstract class StoreCheckoutCart extends StoreCart
             }
         }
     }
-
-    // }}}
-    // {{{ public function checkoutEnabled()
 
     /**
      * Whether or not the customer is allowed to check out.
@@ -103,9 +95,6 @@ abstract class StoreCheckoutCart extends StoreCart
         return true;
     }
 
-    // }}}
-    // {{{ public function getAvailableEntries()
-
     /**
      * Gets the entries of this cart that are available for order.
      *
@@ -132,9 +121,6 @@ abstract class StoreCheckoutCart extends StoreCart
 
         return $entries;
     }
-
-    // }}}
-    // {{{ public function getUnavailableEntries()
 
     /**
      * Gets the entries of this cart that are not available for order.
@@ -163,9 +149,6 @@ abstract class StoreCheckoutCart extends StoreCart
         return $entries;
     }
 
-    // }}}
-    // {{{ protected function preSaveEntry()
-
     /**
      * Sets the saved flag to false on entries in this cart that are about to
      * be saved.
@@ -178,9 +161,6 @@ abstract class StoreCheckoutCart extends StoreCart
 
         $entry->saved = false;
     }
-
-    // }}}
-    // {{{ protected function validateCombinedEntry()
 
     protected function validateCombinedEntry(StoreCartEntry $entry)
     {
@@ -235,9 +215,6 @@ abstract class StoreCheckoutCart extends StoreCart
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function restoreAbandonedCartEntries()
-
     /**
      * Checks for a persistant saved session cart and updates the cart entry's
      * session identifiers to match the current session before this cart is
@@ -289,18 +266,12 @@ abstract class StoreCheckoutCart extends StoreCart
         }
     }
 
-    // }}}
-    // {{{ protected function getCartSessionCookieName()
-
     protected function getCartSessionCookieName()
     {
         return 'cart_session';
     }
 
-    // }}}
-
     // price calculation methods
-    // {{{ public function getTotal()
 
     /**
      * Gets the total cost for an order of the contents of this cart.
@@ -350,9 +321,6 @@ abstract class StoreCheckoutCart extends StoreCart
         return $total;
     }
 
-    // }}}
-    // {{{ public function getSubtotal()
-
     public function getSubtotal()
     {
         if ($this->cachedValueExists('store-subtotal')) {
@@ -365,9 +333,6 @@ abstract class StoreCheckoutCart extends StoreCart
 
         return $total;
     }
-
-    // }}}
-    // {{{ public function getItemTotal()
 
     /**
      * Gets the cost of the StoreCartEntry objects in this cart.
@@ -393,9 +358,6 @@ abstract class StoreCheckoutCart extends StoreCart
 
         return $total;
     }
-
-    // }}}
-    // {{{ public function getSurchargeTotal()
 
     /**
      * Gets the total of any surcharges.
@@ -427,9 +389,6 @@ abstract class StoreCheckoutCart extends StoreCart
         return $total;
     }
 
-    // }}}
-    // {{{ public function getShippingType()
-
     public function getShippingType()
     {
         $shortname = $this->getShippingTypeDefaultShortname();
@@ -446,9 +405,6 @@ abstract class StoreCheckoutCart extends StoreCart
 
         return $shipping_type;
     }
-
-    // }}}
-    // {{{ public function getVoucherTotal()
 
     public function getVoucherTotal(
         ?StoreAddress $billing_address = null,
@@ -489,9 +445,6 @@ abstract class StoreCheckoutCart extends StoreCart
         return $total;
     }
 
-    // }}}
-    // {{{ protected function calculateShippingRate()
-
     protected function calculateShippingRate(
         $item_total,
         ?StoreShippingType $shipping_type = null
@@ -506,16 +459,10 @@ abstract class StoreCheckoutCart extends StoreCart
         );
     }
 
-    // }}}
-    // {{{ protected function getShippingTypeDefaultShortname()
-
     protected function getShippingTypeDefaultShortname()
     {
         return 'default';
     }
-
-    // }}}
-    // {{{ abstract public function getShippingTotal()
 
     /**
      * Gets the cost of shipping the contents of this cart.
@@ -531,9 +478,6 @@ abstract class StoreCheckoutCart extends StoreCart
         ?StoreAddress $shipping_address = null,
         ?StoreShippingType $shipping_type = null
     );
-
-    // }}}
-    // {{{ abstract public function getTaxTotal()
 
     /**
      * Gets the total amount of taxes for this cart.
@@ -559,13 +503,8 @@ abstract class StoreCheckoutCart extends StoreCart
         ?StoreOrderPaymentMethodWrapper $payment_methods = null
     );
 
-    // }}}
-    // {{{ abstract public function getTaxProvState()
-
     abstract public function getTaxProvState(
         ?StoreAddress $billing_address = null,
         ?StoreAddress $shipping_address = null
     );
-
-    // }}}
 }

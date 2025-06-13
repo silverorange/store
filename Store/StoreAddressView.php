@@ -11,20 +11,12 @@
  */
 class StoreAddressView extends SwatControl
 {
-    // {{{ public properties
-
     public $address;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * @var string
      */
     protected $edit_address_link = 'account/address%s';
-
-    // }}}
-    // {{{ public function hasBeenClicked()
 
     /**
      * Whether or not the 'remove' button of this view whas been clicked.
@@ -38,9 +30,6 @@ class StoreAddressView extends SwatControl
 
         return $remove_button->hasBeenClicked();
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -86,9 +75,6 @@ class StoreAddressView extends SwatControl
         $div->close();
     }
 
-    // }}}
-    // {{{ protected function createCompositeWidgets()
-
     /**
      * Creates and adds composite widgets of this widget.
      */
@@ -97,9 +83,6 @@ class StoreAddressView extends SwatControl
         $remove_button = new SwatConfirmationButton($this->id);
         $this->addCompositeWidget($remove_button, 'remove_button');
     }
-
-    // }}}
-    // {{{ protected function getCSSClassNames()
 
     /**
      * Gets the array of CSS classes that are applied to this address view.
@@ -113,6 +96,4 @@ class StoreAddressView extends SwatControl
 
         return array_merge($classes, $this->classes);
     }
-
-    // }}}
 }

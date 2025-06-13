@@ -5,8 +5,6 @@
  */
 class StoreSiteMapPage extends SiteSiteMapPage
 {
-    // {{{ protected function queryArticles()
-
     protected function queryArticles()
     {
         $articles = parent::queryArticles();
@@ -14,6 +12,4 @@ class StoreSiteMapPage extends SiteSiteMapPage
 
         return $articles;
     }
-
-    // }}}
 }

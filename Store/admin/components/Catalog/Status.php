@@ -8,17 +8,12 @@
  */
 class StoreCatalogStatus extends AdminDBEdit
 {
-    // {{{ private properties
-
     /**
      * @var StoreCatalog
      */
     private $catalog;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -38,9 +33,6 @@ class StoreCatalogStatus extends AdminDBEdit
 
         $region_list->addOptionsByArray($region_list_options);
     }
-
-    // }}}
-    // {{{ protected function initCatalog()
 
     protected function initCatalog()
     {
@@ -64,18 +56,12 @@ class StoreCatalogStatus extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/status.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -123,10 +109,7 @@ class StoreCatalogStatus extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -183,16 +166,10 @@ class StoreCatalogStatus extends AdminDBEdit
         );
     }
 
-    // }}}
-    // {{{ protected function buildFrame()
-
     protected function buildFrame()
     {
         $this->ui->getWidget('edit_frame')->subtitle = $this->catalog->title;
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -203,6 +180,4 @@ class StoreCatalogStatus extends AdminDBEdit
 
         $this->navbar->createEntry(Store::_('Change Catalog Status'));
     }
-
-    // }}}
 }

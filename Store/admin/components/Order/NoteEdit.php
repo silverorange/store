@@ -8,8 +8,6 @@
  */
 class StoreOrderNoteEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrder
      */
@@ -23,10 +21,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
      */
     protected $account;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -35,9 +30,6 @@ class StoreOrderNoteEdit extends AdminDBEdit
         $this->ui->loadFromXML(__DIR__ . '/note-edit.xml');
         $this->order = $this->getOrder();
     }
-
-    // }}}
-    // {{{ protected function getOrder()
 
     protected function getOrder()
     {
@@ -70,10 +62,7 @@ class StoreOrderNoteEdit extends AdminDBEdit
         return $this->order;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -86,26 +75,17 @@ class StoreOrderNoteEdit extends AdminDBEdit
         $this->app->messages->add($this->getSaveMessage());
     }
 
-    // }}}
-    // {{{ protected function getSaveMessage()
-
     protected function getSaveMessage()
     {
         return new SwatMessage(Store::_('Note has been saved.'));
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
         $this->ui->setValues($this->order->getAttributes());
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -137,13 +117,8 @@ class StoreOrderNoteEdit extends AdminDBEdit
         $this->navbar->createEntry(Store::_('Edit Administrative Note'));
     }
 
-    // }}}
-    // {{{ protected function getOrderTitle()
-
     protected function getOrderTitle()
     {
         return sprintf(Store::_('Order %s'), $this->order->id);
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreCardExpiryEntry extends SwatDateEntry
 {
-    // {{{ public function __construct()
-
     /**
      * Creates a new card expiry date entry widget.
      *
@@ -36,6 +34,4 @@ class StoreCardExpiryEntry extends SwatDateEntry
         $this->valid_range_start->setDay(1);
         $this->valid_range_start->setTime(0, 0, 0);
     }
-
-    // }}}
 }

@@ -10,8 +10,6 @@
  */
 class StoreAccountPaymentMethodWrapper extends StorePaymentMethodWrapper
 {
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -19,6 +17,4 @@ class StoreAccountPaymentMethodWrapper extends StorePaymentMethodWrapper
         $this->row_wrapper_class =
             SwatDBClassMap::get('StoreAccountPaymentMethod');
     }
-
-    // }}}
 }

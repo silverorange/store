@@ -8,17 +8,12 @@
  */
 class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-confirmation.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -52,9 +47,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function checkOrder()
-
     protected function checkOrder()
     {
         $order = $this->app->session->order;
@@ -67,9 +59,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $this->checkAddress($order->shipping_address);
         }
     }
-
-    // }}}
-    // {{{ protected function checkAddress()
 
     protected function checkAddress(StoreOrderAddress $address)
     {
@@ -88,16 +77,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function getProgressDependencies()
-
     protected function getProgressDependencies()
     {
         return [$this->getCheckoutSource() . '/first'];
     }
-
-    // }}}
-    // {{{ protected function getOrderTotal()
 
     protected function getOrderTotal()
     {
@@ -109,18 +92,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         );
     }
 
-    // }}}
-    // {{{ protected function isOrderFree()
-
     protected function isOrderFree()
     {
         return $this->getOrderTotal() <= 0;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -130,9 +107,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $this->processOrder();
         }
     }
-
-    // }}}
-    // {{{ protected function validate()
 
     protected function validate()
     {
@@ -144,9 +118,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $this->validateShippingType() && $valid;
     }
-
-    // }}}
-    // {{{ protected function getCurrentTime()
 
     protected function getCurrentTime()
     {
@@ -160,10 +131,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $current_time;
     }
 
-    // }}}
-
     // validate billing
-    // {{{ protected function validateBillingAddress()
 
     protected function validateBillingAddress()
     {
@@ -190,9 +158,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function validateBillingAddressRequiredFields()
 
     protected function validateBillingAddressRequiredFields(
         StoreOrderAddress $address
@@ -234,9 +199,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function validateBillingAddressCountry()
-
     protected function validateBillingAddressCountry(StoreOrderAddress $address)
     {
         $valid = true;
@@ -268,9 +230,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function validateBillingAddressProvState()
 
     protected function validateBillingAddressProvState(
         StoreOrderAddress $address
@@ -312,9 +271,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function getRequiredBillingAddressFields()
-
     protected function getRequiredBillingAddressFields(
         StoreOrderAddress $address
     ) {
@@ -333,9 +289,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $fields;
     }
-
-    // }}}
-    // {{{ protected function getBillingAddressRequiredMessage()
 
     protected function getBillingAddressRequiredMessage()
     {
@@ -358,10 +311,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $message;
     }
 
-    // }}}
-
     // validate shipping
-    // {{{ protected function validateShippingAddress()
 
     protected function validateShippingAddress()
     {
@@ -380,9 +330,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function validateShippingAddressRequiredFields()
 
     protected function validateShippingAddressRequiredFields(
         StoreOrderAddress $address
@@ -424,9 +371,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function validateShippingAddressCountry()
-
     protected function validateShippingAddressCountry(
         StoreOrderAddress $address
     ) {
@@ -458,9 +402,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function validateShippingAddressProvState()
 
     protected function validateShippingAddressProvState(
         StoreOrderAddress $address
@@ -505,9 +446,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function validateShippingProvStateExclusion()
 
     protected function validateShippingProvStateExclusion(
         StoreOrderAddress $address
@@ -568,9 +506,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function getRequiredShippingAddressFields()
-
     protected function getRequiredShippingAddressFields(
         StoreOrderAddress $address
     ) {
@@ -589,9 +524,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $fields;
     }
-
-    // }}}
-    // {{{ protected function getShippingAddressRequiredMessage()
 
     protected function getShippingAddressRequiredMessage()
     {
@@ -614,36 +546,24 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $message;
     }
 
-    // }}}
-
     // validate shipping type
-    // {{{ protected function validateShippingType()
 
     protected function validateShippingType()
     {
         return true;
     }
 
-    // }}}
-
     // validate payment
-    // {{{ protected function validatePaymentMethodWithMessage()
 
     protected function validatePaymentMethodWithMessage()
     {
         return $this->validatePaymentMethod(true);
     }
 
-    // }}}
-    // {{{ protected function validatePaymentMethodWithNoMessage()
-
     protected function validatePaymentMethodWithNoMessage()
     {
         return $this->validatePaymentMethod(false);
     }
-
-    // }}}
-    // {{{ protected function validatePaymentMethod()
 
     protected function validatePaymentMethod($show_message = false)
     {
@@ -676,9 +596,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function getPaymentMethodRequiredMessage()
-
     protected function getPaymentMethodRequiredMessage()
     {
         $message = new SwatMessage(Store::_('Payment'), 'error');
@@ -691,10 +608,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $message;
     }
 
-    // }}}
-
     // order processing and saving
-    // {{{ protected function processOrder()
 
     protected function processOrder()
     {
@@ -712,9 +626,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $this->app->relocate($this->getThankYouSource());
     }
 
-    // }}}
-    // {{{ protected function processPayment()
-
     /**
      * Does automatic card payment processing for an order.
      *
@@ -725,16 +636,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
      */
     protected function processPayment() {}
 
-    // }}}
-    // {{{ protected function getPaymentProvider()
-
     protected function getPaymentProvider()
     {
         return null;
     }
-
-    // }}}
-    // {{{ protected function save()
 
     protected function save()
     {
@@ -806,9 +711,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return true;
     }
 
-    // }}}
-    // {{{ protected function saveAccount()
-
     protected function saveAccount()
     {
         // if we are checking out with an account, store new addresses and
@@ -874,9 +776,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function saveOrder()
-
     protected function saveOrder()
     {
         $order = $this->app->session->order;
@@ -910,9 +809,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return true;
     }
 
-    // }}}
-    // {{{ protected function addAddressToAccount()
-
     /**
      * @return StoreAccountAddress the account address used for this order
      */
@@ -936,9 +832,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $account_address;
     }
 
-    // }}}
-    // {{{ protected function addPaymentMethodToAccount()
-
     protected function addPaymentMethodToAccount(
         StoreOrderPaymentMethod $order_payment_method
     ) {
@@ -959,17 +852,11 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $account_payment_method;
     }
 
-    // }}}
-    // {{{ protected function sendConfirmationEmail()
-
     protected function sendConfirmationEmail()
     {
         $order = $this->app->session->order;
         $order->sendConfirmationEmail($this->app);
     }
-
-    // }}}
-    // {{{ protected function removeCartEntries()
 
     protected function removeCartEntries()
     {
@@ -984,18 +871,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $this->app->cart->save();
     }
 
-    // }}}
-    // {{{ protected function cleanupSession()
-
     protected function cleanupSession()
     {
         // unset session variable flags
         $this->app->ads->clearAd();
         unset($this->app->session->save_account_payment_method);
     }
-
-    // }}}
-    // {{{ protected function handleException()
 
     /**
      * Handles exceptions produced by order processing.
@@ -1043,9 +924,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         // exceptions are always handled
         return true;
     }
-
-    // }}}
-    // {{{ protected function getErrorMessage()
 
     /**
      * Gets the error message for an error.
@@ -1325,9 +1203,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $message;
     }
 
-    // }}}
-    // {{{ protected function getPrototypeErrorMessage()
-
     protected function getPrototypeErrorMessage($message_id)
     {
         switch ($message_id) {
@@ -1358,16 +1233,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $message;
     }
 
-    // }}}
-    // {{{ protected function getErrorMessageNoFunds()
-
     protected function getErrorMessageNoFunds()
     {
         return Store::_('No funds have been removed from your card.');
     }
-
-    // }}}
-    // {{{ protected function getErrorMessageContactUs()
 
     protected function getErrorMessageContactUs()
     {
@@ -1381,16 +1250,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         );
     }
 
-    // }}}
-    // {{{ protected function getEditLink()
-
     protected function getEditLink($link)
     {
         return $link;
     }
-
-    // }}}
-    // {{{ protected function getCheckoutEditLink()
 
     protected function getCheckoutEditLink($link = '')
     {
@@ -1403,19 +1266,13 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $this->getEditLink($link);
     }
 
-    // }}}
-    // {{{ protected function shouldSaveAccount()
-
     protected function shouldSaveAccount()
     {
         // Save the account if a password has been set.
         return $this->app->session->account->password != '';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -1433,13 +1290,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $this->buildMessage();
     }
 
-    // }}}
-    // {{{ protected function buildMessages()
-
     protected function buildMessages() {}
-
-    // }}}
-    // {{{ protected function buildMessage()
 
     protected function buildMessage()
     {
@@ -1465,16 +1316,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildOrder()
-
     protected function buildOrder()
     {
         $this->createOrder();
     }
-
-    // }}}
-    // {{{ protected function buildBasicInfo()
 
     protected function buildBasicInfo($order)
     {
@@ -1494,9 +1339,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function getBasicInfoDetailsStore()
-
     protected function getBasicInfoDetailsStore($order)
     {
         $ds = new SwatDetailsStore($order);
@@ -1508,9 +1350,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function buildBillingAddress()
-
     protected function buildBillingAddress($order)
     {
         if ($order->billing_address instanceof StoreOrderAddress) {
@@ -1520,9 +1359,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $this->ui->getWidget('billing_address')->content_type = 'text/xml';
         }
     }
-
-    // }}}
-    // {{{ protected function buildShippingAddress()
 
     protected function buildShippingAddress($order)
     {
@@ -1540,9 +1376,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $this->ui->getWidget('shipping_address')->content_type = 'text/xml';
         }
     }
-
-    // }}}
-    // {{{ protected function buildShippingType()
 
     protected function buildShippingType($order)
     {
@@ -1562,9 +1395,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $this->ui->getWidget('shipping_type')->content_type = 'text/xml';
     }
 
-    // }}}
-    // {{{ protected function buildItems()
-
     protected function buildItems($order)
     {
         $items_view = $this->ui->getWidget('items_view');
@@ -1579,9 +1409,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $items_view->getRow('total')->value = $order->total;
     }
 
-    // }}}
-    // {{{ protected function buildTaxMessage()
-
     protected function buildTaxMessage($order)
     {
         if ($order->shipping_address instanceof StoreOrderAddress
@@ -1595,10 +1422,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-
     // build phase - payment method
-    // {{{ protected function buildPaymentMethod()
 
     protected function buildPaymentMethod($order)
     {
@@ -1632,9 +1456,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $this->ui->getWidget('payment_method')->content = ob_get_clean();
         $this->ui->getWidget('payment_method')->content_type = 'text/xml';
     }
-
-    // }}}
-    // {{{ protected function calculateMultiplePaymentMethods()
 
     protected function calculateMultiplePaymentMethods($order)
     {
@@ -1687,9 +1508,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function sortPaymentMethodsByPriority()
-
     protected function sortPaymentMethodsByPriority($order)
     {
         $payment_methods = $order->payment_methods->getArray();
@@ -1703,9 +1521,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $order->payment_methods->add($payment_method);
         }
     }
-
-    // }}}
-    // {{{ protected function sortPaymentMethodsCallback()
 
     protected function sortPaymentMethodsCallback($method1, $method2)
     {
@@ -1730,9 +1545,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $result;
     }
-
-    // }}}
-    // {{{ protected function displayMultiplePaymentMethods()
 
     protected function displayMultiplePaymentMethods($order)
     {
@@ -1772,9 +1584,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         echo '</tfoot></table>';
     }
 
-    // }}}
-    // {{{ protected function displayNewPaymentLinks()
-
     protected function displayNewPaymentLinks(StoreOrder $order)
     {
         $links = $this->getNewPaymentLinks($order);
@@ -1795,9 +1604,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function getNewPaymentLinks()
-
     protected function getNewPaymentLinks($order)
     {
         $links = [];
@@ -1817,9 +1623,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $links;
     }
 
-    // }}}
-    // {{{ protected function hasSimplePaymentMethod()
-
     protected function hasSimplePaymentMethod($order)
     {
         $found = false;
@@ -1836,9 +1639,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         return $found;
     }
-
-    // }}}
-    // {{{ protected function displayPaymentMethodToolLink()
 
     protected function displayPaymentMethodToolLink(
         StorePaymentMethod $payment_method
@@ -1858,9 +1658,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $tool->display();
     }
 
-    // }}}
-    // {{{ protected function displayNoneTag()
-
     protected function displayNoneTag($type)
     {
         $span_tag = new SwatHtmlTag('span');
@@ -1868,9 +1665,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $span_tag->setContent($this->getNoneText($type));
         $span_tag->display();
     }
-
-    // }}}
-    // {{{ protected function getNoneText()
 
     protected function getNoneText($type)
     {
@@ -1887,10 +1681,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         return $text;
     }
 
-    // }}}
-
     // build phase - order creation
-    // {{{ protected function createOrder()
 
     protected function createOrder()
     {
@@ -1936,9 +1727,6 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function createOrderItems()
-
     protected function createOrderItems($order)
     {
         $region = $this->app->getRegion();
@@ -1955,10 +1743,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -1969,6 +1754,4 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             'packages/store/styles/store-checkout-confirmation-page.css'
         );
     }
-
-    // }}}
 }

@@ -6,8 +6,6 @@
  */
 class StoreAccountLoginPage extends SiteAccountLoginPage
 {
-    // {{{ protected function postLoginProcess()
-
     protected function postLoginProcess()
     {
         parent::postLoginProcess();
@@ -19,6 +17,4 @@ class StoreAccountLoginPage extends SiteAccountLoginPage
             $cart->save();
         }
     }
-
-    // }}}
 }

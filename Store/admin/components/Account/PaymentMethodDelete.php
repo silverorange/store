@@ -8,15 +8,10 @@
  */
 class StoreAccountPaymentMethodDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     private $account_id;
     private $account;
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -50,19 +45,13 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         // we don't want the fancy relocate to index thats in AdminDBDelete.
         AdminConfirmation::relocate();
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -72,10 +61,7 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
         parent::build();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -146,9 +132,6 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function buildAccount()
-
     protected function buildAccount()
     {
         $item_list = $this->getItemList('integer');
@@ -175,6 +158,4 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
             }
         }
     }
-
-    // }}}
 }

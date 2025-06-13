@@ -8,16 +8,11 @@
  */
 class StoreItemGroupEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $item_group;
 
     protected $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -26,9 +21,6 @@ class StoreItemGroupEdit extends AdminDBEdit
         $this->category_id = SiteApplication::initVar('category');
         $this->initItemGroup();
     }
-
-    // }}}
-    // {{{ protected function initItemGroup()
 
     protected function initItemGroup()
     {
@@ -46,18 +38,12 @@ class StoreItemGroupEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -76,9 +62,6 @@ class StoreItemGroupEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateItemGroup()
-
     protected function updateItemGroup()
     {
         $values = $this->ui->getValues(['title']);
@@ -86,18 +69,12 @@ class StoreItemGroupEdit extends AdminDBEdit
         $this->item_group->title = $values['title'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
         $this->ui->setValues($this->item_group->getAttributes());
     }
-
-    // }}}
-    // {{{ protected function buildForm()
 
     protected function buildForm()
     {
@@ -105,9 +82,6 @@ class StoreItemGroupEdit extends AdminDBEdit
         $form = $this->ui->getWidget('edit_form');
         $form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -161,6 +135,4 @@ class StoreItemGroupEdit extends AdminDBEdit
 
         $this->navbar->createEntry('Edit Item Group');
     }
-
-    // }}}
 }

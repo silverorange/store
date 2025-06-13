@@ -13,8 +13,6 @@
  */
 class StoreProvStateFlydown extends SwatFlydown
 {
-    // {{{ public properties
-
     /**
      * The country to validate the provstate in.
      *
@@ -24,16 +22,10 @@ class StoreProvStateFlydown extends SwatFlydown
      */
     public $country;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * @var MDB2_Driver_Common
      */
     protected $db;
-
-    // }}}
-    // {{{ public function process()
 
     /**
      * Processes this postal code entry widget.
@@ -50,16 +42,10 @@ class StoreProvStateFlydown extends SwatFlydown
         }
     }
 
-    // }}}
-    // {{{ public function setDatabase()
-
     public function setDatabase(MDB2_Driver_Common $db)
     {
         $this->db = $db;
     }
-
-    // }}}
-    // {{{ protected function validate()
 
     protected function validate()
     {
@@ -105,6 +91,4 @@ class StoreProvStateFlydown extends SwatFlydown
             $this->addMessage($message);
         }
     }
-
-    // }}}
 }

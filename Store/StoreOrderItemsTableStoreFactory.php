@@ -6,8 +6,6 @@
  */
 class StoreOrderItemsTableStoreFactory
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrder
      */
@@ -33,16 +31,10 @@ class StoreOrderItemsTableStoreFactory
      */
     protected $include_group_title = true;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct(StoreOrder $order)
     {
         $this->setOrder($order);
     }
-
-    // }}}
-    // {{{ public function get()
 
     public function get()
     {
@@ -56,9 +48,6 @@ class StoreOrderItemsTableStoreFactory
         return $store;
     }
 
-    // }}}
-    // {{{ public function setImageDimension()
-
     public function setImageDimension($shortname)
     {
         if ($shortname instanceof SiteImageDimension) {
@@ -68,33 +57,21 @@ class StoreOrderItemsTableStoreFactory
         $this->image_dimension = $shortname;
     }
 
-    // }}}
-    // {{{ public function setIncludeTitle()
-
     public function setIncludeTitle($include_title)
     {
         $this->include_title = (bool) $include_title;
     }
-
-    // }}}
-    // {{{ public function setIncludeGroupTitle()
 
     public function setIncludeGroupTitle($include_group_title)
     {
         $this->include_group_title = (bool) $include_group_title;
     }
 
-    // }}}
-    // {{{ public function setOrder()
-
     public function setOrder(StoreOrder $order)
     {
         $this->order = $order;
         $this->item_counts = null;
     }
-
-    // }}}
-    // {{{ protected function getOrderItemDetailsStore()
 
     protected function getOrderItemDetailsStore(StoreOrderItem $item)
     {
@@ -133,9 +110,6 @@ class StoreOrderItemsTableStoreFactory
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getOrderItemDescription()
-
     protected function getOrderItemDescription(StoreOrderItem $item)
     {
         $description = '';
@@ -159,9 +133,6 @@ class StoreOrderItemsTableStoreFactory
         return $description;
     }
 
-    // }}}
-    // {{{ protected function getOrderItemTitle()
-
     protected function getOrderItemTitle(StoreOrderItem $item)
     {
         $title = [];
@@ -184,9 +155,6 @@ class StoreOrderItemsTableStoreFactory
 
         return $title;
     }
-
-    // }}}
-    // {{{ protected function getProductItemCount()
 
     protected function getProductItemCount(StoreOrderItem $item)
     {
@@ -220,13 +188,8 @@ class StoreOrderItemsTableStoreFactory
         return $count;
     }
 
-    // }}}
-    // {{{ protected function getItemIndex()
-
     protected function getItemIndex(StoreOrderItem $item)
     {
         return $item->product;
     }
-
-    // }}}
 }

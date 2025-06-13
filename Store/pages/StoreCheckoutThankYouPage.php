@@ -8,17 +8,12 @@
  */
 class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-thank-you.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -40,10 +35,7 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function displayFinalNote()
 
     protected function displayFinalNote(StoreOrder $order)
     {
@@ -65,9 +57,6 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
         echo '</div>';
     }
 
-    // }}}
-    // {{{ protected function displayEmailNote()
-
     protected function displayEmailNote(StoreOrder $order)
     {
         if ($order->email != '') {
@@ -82,18 +71,12 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
         }
     }
 
-    // }}}
-    // {{{ protected function displayPrintNote()
-
     protected function displayPrintNote(StoreOrder $order)
     {
         echo Store::_(
             'If you wish, you can print a copy of this page for reference.'
         );
     }
-
-    // }}}
-    // {{{ protected function buildConversionTracking()
 
     protected function buildConversionTracking(StoreOrder $order)
     {
@@ -117,6 +100,4 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
             }
         }
     }
-
-    // }}}
 }

@@ -11,8 +11,6 @@
  */
 class StoreVoucherView extends SwatControl
 {
-    // {{{ public properties
-
     /**
      * @var StoreVoucher
      */
@@ -22,9 +20,6 @@ class StoreVoucherView extends SwatControl
      * @var bool
      */
     public $show_remove_button = true;
-
-    // }}}
-    // {{{ public function hasBeenClicked()
 
     /**
      * Whether or not the 'remove' button of this view whas been clicked.
@@ -38,9 +33,6 @@ class StoreVoucherView extends SwatControl
 
         return $remove_button->hasBeenClicked();
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -73,9 +65,6 @@ class StoreVoucherView extends SwatControl
         $div->close();
     }
 
-    // }}}
-    // {{{ protected function createCompositeWidgets()
-
     /**
      * Creates and adds composite widgets of this widget.
      */
@@ -84,6 +73,4 @@ class StoreVoucherView extends SwatControl
         $remove_button = new SwatConfirmationButton($this->id);
         $this->addCompositeWidget($remove_button, 'remove_button');
     }
-
-    // }}}
 }

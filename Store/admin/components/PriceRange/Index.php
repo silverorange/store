@@ -9,7 +9,6 @@
 class StorePriceRangeIndex extends AdminIndex
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -19,18 +18,12 @@ class StorePriceRangeIndex extends AdminIndex
         $this->ui->loadFromXML($this->getUiXml());
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -46,10 +39,7 @@ class StorePriceRangeIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -79,6 +69,4 @@ class StorePriceRangeIndex extends AdminIndex
 
         return $store;
     }
-
-    // }}}
 }

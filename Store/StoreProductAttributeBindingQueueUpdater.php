@@ -11,8 +11,6 @@
  */
 class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplication
 {
-    // {{{ public function run()
-
     public function run()
     {
         $this->initModules();
@@ -59,9 +57,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
         $this->unlock();
     }
 
-    // }}}
-    // {{{ protected function removeAttributes()
-
     protected function removeAttributes(SwatDate $current_date, $attribute)
     {
         $flush_memcache = false;
@@ -92,9 +87,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
 
         return $flush_memcache;
     }
-
-    // }}}
-    // {{{ protected function addAttributes()
 
     protected function addAttributes(SwatDate $current_date, $attribute)
     {
@@ -139,10 +131,7 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
         return $flush_memcache;
     }
 
-    // }}}
-
     // helper methods
-    // {{{ protected function getDistinctAttributes()
 
     protected function getDistinctAttributes(SwatDate $current_date)
     {
@@ -156,9 +145,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
 
         return SwatDB::query($this->db, $sql);
     }
-
-    // }}}
-    // {{{ protected function getInSql()
 
     protected function getInSql(
         SwatDate $current_date,
@@ -177,9 +163,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
             $this->db->quote($attribute, 'integer')
         );
     }
-
-    // }}}
-    // {{{ protected function flushMemcache()
 
     protected function flushMemcache()
     {
@@ -201,9 +184,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
         }
     }
 
-    // }}}
-    // {{{ protected function clearQueue()
-
     protected function clearQueue(SwatDate $current_date)
     {
         $sql = 'delete from ProductAttributeBindingQueue
@@ -219,10 +199,7 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
         $this->debug(Store::_('Cache table cleared.') . "\n");
     }
 
-    // }}}
-
     // boilerplate
-    // {{{ protected function getDefaultModuleList()
 
     protected function getDefaultModuleList()
     {
@@ -235,9 +212,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
         );
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -249,9 +223,6 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
         parent::addConfigDefinitions($config);
         $config->addDefinitions(Store::getConfigDefinitions());
     }
-
-    // }}}
-    // {{{ protected function configure()
 
     /**
      * Configures modules of this application before they are initialized.
@@ -268,6 +239,4 @@ class StoreProductAttributeBindingQueueUpdater extends SiteCommandLineApplicatio
             $this->memcache->app_ns = $config->memcache->app_ns;
         }
     }
-
-    // }}}
 }

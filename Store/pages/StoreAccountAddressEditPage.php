@@ -10,8 +10,6 @@
  */
 class StoreAccountAddressEditPage extends SiteDBEditPage
 {
-    // {{{ protected properties
-
     /**
      * @var int
      */
@@ -49,24 +47,15 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
     // @var StoreGoogleAddressAutoComplete
     protected $auto_complete;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/account-address-edit.xml';
     }
 
-    // }}}
-    // {{{ protected function isNew()
-
     protected function isNew(SwatForm $form)
     {
         return !$this->id;
     }
-
-    // }}}
-    // {{{ protected function getArgumentMap()
 
     protected function getArgumentMap()
     {
@@ -75,10 +64,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         ];
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -110,9 +96,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $this->auto_complete = new StoreGoogleAddressAutoComplete();
         $this->auto_complete->setApplication($this->app);
     }
-
-    // }}}
-    // {{{ protected function initCountryAndProvstate()
 
     protected function initCountryAndProvstate()
     {
@@ -178,9 +161,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $provstate_flydown->setCountryFlydown($country_flydown);
     }
 
-    // }}}
-    // {{{ protected function initAddress()
-
     protected function initAddress()
     {
         $form = $this->ui->getWidget('edit_form');
@@ -207,10 +187,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $this->address = $address;
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -230,9 +207,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         parent::process();
     }
 
-    // }}}
-    // {{{ protected function validate()
-
     protected function validate(SwatForm $form)
     {
         if (!$this->confirm_no_button->hasBeenClicked()
@@ -242,9 +216,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
             $this->verifyAddress($form);
         }
     }
-
-    // }}}
-    // {{{ protected function verifyAddress()
 
     protected function verifyAddress(SwatForm $form)
     {
@@ -305,9 +276,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $this->show_invalid_message = false;
     }
 
-    // }}}
-    // {{{ protected function getInvalidMessage()
-
     protected function getInvalidMessage(SwatForm $form)
     {
         $message = null;
@@ -318,9 +286,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
         return $message;
     }
-
-    // }}}
-    // {{{ protected function updateAddress()
 
     protected function updateAddress(SwatForm $form, StoreAddress $address)
     {
@@ -343,9 +308,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $address->provstate_other = $provstate->provstate_other;
     }
 
-    // }}}
-    // {{{ protected function saveData()
-
     protected function saveData(SwatForm $form)
     {
         if ($this->verified_address !== null) {
@@ -367,16 +329,10 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate(SwatForm $form)
     {
         $this->app->relocate('account');
     }
-
-    // }}}
-    // {{{ protected function setupPostalCode()
 
     protected function setupPostalCode()
     {
@@ -413,9 +369,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function addMessage()
-
     protected function addMessage($text)
     {
         ob_start();
@@ -428,10 +381,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $this->app->messages->add($message);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -449,9 +399,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $this->auto_complete->display();
         $this->layout->endCapture();
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -471,9 +418,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildTitle()
-
     protected function buildTitle()
     {
         parent::buildTitle();
@@ -485,9 +429,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
             $this->layout->data->title = Store::_('Edit an Existing Address');
         }
     }
-
-    // }}}
-    // {{{ protected function load()
 
     protected function load(SwatForm $form)
     {
@@ -512,9 +453,6 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $provstate->provstate_other = $this->address->provstate_other;
     }
 
-    // }}}
-    // {{{ protected function setDefaultValues()
-
     /**
      * Sets default values of this address based on values from the account.
      *
@@ -527,10 +465,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $this->ui->getWidget('phone')->value = $account->phone;
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -557,6 +492,4 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
             'packages/store/javascript/store-account-address-edit-page.js'
         );
     }
-
-    // }}}
 }

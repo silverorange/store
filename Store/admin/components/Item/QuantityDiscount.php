@@ -8,27 +8,19 @@
  */
 class StoreItemQuantityDiscount extends AdminIndex
 {
-    // {{{ private properties
-
     private $id;
     private $category_id;
     private $regions;
     private $item;
     private $initial_input_row_state = [];
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
         parent::init();
         $this->initial_input_row_state = $this->getInputRowState();
     }
-
-    // }}}
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -57,9 +49,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         // add dynamic columns to view
         $this->appendPriceColumns($view, $regions);
     }
-
-    // }}}
-    // {{{ protected function getItemRow()
 
     protected function getItemRow()
     {
@@ -103,9 +92,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         return $this->item;
     }
 
-    // }}}
-    // {{{ protected function getItemSql()
-
     protected function getItemSql()
     {
         return 'select sku, product, description,
@@ -117,9 +103,6 @@ class StoreItemQuantityDiscount extends AdminIndex
 				%s
 			where Item.id = %s';
     }
-
-    // }}}
-    // {{{ private function queryRegions()
 
     private function queryRegions()
     {
@@ -135,9 +118,6 @@ class StoreItemQuantityDiscount extends AdminIndex
 
         return $this->regions;
     }
-
-    // }}}
-    // {{{ private function appendPriceColumns()
 
     private function appendPriceColumns(SwatTableView $view, $regions)
     {
@@ -170,9 +150,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function getInputRowState()
-
     private function getInputRowState()
     {
         $states = [];
@@ -204,10 +181,7 @@ class StoreItemQuantityDiscount extends AdminIndex
         return $states;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -234,9 +208,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function processActions()
-
     protected function processActions(SwatView $view, SwatActions $actions)
     {
         $num = count($view->getSelection());
@@ -253,9 +224,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function relocate()
-
     /**
      * Relocates back to product details if the done button was clicked.
      */
@@ -269,9 +237,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function getProductDetailsUrl()
-
     private function getProductDetailsUrl()
     {
         $item_row = $this->getItemRow();
@@ -284,9 +249,6 @@ class StoreItemQuantityDiscount extends AdminIndex
 
         return $url;
     }
-
-    // }}}
-    // {{{ private function addNewQuantityDiscounts()
 
     private function addNewQuantityDiscounts()
     {
@@ -389,9 +351,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function removeEmptyRows()
-
     private function removeEmptyRows($input_row)
     {
         $replicators = $input_row->getReplicators();
@@ -402,9 +361,6 @@ class StoreItemQuantityDiscount extends AdminIndex
             }
         }
     }
-
-    // }}}
-    // {{{ private function validateRow()
 
     private function validateRow($input_row, $replicator_id)
     {
@@ -457,10 +413,7 @@ class StoreItemQuantityDiscount extends AdminIndex
         return $valid;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -482,9 +435,6 @@ class StoreItemQuantityDiscount extends AdminIndex
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -537,9 +487,6 @@ class StoreItemQuantityDiscount extends AdminIndex
 
         return SwatDB::query($this->app->db, $sql);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -600,9 +547,6 @@ class StoreItemQuantityDiscount extends AdminIndex
         )));
     }
 
-    // }}}
-    // {{{ protected function buildForms()
-
     protected function buildForms()
     {
         parent::buildForms();
@@ -610,6 +554,4 @@ class StoreItemQuantityDiscount extends AdminIndex
         // always show actions even when there are no entries in the table
         $this->ui->getWidget('index_actions')->visible = true;
     }
-
-    // }}}
 }

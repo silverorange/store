@@ -8,8 +8,6 @@
  */
 class StoreAccountDetails extends SiteAccountDetails
 {
-    // {{{ protected function initInternal()
-
     protected function initInternal()
     {
         parent::initInternal();
@@ -22,18 +20,12 @@ class StoreAccountDetails extends SiteAccountDetails
         );
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -50,9 +42,6 @@ class StoreAccountDetails extends SiteAccountDetails
         }
     }
 
-    // }}}
-    // {{{ private function processAddressActions()
-
     private function processAddressActions($view, $actions)
     {
         switch ($actions->selected->id) {
@@ -62,9 +51,6 @@ class StoreAccountDetails extends SiteAccountDetails
                 break;
         }
     }
-
-    // }}}
-    // {{{ private function processPaymentMethodActions()
 
     private function processPaymentMethodActions($view, $actions)
     {
@@ -76,10 +62,7 @@ class StoreAccountDetails extends SiteAccountDetails
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -92,9 +75,6 @@ class StoreAccountDetails extends SiteAccountDetails
         $this->setTimeZone();
     }
 
-    // }}}
-    // {{{ protected function setTimeZone()
-
     protected function setTimeZone()
     {
         $date_column =
@@ -103,9 +83,6 @@ class StoreAccountDetails extends SiteAccountDetails
         $date_renderer = $date_column->getRendererByPosition();
         $date_renderer->display_time_zone = $this->app->default_time_zone;
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -122,9 +99,6 @@ class StoreAccountDetails extends SiteAccountDetails
 
         return null;
     }
-
-    // }}}
-    // {{{ protected function getOrdersTableModel()
 
     protected function getOrdersTableModel(SwatTableView $view): SwatDBDefaultRecordsetWrapper
     {
@@ -148,9 +122,6 @@ class StoreAccountDetails extends SiteAccountDetails
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getAddressesTableModel()
-
     protected function getAddressesTableModel(SwatTableView $view): SwatTableStore
     {
         $account = $this->getAccount();
@@ -171,9 +142,6 @@ class StoreAccountDetails extends SiteAccountDetails
 
         return $ts;
     }
-
-    // }}}
-    // {{{ protected function getPaymentMethodsTableModel()
 
     protected function getPaymentMethodsTableModel(SwatTableView $view): SwatTableStore
     {
@@ -202,6 +170,4 @@ class StoreAccountDetails extends SiteAccountDetails
 
         return $store;
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreConversionRateCellRenderer extends SwatPercentageCellRenderer
 {
-    // {{{ public function render()
-
     public function render()
     {
         if (!$this->visible) {
@@ -30,6 +28,4 @@ class StoreConversionRateCellRenderer extends SwatPercentageCellRenderer
             parent::render();
         }
     }
-
-    // }}}
 }

@@ -8,14 +8,9 @@
  */
 class StoreCountryEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $fields;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -35,18 +30,12 @@ class StoreCountryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -81,9 +70,6 @@ class StoreCountryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function validate()
-
     protected function validate(): void
     {
         // validate country id
@@ -109,9 +95,6 @@ class StoreCountryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUIValues()
-
     protected function getUIValues()
     {
         if ($this->id === null) {
@@ -124,10 +107,7 @@ class StoreCountryEdit extends AdminDBEdit
         return $values;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -150,6 +130,4 @@ class StoreCountryEdit extends AdminDBEdit
 
         $this->ui->setValues(get_object_vars($row));
     }
-
-    // }}}
 }

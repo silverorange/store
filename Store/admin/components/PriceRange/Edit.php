@@ -8,15 +8,10 @@
  */
 class StorePriceRangeEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     // @var StorePriceRange
     protected $price_range;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInteral()
 
     protected function initInternal()
     {
@@ -26,9 +21,6 @@ class StorePriceRangeEdit extends AdminDBEdit
         $this->ui->mapClassPrefixToPath('Store', 'Store');
         $this->ui->loadFromXML($this->getUiXml());
     }
-
-    // }}}
-    // {{{ protected function initPriceRange()
 
     protected function initPriceRange()
     {
@@ -46,18 +38,12 @@ class StorePriceRangeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -70,9 +56,6 @@ class StorePriceRangeEdit extends AdminDBEdit
             ));
         }
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -95,9 +78,6 @@ class StorePriceRangeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updatePriceRange()
-
     protected function updatePriceRange()
     {
         $values = $this->ui->getValues([
@@ -115,15 +95,10 @@ class StorePriceRangeEdit extends AdminDBEdit
         $this->price_range->original_price = $values['original_price'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
         $this->ui->setValues($this->price_range->getAttributes());
     }
-
-    // }}}
 }

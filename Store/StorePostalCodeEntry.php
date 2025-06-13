@@ -12,8 +12,6 @@
  */
 class StorePostalCodeEntry extends SwatEntry
 {
-    // {{{ public properties
-
     /**
      * The country to validate the postal code in.
      *
@@ -35,18 +33,12 @@ class StorePostalCodeEntry extends SwatEntry
      */
     public $provstate;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct($id = null)
     {
         parent::__construct($id);
 
         $this->size = 10;
     }
-
-    // }}}
-    // {{{ public function process()
 
     /**
      * Processes this postal code entry widget.
@@ -75,9 +67,6 @@ class StorePostalCodeEntry extends SwatEntry
         }
     }
 
-    // }}}
-    // {{{ protected function getCSSClassNames()
-
     /**
      * Gets the array of CSS classes that are applied to this entry widget.
      *
@@ -91,9 +80,6 @@ class StorePostalCodeEntry extends SwatEntry
 
         return array_merge($classes, $this->classes);
     }
-
-    // }}}
-    // {{{ private function validateCA()
 
     /**
      * Validates a Canadian postal code.
@@ -150,9 +136,6 @@ class StorePostalCodeEntry extends SwatEntry
         $this->value = $value;
     }
 
-    // }}}
-    // {{{ private function validateUS()
-
     /**
      * Validates a United States ZIP Code.
      *
@@ -187,9 +170,6 @@ class StorePostalCodeEntry extends SwatEntry
         $this->value = $value;
     }
 
-    // }}}
-    // {{{ private function validateUK()
-
     /**
      * Validates a United Kingdom postcode.
      *
@@ -220,9 +200,6 @@ class StorePostalCodeEntry extends SwatEntry
 
         $this->value = $value;
     }
-
-    // }}}
-    // {{{ public function validateByProvince()
 
     /**
      * Validates a Canadian postal code by a province code.
@@ -312,9 +289,6 @@ class StorePostalCodeEntry extends SwatEntry
             )
         ) > 0;
     }
-
-    // }}}
-    // {{{ public function validateByState()
 
     /**
      * Validates a United States ZIP Code by a state code.
@@ -608,6 +582,4 @@ class StorePostalCodeEntry extends SwatEntry
 
         return $valid;
     }
-
-    // }}}
 }

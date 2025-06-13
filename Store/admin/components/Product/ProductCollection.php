@@ -8,15 +8,10 @@
  */
 class StoreProductProductCollection extends AdminSearch
 {
-    // {{{ private properties
-
     private $category_id;
     private $product_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -65,9 +60,6 @@ class StoreProductProductCollection extends AdminSearch
         )->visible = (count($options) > 0);
     }
 
-    // }}}
-    // {{{ private function initCatalogSelector()
-
     /**
      * Builds the catalog selector. Selector does not get shown unless there is
      * more than one catalog, as its not useful when there is only one.
@@ -83,26 +75,17 @@ class StoreProductProductCollection extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getSearchXml()
-
     protected function getSearchXml()
     {
         return __DIR__ . '/search.xml';
     }
-
-    // }}}
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/product-collection.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -166,10 +149,7 @@ class StoreProductProductCollection extends AdminSearch
         $pager->process();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -201,9 +181,6 @@ class StoreProductProductCollection extends AdminSearch
         $form->action = $this->getRelativeURL();
     }
 
-    // }}}
-    // {{{ protected function getTableModel()
-
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
         $search = $this->getProductSearch();
@@ -230,9 +207,6 @@ class StoreProductProductCollection extends AdminSearch
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getProductSearch()
-
     /**
      * Gets the product search object.
      *
@@ -242,9 +216,6 @@ class StoreProductProductCollection extends AdminSearch
     {
         return new StoreProductSearch($this->ui, $this->app->db);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -296,6 +267,4 @@ class StoreProductProductCollection extends AdminSearch
 
         $this->title = $product_title;
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreSalesByRegionReportIndex extends AdminIndex
 {
-    // {{{ protected properties
-
     /**
      * Cache of regions used by getRegions().
      *
@@ -32,18 +30,12 @@ class StoreSalesByRegionReportIndex extends AdminIndex
      */
     protected $taxation_start_date;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -57,9 +49,6 @@ class StoreSalesByRegionReportIndex extends AdminIndex
         );
     }
 
-    // }}}
-    // {{{ protected function initTaxationStartDate()
-
     protected function initTaxationStartDate()
     {
         $this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
@@ -67,10 +56,7 @@ class StoreSalesByRegionReportIndex extends AdminIndex
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -80,9 +66,6 @@ class StoreSalesByRegionReportIndex extends AdminIndex
         $view->getColumn('shipping')->visible = $this->show_shipping;
         $view->getColumn('tax')->visible = $this->show_tax;
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -148,9 +131,6 @@ class StoreSalesByRegionReportIndex extends AdminIndex
         return $store;
     }
 
-    // }}}
-    // {{{ protected function getYearTotals()
-
     protected function getYearTotals()
     {
         $sql = sprintf(
@@ -179,9 +159,6 @@ class StoreSalesByRegionReportIndex extends AdminIndex
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getInstanceWhereClause()
-
     protected function getInstanceWhereClause()
     {
         if ($this->app->isMultipleInstanceAdmin()) {
@@ -196,6 +173,4 @@ class StoreSalesByRegionReportIndex extends AdminIndex
             $this->app->db->quote($instance_id, 'integer')
         );
     }
-
-    // }}}
 }

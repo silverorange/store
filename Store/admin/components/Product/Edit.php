@@ -8,19 +8,11 @@
  */
 class StoreProductEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $product;
-
-    // }}}
-    // {{{ private properties
 
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -39,9 +31,6 @@ class StoreProductEdit extends AdminDBEdit
             $this->ui->getWidget('submit_continue_button')->visible = true;
         }
     }
-
-    // }}}
-    // {{{ protected function initProduct()
 
     protected function initProduct()
     {
@@ -80,9 +69,6 @@ class StoreProductEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ private function initAttributeList()
-
     /**
      * Builds the list of attributes using an image and a title.
      */
@@ -103,9 +89,6 @@ class StoreProductEdit extends AdminDBEdit
         $attributes_field = $this->ui->getWidget('attributes_form_field');
         $attributes_field->replicators = $replicators;
     }
-
-    // }}}
-    // {{{ protected function initCatalogFlydown()
 
     protected function initCatalogFlydown()
     {
@@ -137,18 +120,12 @@ class StoreProductEdit extends AdminDBEdit
         $catalog_flydown->show_blank = (count($catalog_flydown->options) > 1);
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -170,9 +147,6 @@ class StoreProductEdit extends AdminDBEdit
             $this->ui->getWidget('shortname')->addMessage($message);
         }
     }
-
-    // }}}
-    // {{{ protected function validateShortname()
 
     protected function validateShortname($shortname)
     {
@@ -241,9 +215,6 @@ class StoreProductEdit extends AdminDBEdit
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateProduct();
@@ -277,9 +248,6 @@ class StoreProductEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateProduct()
-
     protected function updateProduct()
     {
         $values = $this->ui->getValues(
@@ -307,9 +275,6 @@ class StoreProductEdit extends AdminDBEdit
         $this->product->meta_description = $values['meta_description'];
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         $button = $this->ui->getWidget('submit_continue_button');
@@ -324,9 +289,6 @@ class StoreProductEdit extends AdminDBEdit
             parent::relocate();
         }
     }
-
-    // }}}
-    // {{{ private function saveAttributes()
 
     private function saveAttributes()
     {
@@ -352,10 +314,7 @@ class StoreProductEdit extends AdminDBEdit
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -418,9 +377,6 @@ class StoreProductEdit extends AdminDBEdit
         $this->buildAttributes();
     }
 
-    // }}}
-    // {{{ protected function smartDefaultCatalog()
-
     protected function smartDefaultCatalog()
     {
         $catalog = null;
@@ -457,18 +413,12 @@ class StoreProductEdit extends AdminDBEdit
         $this->ui->getWidget('catalog')->value = $catalog;
     }
 
-    // }}}
-    // {{{ protected function buildForm()
-
     protected function buildForm()
     {
         parent::buildForm();
         $form = $this->ui->getWidget('edit_form');
         $form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -523,9 +473,6 @@ class StoreProductEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function buildAttributes()
-
     protected function buildAttributes()
     {
         $sql = 'select id, shortname, title, attribute_type from Attribute
@@ -558,16 +505,10 @@ class StoreProductEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function displayAttribute()
-
     protected function displayAttribute(StoreAttribute $attribute)
     {
         $attribute->display();
     }
-
-    // }}}
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -579,9 +520,6 @@ class StoreProductEdit extends AdminDBEdit
 
         $this->loadAttributes();
     }
-
-    // }}}
-    // {{{ protected function loadAttributes()
 
     protected function loadAttributes()
     {
@@ -601,9 +539,6 @@ class StoreProductEdit extends AdminDBEdit
                 $attribute_values;
         }
     }
-
-    // }}}
-    // {{{ protected function displayCategories()
 
     protected function displayCategories(
         StoreCategoryWrapper $categories,
@@ -637,10 +572,7 @@ class StoreProductEdit extends AdminDBEdit
         echo '</ul>';
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -650,6 +582,4 @@ class StoreProductEdit extends AdminDBEdit
             'packages/store/admin/styles/store-product-edit-page.css'
         );
     }
-
-    // }}}
 }

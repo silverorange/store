@@ -9,7 +9,6 @@
 class StoreShippingTypeOrder extends AdminDBOrder
 {
     // process phase
-    // {{{ protected function saveIndex()
 
     protected function saveIndex($id, $index)
     {
@@ -23,19 +22,14 @@ class StoreShippingTypeOrder extends AdminDBOrder
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
+
     protected function buildInternal()
     {
         $frame = $this->ui->getWidget('order_frame');
         $frame->title = Store::_('Order Shipping Types');
         parent::buildInternal();
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -54,6 +48,4 @@ class StoreShippingTypeOrder extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreOrderPaymentMethodWrapper extends StorePaymentMethodWrapper
 {
-    // {{{ public function getByPayPalToken()
-
     public function getByPayPalToken($token)
     {
         $payment_method = null;
@@ -24,9 +22,6 @@ class StoreOrderPaymentMethodWrapper extends StorePaymentMethodWrapper
         return $payment_method;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -34,6 +29,4 @@ class StoreOrderPaymentMethodWrapper extends StorePaymentMethodWrapper
         $this->row_wrapper_class =
             SwatDBClassMap::get('StoreOrderPaymentMethod');
     }
-
-    // }}}
 }

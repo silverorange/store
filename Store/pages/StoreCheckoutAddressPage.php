@@ -7,8 +7,6 @@
  */
 abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrderAddress
      *
@@ -25,10 +23,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
 
     protected bool $show_invalid_message = true;
 
-    // }}}
-
     // init phase
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -37,9 +32,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         $this->auto_complete = new StoreGoogleAddressAutoComplete();
         $this->auto_complete->setApplication($this->app);
     }
-
-    // }}}
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -52,10 +44,7 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         $this->button2->parent = $form;
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function processCommon()
 
     public function processCommon()
     {
@@ -70,9 +59,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function processInternal()
-
     protected function processInternal()
     {
         parent::processInternal();
@@ -86,9 +72,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function validateAddress()
-
     protected function validateAddress()
     {
         $this->validateAddressRequiredFields();
@@ -97,9 +80,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
             $this->verifyAddress();
         }
     }
-
-    // }}}
-    // {{{ protected function validateAddressRequiredFields()
 
     protected function validateAddressRequiredFields()
     {
@@ -116,16 +96,10 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function getRequiredAddressFields()
-
     protected function getRequiredAddressFields(StoreOrderAddress $address)
     {
         return [];
     }
-
-    // }}}
-    // {{{ protected function shouldVerifyAddress()
 
     protected function shouldVerifyAddress()
     {
@@ -138,9 +112,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
             && !$form->hasMessage()
             && StoreAddress::isVerificationAvailable($this->app);
     }
-
-    // }}}
-    // {{{ protected function verifyAddress()
 
     protected function verifyAddress()
     {
@@ -211,15 +182,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         $this->show_invalid_message = false;
     }
 
-    // }}}
-    // {{{ abstract protected function getAddress()
-
     abstract protected function getAddress();
 
-    // }}}
-
     // build phase
-    // {{{ public function buildCommon()
 
     public function buildCommon()
     {
@@ -231,9 +196,6 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ public function postBuildCommon()
-
     public function postBuildCommon()
     {
         $this->layout->startCapture('content');
@@ -242,34 +204,17 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected function buildForm()
-
     protected function buildForm() {}
-
-    // }}}
-    // {{{ protected function buildList()
 
     protected function buildList() {}
 
-    // }}}
-    // {{{ protected function loadDataFromSession()
-
     protected function loadDataFromSession() {}
-
-    // }}}
-    // {{{ abstract protected function getInlineJavaScript()
 
     abstract protected function getInlineJavaScript();
 
-    // }}}
-    // {{{ protected function saveDataToSession()
-
     abstract protected function saveDataToSession();
 
-    // }}}
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -292,6 +237,4 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
             $this->auto_complete->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

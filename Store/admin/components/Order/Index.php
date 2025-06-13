@@ -9,7 +9,6 @@
 class StoreOrderIndex extends AdminSearch
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -68,24 +67,15 @@ class StoreOrderIndex extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getSearchXml()
-
     protected function getSearchXml()
     {
         return __DIR__ . '/search.xml';
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
-
-    // }}}
-    // {{{ protected function addAdditionalSearchFields()
 
     protected function addAdditionalSearchFields(array $ui_xml_files)
     {
@@ -99,18 +89,12 @@ class StoreOrderIndex extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getAdditionalSearchFieldsUiXmlFiles()
-
     protected function getAdditionalSearchFieldsUiXmlFiles()
     {
         return [];
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -125,16 +109,10 @@ class StoreOrderIndex extends AdminSearch
         $this->ui->getWidget('pager')->process();
     }
 
-    // }}}
-    // {{{ protected function hasGetState()
-
     protected function hasGetState()
     {
         return isset($_GET['has_comments']);
     }
-
-    // }}}
-    // {{{ protected function loadGetState()
 
     protected function loadGetState()
     {
@@ -147,10 +125,7 @@ class StoreOrderIndex extends AdminSearch
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -178,9 +153,6 @@ class StoreOrderIndex extends AdminSearch
                 && $this->ui->getWidget('search_region')->parent->visible;
         }
     }
-
-    // }}}
-    // {{{ protected function getWhereClause()
 
     protected function getWhereClause()
     {
@@ -290,9 +262,6 @@ class StoreOrderIndex extends AdminSearch
         return $where;
     }
 
-    // }}}
-    // {{{ protected function getEmailWhereClause()
-
     protected function getEmailWhereClause()
     {
         $where = '';
@@ -317,9 +286,6 @@ class StoreOrderIndex extends AdminSearch
 
         return $where;
     }
-
-    // }}}
-    // {{{ protected function getFullnameWhereClause()
 
     protected function getFullnameWhereClause()
     {
@@ -352,9 +318,6 @@ class StoreOrderIndex extends AdminSearch
         return $where;
     }
 
-    // }}}
-    // {{{ protected function getSelectClause()
-
     protected function getSelectClause()
     {
         $clause = 'Orders.id, Orders.total, Orders.createdate,
@@ -372,9 +335,6 @@ class StoreOrderIndex extends AdminSearch
         );
     }
 
-    // }}}
-    // {{{ protected function getJoinClauses()
-
     protected function getJoinClauses()
     {
         return 'left outer join Account on Orders.account = Account.id
@@ -385,9 +345,6 @@ class StoreOrderIndex extends AdminSearch
 			inner join Locale on Orders.locale = Locale.id
 			inner join Region on Locale.region = Region.id';
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -428,9 +385,6 @@ class StoreOrderIndex extends AdminSearch
         return $store;
     }
 
-    // }}}
-    // {{{ protected function getOrderDetailsStore()
-
     protected function getOrderDetailsStore(StoreOrder $order, $row)
     {
         $ds = new SwatDetailsStore($order);
@@ -454,9 +408,6 @@ class StoreOrderIndex extends AdminSearch
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getOrderFullname()
-
     protected function getOrderFullname(StoreOrder $order)
     {
         $fullname = null;
@@ -473,9 +424,6 @@ class StoreOrderIndex extends AdminSearch
 
         return $fullname;
     }
-
-    // }}}
-    // {{{ protected function getOrders()
 
     protected function getOrders($view, $limit, $offset)
     {
@@ -498,18 +446,12 @@ class StoreOrderIndex extends AdminSearch
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getOrderTitle()
-
     protected function getOrderTitle($order)
     {
         return sprintf(Store::_('Order %s'), $order->id);
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -519,6 +461,4 @@ class StoreOrderIndex extends AdminSearch
             'packages/store/admin/styles/store-order-index.css'
         );
     }
-
-    // }}}
 }

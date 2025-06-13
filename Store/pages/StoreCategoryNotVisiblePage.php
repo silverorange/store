@@ -8,14 +8,9 @@
  */
 class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
 {
-    // {{{ public properties
-
     public $category_id;
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -47,9 +42,6 @@ class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
         );
     }
 
-    // }}}
-    // {{{ protected function getAvailableRegions()
-
     protected function getAvailableRegions()
     {
         $sql = 'select id, title from Region
@@ -69,9 +61,6 @@ class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
         );
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar($link_prefix = '')
     {
         if (isset($this->layout->navbar)) {
@@ -80,6 +69,4 @@ class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
 
         parent::buildNavBar('store');
     }
-
-    // }}}
 }

@@ -5,20 +5,12 @@
  */
 class StoreProductImagePage extends StorePage
 {
-    // {{{ public properties
-
     public $product_id;
     public $image_id;
     public SwatToolLink $back_link;
 
-    // }}}
-    // {{{ protected properties
-
     public $product;
     public $image;
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct(SiteAbstractPage $page)
     {
@@ -26,10 +18,7 @@ class StoreProductImagePage extends StorePage
         $this->back_link = new SwatToolLink();
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -42,10 +31,7 @@ class StoreProductImagePage extends StorePage
         $this->product->load($this->product_id);
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -84,9 +70,6 @@ class StoreProductImagePage extends StorePage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         if (!property_exists($this->layout, 'navbar')) {
@@ -105,9 +88,6 @@ class StoreProductImagePage extends StorePage
         $this->layout->navbar->createEntry(Store::_('Image'));
     }
 
-    // }}}
-    // {{{ protected function display()
-
     protected function display()
     {
         echo '<div id="product_images" class="large-image-page">';
@@ -124,16 +104,10 @@ class StoreProductImagePage extends StorePage
         echo '</div>';
     }
 
-    // }}}
-    // {{{ protected function getThumbnailSize()
-
     protected function getThumbnailSize()
     {
         return 'pinky';
     }
-
-    // }}}
-    // {{{ protected function displayThumbnails()
 
     protected function displayThumbnails($size)
     {
@@ -148,9 +122,6 @@ class StoreProductImagePage extends StorePage
 
         echo '</ul>';
     }
-
-    // }}}
-    // {{{ protected function displayThumbnail()
 
     protected function displayThumbnail(
         StoreImage $image,
@@ -200,9 +171,6 @@ class StoreProductImagePage extends StorePage
         $li_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displaySelectedImage()
-
     protected function displaySelectedImage(StoreImage $image)
     {
         $li_tag = new SwatHtmlTag('li');
@@ -232,9 +200,6 @@ class StoreProductImagePage extends StorePage
         $li_tag->close();
     }
 
-    // }}}
-    // {{{ protected function getProductPageSource()
-
     protected function getProductPageSource()
     {
         $source_exp = explode('/', $this->source);
@@ -242,9 +207,6 @@ class StoreProductImagePage extends StorePage
 
         return implode('/', $source_exp);
     }
-
-    // }}}
-    // {{{ protected function displayBackLink()
 
     protected function displayBackLink()
     {
@@ -262,9 +224,6 @@ class StoreProductImagePage extends StorePage
 
         $this->back_link->display();
     }
-
-    // }}}
-    // {{{ protected function displayImage()
 
     protected function displayImage()
     {
@@ -284,9 +243,6 @@ class StoreProductImagePage extends StorePage
         $img_tag->display();
         $div_tag->close();
     }
-
-    // }}}
-    // {{{ protected function displayDownloadLink()
 
     protected function displayDownloadLink()
     {
@@ -310,9 +266,6 @@ class StoreProductImagePage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayDescription()
-
     protected function displayDescription()
     {
         if ($this->image->description !== null) {
@@ -328,10 +281,7 @@ class StoreProductImagePage extends StorePage
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -340,6 +290,4 @@ class StoreProductImagePage extends StorePage
             $this->back_link->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

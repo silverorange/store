@@ -8,8 +8,6 @@
  */
 class StoreItemColumn extends SwatTableViewColumn
 {
-    // {{{ public function getTrAttributes()
-
     public function getTrAttributes($row)
     {
         $attributes = [];
@@ -20,6 +18,4 @@ class StoreItemColumn extends SwatTableViewColumn
 
         return $attributes;
     }
-
-    // }}}
 }

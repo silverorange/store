@@ -7,14 +7,9 @@
  */
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {
-    // {{{ protected properties
-
     protected $result_count = [];
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -33,9 +28,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
             $this->searchItem($keywords);
         }
     }
-
-    // }}}
-    // {{{ protected function searchItem()
 
     /**
      * Searches for a direct SKU match and if found, relocates directly to the
@@ -116,10 +108,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildResults()
 
     protected function buildResults()
     {
@@ -161,9 +150,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return true;
     }
 
-    // }}}
-    // {{{ protected function hasLeftColumnResults()
-
     protected function hasLeftColumnResults()
     {
         foreach (['category', 'product'] as $key) {
@@ -175,9 +161,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         return false;
     }
-
-    // }}}
-    // {{{ protected function buildMessages()
 
     protected function buildMessages()
     {
@@ -196,9 +179,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         }
     }
 
-    // }}}
-    // {{{ protected function getSearchTips()
-
     protected function getSearchTips()
     {
         $tips = parent::getSearchTips();
@@ -207,9 +187,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         return $tips;
     }
-
-    // }}}
-    // {{{ protected function getSearchSummary()
 
     /**
      * Get a summary of the criteria that was used to perform the search.
@@ -228,10 +205,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return $summary;
     }
 
-    // }}}
-
     // build phase - articles
-    // {{{ protected function instantiateArticleSearchEngine()
 
     protected function instantiateArticleSearchEngine()
     {
@@ -241,10 +215,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return $engine;
     }
 
-    // }}}
-
     // build phase - categories
-    // {{{ protected function buildCategories()
 
     protected function buildCategories($fulltext_result)
     {
@@ -268,9 +239,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         }
     }
 
-    // }}}
-    // {{{ protected function instantiateCategorySearchEngine()
-
     protected function instantiateCategorySearchEngine()
     {
         $engine = new StoreCategorySearchEngine($this->app);
@@ -278,9 +246,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         return $engine;
     }
-
-    // }}}
-    // {{{ protected function displayCategories()
 
     /**
      * Displays search results for a collection of categories.
@@ -305,9 +270,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         echo '</ul>';
     }
-
-    // }}}
-    // {{{ protected function getCategory()
 
     protected function getCategory()
     {
@@ -334,9 +296,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         return $category;
     }
-
-    // }}}
-    // {{{ protected function getAttributes()
 
     protected function getAttributes()
     {
@@ -370,10 +329,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return $attributes;
     }
 
-    // }}}
-
     // build phase - products
-    // {{{ protected function buildProducts()
 
     protected function buildProducts($fulltext_result)
     {
@@ -409,16 +365,10 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         }
     }
 
-    // }}}
-    // {{{ protected function getProductLimit()
-
     protected function getProductLimit()
     {
         return null;
     }
-
-    // }}}
-    // {{{ protected function instantiateProductSearchEngine()
 
     protected function instantiateProductSearchEngine()
     {
@@ -443,9 +393,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return $engine;
     }
 
-    // }}}
-    // {{{ protected function displayProducts()
-
     /**
      * Displays search results for a collection of products.
      *
@@ -466,9 +413,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         echo '</ul>';
     }
-
-    // }}}
-    // {{{ protected function getPriceRange()
 
     protected function getPriceRange()
     {
@@ -497,9 +441,6 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return $range;
     }
 
-    // }}}
-    // {{{ protected function getItemMinimumQuantityGroup()
-
     protected function getItemMinimumQuantityGroup()
     {
         static $group = null;
@@ -519,10 +460,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         return $group;
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -535,6 +473,4 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
             'packages/store/styles/store-search-results-page.css'
         );
     }
-
-    // }}}
 }

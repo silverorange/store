@@ -7,8 +7,6 @@
  */
 class StoreVoucherRow extends StoreTotalRow
 {
-    // {{{ public function __construct()
-
     protected SwatButton $remove_button;
 
     public function __construct()
@@ -24,18 +22,12 @@ class StoreVoucherRow extends StoreTotalRow
         $this->remove_button->classes[] = 'store-remove';
     }
 
-    // }}}
-    // {{{ public function init()
-
     public function init()
     {
         parent::init();
 
         $this->remove_button->init();
     }
-
-    // }}}
-    // {{{ public function process()
 
     public function process()
     {
@@ -44,25 +36,16 @@ class StoreVoucherRow extends StoreTotalRow
         $this->remove_button->process();
     }
 
-    // }}}
-    // {{{ public function hasBeenClicked()
-
     public function hasBeenClicked()
     {
         return $this->remove_button->hasBeenClicked();
     }
-
-    // }}}
-    // {{{ protected function displayTitle()
 
     protected function displayTitle()
     {
         $this->remove_button->display();
         parent::displayTitle();
     }
-
-    // }}}
-    // {{{ protected function displayValue()
 
     protected function displayValue()
     {
@@ -74,6 +57,4 @@ class StoreVoucherRow extends StoreTotalRow
         $this->money_cell_renderer->value = -$this->value;
         $this->money_cell_renderer->render();
     }
-
-    // }}}
 }

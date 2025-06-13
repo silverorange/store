@@ -7,18 +7,10 @@
  */
 class StoreProductPage extends StorePage
 {
-    // {{{ class constants
-
     public const THANK_YOU_ID = 'thank-you';
-
-    // }}}
-    // {{{ public properties
 
     public $product_id;
     public $product;
-
-    // }}}
-    // {{{ protected properties
 
     protected $cart_processor;
 
@@ -38,10 +30,7 @@ class StoreProductPage extends StorePage
      */
     protected $related_articles;
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -63,9 +52,6 @@ class StoreProductPage extends StorePage
         $this->initProduct();
         $this->initItemsView();
     }
-
-    // }}}
-    // {{{ public function isVisibleInRegion()
 
     public function isVisibleInRegion(StoreRegion $region)
     {
@@ -90,16 +76,10 @@ class StoreProductPage extends StorePage
         return $product !== null;
     }
 
-    // }}}
-    // {{{ protected function initProduct()
-
     protected function initProduct()
     {
         $this->loadProduct($this->product_id);
     }
-
-    // }}}
-    // {{{ protected function initItemsView()
 
     protected function initItemsView()
     {
@@ -112,16 +92,10 @@ class StoreProductPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function getItemsView()
-
     protected function getItemsView()
     {
         return new StoreItemsView();
     }
-
-    // }}}
-    // {{{ protected function loadProduct()
 
     protected function loadProduct($id)
     {
@@ -158,10 +132,7 @@ class StoreProductPage extends StorePage
         $this->app->addCacheValue($this->product, $key, 'product');
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -169,9 +140,6 @@ class StoreProductPage extends StorePage
         $this->message_display->process();
         $this->processProduct();
     }
-
-    // }}}
-    // {{{ protected function processProduct()
 
     protected function processProduct()
     {
@@ -206,9 +174,6 @@ class StoreProductPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function addEntriesToCart()
-
     protected function addEntriesToCart()
     {
         $entries = $this->items_view->getCartEntries();
@@ -218,10 +183,7 @@ class StoreProductPage extends StorePage
         $this->app->cart->save();
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -237,9 +199,6 @@ class StoreProductPage extends StorePage
 
         $this->layout->endCapture();
     }
-
-    // }}}
-    // {{{ protected function buildProduct()
 
     protected function buildProduct()
     {
@@ -262,9 +221,6 @@ class StoreProductPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function buildMetaDescription()
-
     protected function buildMetaDescription()
     {
         if ($this->product->meta_description != '') {
@@ -285,9 +241,6 @@ class StoreProductPage extends StorePage
         $this->layout->data->meta_description = $meta_description;
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         if (!property_exists($this->layout, 'navbar')) {
@@ -305,9 +258,6 @@ class StoreProductPage extends StorePage
             $this->layout->navbar->createEntry($this->product->title);
         }
     }
-
-    // }}}
-    // {{{ protected function displayProduct()
 
     protected function displayProduct()
     {
@@ -331,9 +281,6 @@ class StoreProductPage extends StorePage
         echo '</div>';
     }
 
-    // }}}
-    // {{{ protected function displayBodyText()
-
     protected function displayBodyText()
     {
         if ($this->product->bodytext != '') {
@@ -348,9 +295,6 @@ class StoreProductPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayCartMessage()
-
     protected function displayCartMessage()
     {
         echo '<div id="product_page_cart">';
@@ -363,18 +307,12 @@ class StoreProductPage extends StorePage
         echo '</div>';
     }
 
-    // }}}
-    // {{{ protected function displayItems()
-
     protected function displayItems()
     {
         if ($this->items_view instanceof StoreItemsView) {
             $this->items_view->display();
         }
     }
-
-    // }}}
-    // {{{ protected function displayItemMinimumQuantityGroupNotes()
 
     protected function displayItemMinimumQuantityGroupNotes()
     {
@@ -404,9 +342,6 @@ class StoreProductPage extends StorePage
             echo '</div>';
         }
     }
-
-    // }}}
-    // {{{ protected function displayItemMinimumQuantityGroupNote()
 
     protected function displayItemMinimumQuantityGroupNote(
         $items,
@@ -456,16 +391,10 @@ class StoreProductPage extends StorePage
         $p_tag->display();
     }
 
-    // }}}
-    // {{{ protected function getProductSearchEngine()
-
     protected function getProductSearchEngine($context = null)
     {
         return new StoreProductSearchEngine($this->app);
     }
-
-    // }}}
-    // {{{ protected function getProductInlineJavaScript()
 
     protected function getProductInlineJavaScript()
     {
@@ -529,26 +458,17 @@ class StoreProductPage extends StorePage
         return $javascript;
     }
 
-    // }}}
-    // {{{ protected function getProductJavaScriptClass()
-
     protected function getProductJavaScriptClass()
     {
         return 'StoreProductPage';
     }
-
-    // }}}
-    // {{{ protected function getCartLightboxJavaScriptClass()
 
     protected function getCartLightboxJavaScriptClass()
     {
         return 'StoreCartLightbox';
     }
 
-    // }}}
-
     // build - related articles
-    // {{{ protected function displayRelatedArticles()
 
     /**
      * Displays related articles from the parent category on this product page.
@@ -595,9 +515,6 @@ class StoreProductPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayRelatedArticlesAsUnorderedList()
-
     /**
      * Displays related articles from the parent category on this product page.
      */
@@ -624,9 +541,6 @@ class StoreProductPage extends StorePage
             $ul_tag->close();
         }
     }
-
-    // }}}
-    // {{{ protected function displayRelatedArticleLinks()
 
     /**
      * Displays related articles links from the parent category on this product
@@ -660,16 +574,10 @@ class StoreProductPage extends StorePage
         }
     }
 
-    // }}}
-    // {{{ protected function displayRelatedArticlesTitle()
-
     protected function displayRelatedArticlesTitle()
     {
         echo Store::_('Related Articles: ');
     }
-
-    // }}}
-    // {{{ protected function getRelatedArticles()
 
     /**
      * Gets related articles from the product, and combines them with the
@@ -716,10 +624,7 @@ class StoreProductPage extends StorePage
         return $this->related_articles;
     }
 
-    // }}}
-
     // build - related products
-    // {{{ protected function displayRelatedProducts()
 
     protected function displayRelatedProducts()
     {
@@ -758,9 +663,6 @@ class StoreProductPage extends StorePage
         $div->close();
     }
 
-    // }}}
-    // {{{ protected function displayRelatedProduct()
-
     protected function displayRelatedProduct(StoreProduct $product)
     {
         $path = $this->app->config->store->path . $product->path;
@@ -768,10 +670,7 @@ class StoreProductPage extends StorePage
         $product->displayAsIcon($path, 'pinky');
     }
 
-    // }}}
-
     // build - collections
-    // {{{ protected function displayProductCollections()
 
     /**
      * Displays all collections this product belongs to.
@@ -819,18 +718,12 @@ class StoreProductPage extends StorePage
         $div_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayProductCollection()
-
     protected function displayProductCollection(StoreProduct $product)
     {
         $path = $this->app->config->store->path . $product->path;
 
         $product->displayAsIcon($path, 'pinky');
     }
-
-    // }}}
-    // {{{ protected function displayCollectionProducts()
 
     /**
      * Displays all member products of this collection.
@@ -878,19 +771,13 @@ class StoreProductPage extends StorePage
         $div_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayCollectionProduct()
-
     protected function displayCollectionProduct(StoreProduct $product)
     {
         $path = $this->app->config->store->path . $product->path;
         $product->displayAsIcon($path, 'pinky');
     }
 
-    // }}}
-
     // build - images
-    // {{{ protected function displayImages()
 
     protected function displayImages()
     {
@@ -907,9 +794,6 @@ class StoreProductPage extends StorePage
             Swat::displayInlineJavaScript($this->getImageInlineJavaScript());
         }
     }
-
-    // }}}
-    // {{{ protected function displayImage()
 
     protected function displayImage()
     {
@@ -962,13 +846,7 @@ class StoreProductPage extends StorePage
         $div->close();
     }
 
-    // }}}
-    // {{{ protected function displayImageOverlays()
-
     protected function displayImageOverlays() {}
-
-    // }}}
-    // {{{ protected function displaySecondaryImages()
 
     protected function displaySecondaryImages()
     {
@@ -982,9 +860,6 @@ class StoreProductPage extends StorePage
 
         echo '</ul>';
     }
-
-    // }}}
-    // {{{ protected function displaySecondaryImage()
 
     protected function displaySecondaryImage($image)
     {
@@ -1017,16 +892,10 @@ class StoreProductPage extends StorePage
         $li_tag->close();
     }
 
-    // }}}
-    // {{{ protected function getSecondaryImgTag()
-
     protected function getSecondaryImgTag($image)
     {
         return $image->getImgTag('pinky');
     }
-
-    // }}}
-    // {{{ protected function isImageLinked()
 
     protected function isImageLinked($large_ratio_limit = 20)
     {
@@ -1049,9 +918,6 @@ class StoreProductPage extends StorePage
 
         return $is_linked;
     }
-
-    // }}}
-    // {{{ protected function getImageInlineJavaScript()
 
     protected function getImageInlineJavaScript()
     {
@@ -1109,9 +975,6 @@ class StoreProductPage extends StorePage
         return $javascript;
     }
 
-    // }}}
-    // {{{ protected function getImageInlineJavaScriptTranslations()
-
     protected function getInlineJavaScriptTranslations()
     {
         $close_text = Store::_('Close');
@@ -1122,10 +985,7 @@ class StoreProductPage extends StorePage
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -1178,6 +1038,4 @@ class StoreProductPage extends StorePage
             );
         }
     }
-
-    // }}}
 }

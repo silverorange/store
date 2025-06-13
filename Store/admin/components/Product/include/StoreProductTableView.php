@@ -8,8 +8,6 @@
  */
 class StoreProductTableView extends SwatTableView
 {
-    // {{{ protected function getRowClasses()
-
     protected function getRowClasses($row, $count)
     {
         $classes = parent::getRowClasses($row, $count);
@@ -28,6 +26,4 @@ class StoreProductTableView extends SwatTableView
 
         return $classes;
     }
-
-    // }}}
 }

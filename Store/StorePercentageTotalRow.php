@@ -7,8 +7,6 @@
  */
 class StorePercentageTotalRow extends SwatTableViewRow
 {
-    // {{{ public properties
-
     /**
      * Title of this total row.
      *
@@ -82,9 +80,6 @@ class StorePercentageTotalRow extends SwatTableViewRow
      */
     public $show_colon = true;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * Percentage cell renderer used to display the value.
      *
@@ -92,18 +87,12 @@ class StorePercentageTotalRow extends SwatTableViewRow
      */
     protected $percentage_cell_renderer;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct()
     {
         parent::__construct();
         $this->percentage_cell_renderer = new SwatPercentageCellRenderer();
         $this->addStyleSheet('packages/store/styles/store-total-row.css');
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -130,9 +119,6 @@ class StorePercentageTotalRow extends SwatTableViewRow
         $tr_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayHeader()
-
     protected function displayHeader()
     {
         $colspan = $this->view->getXhtmlColspan();
@@ -143,9 +129,6 @@ class StorePercentageTotalRow extends SwatTableViewRow
         $this->displayTitle();
         $th_tag->close();
     }
-
-    // }}}
-    // {{{ protected function displayTitle()
 
     protected function displayTitle()
     {
@@ -177,9 +160,6 @@ class StorePercentageTotalRow extends SwatTableViewRow
         }
     }
 
-    // }}}
-    // {{{ protected function displayTotal()
-
     protected function displayTotal()
     {
         $td_tag = new SwatHtmlTag('td');
@@ -189,17 +169,11 @@ class StorePercentageTotalRow extends SwatTableViewRow
         $td_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayValue()
-
     protected function displayValue()
     {
         $this->percentage_cell_renderer->value = $this->value;
         $this->percentage_cell_renderer->render();
     }
-
-    // }}}
-    // {{{ protected function displayBlank()
 
     protected function displayBlank()
     {
@@ -210,9 +184,6 @@ class StorePercentageTotalRow extends SwatTableViewRow
             $td_tag->display();
         }
     }
-
-    // }}}
-    // {{{ protected function getCSSClassNames()
 
     protected function getCSSClassNames()
     {
@@ -233,6 +204,4 @@ class StorePercentageTotalRow extends SwatTableViewRow
         // user specified classes
         return array_merge($classes, $this->classes);
     }
-
-    // }}}
 }

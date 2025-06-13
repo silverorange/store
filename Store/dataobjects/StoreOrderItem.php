@@ -18,8 +18,6 @@
  */
 class StoreOrderItem extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -152,9 +150,6 @@ class StoreOrderItem extends SwatDBDataObject
      */
     public $discount_extension;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * Cart entry id this order item was created from.
      *
@@ -181,9 +176,6 @@ class StoreOrderItem extends SwatDBDataObject
      */
     protected $item_cache = false;
 
-    // }}}
-    // {{{ public function getDescription()
-
     /**
      * Gets the description for this order item.
      *
@@ -194,24 +186,15 @@ class StoreOrderItem extends SwatDBDataObject
         return $this->description;
     }
 
-    // }}}
-    // {{{ public function setCartEntryId()
-
     public function setCartEntryId($id)
     {
         $this->cart_entry_id = $id;
     }
 
-    // }}}
-    // {{{ public function getCartEntryId()
-
     public function getCartEntryId()
     {
         return $this->cart_entry_id;
     }
-
-    // }}}
-    // {{{ public function getAvailableItemId()
 
     /**
      * Gets the id of the item belonging to this order item if the item is
@@ -256,9 +239,6 @@ class StoreOrderItem extends SwatDBDataObject
 
         return $id;
     }
-
-    // }}}
-    // {{{ public function getAvailableItem()
 
     /**
      * Gets StoreItem belonging to this order item if the item is
@@ -311,18 +291,12 @@ class StoreOrderItem extends SwatDBDataObject
         return $item;
     }
 
-    // }}}
-    // {{{ public function setAvailableItemCache()
-
     public function setAvailableItemCache(
         StoreRegion $region,
         ?StoreItem $item = null
     ) {
         $this->available_items_cache[$region->id] = $item;
     }
-
-    // }}}
-    // {{{ public function getItem()
 
     /**
      * Gets the StoreItem belonging to this order item.
@@ -365,16 +339,10 @@ class StoreOrderItem extends SwatDBDataObject
         return $item;
     }
 
-    // }}}
-    // {{{ public function setItemCache()
-
     public function setItemCache(?StoreItem $item = null)
     {
         $this->item_cache = $item;
     }
-
-    // }}}
-    // {{{ public function getSourceCategoryTitle()
 
     public function getSourceCategoryTitle()
     {
@@ -394,9 +362,6 @@ class StoreOrderItem extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->registerInternalProperty(
@@ -408,9 +373,6 @@ class StoreOrderItem extends SwatDBDataObject
         $this->id_field = 'integer:id';
     }
 
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
-
     protected function getSerializablePrivateProperties()
     {
         $properties = parent::getSerializablePrivateProperties();
@@ -418,6 +380,4 @@ class StoreOrderItem extends SwatDBDataObject
 
         return $properties;
     }
-
-    // }}}
 }

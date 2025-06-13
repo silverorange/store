@@ -8,8 +8,6 @@
  */
 class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 {
-    // {{{ protected properties
-
     /**
      * @var int
      */
@@ -29,24 +27,15 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
      */
     protected $card_types;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/account-payment-method-edit.xml';
     }
 
-    // }}}
-    // {{{ protected function isNew()
-
     protected function isNew(SwatForm $form)
     {
         return !$this->id;
     }
-
-    // }}}
-    // {{{ protected function getArgumentMap()
 
     protected function getArgumentMap()
     {
@@ -54,9 +43,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
             'id' => [0, 0],
         ];
     }
-
-    // }}}
-    // {{{ protected function getCardTypes()
 
     /**
      * Gets available card types for new payment methods.
@@ -73,10 +59,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         return $this->card_types;
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -96,9 +79,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         $this->id = intval($this->getArgument('id'));
         $this->initPaymentMethod();
     }
-
-    // }}}
-    // {{{ protected function initPaymentMethod()
 
     protected function initPaymentMethod()
     {
@@ -138,9 +118,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         $this->payment_method = $payment_method;
     }
 
-    // }}}
-    // {{{ protected function initPaymentType()
-
     protected function initPaymentType()
     {
         // this page currently only supports editing of payment methods
@@ -161,10 +138,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         return $type;
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -184,9 +158,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
                 $type->hasIssueNumber();
         }
     }
-
-    // }}}
-    // {{{ protected function updatePaymentMethod()
 
     protected function updatePaymentMethod(SwatForm $form)
     {
@@ -208,9 +179,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getCardType()
 
     protected function getCardType()
     {
@@ -236,9 +204,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         return $type;
     }
 
-    // }}}
-    // {{{ protected function saveData()
-
     protected function saveData(SwatForm $form)
     {
         $this->updatePaymentMethod($form);
@@ -261,9 +226,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function getMessageText()
-
     protected function getMessageText($text)
     {
         switch ($text) {
@@ -278,16 +240,10 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate(SwatForm $form)
     {
         $this->app->relocate('account');
     }
-
-    // }}}
-    // {{{ private function addMessage()
 
     private function addMessage($text)
     {
@@ -301,10 +257,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         $this->app->messages->add($message);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -328,9 +281,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         $this->buildCardTypes();
     }
 
-    // }}}
-    // {{{ protected function buildLabels()
-
     protected function buildLabels(SwatForm $form)
     {
         if ($this->isNew($form)) {
@@ -348,9 +298,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
                 Store::_('Update Payment Method');
         }
     }
-
-    // }}}
-    // {{{ protected function buildCardTypes()
 
     protected function buildCardTypes()
     {
@@ -377,9 +324,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         Swat::displayInlineJavaScript($this->getInlineJavaScript($types));
         $this->layout->endCapture();
     }
-
-    // }}}
-    // {{{ protected function load()
 
     protected function load(SwatForm $form)
     {
@@ -417,9 +361,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function setDefaultValues()
-
     /**
      * Sets default values of this payment method based on values from the
      * account.
@@ -430,10 +371,6 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
     {
         $this->ui->getWidget('card_fullname')->value = $account->fullname;
     }
-
-    // }}}
-
-    // {{{ protected function getInlineJavaScript()
 
     protected function getInlineJavaScript(StoreCardTypeWrapper $types)
     {
@@ -460,10 +397,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -478,6 +412,4 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
             $this->ui->getRoot()->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 abstract class StoreApplication extends SiteWebApplication
 {
-    // {{{ public properties
-
     /**
      * A convenience reference to the database connection of this store
      * application.
@@ -34,9 +32,6 @@ abstract class StoreApplication extends SiteWebApplication
      */
     public $default_locale;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * @var string
      */
@@ -46,9 +41,6 @@ abstract class StoreApplication extends SiteWebApplication
      * @var StoreRegion
      */
     protected $region;
-
-    // }}}
-    // {{{ public function getCountry()
 
     /**
      * @param mixed|null $locale
@@ -64,9 +56,6 @@ abstract class StoreApplication extends SiteWebApplication
         return mb_substr($locale, 3, 2);
     }
 
-    // }}}
-    // {{{ public function getLocale()
-
     /**
      * @return string
      */
@@ -75,9 +64,6 @@ abstract class StoreApplication extends SiteWebApplication
         return $this->locale;
     }
 
-    // }}}
-    // {{{ public function getRegion()
-
     /**
      * @return StoreRegion
      */
@@ -85,9 +71,6 @@ abstract class StoreApplication extends SiteWebApplication
     {
         return $this->region;
     }
-
-    // }}}
-    // {{{ protected function getDefaultModuleList()
 
     protected function getDefaultModuleList()
     {
@@ -108,9 +91,6 @@ abstract class StoreApplication extends SiteWebApplication
             ]
         );
     }
-
-    // }}}
-    // {{{ protected function initModules()
 
     protected function initModules()
     {
@@ -135,9 +115,6 @@ abstract class StoreApplication extends SiteWebApplication
         $this->db = $this->database->getConnection();
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -151,9 +128,6 @@ abstract class StoreApplication extends SiteWebApplication
         $config->addDefinitions(Admin::getConfigDefinitions());
     }
 
-    // }}}
-    // {{{ protected function loadPage()
-
     protected function loadPage()
     {
         if ($this->locale === null) {
@@ -166,6 +140,4 @@ abstract class StoreApplication extends SiteWebApplication
 
         parent::loadPage();
     }
-
-    // }}}
 }

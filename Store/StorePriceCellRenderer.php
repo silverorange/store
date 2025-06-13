@@ -11,8 +11,6 @@
  */
 class StorePriceCellRenderer extends SwatMoneyCellRenderer
 {
-    // {{{ public properties
-
     /**
      * @var string
      */
@@ -28,17 +26,11 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
      */
     public $discount = 0;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct()
     {
         parent::__construct();
         $this->free_text = Store::_('Free!');
     }
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -64,9 +56,6 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
             $this->displayDiscount();
         }
     }
-
-    // }}}
-    // {{{ public function displayDiscount()
 
     public function displayDiscount()
     {
@@ -105,9 +94,6 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
         echo '</div>';
     }
 
-    // }}}
-    // {{{ public function getDataSpecificCSSClassNames()
-
     public function getDataSpecificCSSClassNames()
     {
         $classes = [];
@@ -119,13 +105,8 @@ class StorePriceCellRenderer extends SwatMoneyCellRenderer
         return $classes;
     }
 
-    // }}}
-    // {{{ protected function isFree()
-
     protected function isFree()
     {
         return $this->value == 0;
     }
-
-    // }}}
 }

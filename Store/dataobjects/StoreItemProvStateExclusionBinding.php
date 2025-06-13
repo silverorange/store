@@ -7,8 +7,6 @@
  */
 class StoreItemProvStateExclusionBinding extends SwatDBDataObject
 {
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->registerInternalProperty(
@@ -23,6 +21,4 @@ class StoreItemProvStateExclusionBinding extends SwatDBDataObject
 
         $this->table = 'ItemProvStateExclusionBinding';
     }
-
-    // }}}
 }

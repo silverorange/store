@@ -8,14 +8,9 @@
  */
 class StoreCategoryOrder extends AdminDBOrder
 {
-    // {{{ private properties
-
     private $parent;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -23,10 +18,7 @@ class StoreCategoryOrder extends AdminDBOrder
         $this->parent = SiteApplication::initVar('parent');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData()
     {
@@ -49,9 +41,6 @@ class StoreCategoryOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-    // {{{ protected function saveIndex()
-
     protected function saveIndex($id, $index)
     {
         SwatDB::updateColumn(
@@ -64,10 +53,7 @@ class StoreCategoryOrder extends AdminDBOrder
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -75,9 +61,6 @@ class StoreCategoryOrder extends AdminDBOrder
         $form = $this->ui->getWidget('order_form');
         $form->addHiddenField('parent', $this->parent);
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -108,9 +91,6 @@ class StoreCategoryOrder extends AdminDBOrder
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -134,6 +114,4 @@ class StoreCategoryOrder extends AdminDBOrder
 
         $this->navbar->addEntry($order_entry);
     }
-
-    // }}}
 }

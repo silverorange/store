@@ -8,8 +8,6 @@
  */
 class StoreTextRow extends SwatTableViewRow
 {
-    // {{{ public properties
-
     /**
      * Text to display.
      *
@@ -33,9 +31,6 @@ class StoreTextRow extends SwatTableViewRow
     public $note;
     public $note_content_type = 'text/plain';
 
-    // }}}
-    // {{{ public function display()
-
     public function display()
     {
         if (!$this->visible) {
@@ -51,9 +46,6 @@ class StoreTextRow extends SwatTableViewRow
         $this->displayBlank();
         $tr_tag->close();
     }
-
-    // }}}
-    // {{{ protected function displayHeader()
 
     protected function displayHeader()
     {
@@ -83,9 +75,6 @@ class StoreTextRow extends SwatTableViewRow
         $th_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayContent()
-
     protected function displayContent()
     {
         $td_tag = new SwatHtmlTag('td');
@@ -101,9 +90,6 @@ class StoreTextRow extends SwatTableViewRow
         $td_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayBlank()
-
     protected function displayBlank()
     {
         if ($this->offset > 0) {
@@ -113,6 +99,4 @@ class StoreTextRow extends SwatTableViewRow
             $td_tag->display();
         }
     }
-
-    // }}}
 }

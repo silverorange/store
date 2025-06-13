@@ -8,8 +8,6 @@
  */
 class StoreSalesByRegionReportDetails extends AdminIndex
 {
-    // {{{ protected properties
-
     /**
      * The starting date for this report.
      *
@@ -37,18 +35,12 @@ class StoreSalesByRegionReportDetails extends AdminIndex
      */
     protected $taxation_start_date;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -96,9 +88,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         );
     }
 
-    // }}}
-    // {{{ protected function initTaxationStartDate()
-
     protected function initTaxationStartDate()
     {
         $this->taxation_start_date = new StoreSalesByRegionTaxationStartDate(
@@ -106,10 +95,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -141,9 +127,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         $view->getGroup('country')->getRenderer('tax_total')->visible =
             $this->show_shipping;
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -245,9 +228,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         return $store;
     }
 
-    // }}}
-    // {{{ protected function getProvStateModel()
-
     protected function getProvStateModel($country_id)
     {
         $end_date = clone $this->start_date;
@@ -291,9 +271,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         );
     }
 
-    // }}}
-    // {{{ protected function getInstanceWhereClause()
-
     protected function getInstanceWhereClause()
     {
         if ($this->app->isMultipleInstanceAdmin()) {
@@ -308,9 +285,6 @@ class StoreSalesByRegionReportDetails extends AdminIndex
             $this->app->db->quote($instance_id, 'integer')
         );
     }
-
-    // }}}
-    // {{{ protected function getDetailCountries()
 
     protected function getDetailCountries()
     {
@@ -330,13 +304,8 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         return $this->detail_countries;
     }
 
-    // }}}
-    // {{{ protected function getDetailCountriesWhereClause()
-
     protected function getDetailCountriesWhereClause()
     {
         return 'id in (select country from ProvState)';
     }
-
-    // }}}
 }

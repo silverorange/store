@@ -8,8 +8,6 @@
  */
 class StoreOrderCancel extends AdminConfirmation
 {
-    // {{{ protected properties
-
     protected $id;
     protected $order;
 
@@ -21,10 +19,7 @@ class StoreOrderCancel extends AdminConfirmation
      */
     protected $account;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -35,9 +30,6 @@ class StoreOrderCancel extends AdminConfirmation
 
         $this->initOrder();
     }
-
-    // }}}
-    // {{{ protected function initOrder()
 
     protected function initOrder()
     {
@@ -66,10 +58,7 @@ class StoreOrderCancel extends AdminConfirmation
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processResponse()
 
     protected function processResponse(): void
     {
@@ -86,10 +75,7 @@ class StoreOrderCancel extends AdminConfirmation
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -103,9 +89,6 @@ class StoreOrderCancel extends AdminConfirmation
         $message->content = $this->getConfirmationMessage();
         $message->content_type = 'text/xml';
     }
-
-    // }}}
-    // {{{ protected function getConfirmationMessage()
 
     protected function getConfirmationMessage()
     {
@@ -132,9 +115,6 @@ class StoreOrderCancel extends AdminConfirmation
 
         return ob_get_clean();
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -172,6 +152,4 @@ class StoreOrderCancel extends AdminConfirmation
 
         $this->navbar->createEntry(Store::_('Cancel Order'));
     }
-
-    // }}}
 }

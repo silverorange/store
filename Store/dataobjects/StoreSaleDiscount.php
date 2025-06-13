@@ -10,8 +10,6 @@
  */
 class StoreSaleDiscount extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier for this sale.
      *
@@ -54,9 +52,6 @@ class StoreSaleDiscount extends SwatDBDataObject
      */
     public $end_date;
 
-    // }}}
-    // {{{ public function loadFromShortname()
-
     /**
      * Loads a sale discount by its shortname.
      *
@@ -88,9 +83,6 @@ class StoreSaleDiscount extends SwatDBDataObject
         return true;
     }
 
-    // }}}
-    // {{{ public function isActive()
-
     /**
      * Checks if this sale is currently active.
      *
@@ -115,9 +107,6 @@ class StoreSaleDiscount extends SwatDBDataObject
                 || SwatDate::compare($date, $this->end_date) <= 0);
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'SaleDiscount';
@@ -125,6 +114,4 @@ class StoreSaleDiscount extends SwatDBDataObject
         $this->registerDateProperty('start_date');
         $this->registerDateProperty('end_date');
     }
-
-    // }}}
 }

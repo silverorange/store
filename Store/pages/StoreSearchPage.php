@@ -7,8 +7,6 @@
  */
 class StoreSearchPage extends StoreSearchResultsPage
 {
-    // {{{ protected properties
-
     /**
      * The user-interface of the search form.
      *
@@ -23,10 +21,7 @@ class StoreSearchPage extends StoreSearchResultsPage
      */
     protected $form_ui_xml = __DIR__ . '/search-form.xml';
 
-    // }}}
-
     // init phase
-    // {{{ public function init
 
     public function init()
     {
@@ -52,9 +47,6 @@ class StoreSearchPage extends StoreSearchResultsPage
         $this->form_ui->init();
     }
 
-    // }}}
-    // {{{ protected function getCategories()
-
     protected function getCategories()
     {
         $sql = 'select id, title, subtitle, shortname from Category
@@ -75,10 +67,7 @@ class StoreSearchPage extends StoreSearchResultsPage
         );
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -93,10 +82,7 @@ class StoreSearchPage extends StoreSearchResultsPage
          */
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -107,10 +93,7 @@ class StoreSearchPage extends StoreSearchResultsPage
         parent::build();
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -119,6 +102,4 @@ class StoreSearchPage extends StoreSearchResultsPage
             $this->form_ui->getRoot()->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

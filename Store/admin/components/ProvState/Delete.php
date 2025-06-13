@@ -9,7 +9,6 @@
 class StoreProvStateDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected funtion processDBData()
 
     protected function processDBData(): void
     {
@@ -35,9 +34,6 @@ class StoreProvStateDelete extends AdminDBDelete
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function getProcessSQL()
-
     protected function getProcessSQL()
     {
         return 'delete from ProvState where id in (%s)
@@ -45,10 +41,7 @@ class StoreProvStateDelete extends AdminDBDelete
 			(select provstate from OrderAddress where provstate is not null)';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -84,9 +77,6 @@ class StoreProvStateDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getDependencies()
-
     protected function getDependencies($dep, $item_list)
     {
         // dependent orders
@@ -107,6 +97,4 @@ class StoreProvStateDelete extends AdminDBDelete
 
         $dep->addDependency($dep_orders);
     }
-
-    // }}}
 }

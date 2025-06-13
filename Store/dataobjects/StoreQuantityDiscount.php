@@ -15,8 +15,6 @@
  */
 class StoreQuantityDiscount extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier of this quantity discount.
      *
@@ -30,9 +28,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
      * @var int
      */
     public $quantity;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * @var StoreRegion
@@ -53,9 +48,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
      */
     protected $price = [];
 
-    // }}}
-    // {{{ public function setRegion()
-
     /**
      * Sets the region to use when loading region-specific fields for this
      * quantity discount.
@@ -70,9 +62,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
         $this->region = $region;
         $this->limit_by_region = $limiting;
     }
-
-    // }}}
-    // {{{ public function getPrice()
 
     /**
      * Gets the price of this quantity discount in a region.
@@ -129,9 +118,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
         return $price;
     }
 
-    // }}}
-    // {{{ public function getDisplayPrice()
-
     /**
      * Gets the displayable price of this quantity discount including any
      * sale discounts.
@@ -165,9 +151,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
         return $price;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'QuantityDiscount';
@@ -178,9 +161,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
             SwatDBClassMap::get('StoreItem')
         );
     }
-
-    // }}}
-    // {{{ protected function initFromRow()
 
     protected function initFromRow($row)
     {
@@ -197,9 +177,6 @@ class StoreQuantityDiscount extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return array_merge(
@@ -208,10 +185,7 @@ class StoreQuantityDiscount extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadRegionBindings()
 
     protected function loadRegionBindings()
     {
@@ -227,10 +201,7 @@ class StoreQuantityDiscount extends SwatDBDataObject
         return SwatDB::query($this->db, $sql, $wrapper);
     }
 
-    // }}}
-
     // saver methods
-    // {{{ protected function saveRegionBindings()
 
     /**
      * Automatically saves StoreQuantityDiscountRegionBinding sub-data-objects when this
@@ -245,6 +216,4 @@ class StoreQuantityDiscount extends SwatDBDataObject
         $this->region_bindings->setDatabase($this->db);
         $this->region_bindings->save();
     }
-
-    // }}}
 }

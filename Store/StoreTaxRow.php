@@ -7,8 +7,6 @@
  */
 class StoreTaxRow extends StoreTotalRow
 {
-    // {{{ public function display()
-
     public function display()
     {
         // taxes are never free
@@ -18,6 +16,4 @@ class StoreTaxRow extends StoreTotalRow
 
         parent::display();
     }
-
-    // }}}
 }

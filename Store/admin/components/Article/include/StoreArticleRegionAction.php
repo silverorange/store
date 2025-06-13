@@ -8,20 +8,12 @@
  */
 class StoreArticleRegionAction extends SwatControl
 {
-    // {{{ public properties
-
     public $db;
-
-    // }}}
-    // {{{ private properties
 
     private $region_flydown;
     private $accessibility_selector;
     private $regions;
     private $items;
-
-    // }}}
-    // {{{ public function init()
 
     public function init()
     {
@@ -40,9 +32,6 @@ class StoreArticleRegionAction extends SwatControl
             'title'
         );
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -74,17 +63,11 @@ class StoreArticleRegionAction extends SwatControl
         $this->accessibility_selector->display();
     }
 
-    // }}}
-    // {{{ public function process()
-
     public function process()
     {
         $this->accessibility_selector->process();
         $this->region_flydown->process();
     }
-
-    // }}}
-    // {{{ public function processAction()
 
     public function processAction()
     {
@@ -130,13 +113,8 @@ class StoreArticleRegionAction extends SwatControl
         }
     }
 
-    // }}}
-    // {{{ public function setItems()
-
     public function setItems($items = [])
     {
         $this->items = $items;
     }
-
-    // }}}
 }

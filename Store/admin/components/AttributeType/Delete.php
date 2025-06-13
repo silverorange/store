@@ -9,7 +9,6 @@
 class StoreAttributeTypeDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -38,10 +37,7 @@ class StoreAttributeTypeDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -89,6 +85,4 @@ class StoreAttributeTypeDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
 }

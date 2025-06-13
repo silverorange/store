@@ -8,8 +8,6 @@
  */
 class StoreCardVerificationValueEntry extends SwatEntry
 {
-    // {{{ public properties
-
     /**
      * Whether or not to show a blank_value.
      *
@@ -17,16 +15,10 @@ class StoreCardVerificationValueEntry extends SwatEntry
      */
     public $show_blank_value = false;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * @var StoreCardType
      */
     protected $card_type;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new card entry widget.
@@ -41,16 +33,10 @@ class StoreCardVerificationValueEntry extends SwatEntry
         $this->size = 4;
     }
 
-    // }}}
-    // {{{ public function setCardType()
-
     public function setCardType(StoreCardType $card_type)
     {
         $this->card_type = $card_type;
     }
-
-    // }}}
-    // {{{ public function getBlankValue()
 
     public function getBlankValue()
     {
@@ -62,9 +48,6 @@ class StoreCardVerificationValueEntry extends SwatEntry
 
         return str_repeat('●', $length);
     }
-
-    // }}}
-    // {{{ public function process()
 
     public function process()
     {
@@ -91,9 +74,6 @@ class StoreCardVerificationValueEntry extends SwatEntry
         }
     }
 
-    // }}}
-    // {{{ public function display()
-
     public function display()
     {
         parent::display();
@@ -110,9 +90,6 @@ class StoreCardVerificationValueEntry extends SwatEntry
             );
         }
     }
-
-    // }}}
-    // {{{ protected function validate()
 
     protected function validate()
     {
@@ -154,9 +131,6 @@ class StoreCardVerificationValueEntry extends SwatEntry
         }
     }
 
-    // }}}
-    // {{{ protected function getInputTag()
-
     protected function getInputTag()
     {
         $tag = parent::getInputTag();
@@ -164,9 +138,6 @@ class StoreCardVerificationValueEntry extends SwatEntry
 
         return $tag;
     }
-
-    // }}}
-    // {{{ protected function getDisplayValue()
 
     protected function getDisplayValue($value)
     {
@@ -178,6 +149,4 @@ class StoreCardVerificationValueEntry extends SwatEntry
 
         return $value;
     }
-
-    // }}}
 }

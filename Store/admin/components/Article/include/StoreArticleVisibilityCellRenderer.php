@@ -8,8 +8,6 @@
  */
 class StoreArticleVisibilityCellRenderer extends SiteArticleVisibilityCellRenderer
 {
-    // {{{ public function render()
-
     public function render()
     {
         $messages = [];
@@ -28,6 +26,4 @@ class StoreArticleVisibilityCellRenderer extends SiteArticleVisibilityCellRender
 
         echo implode($this->separator, $messages);
     }
-
-    // }}}
 }

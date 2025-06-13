@@ -6,8 +6,6 @@
  */
 class StoreSalesByRegionGroup extends SwatTableViewGroup
 {
-    // {{{ protected function displayGroupHeader()
-
     protected function displayGroupHeader($row)
     {
         $tr_tag = new SwatHtmlTag('tr');
@@ -22,9 +20,6 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
 
         $tr_tag->close();
     }
-
-    // }}}
-    // {{{ protected function displayGroupFooter()
 
     protected function displayGroupFooter($row)
     {
@@ -75,9 +70,6 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
         $tr_tag->close();
     }
 
-    // }}}
-    // {{{ protected function getFooterCSSClassNames()
-
     protected function getFooterCSSClassNames(?SwatCellRenderer $renderer = null)
     {
         $classes = [];
@@ -123,9 +115,6 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
         return $classes;
     }
 
-    // }}}
-    // {{{ protected function getVisibleRendererCount()
-
     protected function getVisibleRendererCount()
     {
         $first = true;
@@ -143,6 +132,4 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
 
         return $count;
     }
-
-    // }}}
 }

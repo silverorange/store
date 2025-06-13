@@ -8,17 +8,12 @@
  */
 class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
 {
-    // {{{ class constants
-
     /**
      * How many records to process in a single iteration.
      *
      * @var int
      */
     public const DATA_BATCH_SIZE = 100;
-
-    // }}}
-    // {{{ public function run()
 
     public function run()
     {
@@ -73,9 +68,6 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
         }
     }
 
-    // }}}
-    // {{{ protected function getPaymentMethods()
-
     protected function getPaymentMethods()
     {
         $sql = sprintf(
@@ -91,9 +83,6 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
         return SwatDB::query($this->app->db, $sql, $wrapper_class);
     }
 
-    // }}}
-    // {{{ protected function getTotal()
-
     protected function getTotal()
     {
         $sql = sprintf(
@@ -104,17 +93,11 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
         return SwatDB::queryOne($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getExpiryDate()
-
     protected function getExpiryDate()
     {
         // credit cards expire now
         return new SwatDate();
     }
-
-    // }}}
-    // {{{ protected function getWhereClause()
 
     protected function getWhereClause()
     {
@@ -131,6 +114,4 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
             $this->app->db->quote($instance_id, 'integer')
         );
     }
-
-    // }}}
 }

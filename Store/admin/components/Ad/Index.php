@@ -11,17 +11,13 @@
 class StoreAdIndex extends SiteAdIndex
 {
     // init phase
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -38,6 +34,4 @@ class StoreAdIndex extends SiteAdIndex
 
         return SwatDB::query($this->app->db, $sql);
     }
-
-    // }}}
 }

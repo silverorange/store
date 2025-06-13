@@ -9,25 +9,18 @@
 class StoreAccountIndex extends SiteAccountIndex
 {
     // init phase
-    // {{{ protected function getSearchXml()
 
     protected function getSearchXml()
     {
         return __DIR__ . '/search.xml';
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getSQL()
 
     protected function getSQL()
     {
@@ -42,9 +35,6 @@ class StoreAccountIndex extends SiteAccountIndex
 			order by %s';
     }
 
-    // }}}
-    // {{{ protected function getDetailsStore()
-
     protected function getDetailsStore(SiteAccount $account, $row)
     {
         $ds = parent::getDetailsStore($account, $row);
@@ -52,6 +42,4 @@ class StoreAccountIndex extends SiteAccountIndex
 
         return $ds;
     }
-
-    // }}}
 }

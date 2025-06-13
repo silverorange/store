@@ -5,8 +5,6 @@
  */
 class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
 {
-    // {{{ public function __construct()
-
     public function __construct(SiteApplication $app)
     {
         parent::__construct($app);
@@ -15,9 +13,6 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
         $this->page_class_map['Store'] = 'Store/pages';
     }
 
-    // }}}
-    // {{{ protected function getPageMap()
-
     protected function getPageMap(): array
     {
         return [
@@ -25,6 +20,4 @@ class StoreXMLRPCServerFactory extends SiteXMLRPCServerFactory
             'cart'         => 'StoreCartServer',
         ];
     }
-
-    // }}}
 }

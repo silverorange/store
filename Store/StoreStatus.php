@@ -27,8 +27,6 @@
  */
 abstract class StoreStatus extends SwatObject
 {
-    // {{{ public properties
-
     /**
      * The 'value' of this status.
      *
@@ -53,9 +51,6 @@ abstract class StoreStatus extends SwatObject
      */
     public $shortname;
 
-    // }}}
-    // {{{ public function __construct()
-
     /**
      * Creates a new status object.
      *
@@ -69,6 +64,4 @@ abstract class StoreStatus extends SwatObject
         $this->shortname = (string) $shortname;
         $this->title = (string) $title;
     }
-
-    // }}}
 }

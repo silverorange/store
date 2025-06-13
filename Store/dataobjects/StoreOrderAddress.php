@@ -12,8 +12,6 @@
  */
 class StoreOrderAddress extends StoreAddress
 {
-    // {{{ protected properties
-
     /**
      * Id of the account address this order address was created from.
      *
@@ -21,24 +19,15 @@ class StoreOrderAddress extends StoreAddress
      */
     protected $account_address_id;
 
-    // }}}
-    // {{{ public function getAccountAddressId()
-
     public function getAccountAddressId()
     {
         return $this->account_address_id;
     }
 
-    // }}}
-    // {{{ public function clearAccountAddress()
-
     public function clearAccountAddress()
     {
         $this->account_address_id = null;
     }
-
-    // }}}
-    // {{{ public function copyFrom()
 
     public function copyFrom(StoreAddress $address)
     {
@@ -48,9 +37,6 @@ class StoreOrderAddress extends StoreAddress
             $this->account_address_id = $address->id;
         }
     }
-
-    // }}}
-    // {{{ public function duplicate()
 
     public function duplicate(): static
     {
@@ -63,17 +49,11 @@ class StoreOrderAddress extends StoreAddress
         return $new_address;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->table = 'OrderAddress';
     }
-
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
 
     protected function getSerializablePrivateProperties()
     {
@@ -82,6 +62,4 @@ class StoreOrderAddress extends StoreAddress
 
         return $properties;
     }
-
-    // }}}
 }

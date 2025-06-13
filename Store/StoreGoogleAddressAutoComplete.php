@@ -8,8 +8,6 @@
  */
 class StoreGoogleAddressAutoComplete extends SwatControl
 {
-    // {{{ protected properties
-
     /**
      * @var SiteWebApplication
      */
@@ -17,16 +15,10 @@ class StoreGoogleAddressAutoComplete extends SwatControl
 
     protected static $run_once = true;
 
-    // }}}
-    // {{{ public function setApplication()
-
     public function setApplication(SiteWebApplication $app)
     {
         $this->app = $app;
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -60,9 +52,6 @@ class StoreGoogleAddressAutoComplete extends SwatControl
         }
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScript()
-
     protected function getInlineJavaScript()
     {
         $values = [];
@@ -80,9 +69,6 @@ class StoreGoogleAddressAutoComplete extends SwatControl
         );
     }
 
-    // }}}
-    // {{{ protected function getProvStates()
-
     protected function getProvStates()
     {
         $where_clause = sprintf(
@@ -99,6 +85,4 @@ class StoreGoogleAddressAutoComplete extends SwatControl
 
         return SwatDB::query($this->app->db, $sql);
     }
-
-    // }}}
 }

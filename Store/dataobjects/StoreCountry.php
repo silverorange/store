@@ -8,8 +8,6 @@
  */
 class StoreCountry extends SwatDBDataObject
 {
-    // {{{ protected properties
-
     /**
      * Unique identifier of this country.
      *
@@ -39,9 +37,6 @@ class StoreCountry extends SwatDBDataObject
      * @var bool
      */
     protected $has_postal_code;
-
-    // }}}
-    // {{{ public function getRegionTitle()
 
     public function getRegionTitle()
     {
@@ -133,9 +128,6 @@ class StoreCountry extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ public function getRegionRequired()
-
     public function getRegionRequired()
     {
         switch ($this->id) {
@@ -162,9 +154,6 @@ class StoreCountry extends SwatDBDataObject
 
         return $required;
     }
-
-    // }}}
-    // {{{ public function getRegionVisible()
 
     public function getRegionVisible()
     {
@@ -199,9 +188,6 @@ class StoreCountry extends SwatDBDataObject
         return $visible;
     }
 
-    // }}}
-    // {{{ public function getRegionSelectTitle()
-
     public function getRegionSelectTitle()
     {
         switch ($this->id) {
@@ -231,9 +217,6 @@ class StoreCountry extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ public function getPostalCodeTitle()
-
     public function getPostalCodeTitle()
     {
         switch ($this->id) {
@@ -262,16 +245,10 @@ class StoreCountry extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ public function getPostalCodeRequired()
-
     public function getPostalCodeRequired()
     {
         return $this->has_postal_code;
     }
-
-    // }}}
-    // {{{ public function getCityTitle()
 
     public function getCityTitle()
     {
@@ -288,9 +265,6 @@ class StoreCountry extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ public function getCityRequired()
-
     public function getCityRequired()
     {
         switch ($this->id) {
@@ -301,9 +275,6 @@ class StoreCountry extends SwatDBDataObject
 
         return $required;
     }
-
-    // }}}
-    // {{{ public static function getTitleById()
 
     /**
      * Get the title of the country from an id.
@@ -324,17 +295,11 @@ class StoreCountry extends SwatDBDataObject
         return SwatDB::queryOne($db, $sql);
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'Country';
         $this->id_field = 'text:id';
     }
-
-    // }}}
-    // {{{ protected function getProtectedPropertyList()
 
     protected function getProtectedPropertyList()
     {
@@ -361,78 +326,51 @@ class StoreCountry extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // getters
-    // {{{ public function getId()
 
     public function getId()
     {
         return $this->id;
     }
 
-    // }}}
-    // {{{ public function getTitle()
-
     public function getTitle()
     {
         return $this->title;
     }
-
-    // }}}
-    // {{{ public function getVisible()
 
     public function getVisible()
     {
         return $this->visible;
     }
 
-    // }}}
-    // {{{ public function getHasPostalCode()
-
     public function getHasPostalCode()
     {
         return $this->has_postal_code;
     }
 
-    // }}}
-
     // setters
-    // {{{ public function setId()
 
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    // }}}
-    // {{{ public function setTitle()
-
     public function setTitle($title)
     {
         $this->title = $title;
     }
-
-    // }}}
-    // {{{ public function setVisible()
 
     public function setVisible($visible)
     {
         $this->visible = $visible;
     }
 
-    // }}}
-    // {{{ public function setHasPostalCode()
-
     public function setHasPostalCode($has_postal_code)
     {
         $this->has_postal_code = $has_postal_code;
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadProvStates()
 
     protected function loadProvStates()
     {
@@ -447,6 +385,4 @@ class StoreCountry extends SwatDBDataObject
             SwatDBClassMap::get('StoreProvStateWrapper')
         );
     }
-
-    // }}}
 }

@@ -8,25 +8,17 @@
  */
 class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 {
-    // {{{ protected properties
-
     /**
      * @var StoreCountry
      */
     protected $country;
-
-    // }}}
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-billing-address.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -38,9 +30,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         $country_flydown = $this->ui->getWidget('billing_address_country');
         $country_flydown->value = $this->app->getCountry();
     }
-
-    // }}}
-    // {{{ protected function initForm()
 
     protected function initForm()
     {
@@ -114,10 +103,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         $provstate_flydown->setCountryFlydown($country_flydown);
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function preProcessCommon()
 
     public function preProcessCommon()
     {
@@ -137,9 +123,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function getCountry()
-
     protected function getCountry()
     {
         if (!$this->country instanceof StoreCountry) {
@@ -155,9 +138,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
         return $this->country;
     }
-
-    // }}}
-    // {{{ protected function saveDataToSession()
 
     protected function saveDataToSession()
     {
@@ -179,9 +159,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
         $this->app->session->order->billing_address = $address;
     }
-
-    // }}}
-    // {{{ protected function setupPostalCode()
 
     protected function setupPostalCode()
     {
@@ -211,9 +188,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
             $postal_code->required = false;
         }
     }
-
-    // }}}
-    // {{{ protected function getAddress()
 
     protected function getAddress()
     {
@@ -282,9 +256,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         return $this->address;
     }
 
-    // }}}
-    // {{{ protected function getRequiredAddressFields()
-
     protected function getRequiredAddressFields(StoreOrderAddress $address)
     {
         $fields = [
@@ -302,10 +273,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         return $fields;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDataFromSession()
 
     protected function loadDataFromSession()
     {
@@ -367,9 +335,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function getDefaultBillingAddress()
-
     protected function getDefaultBillingAddress()
     {
         $address = null;
@@ -392,9 +357,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
         return $address;
     }
-
-    // }}}
-    // {{{ protected function buildList()
 
     protected function buildList()
     {
@@ -423,9 +385,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         $address_list_container->visible = (count($address_list->options) > 1);
     }
 
-    // }}}
-    // {{{ protected function buildAccountBillingAddresses()
-
     protected function buildAccountBillingAddresses(
         SwatOptionControl $address_list
     ) {
@@ -442,17 +401,11 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildAccountBillingAddressRegionMessage()
-
     protected function buildAccountBillingAddressRegionMessage(
         SwatContentBlock $content_block
     ) {
         // TODO: pull parts of this up from Veseys
     }
-
-    // }}}
-    // {{{ protected function getAccountAddresses()
 
     protected function getAccountAddresses()
     {
@@ -519,9 +472,6 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         return $out_addresses;
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScript()
-
     protected function getInlineJavaScript()
     {
         $id = 'checkout_billing_address';
@@ -533,10 +483,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -546,6 +493,4 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
             'packages/store/javascript/store-checkout-billing-address-page.js'
         );
     }
-
-    // }}}
 }

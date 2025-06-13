@@ -7,24 +7,16 @@
  */
 class StoreCategorySearchEngine extends SiteSearchEngine
 {
-    // {{{ protected function getResultWrapperClass()
-
     protected function getResultWrapperClass()
     {
         return SwatDBClassMap::get('StoreCategoryWrapper');
     }
-
-    // }}}
-    // {{{ protected function getSelectClause()
 
     protected function getSelectClause()
     {
         return 'select Category.id, Category.title, Category.shortname,
 				Category.image, c.product_count, c.region as region_id';
     }
-
-    // }}}
-    // {{{ protected function getFromClause()
 
     protected function getFromClause()
     {
@@ -43,9 +35,6 @@ class StoreCategorySearchEngine extends SiteSearchEngine
         return $clause;
     }
 
-    // }}}
-    // {{{ protected function getOrderByClause()
-
     protected function getOrderByClause()
     {
         if ($this->fulltext_result === null) {
@@ -58,9 +47,6 @@ class StoreCategorySearchEngine extends SiteSearchEngine
         return $clause;
     }
 
-    // }}}
-    // {{{ protected function getWhereClause()
-
     protected function getWhereClause()
     {
         return sprintf(
@@ -71,13 +57,8 @@ class StoreCategorySearchEngine extends SiteSearchEngine
         );
     }
 
-    // }}}
-    // {{{ protected function getMemcacheNs()
-
     protected function getMemcacheNs()
     {
         return 'product';
     }
-
-    // }}}
 }

@@ -9,7 +9,6 @@
 abstract class StoreCheckoutStepPage extends StoreCheckoutPage
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -21,10 +20,7 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -34,13 +30,8 @@ abstract class StoreCheckoutStepPage extends StoreCheckoutPage
         $this->relocate();
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         $this->app->relocate($this->getConfirmationSource());
     }
-
-    // }}}
 }

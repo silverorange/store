@@ -8,22 +8,14 @@
  */
 class StoreCategoryRemoveProducts extends AdminDBConfirmation
 {
-    // {{{ private properties
-
     private $category_id;
-
-    // }}}
-    // {{{ public function setCategory()
 
     public function setCategory($category_id)
     {
         $this->category_id = $category_id;
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -31,10 +23,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
         $this->category_id = SiteApplication::initVar('category');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -68,10 +57,7 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -151,9 +137,6 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
         $form->addHiddenField('category', $this->category_id);
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -179,6 +162,4 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
             Store::_('Remove Products')
         ));
     }
-
-    // }}}
 }

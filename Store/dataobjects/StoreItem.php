@@ -35,8 +35,6 @@
  */
 class StoreItem extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -107,9 +105,6 @@ class StoreItem extends SwatDBDataObject
      */
     public $minimum_multiple;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * @var StoreRegion
      */
@@ -175,9 +170,6 @@ class StoreItem extends SwatDBDataObject
      */
     protected $status;
 
-    // }}}
-    // {{{ public function setRegion()
-
     /**
      * Sets the region to use when loading region-specific fields for this item.
      *
@@ -196,9 +188,6 @@ class StoreItem extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
-    // {{{ public function isAvailableInRegion()
 
     /**
      * Whether or not this item is available for purchase in the given region.
@@ -267,9 +256,6 @@ class StoreItem extends SwatDBDataObject
         return $available;
     }
 
-    // }}}
-    // {{{ public function isEnabled()
-
     /**
      * Gets whether or not this item is enabled in a region.
      *
@@ -305,9 +291,6 @@ class StoreItem extends SwatDBDataObject
         return $enabled;
     }
 
-    // }}}
-    // {{{ public function getPrice()
-
     /**
      * Gets the price of this item in a region.
      *
@@ -340,9 +323,6 @@ class StoreItem extends SwatDBDataObject
 
         return $price;
     }
-
-    // }}}
-    // {{{ public function getOriginalPrice()
 
     /**
      * Gets the original price of this item in a region.
@@ -380,9 +360,6 @@ class StoreItem extends SwatDBDataObject
         return $price;
     }
 
-    // }}}
-    // {{{ public function getSaleDiscountPrice()
-
     /**
      * Gets the sale discount price of this item in a region.
      *
@@ -415,9 +392,6 @@ class StoreItem extends SwatDBDataObject
         return $price;
     }
 
-    // }}}
-    // {{{ public function getDisplayPrice()
-
     /**
      * Gets the displayable price of this item including any sale discounts.
      *
@@ -449,9 +423,6 @@ class StoreItem extends SwatDBDataObject
         return $price;
     }
 
-    // }}}
-    // {{{ public function isOnSale()
-
     /**
      * Gets the displayable price of this item including any sale discounts.
      *
@@ -472,9 +443,6 @@ class StoreItem extends SwatDBDataObject
 
         return $price !== $original_price;
     }
-
-    // }}}
-    // {{{ public function getSavings()
 
     /**
      * Gets the savings on the item.
@@ -501,9 +469,6 @@ class StoreItem extends SwatDBDataObject
         return $savings;
     }
 
-    // }}}
-    // {{{ public function hasAvailableStatus()
-
     /**
      * Gets whether or not this item has a status which makes this item
      * available for purchase.
@@ -514,12 +479,8 @@ class StoreItem extends SwatDBDataObject
      */
     public function hasAvailableStatus()
     {
-        return
-            $this->getStatus() === StoreItemStatusList::status('available');
+        return $this->getStatus() === StoreItemStatusList::status('available');
     }
-
-    // }}}
-    // {{{ public function getDescription()
 
     /**
      * Gets the description for this item.
@@ -536,9 +497,6 @@ class StoreItem extends SwatDBDataObject
             && $this->description == $this->product->title) ?
                 null : $this->description;
     }
-
-    // }}}
-    // {{{ public function getDescriptionArray()
 
     /**
      * Get an array of descriptive elements for this item.
@@ -578,9 +536,6 @@ class StoreItem extends SwatDBDataObject
 
         return $description;
     }
-
-    // }}}
-    // {{{ public static function validateSku()
 
     /**
      * Validates a new item SKU in the given catalogue.
@@ -633,9 +588,6 @@ class StoreItem extends SwatDBDataObject
         return SwatDB::queryOne($db, $sql) == 0;
     }
 
-    // }}}
-    // {{{ public function getStatus()
-
     /**
      * Gets the status of this item.
      *
@@ -652,17 +604,11 @@ class StoreItem extends SwatDBDataObject
         return $this->status;
     }
 
-    // }}}
-    // {{{ public function setStatus()
-
     public function setStatus(StoreItemStatus $status)
     {
         $this->status = $status;
         $this->setInternalValue('status', $status->id);
     }
-
-    // }}}
-    // {{{ public function getActiveSaleDiscount()
 
     /**
      * Gets an active sale discount if one exists on this item.
@@ -693,9 +639,6 @@ class StoreItem extends SwatDBDataObject
 
         return $sale_discount;
     }
-
-    // }}}
-    // {{{ public function getSaleDiscountNote()
 
     /**
      * Gets a note about the active sale discount if one exists.
@@ -738,9 +681,6 @@ class StoreItem extends SwatDBDataObject
         return $note;
     }
 
-    // }}}
-    // {{{ public function getExclusionProvStates()
-
     public function getExclusionProvStates()
     {
         $this->checkDB();
@@ -752,9 +692,6 @@ class StoreItem extends SwatDBDataObject
 
         return $provstates;
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -782,9 +719,6 @@ class StoreItem extends SwatDBDataObject
         $this->table = 'Item';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ protected function initFromRow()
 
     /**
      * Initializes this item from a row object.
@@ -824,9 +758,6 @@ class StoreItem extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function loadInteral()
-
     /**
      * If a limiting region is specified, load() will automatically load
      * region specific fields for this item.
@@ -864,9 +795,6 @@ class StoreItem extends SwatDBDataObject
         return $row;
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return array_merge(
@@ -877,9 +805,6 @@ class StoreItem extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
-
     protected function getSerializablePrivateProperties()
     {
         return array_merge(
@@ -888,9 +813,6 @@ class StoreItem extends SwatDBDataObject
                 'price']
         );
     }
-
-    // }}}
-    // {{{ protected function checkRegion()
 
     protected function checkRegion($region)
     {
@@ -917,10 +839,7 @@ class StoreItem extends SwatDBDataObject
         return $region;
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadQuantityDiscounts()
 
     protected function loadQuantityDiscounts()
     {
@@ -942,9 +861,6 @@ class StoreItem extends SwatDBDataObject
         return $quantity_discounts;
     }
 
-    // }}}
-    // {{{ protected function loadRegionBindings()
-
     protected function loadRegionBindings()
     {
         $sql = 'select * from ItemRegionBinding where item = %s';
@@ -954,9 +870,6 @@ class StoreItem extends SwatDBDataObject
 
         return SwatDB::query($this->db, $sql, $wrapper);
     }
-
-    // }}}
-    // {{{ protected function loadItemAlias()
 
     protected function loadItemAliases()
     {
@@ -970,9 +883,6 @@ class StoreItem extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadProvStateExclusionBindings()
-
     protected function loadProvStateExclusionBindings()
     {
         $sql = 'select * from ItemProvStateExclusionBinding where item = %s';
@@ -985,10 +895,7 @@ class StoreItem extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // saver methods
-    // {{{ protected function saveQuantityDiscounts()
 
     /**
      * Automatically saves StoreQuantityDiscount sub-data-objects when this
@@ -1004,9 +911,6 @@ class StoreItem extends SwatDBDataObject
         $this->quantity_discounts->save();
     }
 
-    // }}}
-    // {{{ protected function saveRegionBindings()
-
     /**
      * Automatically saves StoreItemRegionBinding sub-data-objects when this
      * StoreItem object is saved.
@@ -1020,9 +924,6 @@ class StoreItem extends SwatDBDataObject
         $this->region_bindings->setDatabase($this->db);
         $this->region_bindings->save();
     }
-
-    // }}}
-    // {{{ protected function saveItemAliases()
 
     /**
      * Automatically saves StoreItemAlias sub-data-objects when this StoreItem
@@ -1038,9 +939,6 @@ class StoreItem extends SwatDBDataObject
         $this->item_aliases->save();
     }
 
-    // }}}
-    // {{{ protected function saveProvStateExclusionBindings()
-
     /**
      * Automatically saves StoreItemProvStateExclusionBinding sub-data-objects
      * when this StoreItem object is saved.
@@ -1055,10 +953,7 @@ class StoreItem extends SwatDBDataObject
         $this->provstate_exclusion_bindings->save();
     }
 
-    // }}}
-
     // serialization
-    // {{{ public function unserialize()
 
     public function unserialize(string $data): void
     {
@@ -1070,6 +965,4 @@ class StoreItem extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
 }

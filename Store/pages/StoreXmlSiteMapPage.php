@@ -10,8 +10,6 @@
  */
 class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 {
-    // {{{ protected function displaySiteMap()
-
     protected function displaySiteMap()
     {
         parent::displaySiteMap();
@@ -20,9 +18,6 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
         $this->displayCategories($categories);
     }
 
-    // }}}
-    // {{{ protected function queryArticles()
-
     protected function queryArticles()
     {
         $articles = parent::queryArticles();
@@ -30,9 +25,6 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 
         return $articles;
     }
-
-    // }}}
-    // {{{ protected function displayCategories()
 
     protected function displayCategories($categories, $path = null)
     {
@@ -59,9 +51,6 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
         }
     }
 
-    // }}}
-    // {{{ protected function queryCategories()
-
     protected function queryCategories()
     {
         $wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
@@ -77,6 +66,4 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 
         return $categories;
     }
-
-    // }}}
 }

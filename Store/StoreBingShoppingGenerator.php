@@ -6,14 +6,9 @@
  */
 abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
 {
-    // {{{ constants
-
     public const DELIMITER = "\t";
 
     public const EOL = "\r\n";
-
-    // }}}
-    // {{{ public function generate()
 
     public function generate()
     {
@@ -27,9 +22,6 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
 
         return ob_get_clean();
     }
-
-    // }}}
-    // {{{ protected function displayHeaderRow()
 
     protected function displayHeaderRow()
     {
@@ -46,9 +38,6 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         echo self::EOL;
     }
 
-    // }}}
-    // {{{ protected function getHeaders()
-
     protected function getHeaders()
     {
         return [
@@ -64,9 +53,6 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
             'B_Category',
         ];
     }
-
-    // }}}
-    // {{{ protected function displayItemRow()
 
     protected function displayItemRow(StoreItem $item)
     {
@@ -131,9 +117,6 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         echo self::EOL;
     }
 
-    // }}}
-    // {{{ protected function getId()
-
     protected function getId(StoreItem $item)
     {
         // ID needs to be distinct per row, so we can't use product.id, and
@@ -146,40 +129,25 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         */
     }
 
-    // }}}
-    // {{{ protected function getTitle()
-
     protected function getTitle(StoreItem $item)
     {
         return $item->product->title;
     }
-
-    // }}}
-    // {{{ protected function getSku()
 
     protected function getSku(StoreItem $item)
     {
         return $item->sku;
     }
 
-    // }}}
-    // {{{ protected function getUri()
-
     protected function getUri(StoreItem $item)
     {
         return $this->getBaseHref() . 'store/' . $item->product->path;
     }
 
-    // }}}
-    // {{{ protected function getPrice()
-
     protected function getPrice(StoreItem $item)
     {
         return round($item->getDisplayPrice(), 2);
     }
-
-    // }}}
-    // {{{ protected function getAvailability()
 
     protected function getAvailability(StoreItem $item)
     {
@@ -207,16 +175,10 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         return $availability;
     }
 
-    // }}}
-    // {{{ protected function getDescription()
-
     protected function getDescription(StoreItem $item)
     {
         return $item->getDescription();
     }
-
-    // }}}
-    // {{{ protected function getImageUri()
 
     protected function getImageUri(StoreItem $item)
     {
@@ -232,9 +194,6 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         return $image;
     }
 
-    // }}}
-    // {{{ protected function getCategory()
-
     protected function getCategory(StoreItem $item)
     {
         $category = null;
@@ -246,13 +205,7 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         return $category;
     }
 
-    // }}}
-    // {{{ abstract protected function getBingCategory()
-
     abstract protected function getBingCategory(StoreItem $item);
-
-    // }}}
-    // {{{ protected function printField()
 
     protected function printField($value, $suffix_with_delimiter = true)
     {
@@ -265,6 +218,4 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
             echo self::DELIMITER;
         }
     }
-
-    // }}}
 }

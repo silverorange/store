@@ -8,17 +8,12 @@
  */
 class StoreAccountDeleter extends SitePrivateDataDeleter
 {
-    // {{{ class constants
-
     /**
      * How many records to process in a single iteration.
      *
      * @var int
      */
     public const DATA_BATCH_SIZE = 100;
-
-    // }}}
-    // {{{ public function run()
 
     public function run()
     {
@@ -70,9 +65,6 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
         }
     }
 
-    // }}}
-    // {{{ protected function cleanAccount()
-
     /**
      * Clears an account of private data.
      *
@@ -115,9 +107,6 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
         $account->last_login = null;
     }
 
-    // }}}
-    // {{{ protected function getAccounts()
-
     protected function getAccounts()
     {
         $sql = sprintf(
@@ -132,9 +121,6 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
         return SwatDB::query($this->app->db, $sql, $wrapper_class);
     }
 
-    // }}}
-    // {{{ protected function getTotal()
-
     protected function getTotal()
     {
         $sql = sprintf(
@@ -144,9 +130,6 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
 
         return SwatDB::queryOne($this->app->db, $sql);
     }
-
-    // }}}
-    // {{{ protected function getExpiryDate()
 
     protected function getExpiryDate()
     {
@@ -158,9 +141,6 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
 
         return $expiry_date;
     }
-
-    // }}}
-    // {{{ protected function getWhereClause()
 
     protected function getWhereClause()
     {
@@ -178,6 +158,4 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
             $this->app->db->quote($instance_id, 'integer')
         );
     }
-
-    // }}}
 }

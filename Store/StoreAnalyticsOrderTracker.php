@@ -15,8 +15,6 @@
  */
 class StoreAnalyticsOrderTracker
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrder
      */
@@ -24,17 +22,11 @@ class StoreAnalyticsOrderTracker
 
     protected $affiliation;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct(StoreOrder $order, $affiliation = null)
     {
         $this->order = $order;
         $this->affiliation = $affiliation;
     }
-
-    // }}}
-    // {{{ public function getGoogleAnalyticsCommands()
 
     public function getGoogleAnalyticsCommands()
     {
@@ -48,9 +40,6 @@ class StoreAnalyticsOrderTracker
         return $commands;
     }
 
-    // }}}
-    // {{{ public function getGoogleAnalytics4Commands()
-
     public function getGoogleAnalytics4Commands(): array
     {
         return [
@@ -58,9 +47,6 @@ class StoreAnalyticsOrderTracker
             $this->getGoogleAnalytics4ShippingCommand(),
         ];
     }
-
-    // }}}
-    // {{{ public function getFacebookPixelCommands()
 
     public function getFacebookPixelCommands()
     {
@@ -75,9 +61,6 @@ class StoreAnalyticsOrderTracker
 
         return [$command];
     }
-
-    // }}}
-    // {{{ public function getBingUETCommands()
 
     public function getBingUETCommands()
     {
@@ -95,9 +78,6 @@ class StoreAnalyticsOrderTracker
         return [$command];
     }
 
-    // }}}
-    // {{{ public function getTwitterPixelCommands()
-
     public function getTwitterPixelCommands()
     {
         return [
@@ -105,9 +85,6 @@ class StoreAnalyticsOrderTracker
             'tw_order_quantity' => $this->getOrderQuantity(),
         ];
     }
-
-    // }}}
-    // {{{ protected function getGoogleAnalyticsOrderCommand()
 
     protected function getGoogleAnalyticsOrderCommand()
     {
@@ -139,9 +116,6 @@ class StoreAnalyticsOrderTracker
         ];
     }
 
-    // }}}
-    // {{{ protected function getGoogleAnalytics4ItemsParameter()
-
     protected function getGoogleAnalytics4ItemsParameter(): array
     {
         $items = [];
@@ -158,9 +132,6 @@ class StoreAnalyticsOrderTracker
         return $items;
     }
 
-    // }}}
-    // {{{ protected function getGoogleAnalytics4ShippingCommand()
-
     protected function getGoogleAnalytics4ShippingCommand(): array
     {
         return [
@@ -171,9 +142,6 @@ class StoreAnalyticsOrderTracker
             ],
         ];
     }
-
-    // }}}
-    // {{{ protected function getGoogleAnalytics4PurchaseCommand()
 
     protected function getGoogleAnalytics4PurchaseCommand(): array
     {
@@ -188,24 +156,15 @@ class StoreAnalyticsOrderTracker
         ];
     }
 
-    // }}}
-    // {{{ protected function getBingUETEventLabel()
-
     protected function getBingUETEventLabel()
     {
         return '';
     }
 
-    // }}}
-    // {{{ protected function getAddress()
-
     protected function getAddress()
     {
         return $this->order->billing_address;
     }
-
-    // }}}
-    // {{{ protected function getCity()
 
     protected function getCity(?StoreOrderAddress $address = null)
     {
@@ -217,9 +176,6 @@ class StoreAnalyticsOrderTracker
 
         return $city;
     }
-
-    // }}}
-    // {{{ protected function getProvStateTitle()
 
     protected function getProvStateTitle(?StoreOrderAddress $address = null)
     {
@@ -234,9 +190,6 @@ class StoreAnalyticsOrderTracker
         return $title;
     }
 
-    // }}}
-    // {{{ protected function getCountryTitle()
-
     protected function getCountryTitle(?StoreOrderAddress $address = null)
     {
         $title = '';
@@ -248,16 +201,10 @@ class StoreAnalyticsOrderTracker
         return $title;
     }
 
-    // }}}
-    // {{{ protected function getOrderTotal()
-
     protected function getOrderTotal()
     {
         return $this->order->total;
     }
-
-    // }}}
-    // {{{ protected function getOrderQuantity()
 
     protected function getOrderQuantity()
     {
@@ -269,16 +216,10 @@ class StoreAnalyticsOrderTracker
         return $quantity;
     }
 
-    // }}}
-    // {{{ protected function getTaxTotal()
-
     protected function getTaxTotal()
     {
         return ($this->order->tax_total == 0) ? '' : $this->order->tax_total;
     }
-
-    // }}}
-    // {{{ protected function getShippingTotal()
 
     protected function getShippingTotal()
     {
@@ -286,9 +227,6 @@ class StoreAnalyticsOrderTracker
             ? ''
             : $this->order->shipping_total;
     }
-
-    // }}}
-    // {{{ protected function getGoogleAnalyticsOrderItemCommand()
 
     protected function getGoogleAnalyticsOrderItemCommand(StoreOrderItem $item)
     {
@@ -303,29 +241,18 @@ class StoreAnalyticsOrderTracker
         ];
     }
 
-    // }}}
-    // {{{ protected function getSku()
-
     protected function getSku(StoreOrderItem $item)
     {
         return $item->sku;
     }
-
-    // }}}
-    // {{{ protected function getProductTitle()
 
     protected function getProductTitle(StoreOrderItem $item)
     {
         return $item->product_title;
     }
 
-    // }}}
-    // {{{ protected function getCategoryTitle()
-
     protected function getCategoryTitle(StoreOrderItem $item)
     {
         return $item->getSourceCategoryTitle();
     }
-
-    // }}}
 }

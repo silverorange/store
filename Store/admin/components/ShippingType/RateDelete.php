@@ -9,7 +9,6 @@
 class StoreShippingTypeRateDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -39,10 +38,7 @@ class StoreShippingTypeRateDelete extends AdminDBDelete
         $this->app->messages->add($message);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -63,6 +59,4 @@ class StoreShippingTypeRateDelete extends AdminDBDelete
         $message->content = '<h3>' . $content . '</h3>';
         $message->content_type = 'text/xml';
     }
-
-    // }}}
 }

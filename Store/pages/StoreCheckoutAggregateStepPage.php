@@ -8,12 +8,7 @@
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 {
-    // {{{ private properties
-
     private $embedded_edit_pages = [];
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct(SiteAbstractPage $page)
     {
@@ -24,31 +19,19 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
         }
     }
 
-    // }}}
-    // {{{ protected function registerEmbeddedEditPage()
-
     protected function registerEmbeddedEditPage($key, SiteAbstractPage $page)
     {
         $this->embedded_edit_pages[$key] = $page;
     }
-
-    // }}}
-    // {{{ protected function getEmbeddedEditPages()
 
     protected function getEmbeddedEditPages()
     {
         return $this->embedded_edit_pages;
     }
 
-    // }}}
-    // {{{ abstract protected function instantiateEmbeddedEditPages()
-
     abstract protected function instantiateEmbeddedEditPages();
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -57,9 +40,6 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
             $page->postInitCommon();
         }
     }
-
-    // }}}
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -78,9 +58,6 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
         }
     }
 
-    // }}}
-    // {{{ protected function loadUI()
-
     protected function loadUI()
     {
         parent::loadUI();
@@ -90,9 +67,6 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
             $this->ui->loadFromXML($page->getUiXml(), $container);
         }
     }
-
-    // }}}
-    // {{{ protected function getContainer()
 
     protected function getContainer($page)
     {
@@ -114,10 +88,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
         return $this->ui->getWidget($container_id);
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -175,10 +146,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -193,10 +161,7 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -206,6 +171,4 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
             $page->finalize();
         }
     }
-
-    // }}}
 }

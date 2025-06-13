@@ -8,22 +8,14 @@
  */
 class StoreCategoryEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * @var StoreCategory
      */
     protected $category;
 
-    // }}}
-    // {{{ private properties
-
     private $parent;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -33,9 +25,6 @@ class StoreCategoryEdit extends AdminDBEdit
         $this->parent = SiteApplication::initVar('parent');
         $this->initCategory();
     }
-
-    // }}}
-    // {{{ protected function initCategory()
 
     protected function initCategory()
     {
@@ -55,18 +44,12 @@ class StoreCategoryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -88,9 +71,6 @@ class StoreCategoryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function validateShortname()
-
     protected function validateShortname($shortname)
     {
         $sql = 'select shortname from Category
@@ -109,9 +89,6 @@ class StoreCategoryEdit extends AdminDBEdit
 
         return count($query) == 0;
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -141,9 +118,6 @@ class StoreCategoryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateCategory()
-
     protected function updateCategory()
     {
         $this->category->title =
@@ -162,10 +136,7 @@ class StoreCategoryEdit extends AdminDBEdit
             $this->ui->getWidget('always_visible')->value;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -176,9 +147,6 @@ class StoreCategoryEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function buildForm()
-
     protected function buildForm()
     {
         parent::buildForm();
@@ -186,16 +154,10 @@ class StoreCategoryEdit extends AdminDBEdit
         $form->addHiddenField('parent', $this->parent);
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->category->getAttributes());
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -222,6 +184,4 @@ class StoreCategoryEdit extends AdminDBEdit
 
         $this->navbar->addEntry($last_entry);
     }
-
-    // }}}
 }

@@ -8,14 +8,9 @@
  */
 class StoreSaleDiscountEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $sale_discount;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -26,9 +21,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 
         $this->initSaleDiscount();
     }
-
-    // }}}
-    // {{{ protected function initSaleDiscount()
 
     protected function initSaleDiscount()
     {
@@ -48,18 +40,12 @@ class StoreSaleDiscountEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -82,9 +68,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function validateShortname()
-
     protected function validateShortname($shortname)
     {
         $sql = 'select shortname from SaleDiscount
@@ -101,9 +84,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 
         return count($query) == 0;
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -123,9 +103,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
             $this->app->memcache->flushNs('product');
         }
     }
-
-    // }}}
-    // {{{ protected function updateSaleDiscount()
 
     protected function updateSaleDiscount()
     {
@@ -154,10 +131,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
             $values['discount_percentage'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -167,9 +141,6 @@ class StoreSaleDiscountEdit extends AdminDBEdit
             $this->ui->getWidget('shortname_field')->visible = false;
         }
     }
-
-    // }}}
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -186,6 +157,4 @@ class StoreSaleDiscountEdit extends AdminDBEdit
             $end_date->value->convertTZ($this->app->default_time_zone);
         }
     }
-
-    // }}}
 }

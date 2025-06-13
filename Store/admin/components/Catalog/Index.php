@@ -8,8 +8,6 @@
  */
 class StoreCatalogIndex extends AdminIndex
 {
-    // {{{ private properties
-
     /**
      * Cache of regions used by queryRegions().
      *
@@ -17,10 +15,7 @@ class StoreCatalogIndex extends AdminIndex
      */
     private $regions;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -55,18 +50,12 @@ class StoreCatalogIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -110,9 +99,6 @@ class StoreCatalogIndex extends AdminIndex
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected final function queryRegions()
-
     final protected function queryRegions()
     {
         if ($this->regions === null) {
@@ -127,6 +113,4 @@ class StoreCatalogIndex extends AdminIndex
 
         return $this->regions;
     }
-
-    // }}}
 }

@@ -34,8 +34,6 @@
  */
 class StoreOrderStatusList extends StoreStatusList
 {
-    // {{{ private properties
-
     /**
      * Static collection of available statuses for this class of status list.
      *
@@ -51,9 +49,6 @@ class StoreOrderStatusList extends StoreStatusList
      * @see StoreOrderStatusList::statuses()
      */
     private static $instance;
-
-    // }}}
-    // {{{ public static function status()
 
     /**
      * Convenience function to get a status by shortname without having to
@@ -74,9 +69,6 @@ class StoreOrderStatusList extends StoreStatusList
     {
         return self::statuses()->getByShortname($status_shortname);
     }
-
-    // }}}
-    // {{{ public static function statuses()
 
     /**
      * Gets the list of defined order statuses.
@@ -100,9 +92,6 @@ class StoreOrderStatusList extends StoreStatusList
 
         return self::$instance;
     }
-
-    // }}}
-    // {{{ protected function getDefinedStatuses()
 
     /**
      * Gets an array of defined order statuses for this class of list.
@@ -141,9 +130,6 @@ class StoreOrderStatusList extends StoreStatusList
         return self::$defined_statuses;
     }
 
-    // }}}
-    // {{{ protected function __construct()
-
     protected function __construct()
     {
         parent::__construct();
@@ -151,6 +137,4 @@ class StoreOrderStatusList extends StoreStatusList
         // sort statuses since order statuses need to be iterated in order
         usort($this->statuses, ['StoreOrderStatus', 'compare']);
     }
-
-    // }}}
 }

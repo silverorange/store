@@ -5,12 +5,7 @@
  */
 class StoreCategoryPathEntry extends SitePathEntry
 {
-    // {{{ public properties
-
     public $twig;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new category path entry.
@@ -27,6 +22,4 @@ class StoreCategoryPathEntry extends SitePathEntry
         parent::__construct($id, $parent, $shortname, $title);
         $this->twig = $twig;
     }
-
-    // }}}
 }

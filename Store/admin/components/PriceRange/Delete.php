@@ -9,7 +9,6 @@
 class StorePriceRangeDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected funtion processDBData()
 
     protected function processDBData(): void
     {
@@ -43,18 +42,12 @@ class StorePriceRangeDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getProcessSQL()
-
     protected function getProcessSQL()
     {
         return 'delete from PriceRange where id in (%s)';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -77,6 +70,4 @@ class StorePriceRangeDelete extends AdminDBDelete
         $message->content = '<h3>' . $content . '</h3>';
         $message->content_type = 'text/xml';
     }
-
-    // }}}
 }

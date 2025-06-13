@@ -9,7 +9,6 @@
 class StoreArticleEdit extends SiteArticleEdit
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -18,18 +17,12 @@ class StoreArticleEdit extends SiteArticleEdit
         $this->ui->mapClassPrefixToPath('Store', 'Store');
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -37,9 +30,6 @@ class StoreArticleEdit extends SiteArticleEdit
 
         $this->saveRegions();
     }
-
-    // }}}
-    // {{{ protected function saveRegions()
 
     protected function saveRegions()
     {
@@ -57,9 +47,6 @@ class StoreArticleEdit extends SiteArticleEdit
         );
     }
 
-    // }}}
-    // {{{ protected function saveArticle()
-
     protected function saveArticle()
     {
         $values = $this->ui->getValues(['title', 'shortname', 'bodytext',
@@ -75,10 +62,7 @@ class StoreArticleEdit extends SiteArticleEdit
         $this->edit_article->save();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -100,18 +84,12 @@ class StoreArticleEdit extends SiteArticleEdit
         }
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         parent::loadDBData();
 
         $this->loadRegions();
     }
-
-    // }}}
-    // {{{ protected function loadRegions()
 
     protected function loadRegions()
     {
@@ -129,6 +107,4 @@ class StoreArticleEdit extends SiteArticleEdit
             $regions_list->values[] = $binding->region;
         }
     }
-
-    // }}}
 }

@@ -8,17 +8,12 @@
  */
 class StoreShippingTypeEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * @var VanBourgondienShippingType
      */
     protected $shipping_type;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -28,9 +23,6 @@ class StoreShippingTypeEdit extends AdminDBEdit
 
         $this->ui->loadFromXML($this->getUiXml());
     }
-
-    // }}}
-    // {{{ private function initShippingType()
 
     private function initShippingType()
     {
@@ -49,18 +41,12 @@ class StoreShippingTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function updateShippingType()
 
     protected function updateShippingType()
     {
@@ -75,9 +61,6 @@ class StoreShippingTypeEdit extends AdminDBEdit
         $this->shipping_type->note = $values['note'];
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateShippingType();
@@ -91,10 +74,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
         $this->app->messages->add($message);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -112,13 +92,8 @@ class StoreShippingTypeEdit extends AdminDBEdit
         $this->navbar->addEntry($final_entry);
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->shipping_type->getAttributes());
     }
-
-    // }}}
 }

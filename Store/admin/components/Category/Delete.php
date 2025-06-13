@@ -8,15 +8,10 @@
  */
 class StoreCategoryDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     // used for custom relocate
     private $relocate_id;
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -27,9 +22,6 @@ class StoreCategoryDelete extends AdminDBDelete
 
         parent::processInternal();
     }
-
-    // }}}
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -69,9 +61,6 @@ class StoreCategoryDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     /**
      * Relocate after process.
      */
@@ -90,9 +79,6 @@ class StoreCategoryDelete extends AdminDBDelete
             parent::relocate();
         }
     }
-
-    // }}}
-    // {{{ protected function getCategories()
 
     protected function getCategories()
     {
@@ -118,10 +104,7 @@ class StoreCategoryDelete extends AdminDBDelete
         return $categories;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -160,9 +143,6 @@ class StoreCategoryDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getDependentCategories()
-
     private function getDependentCategories($dep, $item_list)
     {
         $dep_subcategories = new AdminListDependency();
@@ -198,9 +178,6 @@ class StoreCategoryDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getDependentProducts()
-
     private function getDependentProducts($dep, $item_list)
     {
         $dep_products = new StoreCategoryProductDependency();
@@ -215,9 +192,6 @@ class StoreCategoryDelete extends AdminDBDelete
 
         $dep->addDependency($dep_products);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -246,6 +220,4 @@ class StoreCategoryDelete extends AdminDBDelete
         $this->title = $this->navbar->getLastEntry()->title;
         $this->navbar->addEntry($delete_entry);
     }
-
-    // }}}
 }

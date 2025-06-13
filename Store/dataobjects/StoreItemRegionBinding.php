@@ -7,8 +7,6 @@
  */
 class StoreItemRegionBinding extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Price of the item.
      *
@@ -39,9 +37,6 @@ class StoreItemRegionBinding extends SwatDBDataObject
      */
     public $enabled;
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->registerInternalProperty(
@@ -56,6 +51,4 @@ class StoreItemRegionBinding extends SwatDBDataObject
 
         $this->table = 'ItemRegionBinding';
     }
-
-    // }}}
 }

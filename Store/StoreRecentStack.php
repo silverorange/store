@@ -8,17 +8,9 @@
  */
 class StoreRecentStack
 {
-    // {{{ public properties
-
     public $max_size = 10;
 
-    // }}}
-    // {{{ protected properties
-
     protected $stack = [];
-
-    // }}}
-    // {{{ public function add()
 
     public function add($id)
     {
@@ -36,9 +28,6 @@ class StoreRecentStack
             array_pop($this->stack);
         }
     }
-
-    // }}}
-    // {{{ public function get()
 
     public function get($count = null, $exclude_id = null)
     {
@@ -66,6 +55,4 @@ class StoreRecentStack
 
         return $out;
     }
-
-    // }}}
 }

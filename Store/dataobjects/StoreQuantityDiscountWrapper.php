@@ -8,8 +8,6 @@
  */
 class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public function loadSetFromDB()
-
     public function loadSetFromDB(
         MDB2_Driver_Common $db,
         array $id_set,
@@ -55,9 +53,6 @@ class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
         return $quantity_discounts;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -65,6 +60,4 @@ class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
         $this->row_wrapper_class = SwatDBClassMap::get('StoreQuantityDiscount');
         $this->index_field = 'id';
     }
-
-    // }}}
 }

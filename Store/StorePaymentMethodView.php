@@ -8,14 +8,9 @@
  */
 class StorePaymentMethodView extends SwatControl
 {
-    // {{{ public properties
-
     public $payment_method;
 
     public $paymentMethodConfirmText;
-
-    // }}}
-    // {{{ private properties
 
     /**
      * @var SwatButton
@@ -27,9 +22,6 @@ class StorePaymentMethodView extends SwatControl
      */
     private $edit_link = 'account/paymentmethod%s';
 
-    // }}}
-    // {{{ public function init()
-
     public function init()
     {
         $this->remove_button =
@@ -38,24 +30,15 @@ class StorePaymentMethodView extends SwatControl
         $this->remove_button->parent = $this;
     }
 
-    // }}}
-    // {{{ public function process()
-
     public function process()
     {
         $this->remove_button->process();
     }
 
-    // }}}
-    // {{{ public function hasBeenClicked()
-
     public function hasBeenClicked()
     {
         return $this->remove_button->hasBeenClicked();
     }
-
-    // }}}
-    // {{{ public function getHtmlHeadEntrySet()
 
     public function getHtmlHeadEntrySet()
     {
@@ -64,9 +47,6 @@ class StorePaymentMethodView extends SwatControl
 
         return $set;
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -110,9 +90,6 @@ class StorePaymentMethodView extends SwatControl
         $div->close();
     }
 
-    // }}}
-    // {{{ protected function getCSSClassNames()
-
     /**
      * Gets the array of CSS classes that are applied to this entry widget.
      *
@@ -125,6 +102,4 @@ class StorePaymentMethodView extends SwatControl
 
         return array_merge($classes, $this->classes);
     }
-
-    // }}}
 }

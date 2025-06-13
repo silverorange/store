@@ -13,17 +13,12 @@
  */
 abstract class StorePaymentResponse
 {
-    // {{{ abstract public function __construct()
-
     /**
      * Builds a payment response.
      *
      * @param mixed $response_data the data to build the response object from
      */
     abstract public function __construct($response_data);
-
-    // }}}
-    // {{{ abstract public function getField()
 
     /**
      * Gets a protocol-specific response field.
@@ -33,9 +28,6 @@ abstract class StorePaymentResponse
      * @return mixed the value of the field
      */
     abstract public function getField($name);
-
-    // }}}
-    // {{{ abstract public function hasField()
 
     /**
      * Gets whether or not protocol-specific response field exists.
@@ -47,9 +39,6 @@ abstract class StorePaymentResponse
      */
     abstract public function hasField($name);
 
-    // }}}
-    // {{{ abstract protected function __toString()
-
     /**
      * Gets a string representation of this payment response.
      *
@@ -58,6 +47,4 @@ abstract class StorePaymentResponse
      * @return string a string representation of this payment response
      */
     abstract public function __toString();
-
-    // }}}
 }

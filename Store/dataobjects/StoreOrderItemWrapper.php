@@ -9,8 +9,6 @@
  */
 class StoreOrderItemWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public function loadAllAvailableItems()
-
     public function loadAllAvailableItems(StoreRegion $region)
     {
         $item_ids = [];
@@ -100,15 +98,10 @@ class StoreOrderItemWrapper extends SwatDBRecordsetWrapper
         return $items;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->index_field = 'id';
         $this->row_wrapper_class = SwatDBClassMap::get('StoreOrderItem');
     }
-
-    // }}}
 }

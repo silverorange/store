@@ -11,7 +11,6 @@ class StoreCatalogEdit extends AdminDBEdit
     protected StoreCatalog $catalog;
 
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -22,9 +21,6 @@ class StoreCatalogEdit extends AdminDBEdit
 
         $this->initCatalog();
     }
-
-    // }}}
-    // {{{ protected function initCatalog()
 
     protected function initCatalog()
     {
@@ -44,18 +40,12 @@ class StoreCatalogEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -74,9 +64,6 @@ class StoreCatalogEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateCatalog()
-
     protected function updateCatalog()
     {
         $values = $this->ui->getValues([
@@ -86,18 +73,12 @@ class StoreCatalogEdit extends AdminDBEdit
         $this->catalog->in_season = $values['in_season'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
         $this->ui->setValues($this->catalog->getAttributes());
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -110,6 +91,4 @@ class StoreCatalogEdit extends AdminDBEdit
 
         parent::buildNavBar();
     }
-
-    // }}}
 }

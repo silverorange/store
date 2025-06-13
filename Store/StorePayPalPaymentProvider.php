@@ -17,8 +17,6 @@
  */
 class StorePayPalPaymentProvider extends StorePaymentProvider
 {
-    // {{{ class constants
-
     public const EXPRESS_CHECKOUT_URL_LIVE =
         'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
 
@@ -26,8 +24,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
     public const EXPRESS_CHECKOUT_URL_SANDBOX =
         'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
     // @codingStandardsIgnoreEnd
-    // }}}
-    // {{{ protected properties
 
     /**
      * The currency to use for transactions.
@@ -53,9 +49,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
      * @see StorePayPalPaymentProvider::__construct()
      */
     protected $mode;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new payment provider using the PayPal SOAP API.
@@ -130,10 +123,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         $this->client = new Payment_PayPal_SOAP($options);
     }
 
-    // }}}
-
     // direct payment methods
-    // {{{ public function pay()
 
     /**
      * Pay for an order immediately.
@@ -196,9 +186,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $transaction;
     }
 
-    // }}}
-    // {{{ public function hold()
-
     /**
      * Place a hold on funds for an order.
      *
@@ -254,10 +241,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $transaction;
     }
 
-    // }}}
-
     // express checkout payment methods
-    // {{{ public function setExpressCheckout()
 
     /**
      * Initiates or updates an express checkout transaction.
@@ -335,9 +319,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $token;
     }
 
-    // }}}
-    // {{{ public function getExpressCheckoutUri()
-
     /**
      * Gets the URI for PayPal's Express Checkout.
      *
@@ -375,9 +356,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         return $uri;
     }
-
-    // }}}
-    // {{{ public function getExpressCheckoutDetails()
 
     /**
      * Updates an order with payment details from an Express Checkout
@@ -477,9 +455,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         }
     }
 
-    // }}}
-    // {{{ public function doExpressCheckout()
-
     /**
      * Completes an Express Checkout payment.
      *
@@ -569,9 +544,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         ];
     }
 
-    // }}}
-    // {{{ public function createRecurringPaymentsProfile()
-
     /**
      * @sensitive $card_number
      * @sensitive $card_verification_value
@@ -623,10 +595,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         ];
     }
 
-    // }}}
-
     // convenience methods
-    // {{{ public function getExceptionMessageId()
 
     /**
      * Gets an error message id from a Payment_PayPal_SOAP_ErrorException.
@@ -823,9 +792,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return null;
     }
 
-    // }}}
-    // {{{ public function formatNumber()
-
     /**
      * @param float $value
      *
@@ -837,9 +803,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         return number_format($value, 2, '.', '');
     }
-
-    // }}}
-    // {{{ public function formatString()
 
     /**
      * @param string $string
@@ -860,16 +823,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $string;
     }
 
-    // }}}
-    // {{{ public function formatCurrency()
-
     public function formatCurrency($value)
     {
         return $this->getCurrencyValue($value, $this->currency);
     }
-
-    // }}}
-    // {{{ public function getCurrencyValue()
 
     /**
      * @param float $value
@@ -884,9 +841,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             'currencyID' => $currency,
         ];
     }
-
-    // }}}
-    // {{{ public function getPaymentDetails()
 
     public function getPaymentDetails(
         StoreOrder $order,
@@ -941,9 +895,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-    // {{{ public function getPaymentDetailsItems()
-
     public function getPaymentDetailsItems(StoreOrder $order)
     {
         $details = [];
@@ -954,9 +905,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         return $details;
     }
-
-    // }}}
-    // {{{ public function getPaymentDetailsItem()
 
     public function getPaymentDetailsItem(StoreOrderItem $item)
     {
@@ -992,10 +940,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-
     // data-structure helper methods (express checkout)
-    // {{{ protected function getSetExpressCheckoutRequest()
 
     protected function getSetExpressCheckoutRequest(array $parameters)
     {
@@ -1024,9 +969,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         ];
     }
 
-    // }}}
-    // {{{ protected function getGetExpressCheckoutDetailsRequest()
-
     protected function getGetExpressCheckoutDetailsRequest($token)
     {
         return [
@@ -1036,9 +978,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             ],
         ];
     }
-
-    // }}}
-    // {{{ protected function getDoExpressCheckoutPaymentRequest()
 
     protected function getDoExpressCheckoutPaymentRequest(
         $token,
@@ -1063,9 +1002,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         ];
     }
 
-    // }}}
-    // {{{ protected function getDoExpressCheckoutPaymentRequestDetails()
-
     protected function getDoExpressCheckoutPaymentRequestDetails(
         $token,
         $action,
@@ -1088,9 +1024,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-    // {{{ protected function getStoreOrderPaymentMethod()
-
     protected function getStoreOrderPaymentMethod(MDB2_Driver_Common $db)
     {
         $class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
@@ -1106,9 +1039,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         return $payment_method;
     }
-
-    // }}}
-    // {{{ protected function getStoreOrderAddress()
 
     protected function getStoreOrderAddress($address, MDB2_Driver_Common $db)
     {
@@ -1155,9 +1085,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $order_address;
     }
 
-    // }}}
-    // {{{ protected function getStoreFullname()
-
     protected function getStoreFullname($person_name)
     {
         $name = [];
@@ -1181,9 +1108,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return implode(' ', $name);
     }
 
-    // }}}
-    // {{{ protected function updateStoreOrderPaymentMethod()
-
     protected function updateStoreOrderPaymentMethod(
         StoreOrderPaymentMethod $payment_method,
         $token,
@@ -1200,10 +1124,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $payment_method;
     }
 
-    // }}}
-
     // data-structure helper methods (direct)
-    // {{{ protected function getDoDirectPaymentRequest()
 
     protected function getDoDirectPaymentRequest(
         StoreOrder $order,
@@ -1223,9 +1144,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             ],
         ];
     }
-
-    // }}}
-    // {{{ protected function getDoDirectPaymentRequestDetails()
 
     protected function getDoDirectPaymentRequestDetails(
         StoreOrder $order,
@@ -1252,9 +1170,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-    // {{{ protected function getPayerInfo()
-
     protected function getPayerInfo(
         StoreOrder $order,
         StorePaymentMethod $payment_method
@@ -1277,16 +1192,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-    // {{{ protected function getPayerInfoAddress()
-
     protected function getPayerInfoAddress(StoreOrder $order)
     {
         return $this->getAddress($order->billing_address);
     }
-
-    // }}}
-    // {{{ protected function getPersonName()
 
     protected function getPersonName(StoreOrderPaymentMethod $payment_method)
     {
@@ -1334,10 +1243,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-
     // data-structure helper methods (recurring payments)
-    // {{{ protected function getCreateRecurringPaymentsProfileRequest()
 
     /**
      * @sensitive $card_number
@@ -1371,9 +1277,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             ],
         ];
     }
-
-    // }}}
-    // {{{ protected function getCreateRecurringPaymentsProfileRequestDetails()
 
     /**
      * @sensitive $card_number
@@ -1432,9 +1335,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-    // {{{ protected function getRecurringPaymentsPaymentDetailsItems()
-
     protected function getRecurringPaymentsPaymentDetailsItems(
         StoreOrder $order
     ) {
@@ -1446,9 +1346,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         return $details;
     }
-
-    // }}}
-    // {{{ protected function getRecurringPaymentsProfileDetails()
 
     protected function getRecurringPaymentsProfileDetails(
         StoreOrder $order,
@@ -1473,10 +1370,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-
     // data-structure helper methods (shared)
-    // {{{ protected function getCreditCardDetails()
 
     protected function getCreditCardDetails(
         StoreOrder $order,
@@ -1513,9 +1407,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-    // {{{ protected function getCreditCardType()
-
     protected function getCreditCardType(StoreOrderPaymentMethod $payment_method)
     {
         switch ($payment_method->card_type->shortname) {
@@ -1550,16 +1441,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $type;
     }
 
-    // }}}
-    // {{{ protected function getShipToAddress()
-
     protected function getShipToAddress(StoreOrder $order)
     {
         return $this->getAddress($order->shipping_address);
     }
-
-    // }}}
-    // {{{ protected function getAddress()
 
     protected function getAddress(StoreOrderAddress $address)
     {
@@ -1593,10 +1478,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         return $details;
     }
 
-    // }}}
-
     // general helper methods
-    // {{{ protected function getMerchantSessionId()
 
     protected function getMerchantSessionId()
     {
@@ -1606,9 +1488,6 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         // characters in this field.
         return session_id();
     }
-
-    // }}}
-    // {{{ protected function getIpAddress()
 
     protected function getIpAddress()
     {
@@ -1622,6 +1501,4 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         return $remote_ip;
     }
-
-    // }}}
 }

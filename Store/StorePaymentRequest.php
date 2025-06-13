@@ -19,8 +19,6 @@
  */
 abstract class StorePaymentRequest
 {
-    // {{{ class constants
-
     /**
      * A normal payment request.
      *
@@ -108,9 +106,6 @@ abstract class StorePaymentRequest
      */
     public const TYPE_3DS_AUTH = 9;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The type of request.
      *
@@ -150,9 +145,6 @@ abstract class StorePaymentRequest
      * @var array
      */
     protected $required_fields = [];
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new payment request.
@@ -198,9 +190,6 @@ abstract class StorePaymentRequest
         $this->data = $this->getDefaultData();
     }
 
-    // }}}
-    // {{{ public function setField()
-
     /**
      * Sets a request field.
      *
@@ -213,9 +202,6 @@ abstract class StorePaymentRequest
     {
         $this->data[$name] = $value;
     }
-
-    // }}}
-    // {{{ public function setFields()
 
     /**
      * Sets multiple request fields.
@@ -230,9 +216,6 @@ abstract class StorePaymentRequest
             $this->data[$name] = $value;
         }
     }
-
-    // }}}
-    // {{{ public static function getTypeString()
 
     /**
      * Gets a human-readable string representing a request type.
@@ -285,9 +268,6 @@ abstract class StorePaymentRequest
         return $string;
     }
 
-    // }}}
-    // {{{ abstract public function process()
-
     /**
      * Processes this request.
      *
@@ -298,9 +278,6 @@ abstract class StorePaymentRequest
      *                              this request
      */
     abstract public function process();
-
-    // }}}
-    // {{{ protected function makeFieldRequired()
 
     /**
      * Makes a field required.
@@ -314,9 +291,6 @@ abstract class StorePaymentRequest
         }
     }
 
-    // }}}
-    // {{{ protected function makeFieldsRequired()
-
     /**
      * Makes a list of fields required.
      *
@@ -328,9 +302,6 @@ abstract class StorePaymentRequest
             $this->makeFieldRequired($field_name);
         }
     }
-
-    // }}}
-    // {{{ protected function checkRequiredFields()
 
     /**
      * Ensures all required fields are set on this request.
@@ -350,9 +321,6 @@ abstract class StorePaymentRequest
         }
     }
 
-    // }}}
-    // {{{ protected function getAvailableModes()
-
     /**
      * Gets a list of available transaction modes for this request.
      *
@@ -366,9 +334,6 @@ abstract class StorePaymentRequest
         ];
     }
 
-    // }}}
-    // {{{ protected function getAvailableTypes()
-
     /**
      * Gets a list of available transaction types for this request.
      *
@@ -379,9 +344,6 @@ abstract class StorePaymentRequest
     {
         return array_keys($this->getTypeMap());
     }
-
-    // }}}
-    // {{{ protected function getDefaultData()
 
     /**
      * Gets a key-value array of protocol-specific default data.
@@ -398,9 +360,6 @@ abstract class StorePaymentRequest
         return [];
     }
 
-    // }}}
-    // {{{ abstract public function __toString()
-
     /**
      * Gets a string representation of this payment request.
      *
@@ -409,9 +368,6 @@ abstract class StorePaymentRequest
      * @return string a string representation of this payment request
      */
     abstract public function __toString();
-
-    // }}}
-    // {{{ abstract protected function getTypeMap()
 
     /**
      * Gets a mapping of valid request types for this request to
@@ -425,9 +381,6 @@ abstract class StorePaymentRequest
      */
     abstract protected function getTypeMap();
 
-    // }}}
-    // {{{ abstract protected function getDefaultRequiredFields()
-
     /**
      * Gets a list of protocol-specific fields that are required by default.
      *
@@ -435,6 +388,4 @@ abstract class StorePaymentRequest
      *               default
      */
     abstract protected function getDefaultRequiredFields();
-
-    // }}}
 }

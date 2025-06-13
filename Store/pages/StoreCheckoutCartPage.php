@@ -8,22 +8,14 @@
  */
 class StoreCheckoutCartPage extends StoreCheckoutPage
 {
-    // {{{ protected properties
-
     protected $updated_entry_ids = [];
-
-    // }}}
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-cart.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -49,18 +41,12 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function getProgressDependencies()
-
     protected function getProgressDependencies()
     {
         return ['checkout/first'];
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -96,9 +82,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function continueButtonHasBeenClicked()
-
     /**
      * Whether or not a button has been clicked indicating the customer
      * wants to return to the checkout.
@@ -121,9 +104,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $continue_button_clicked;
     }
 
-    // }}}
-    // {{{ protected function getContinueButtons()
-
     protected function getContinueButtons()
     {
         $buttons = [];
@@ -139,9 +119,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function getQuantityWidgets()
-
     protected function getQuantityWidgets()
     {
         $view = $this->ui->getWidget('cart_view');
@@ -151,9 +128,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $renderer->getWidgets('quantity_entry');
     }
 
-    // }}}
-    // {{{ protected function getQuantityWidget()
-
     protected function getQuantityWidget($id)
     {
         $view = $this->ui->getWidget('cart_view');
@@ -162,9 +136,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         return $renderer->getWidget($id);
     }
-
-    // }}}
-    // {{{ protected function getMoveButtons()
 
     protected function getMoveButtons()
     {
@@ -180,9 +151,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function getRemoveButtons()
-
     protected function getRemoveButtons()
     {
         $buttons = [];
@@ -196,9 +164,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         return $buttons;
     }
-
-    // }}}
-    // {{{ protected function processEntries()
 
     protected function processEntries()
     {
@@ -225,9 +190,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         );
     }
 
-    // }}}
-    // {{{ protected function processRemovedEntries()
-
     protected function processRemovedEntries()
     {
         $num_entries_removed = 0;
@@ -242,9 +204,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         return $num_entries_removed;
     }
-
-    // }}}
-    // {{{ protected function processMovedEntries()
 
     protected function processMovedEntries()
     {
@@ -271,9 +230,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         return $num_entries_moved;
     }
-
-    // }}}
-    // {{{ protected function processUpdatedEntries()
 
     protected function processUpdatedEntries()
     {
@@ -307,9 +263,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
             'num_entries_removed' => $num_entries_removed,
         ];
     }
-
-    // }}}
-    // {{{ protected function buildCartMessages()
 
     protected function buildCartMessages(
         $num_entries_moved,
@@ -352,18 +305,12 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
         $this->buildTableView();
     }
-
-    // }}}
-    // {{{ protected function buildTableView()
 
     protected function buildTableView()
     {
@@ -394,9 +341,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         );
     }
 
-    // }}}
-    // {{{ protected function getTableStore()
-
     protected function getTableStore()
     {
         $store = new SwatTableStore();
@@ -409,9 +353,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         return $store;
     }
-
-    // }}}
-    // {{{ protected function getDetailsStore()
 
     protected function getDetailsStore(StoreCartEntry $entry)
     {
@@ -449,9 +390,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getEntryDescription()
-
     protected function getEntryDescription(StoreCartEntry $entry)
     {
         $description = [];
@@ -462,9 +400,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         return implode("\n", $description);
     }
-
-    // }}}
-    // {{{ protected function getProvStateExclusionDescription()
 
     protected function getProvStateExclusionDescription(StoreCartEntry $entry)
     {
@@ -496,9 +431,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $description;
     }
 
-    // }}}
-    // {{{ protected function getImageDimension()
-
     /**
      * @return string Image dimension shortname
      */
@@ -506,9 +438,6 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
     {
         return 'pinky';
     }
-
-    // }}}
-    // {{{ protected function getAvailableProductItemCount()
 
     protected function getAvailableProductItemCount(StoreCartEntry $entry)
     {
@@ -538,18 +467,12 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         return $count;
     }
 
-    // }}}
-    // {{{ protected function getEntryIndex()
-
     protected function getEntryIndex(StoreCartEntry $entry)
     {
         return $entry->item->getInternalValue('product');
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -560,6 +483,4 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
             'packages/store/styles/store-checkout-cart-page.css'
         );
     }
-
-    // }}}
 }

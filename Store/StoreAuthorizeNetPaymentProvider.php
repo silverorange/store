@@ -12,8 +12,6 @@ use net\authorize\api\controller\CreateTransactionController;
  */
 class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 {
-    // {{{ protected properties
-
     /**
      * @var string
      *
@@ -50,9 +48,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
      * @see StoreAuthorizeNetPaymentProvider::__construct()
      */
     protected $order_description_prefix;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new payment provider using the Authorize.net AIM API.
@@ -120,9 +115,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
             : Store::_('Order');
     }
 
-    // }}}
-    // {{{ public function pay()
-
     /**
      * Pay for an order immediately.
      *
@@ -171,9 +163,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $transaction;
     }
 
-    // }}}
-    // {{{ public function getExceptionMessageId()
-
     public function getExceptionMessageId(Throwable $e)
     {
         if ($e instanceof StorePaymentAuthorizeNetException) {
@@ -210,9 +199,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         return null;
     }
-
-    // }}}
-    // {{{ protected function getTransactionController()
 
     /**
      * Builds a transaction controller for a payment.
@@ -263,9 +249,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return new CreateTransactionController($request);
     }
 
-    // }}}
-    // {{{ protected function getInvoiceNumber()
-
     protected function getInvoiceNumber(StoreOrder $order)
     {
         // Authorize.net only allows 20 chars for invoice number. Get max
@@ -280,16 +263,10 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
             : $invoice_number_prefix . ' ' . $order->id;
     }
 
-    // }}}
-    // {{{ protected function getOrderDescription()
-
     protected function getOrderDescription(StoreOrder $order)
     {
         return $this->order_description_prefix . ' ' . $order->id;
     }
-
-    // }}}
-    // {{{ protected function getPayment()
 
     /**
      * @sensitive $card_number
@@ -328,9 +305,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $payment;
     }
 
-    // }}}
-    // {{{ protected function getBillTo()
-
     protected function getBillTo(StoreOrderAddress $address)
     {
         $anet_address = new AnetAPI\CustomerAddressType();
@@ -361,9 +335,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $anet_address;
     }
 
-    // }}}
-    // {{{ protected function getOrder()
-
     protected function getOrder(StoreOrder $order)
     {
         $anet_order = new AnetAPI\OrderType();
@@ -379,9 +350,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $anet_order;
     }
 
-    // }}}
-    // {{{ protected function getCustomer()
-
     protected function getCustomer(StoreOrder $order)
     {
         $customer = new AnetAPI\CustomerDataType();
@@ -396,9 +364,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         return $customer;
     }
-
-    // }}}
-    // {{{ protected function getLineItem()
 
     protected function getLineItem(StoreOrderItem $item)
     {
@@ -416,9 +381,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $line_item;
     }
 
-    // }}}
-    // {{{ protected function getIPAddress()
-
     protected function getIPAddress()
     {
         $remote_ip = null;
@@ -432,9 +394,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $remote_ip;
     }
 
-    // }}}
-    // {{{ protected function getTax()
-
     protected function getTax(StoreOrder $order)
     {
         $amount = new AnetAPI\ExtendedAmountType();
@@ -443,9 +402,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return $amount;
     }
 
-    // }}}
-    // {{{ protected function getShipping()
-
     protected function getShipping(StoreOrder $order)
     {
         $amount = new AnetAPI\ExtendedAmountType();
@@ -453,9 +409,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         return $amount;
     }
-
-    // }}}
-    // {{{ protected function getMerchantAuthentication()
 
     protected function getMerchantAuthentication()
     {
@@ -466,9 +419,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         return $auth;
     }
-
-    // }}}
-    // {{{ protected function hasError()
 
     protected function hasError($response)
     {
@@ -488,9 +438,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         return false;
     }
-
-    // }}}
-    // {{{ protected function getException()
 
     protected function getException($response)
     {
@@ -530,9 +477,6 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return new StorePaymentAuthorizeNetException($text, $code);
     }
 
-    // }}}
-    // {{{ protected function truncateField()
-
     protected function truncateField($content, $maxlength)
     {
         $content = SwatString::condense($content, $maxlength - 4, ' ...');
@@ -541,15 +485,10 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         return html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
     }
 
-    // }}}
-    // {{{ protected function getSafeTotal()
-
     protected function getSafeTotal($total)
     {
         // We can get into trouble using floats. Using solution outlined here:
         // https://github.com/AuthorizeNet/sdk-php/issues/366
         return number_format($total, 2, '.', '') . '';
     }
-
-    // }}}
 }

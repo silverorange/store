@@ -10,8 +10,6 @@
  */
 class StorePaymentMethodTransactionWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -21,6 +19,4 @@ class StorePaymentMethodTransactionWrapper extends SwatDBRecordsetWrapper
 
         $this->index_field = 'id';
     }
-
-    // }}}
 }

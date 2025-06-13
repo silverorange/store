@@ -8,8 +8,6 @@
  */
 class StoreNoAccessException extends StoreException
 {
-    // {{{ public function __construct()
-
     /**
      * Creates a new no access exception.
      *
@@ -22,6 +20,4 @@ class StoreNoAccessException extends StoreException
         $this->title = _('No Access');
         $this->http_status_code = 403;
     }
-
-    // }}}
 }

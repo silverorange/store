@@ -8,8 +8,6 @@
  */
 class StoreCardInceptionEntry extends SwatDateEntry
 {
-    // {{{ public function __construct()
-
     /**
      * Creates a new card inception date entry widget.
      *
@@ -36,6 +34,4 @@ class StoreCardInceptionEntry extends SwatDateEntry
         $this->valid_range_end->setDay(1);
         $this->valid_range_end->setTime(0, 0, 0);
     }
-
-    // }}}
 }

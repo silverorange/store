@@ -8,41 +8,27 @@
  */
 class StoreCategorySetItemEnabled extends AdminDBConfirmation
 {
-    // {{{ private properties
-
     private $category_id;
     private $enabled;
     private $region;
     private StoreCatalogSwitcher $catalog_switcher;
-
-    // }}}
-    // {{{ public function setCategory()
 
     public function setCategory($category_id)
     {
         $this->category_id = $category_id;
     }
 
-    // }}}
-    // {{{ public function setEnabled()
-
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
     }
-
-    // }}}
-    // {{{ public function setRegion()
 
     public function setRegion($region)
     {
         $this->region = $region;
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -56,10 +42,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
         $this->catalog_switcher->init();
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -90,10 +73,7 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -128,9 +108,6 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
         }
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -157,9 +134,6 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
         ));
     }
 
-    // }}}
-    // {{{ private function getItemQuerySQL()
-
     private function getItemQuerySQL()
     {
         $item_list = $this->getItemList('integer');
@@ -183,9 +157,6 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
         );
     }
 
-    // }}}
-    // {{{ private function getRegionQuerySQL()
-
     private function getRegionQuerySQL()
     {
         $sql = '';
@@ -199,9 +170,6 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
         return $sql;
     }
-
-    // }}}
-    // {{{ private function getRegionTitle()
 
     private function getRegionTitle()
     {
@@ -219,9 +187,6 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 
         return $region_title;
     }
-
-    // }}}
-    // {{{ private function getEnabledText()
 
     private function getEnabledText($id, $count = 0)
     {
@@ -301,6 +266,4 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
             }
         }
     }
-
-    // }}}
 }

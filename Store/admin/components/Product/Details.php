@@ -8,14 +8,9 @@
  */
 class StoreProductDetails extends AdminIndex
 {
-    // {{{ protected properties
-
     protected $id;
     protected $category_id;
     protected $product;
-
-    // }}}
-    // {{{ private properties
 
     /**
      * Cache of regions used by queryRegions().
@@ -24,10 +19,7 @@ class StoreProductDetails extends AdminIndex
      */
     private $regions;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -53,9 +45,6 @@ class StoreProductDetails extends AdminIndex
 
         $this->initItems();
     }
-
-    // }}}
-    // {{{ protected function initItems()
 
     protected function initItems()
     {
@@ -93,16 +82,10 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
-
-    // }}}
-    // {{{ private function loadProduct()
 
     private function loadProduct()
     {
@@ -135,10 +118,7 @@ class StoreProductDetails extends AdminIndex
         return $product;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -167,9 +147,6 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function processActions()
-
     protected function processActions(SwatView $view, SwatActions $actions)
     {
         switch ($view->id) {
@@ -182,9 +159,6 @@ class StoreProductDetails extends AdminIndex
                 break;
         }
     }
-
-    // }}}
-    // {{{ protected function processItemsActions()
 
     protected function processItemsActions(SwatTableView $view, SwatActions $actions)
     {
@@ -433,9 +407,6 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function validateItemRows()
-
     protected function validateItemRows($input_row, $catalog)
     {
         $validate = true;
@@ -462,9 +433,6 @@ class StoreProductDetails extends AdminIndex
         return $validate;
     }
 
-    // }}}
-    // {{{ protected function addNewItemExtras()
-
     protected function addNewItemExtras($item_id)
     {
         /*
@@ -472,9 +440,6 @@ class StoreProductDetails extends AdminIndex
          * would require that we insert rows into other tables on item creation
          */
     }
-
-    // }}}
-    // {{{ protected final function changeStatus()
 
     final protected function changeStatus(SwatTableView $view, $status)
     {
@@ -500,9 +465,6 @@ class StoreProductDetails extends AdminIndex
 
         $this->app->messages->add($message);
     }
-
-    // }}}
-    // {{{ protected function addNewItems()
 
     protected function addNewItems()
     {
@@ -622,9 +584,6 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function processRelatedProducts()
-
     private function processRelatedProducts($view)
     {
         $this->app->replacePage('Product/RelatedProductDelete');
@@ -633,9 +592,6 @@ class StoreProductDetails extends AdminIndex
         $this->app->getPage()->setCategory($this->category_id);
     }
 
-    // }}}
-    // {{{ private function processProductCollections()
-
     private function processProductCollections($view)
     {
         $this->app->replacePage('Product/ProductCollectionDelete');
@@ -643,9 +599,6 @@ class StoreProductDetails extends AdminIndex
         $this->app->getPage()->setId($this->id);
         $this->app->getPage()->setCategory($this->category_id);
     }
-
-    // }}}
-    // {{{ private function processRelatedArticleActions()
 
     private function processRelatedArticleActions($view, $actions)
     {
@@ -679,10 +632,7 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -694,9 +644,6 @@ class StoreProductDetails extends AdminIndex
         $this->buildProductCollections();
         $this->buildRelatedArticles();
     }
-
-    // }}}
-    // {{{ protected function buildForms()
 
     protected function buildForms()
     {
@@ -715,9 +662,6 @@ class StoreProductDetails extends AdminIndex
             }
         }
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -738,9 +682,6 @@ class StoreProductDetails extends AdminIndex
         return null;
     }
 
-    // }}}
-    // {{{ protected function buildCategoryToolBarLinks()
-
     protected function buildCategoryToolBarLinks(SwatToolBar $toolbar)
     {
         if ($this->category_id === null) {
@@ -756,9 +697,6 @@ class StoreProductDetails extends AdminIndex
             $toolbar->setToolLinkValues([$this->id, $this->category_id]);
         }
     }
-
-    // }}}
-    // {{{ protected function buildCategoryTableViewLinks()
 
     protected function buildCategoryTableViewLinks(SwatTableView $view)
     {
@@ -782,10 +720,7 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase - product details
-    // {{{ protected function getProductDetailsStore()
 
     protected function getProductDetailsStore($product)
     {
@@ -816,9 +751,6 @@ class StoreProductDetails extends AdminIndex
 
         return $ds;
     }
-
-    // }}}
-    // {{{ protected function buildAttributes()
 
     protected function buildAttributes($product)
     {
@@ -860,16 +792,10 @@ class StoreProductDetails extends AdminIndex
         return ob_get_clean();
     }
 
-    // }}}
-    // {{{ protected function displayAttribute()
-
     protected function displayAttribute(StoreAttribute $attribute)
     {
         $attribute->display();
     }
-
-    // }}}
-    // {{{ protected function buildProductNavBar()
 
     protected function buildProductNavBar($product)
     {
@@ -897,9 +823,6 @@ class StoreProductDetails extends AdminIndex
 
         $this->navbar->addEntry(new SwatNavBarEntry($product->title));
     }
-
-    // }}}
-    // {{{ protected function displayCategories()
 
     protected function displayCategories(
         StoreCategoryWrapper $categories,
@@ -933,9 +856,6 @@ class StoreProductDetails extends AdminIndex
         echo '</ul>';
     }
 
-    // }}}
-    // {{{ protected function buildProduct()
-
     protected function buildProduct()
     {
         $ds = $this->getProductDetailsStore($this->product);
@@ -952,9 +872,6 @@ class StoreProductDetails extends AdminIndex
         $this->buildViewInStoreToolLinks($this->product);
         $this->buildProductNavBar($this->product);
     }
-
-    // }}}
-    // {{{ protected function buildViewInStoreToolLinks()
 
     protected function buildViewInStoreToolLinks(StoreProduct $product)
     {
@@ -1006,10 +923,7 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase - items
-    // {{{ protected function buildItems()
 
     protected function buildItems()
     {
@@ -1056,9 +970,6 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function buildStatusList()
-
     protected function buildStatusList()
     {
         foreach (StoreItemStatusList::statuses() as $status) {
@@ -1067,9 +978,6 @@ class StoreProductDetails extends AdminIndex
             );
         }
     }
-
-    // }}}
-    // {{{ protected function getItemsTableModel()
 
     protected function getItemsTableModel(SwatTableView $view): SwatTableStore
     {
@@ -1132,9 +1040,6 @@ class StoreProductDetails extends AdminIndex
         return $store;
     }
 
-    // }}}
-    // {{{ protected function getItemsSql()
-
     protected function getItemsSql(SwatTableView $view)
     {
         /*
@@ -1188,24 +1093,15 @@ class StoreProductDetails extends AdminIndex
         );
     }
 
-    // }}}
-    // {{{ protected function getItemsOrderByClause()
-
     protected function getItemsOrderByClause()
     {
         return 'Item.displayorder, Item.sku';
     }
 
-    // }}}
-    // {{{ protected function getItemDescription()
-
     protected function getItemDescription(StoreItem $item)
     {
         return implode(' - ', $item->getDescriptionArray());
     }
-
-    // }}}
-    // {{{ protected final function queryRegions()
 
     final protected function queryRegions()
     {
@@ -1221,9 +1117,6 @@ class StoreProductDetails extends AdminIndex
 
         return $this->regions;
     }
-
-    // }}}
-    // {{{ private function buildItemGroups()
 
     private function buildItemGroups()
     {
@@ -1275,9 +1168,6 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ private function queryItemGroups()
-
     private function queryItemGroups()
     {
         // get information about item groups used in this product
@@ -1301,9 +1191,6 @@ class StoreProductDetails extends AdminIndex
 
         return SwatDB::query($this->app->db, $sql);
     }
-
-    // }}}
-    // {{{ private function appendPriceColumns()
 
     private function appendPriceColumns(SwatTableView $view, $regions)
     {
@@ -1413,10 +1300,7 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase - product images
-    // {{{ protected function buildProductImages()
 
     protected function buildProductImages()
     {
@@ -1443,16 +1327,10 @@ class StoreProductDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getProductImageDisplay()
-
     protected function getProductImageDisplay()
     {
         return new StoreProductImageDisplay();
     }
-
-    // }}}
-    // {{{ private function getProductImages()
 
     private function getProductImages()
     {
@@ -1470,10 +1348,7 @@ class StoreProductDetails extends AdminIndex
         return SwatDB::query($this->app->db, $sql, 'StoreProductImageWrapper');
     }
 
-    // }}}
-
     // build phase - related products
-    // {{{ private function buildRelatedProducts()
 
     private function buildRelatedProducts()
     {
@@ -1482,9 +1357,6 @@ class StoreProductDetails extends AdminIndex
         $this->buildCategoryToolBarLinks($toolbar);
         $this->buildCategoryTableViewLinks($view);
     }
-
-    // }}}
-    // {{{ private function getRelatedProductsTableModel()
 
     private function getRelatedProductsTableModel(
         SwatTableView $view
@@ -1510,10 +1382,7 @@ class StoreProductDetails extends AdminIndex
         return $rs;
     }
 
-    // }}}
-
     // build phase - product collections
-    // {{{ private function buildProductCollections()
 
     private function buildProductCollections()
     {
@@ -1522,9 +1391,6 @@ class StoreProductDetails extends AdminIndex
         $this->buildCategoryToolBarLinks($toolbar);
         $this->buildCategoryTableViewLinks($view);
     }
-
-    // }}}
-    // {{{ private function getProductCollectionsTableModel()
 
     private function getProductCollectionsTableModel(
         SwatTableView $view
@@ -1550,10 +1416,7 @@ class StoreProductDetails extends AdminIndex
         return $rs;
     }
 
-    // }}}
-
     // build phase - related articles
-    // {{{ private function buildRelatedArticles()
 
     private function buildRelatedArticles()
     {
@@ -1562,9 +1425,6 @@ class StoreProductDetails extends AdminIndex
         $this->buildCategoryToolBarLinks($toolbar);
         $this->buildCategoryTableViewLinks($view);
     }
-
-    // }}}
-    // {{{ private function getRelatedArticlesTableModel()
 
     private function getRelatedArticlesTableModel(
         SwatTableView $view
@@ -1592,6 +1452,4 @@ class StoreProductDetails extends AdminIndex
 
         return $rs;
     }
-
-    // }}}
 }

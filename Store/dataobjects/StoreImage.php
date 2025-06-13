@@ -8,8 +8,6 @@
  */
 class StoreImage extends SiteImage
 {
-    // {{{ public properties
-
     /**
      * Whether to display with a border.
      *
@@ -24,9 +22,6 @@ class StoreImage extends SiteImage
      */
     public $product;
 
-    // }}}
-    // {{{ public function hasOriginal()
-
     /**
      * Whether dimension exists for this image.
      *
@@ -37,9 +32,6 @@ class StoreImage extends SiteImage
         return false;
     }
 
-    // }}}
-    // {{{ public function getImgTag()
-
     public function getImgTag($shortname, $prefix = null)
     {
         $img_tag = parent::getImgTag($shortname, $prefix);
@@ -49,6 +41,4 @@ class StoreImage extends SiteImage
 
         return $img_tag;
     }
-
-    // }}}
 }

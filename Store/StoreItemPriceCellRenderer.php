@@ -8,8 +8,6 @@
  */
 class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 {
-    // {{{ public properties
-
     /**
      * Original value.
      *
@@ -54,9 +52,6 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
      */
     public $show_quantity_discount_lower_limit = false;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct()
     {
         parent::__construct();
@@ -66,16 +61,10 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
         );
     }
 
-    // }}}
-    // {{{ public function render()
-
     public function render()
     {
         $this->renderPrice();
     }
-
-    // }}}
-    // {{{ protected function renderPrice()
 
     protected function renderPrice()
     {
@@ -122,9 +111,6 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
         }
     }
 
-    // }}}
-    // {{{ protected function displayQuantityDiscountLowerLimit()
-
     protected function displayQuantityDiscountLowerLimit()
     {
         $first_discount = $this->quantity_discounts->getFirst();
@@ -142,9 +128,6 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
         echo $lower_limit;
     }
-
-    // }}}
-    // {{{ protected function renderValue()
 
     protected function renderValue($value, $original_value = null)
     {
@@ -166,9 +149,6 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
         $this->value = $class_value;
     }
-
-    // }}}
-    // {{{ protected function renderOriginalValue()
 
     protected function renderOriginalValue()
     {
@@ -198,9 +178,6 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
             $span->close();
         }
     }
-
-    // }}}
-    // {{{ protected function renderDiscount()
 
     protected function renderDiscount(StoreQuantityDiscount $quantity_discount)
     {
@@ -240,14 +217,9 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
         $div->close();
     }
 
-    // }}}
-    // {{{ private function hasQuantityDiscounts()
-
     private function hasQuantityDiscounts()
     {
         return $this->quantity_discounts !== null
             && count($this->quantity_discounts) > 0;
     }
-
-    // }}}
 }

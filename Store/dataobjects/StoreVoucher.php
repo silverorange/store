@@ -6,8 +6,6 @@
  */
 class StoreVoucher extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -47,9 +45,6 @@ class StoreVoucher extends SwatDBDataObject
      * @var SwtaDate
      */
     public $used_date;
-
-    // }}}
-    // {{{ public function loadFromCode()
 
     /**
      * Loads this voucher from its code.
@@ -98,9 +93,6 @@ class StoreVoucher extends SwatDBDataObject
         return $loaded;
     }
 
-    // }}}
-    // {{{ public function getCouponPrefix()
-
     /**
      * Gets the valid prefix for coupons.
      *
@@ -112,9 +104,6 @@ class StoreVoucher extends SwatDBDataObject
     {
         return null;
     }
-
-    // }}}
-    // {{{ public function getTitle()
 
     /**
      * Gets a displayable title for the particular voucher type.
@@ -158,9 +147,6 @@ class StoreVoucher extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ public function getTitleWithAmount()
-
     /**
      * Gets a displayable title for the particular voucher type including the
      * amount of this voucher.
@@ -173,16 +159,10 @@ class StoreVoucher extends SwatDBDataObject
         return $this->getTitle(true);
     }
 
-    // }}}
-    // {{{ public function isUsed()
-
     public function isUsed()
     {
         return $this->used_date instanceof SwatDate;
     }
-
-    // }}}
-    // {{{ public function copyFrom()
 
     public function copyFrom(StoreVoucher $voucher)
     {
@@ -191,9 +171,6 @@ class StoreVoucher extends SwatDBDataObject
         $this->used_date = $voucher->used_date;
         $this->instance = $voucher->instance;
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -207,6 +184,4 @@ class StoreVoucher extends SwatDBDataObject
 
         $this->registerDateProperty('used_date');
     }
-
-    // }}}
 }

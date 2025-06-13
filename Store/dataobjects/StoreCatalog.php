@@ -23,8 +23,6 @@
  */
 class StoreCatalog extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -49,9 +47,6 @@ class StoreCatalog extends SwatDBDataObject
      */
     public $in_season;
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->registerInternalProperty(
@@ -62,9 +57,6 @@ class StoreCatalog extends SwatDBDataObject
         $this->table = 'Catalog';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ protected function loadClone()
 
     /**
      * Loads the clone of this catalog.
@@ -88,6 +80,4 @@ class StoreCatalog extends SwatDBDataObject
 
         return $clones->getFirst();
     }
-
-    // }}}
 }

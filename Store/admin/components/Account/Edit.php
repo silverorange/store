@@ -9,7 +9,6 @@
 class StoreAccountEdit extends SiteAccountEdit
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -18,18 +17,12 @@ class StoreAccountEdit extends SiteAccountEdit
         parent::initInternal();
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function updateAccount()
 
     protected function updateAccount()
     {
@@ -38,6 +31,4 @@ class StoreAccountEdit extends SiteAccountEdit
         $this->account->phone = $this->ui->getWidget('phone')->value;
         $this->account->company = $this->ui->getWidget('company')->value;
     }
-
-    // }}}
 }

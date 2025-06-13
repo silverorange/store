@@ -6,8 +6,6 @@
  */
 class StoreOrder extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -145,9 +143,6 @@ class StoreOrder extends SwatDBDataObject
      */
     public $comments_sent = false;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The id of the {@link StoreOrderStatus} of this order.
      *
@@ -156,9 +151,6 @@ class StoreOrder extends SwatDBDataObject
      * @see StoreOrder::getStatus()
      */
     protected $status;
-
-    // }}}
-    // {{{ public function getSubtotal()
 
     /**
      * Gets the subtotal for this order.
@@ -173,9 +165,6 @@ class StoreOrder extends SwatDBDataObject
         return $this->item_total;
     }
 
-    // }}}
-    // {{{ public function getOrderDetailsTableStore()
-
     public function getOrderDetailsTableStore()
     {
         $store = new SwatTableStore();
@@ -188,16 +177,10 @@ class StoreOrder extends SwatDBDataObject
         return $store;
     }
 
-    // }}}
-    // {{{ public function getTitle()
-
     public function getTitle()
     {
         return sprintf(Store::_('Order %s'), $this->id);
     }
-
-    // }}}
-    // {{{ public function sendConfirmationEmail()
 
     public function sendConfirmationEmail(SiteApplication $app)
     {
@@ -216,9 +199,6 @@ class StoreOrder extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function sendPaymentFailedEmail()
-
     public function sendPaymentFailedEmail(SiteApplication $app)
     {
         // This is demo code. StoreOrderConfirmationMailMessage is
@@ -236,9 +216,6 @@ class StoreOrder extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function getReceiptHeaderXml()
-
     /**
      * Gets the header text for order receipts.
      *
@@ -253,9 +230,6 @@ class StoreOrder extends SwatDBDataObject
         return '';
     }
 
-    // }}}
-    // {{{ public function getReceiptHeaderText()
-
     /**
      * Gets the header text for order receipts.
      *
@@ -269,9 +243,6 @@ class StoreOrder extends SwatDBDataObject
     {
         return '';
     }
-
-    // }}}
-    // {{{ public function getReceiptFooter()
 
     /**
      * Gets the footer text for order receipts.
@@ -301,9 +272,6 @@ class StoreOrder extends SwatDBDataObject
         return implode("\n\n", $footer);
     }
 
-    // }}}
-    // {{{ public function getDescription()
-
     /**
      * Gets a short, textual description of this order.
      *
@@ -319,9 +287,6 @@ class StoreOrder extends SwatDBDataObject
         return sprintf('Order #%s', $this->id);
     }
 
-    // }}}
-    // {{{ public function duplicate()
-
     public function duplicate(): static
     {
         $new_order = parent::duplicate();
@@ -332,9 +297,6 @@ class StoreOrder extends SwatDBDataObject
 
         return $new_order;
     }
-
-    // }}}
-    // {{{ public function getConfirmationEmailAddress()
 
     /**
      * Gets the address to which to send order confirmation messages.
@@ -357,9 +319,6 @@ class StoreOrder extends SwatDBDataObject
 
         return $address;
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -414,9 +373,6 @@ class StoreOrder extends SwatDBDataObject
         $this->id_field = 'integer:id';
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return [
@@ -426,9 +382,6 @@ class StoreOrder extends SwatDBDataObject
             'items',
         ];
     }
-
-    // }}}
-    // {{{ protected function getOrderItemDetailsStore()
 
     protected function getOrderItemDetailsStore($order_item)
     {
@@ -457,9 +410,6 @@ class StoreOrder extends SwatDBDataObject
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getImageDimension()
-
     /**
      * @return string Image dimension shortname
      */
@@ -467,9 +417,6 @@ class StoreOrder extends SwatDBDataObject
     {
         return 'pinky';
     }
-
-    // }}}
-    // {{{ protected function getProductItemCount()
 
     protected function getProductItemCount(StoreOrderItem $item)
     {
@@ -499,18 +446,12 @@ class StoreOrder extends SwatDBDataObject
         return $count;
     }
 
-    // }}}
-    // {{{ protected function getItemIndex()
-
     protected function getItemIndex(StoreOrderItem $item)
     {
         return $item->product;
     }
 
-    // }}}
-
     // order status methods
-    // {{{ public function getStatus()
 
     /**
      * Gets the status of this order.
@@ -528,17 +469,11 @@ class StoreOrder extends SwatDBDataObject
         return $this->status;
     }
 
-    // }}}
-    // {{{ public function setStatus()
-
     public function setStatus(StoreOrderStatus $status)
     {
         $this->status = $status;
         $this->setInternalValue('status', $status->id);
     }
-
-    // }}}
-    // {{{ public function isBillable()
 
     /**
      * Gets whether or not this order is ready to bill.
@@ -555,9 +490,6 @@ class StoreOrder extends SwatDBDataObject
             && $this->getStatus() === StoreOrderStatusList::status('authorized');
     }
 
-    // }}}
-    // {{{ public function isShippable()
-
     /**
      * Gets whether or not this order is ready to ship.
      *
@@ -573,9 +505,6 @@ class StoreOrder extends SwatDBDataObject
             && $this->getStatus() === StoreOrderStatusList::status('billed');
     }
 
-    // }}}
-    // {{{ public function isFinished()
-
     /**
      * Gets whether or not this order is finished being processed.
      *
@@ -590,10 +519,7 @@ class StoreOrder extends SwatDBDataObject
             && $this->getStatus() === StoreOrderStatusList::status('shipped');
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadItems()
 
     protected function loadItems()
     {
@@ -610,9 +536,6 @@ class StoreOrder extends SwatDBDataObject
             SwatDBClassMap::get('StoreOrderItemWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadPaymentMethods()
 
     protected function loadPaymentMethods()
     {
@@ -646,10 +569,7 @@ class StoreOrder extends SwatDBDataObject
         return $payment_methods;
     }
 
-    // }}}
-
     // saver methods
-    // {{{ protected function saveItems()
 
     /**
      * Automatically saves StoreOrderItem sub-data-objects when this
@@ -665,9 +585,6 @@ class StoreOrder extends SwatDBDataObject
         $this->items->save();
     }
 
-    // }}}
-    // {{{ protected function savePaymentMethods()
-
     /**
      * Automatically saves StoreOrderPaymentMethod sub-data-objects when this
      * StoreOrder object is saved.
@@ -681,6 +598,4 @@ class StoreOrder extends SwatDBDataObject
         $this->payment_methods->setDatabase($this->db);
         $this->payment_methods->save();
     }
-
-    // }}}
 }

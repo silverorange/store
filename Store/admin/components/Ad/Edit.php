@@ -11,16 +11,12 @@
 class StoreAdEdit extends SiteAdEdit
 {
     // process phase
-    // {{{ protected function saveAd()
 
     protected function saveAd()
     {
         parent::saveAd();
         $this->saveAdLocaleBinding();
     }
-
-    // }}}
-    // {{{ protected function saveAdLocaleBinding()
 
     protected function saveAdLocaleBinding()
     {
@@ -33,6 +29,4 @@ class StoreAdEdit extends SiteAdEdit
 
         SwatDB::exec($this->app->db, $sql);
     }
-
-    // }}}
 }

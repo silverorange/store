@@ -6,15 +6,10 @@
  */
 class StoreAccountEditPage extends SiteAccountEditPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/account-edit.xml';
     }
-
-    // }}}
-    // {{{ private function getAdditionalFields()
 
     private function getAdditionalFields()
     {
@@ -31,10 +26,7 @@ class StoreAccountEditPage extends SiteAccountEditPage
         return $fields;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function updateAccount()
 
     protected function updateAccount(SwatForm $form)
     {
@@ -47,10 +39,7 @@ class StoreAccountEditPage extends SiteAccountEditPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function load()
 
     protected function load(SwatForm $form)
     {
@@ -62,6 +51,4 @@ class StoreAccountEditPage extends SiteAccountEditPage
             $this->assignObjectValuesToUi($this->account, $fields);
         }
     }
-
-    // }}}
 }

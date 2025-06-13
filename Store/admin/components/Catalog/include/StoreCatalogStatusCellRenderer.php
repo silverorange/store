@@ -8,8 +8,6 @@
  */
 class StoreCatalogStatusCellRenderer extends SwatCellRenderer
 {
-    // {{{ public properties
-
     /**
      * @var int
      */
@@ -20,9 +18,6 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
      */
     public $db;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct()
     {
         parent::__construct();
@@ -30,9 +25,6 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
             'packages/swat/styles/swat-null-text-cell-renderer.css'
         );
     }
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -67,6 +59,4 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
             $span_tag->display();
         }
     }
-
-    // }}}
 }

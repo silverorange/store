@@ -11,8 +11,6 @@
  */
 class StoreArticleActionsProcessor extends SiteArticleActionsProcessor
 {
-    // {{{ public function process()
-
     /**
      * Processes actions on articles.
      *
@@ -50,6 +48,4 @@ class StoreArticleActionsProcessor extends SiteArticleActionsProcessor
             $this->page->app->messages->add($message);
         }
     }
-
-    // }}}
 }

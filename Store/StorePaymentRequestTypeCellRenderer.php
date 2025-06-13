@@ -8,8 +8,6 @@
  */
 class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
 {
-    // {{{ public properties
-
     /**
      * Request type to renderer.
      *
@@ -18,9 +16,6 @@ class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
      * @var int
      */
     public $type;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -68,6 +63,4 @@ class StorePaymentRequestTypeCellRenderer extends SwatCellRenderer
 
         echo SwatString::minimizeEntities($title);
     }
-
-    // }}}
 }

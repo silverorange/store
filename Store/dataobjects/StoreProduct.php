@@ -31,8 +31,6 @@
  */
 class StoreProduct extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -124,9 +122,6 @@ class StoreProduct extends SwatDBDataObject
      */
     public $ppc_ad_description2;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The region to use when loading region-specific fields in item sub-data-
      * objects.
@@ -165,9 +160,6 @@ class StoreProduct extends SwatDBDataObject
      */
     protected $item_count;
 
-    // }}}
-    // {{{ public function setRegion()
-
     /**
      * Sets the region to use when loading region-specific fields for item
      * sub-data-objects.
@@ -188,9 +180,6 @@ class StoreProduct extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
-    // {{{ public function getVisibleRelatedProducts()
 
     /**
      * Retrieve related products in the current region.
@@ -249,9 +238,6 @@ class StoreProduct extends SwatDBDataObject
 
         return $related_products;
     }
-
-    // }}}
-    // {{{ public function isAvailableInRegion()
 
     /**
      * Gets whether or not this product is available in a particular region.
@@ -316,9 +302,6 @@ class StoreProduct extends SwatDBDataObject
         return $available;
     }
 
-    // }}}
-    // {{{ public function getItemCount()
-
     /**
      * Get the number of items that belong to this product.
      *
@@ -332,9 +315,6 @@ class StoreProduct extends SwatDBDataObject
 
         return $this->item_count;
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -361,9 +341,6 @@ class StoreProduct extends SwatDBDataObject
         $this->table = 'Product';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ protected function initFromRow()
 
     /**
      * Initializes this product from a row object.
@@ -401,9 +378,6 @@ class StoreProduct extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return array_merge(
@@ -418,9 +392,6 @@ class StoreProduct extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
-
     protected function getSerializablePrivateProperties()
     {
         return array_merge(
@@ -429,10 +400,7 @@ class StoreProduct extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadItems()
 
     /**
      * Loads item sub-data-objects for this product.
@@ -501,9 +469,6 @@ class StoreProduct extends SwatDBDataObject
         return $items;
     }
 
-    // }}}
-    // {{{ protected function loadPath()
-
     /**
      * Loads the URL fragment of this product.
      *
@@ -552,9 +517,6 @@ class StoreProduct extends SwatDBDataObject
         return $path;
     }
 
-    // }}}
-    // {{{ protected function loadItemGroups()
-
     protected function loadItemGroups()
     {
         $sql = 'select * from ItemGroup
@@ -568,9 +530,6 @@ class StoreProduct extends SwatDBDataObject
             SwatDBClassMap::get('StoreItemGroupWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadCategories()
 
     protected function loadCategories()
     {
@@ -587,9 +546,6 @@ class StoreProduct extends SwatDBDataObject
             SwatDBClassMap::get('StoreCategoryWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadAttributes()
 
     protected function loadAttributes()
     {
@@ -608,9 +564,6 @@ class StoreProduct extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadFeaturedCategories()
-
     protected function loadFeaturedCategories()
     {
         $sql = 'select id, title, shortname from Category where id in
@@ -625,9 +578,6 @@ class StoreProduct extends SwatDBDataObject
             SwatDBClassMap::get('StoreCategoryWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadRelatedProducts()
 
     /**
      * Loads related products.
@@ -660,9 +610,6 @@ class StoreProduct extends SwatDBDataObject
             SwatDBClassMap::get('StoreProductWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadRelatedArticles()
 
     /**
      * Loads related articles.
@@ -707,9 +654,6 @@ class StoreProduct extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadCollectionProducts()
-
     /**
      * Loads the collections that this product belongs to.
      *
@@ -738,9 +682,6 @@ class StoreProduct extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadCollectionMemberProducts()
-
     /**
      * Loads the member products of this collection product.
      *
@@ -767,9 +708,6 @@ class StoreProduct extends SwatDBDataObject
             SwatDBClassMap::get('StoreProductWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadCheapestItem()
 
     /**
      * Loads the cheapest item of this product.
@@ -815,9 +753,6 @@ class StoreProduct extends SwatDBDataObject
         return $cheapest_item;
     }
 
-    // }}}
-    // {{{ protected function loadPrimaryImage()
-
     /**
      * Loads the primary image of this product.
      *
@@ -858,9 +793,6 @@ class StoreProduct extends SwatDBDataObject
         return $rs->getFirst();
     }
 
-    // }}}
-    // {{{ protected function loadImages()
-
     /**
      * Loads images for this product.
      *
@@ -883,10 +815,7 @@ class StoreProduct extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // saver methods
-    // {{{ protected function saveItems()
 
     /**
      * Automatically saves StoreItem sub-data-objects when this
@@ -902,10 +831,7 @@ class StoreProduct extends SwatDBDataObject
         $this->items->save();
     }
 
-    // }}}
-
     // display methods
-    // {{{ public function displayAsIcon()
 
     /**
      * Displays this product as:
@@ -937,9 +863,6 @@ class StoreProduct extends SwatDBDataObject
 
         $anchor_tag->close();
     }
-
-    // }}}
-    // {{{ public function displayAsTile()
 
     /**
      * Displays the product as:
@@ -988,9 +911,6 @@ class StoreProduct extends SwatDBDataObject
         $paragraph_tag->close();
     }
 
-    // }}}
-    // {{{ public function displayAsText()
-
     /**
      * Displays this product as:
      *
@@ -1009,9 +929,6 @@ class StoreProduct extends SwatDBDataObject
         $span->display();
         $anchor_tag->close();
     }
-
-    // }}}
-    // {{{ public function getThumbnailImgTag()
 
     public function getThumbnailImgTag($size = 'thumb')
     {
@@ -1036,9 +953,6 @@ class StoreProduct extends SwatDBDataObject
         return $img_tag;
     }
 
-    // }}}
-    // {{{ protected function getUnavailableSpan()
-
     protected function getUnavailableSpan()
     {
         $span = null;
@@ -1053,18 +967,12 @@ class StoreProduct extends SwatDBDataObject
         return $span;
     }
 
-    // }}}
-    // {{{ protected function getPlaceholderImageFilename()
-
     protected function getPlaceholderImageFilename()
     {
         return 'packages/store/images/product-placeholder.png';
     }
 
-    // }}}
-
     // serialization
-    // {{{ public function unserialize()
 
     public function unserialize(string $data): void
     {
@@ -1076,6 +984,4 @@ class StoreProduct extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
 }

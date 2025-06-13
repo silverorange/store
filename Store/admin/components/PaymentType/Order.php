@@ -9,7 +9,6 @@
 class StorePaymentTypeOrder extends AdminDBOrder
 {
     // process phase
-    // {{{ protected function saveIndex()
 
     protected function saveIndex($id, $index)
     {
@@ -23,10 +22,7 @@ class StorePaymentTypeOrder extends AdminDBOrder
         );
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -35,9 +31,6 @@ class StorePaymentTypeOrder extends AdminDBOrder
         $frame = $this->ui->getWidget('order_frame');
         $frame->title = Store::_('Order Payment Types');
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -55,6 +48,4 @@ class StorePaymentTypeOrder extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
 }

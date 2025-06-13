@@ -5,17 +5,12 @@
  */
 class StoreShippingTypeDetails extends AdminIndex
 {
-    // {{{ protected properties
-
     /**
      * @var StoreShippingType
      */
     protected $shipping_type;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -24,9 +19,6 @@ class StoreShippingTypeDetails extends AdminIndex
         $this->ui->loadFromXML($this->getUiXml());
         $this->initShippingType();
     }
-
-    // }}}
-    // {{{ private function initShippingType()
 
     private function initShippingType()
     {
@@ -45,18 +37,12 @@ class StoreShippingTypeDetails extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/details.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -68,10 +54,7 @@ class StoreShippingTypeDetails extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -88,18 +71,12 @@ class StoreShippingTypeDetails extends AdminIndex
         );
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
 
         $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Details')));
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -123,6 +100,4 @@ class StoreShippingTypeDetails extends AdminIndex
 
         return $store;
     }
-
-    // }}}
 }

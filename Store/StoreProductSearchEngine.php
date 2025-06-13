@@ -7,8 +7,6 @@
  */
 class StoreProductSearchEngine extends SiteSearchEngine
 {
-    // {{{ public properties
-
     /**
      * An optional sku to limit search results with.
      *
@@ -159,9 +157,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
      */
     public $item_minimum_quantity_group;
 
-    // }}}
-    // {{{ public function __construct()
-
     /**
      * Creates a new product search engine.
      *
@@ -175,16 +170,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
         $this->addOrderByField('Product.title');
     }
 
-    // }}}
-    // {{{ public function setRegion()
-
     public function setRegion(StoreRegion $region)
     {
         $this->region = $region;
     }
-
-    // }}}
-    // {{{ public function getRegion()
 
     /**
      * Creates a new product search engine.
@@ -199,9 +188,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         return $this->region;
     }
-
-    // }}}
-    // {{{ public function getSearchSummary()
 
     /**
      * Get a summary of the criteria that was used to perform the search.
@@ -254,16 +240,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
         return $summary;
     }
 
-    // }}}
-    // {{{ protected function getMemcacheNs()
-
     protected function getMemcacheNs()
     {
         return 'product';
     }
-
-    // }}}
-    // {{{ protected function search()
 
     public function search($limit = null, $offset = null)
     {
@@ -272,9 +252,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         return $products;
     }
-
-    // }}}
-    // {{{ protected function loadSubObjects()
 
     /**
      * Load sub-dataobjects for the StoreProductWrapper results.
@@ -298,16 +275,10 @@ class StoreProductSearchEngine extends SiteSearchEngine
         }
     }
 
-    // }}}
-    // {{{ protected function getResultWrapperClass()
-
     protected function getResultWrapperClass()
     {
         return SwatDBClassMap::get('StoreProductWrapper');
     }
-
-    // }}}
-    // {{{ protected function getSelectClause()
 
     protected function getSelectClause()
     {
@@ -326,9 +297,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         return $clause;
     }
-
-    // }}}
-    // {{{ protected function getSelectClauseTerms()
 
     protected function getSelectClauseTerms()
     {
@@ -359,9 +327,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         return $terms;
     }
-
-    // }}}
-    // {{{ protected function getFromClause()
 
     protected function getFromClause()
     {
@@ -452,9 +417,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         return $clause;
     }
-
-    // }}}
-    // {{{ protected function getWhereClause()
 
     protected function getWhereClause()
     {
@@ -607,9 +569,6 @@ class StoreProductSearchEngine extends SiteSearchEngine
         return $clause;
     }
 
-    // }}}
-    // {{{ protected function getOrderByClause()
-
     protected function getOrderByClause()
     {
         if ($this->fulltext_result === null) {
@@ -623,6 +582,4 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         return $clause;
     }
-
-    // }}}
 }

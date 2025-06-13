@@ -8,23 +8,15 @@
  */
 class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-payment-failed.xml';
     }
 
-    // }}}
-    // {{{ protected function buildOrderHeader()
-
     protected function buildOrderHeader(StoreOrder $order)
     {
         // don't display order receipt header
     }
-
-    // }}}
-    // {{{ protected function displayFinalNote()
 
     protected function displayFinalNote(StoreOrder $order)
     {
@@ -54,6 +46,4 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
         $header_tag->display();
         $paragraph_tag->display();
     }
-
-    // }}}
 }

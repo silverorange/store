@@ -1,5 +1,3 @@
-// {{{ StoreProductImageDisplay()
-
 var StoreProductImageDisplay = function (data, config) {
   this.semaphore = false;
   this.data = data;
@@ -39,8 +37,6 @@ var StoreProductImageDisplay = function (data, config) {
   }
 };
 
-// }}}
-
 StoreProductImageDisplay.ie6 = YAHOO.env.ua.ie > 0 && YAHOO.env.ua.ie <= 6;
 
 StoreProductImageDisplay.close_text = 'Close';
@@ -51,8 +47,6 @@ StoreProductImageDisplay.close_text = 'Close';
   var Anim = YAHOO.util.Anim;
   var Motion = YAHOO.util.Motion;
   var Easing = YAHOO.util.Easing;
-
-  // {{{ configure()
 
   StoreProductImageDisplay.prototype.configure = function (config) {
     if (!config) {
@@ -89,9 +83,6 @@ StoreProductImageDisplay.close_text = 'Close';
     override(this.config, config);
   };
 
-  // }}}
-  // {{{ init()
-
   StoreProductImageDisplay.prototype.init = function () {
     this.html = document.getElementsByTagName('html')[0];
     this.html_overflow = Dom.getStyle(this.html, 'overflowY');
@@ -113,9 +104,6 @@ StoreProductImageDisplay.close_text = 'Close';
     this.initContent();
     this.initLocation();
   };
-
-  // }}}
-  // {{{ initLinks()
 
   StoreProductImageDisplay.prototype.initLinks = function () {
     this.image_link = document.getElementById('product_image_link');
@@ -174,15 +162,9 @@ StoreProductImageDisplay.close_text = 'Close';
     }
   };
 
-  // }}}
-  // {{{ initContent()
-
   StoreProductImageDisplay.prototype.initContent = function () {};
 
-  // }}}
-
   // draw
-  // {{{ drawOverlay()
 
   StoreProductImageDisplay.prototype.drawOverlay = function () {
     this.overlay = document.createElement('div');
@@ -204,9 +186,6 @@ StoreProductImageDisplay.close_text = 'Close';
 
     this.body.appendChild(this.overlay);
   };
-
-  // }}}
-  // {{{ drawOverlayMask()
 
   StoreProductImageDisplay.prototype.drawOverlayMask = function () {
     var mask = document.createElement('a');
@@ -256,9 +235,6 @@ StoreProductImageDisplay.close_text = 'Close';
     return mask;
   };
 
-  // }}}
-  // {{{ drawHeader()
-
   StoreProductImageDisplay.prototype.drawHeader = function () {
     var header = document.createElement('div');
     header.className = 'store-product-image-display-header';
@@ -271,18 +247,12 @@ StoreProductImageDisplay.close_text = 'Close';
     return header;
   };
 
-  // }}}
-  // {{{ drawLinks()
-
   StoreProductImageDisplay.prototype.drawLinks = function () {
     var links = document.createElement('div');
     links.className = 'store-product-image-display-links';
     links.appendChild(this.drawCloseLink());
     return links;
   };
-
-  // }}}
-  // {{{ drawCloseLink()
 
   StoreProductImageDisplay.prototype.drawCloseLink = function () {
     this.close_link = document.createElement('a');
@@ -311,17 +281,11 @@ StoreProductImageDisplay.close_text = 'Close';
     return this.close_link;
   };
 
-  // }}}
-  // {{{ drawTitle()
-
   StoreProductImageDisplay.prototype.drawTitle = function () {
     this.title = document.createElement('div');
     this.title.className = 'store-product-image-display-title';
     return this.title;
   };
-
-  // }}}
-  // {{{ drawPinkies()
 
   StoreProductImageDisplay.prototype.drawPinkies = function () {
     this.pinky_list = null;
@@ -375,9 +339,6 @@ StoreProductImageDisplay.close_text = 'Close';
 
     return this.pinky_list;
   };
-
-  // }}}
-  // {{{ drawContainer()
 
   StoreProductImageDisplay.prototype.drawContainer = function () {
     this.container = document.createElement('a');
@@ -435,9 +396,6 @@ StoreProductImageDisplay.close_text = 'Close';
     return this.container;
   };
 
-  // }}}
-  // {{{ drawDescriptionContainer()
-
   StoreProductImageDisplay.prototype.drawDescriptionContainer = function () {
     this.description_container = document.createElement('a');
     this.description_container.href = '#close';
@@ -490,17 +448,11 @@ StoreProductImageDisplay.close_text = 'Close';
     return this.description_container;
   };
 
-  // }}}
-  // {{{ drawImage()
-
   StoreProductImageDisplay.prototype.drawImage = function () {
     this.image = document.createElement('img');
     this.image.className = 'store-product-image-display-image';
     return this.image;
   };
-
-  // }}}
-  // {{{ drawDescription()
 
   StoreProductImageDisplay.prototype.drawDescription = function () {
     this.description = document.createElement('span');
@@ -508,10 +460,7 @@ StoreProductImageDisplay.close_text = 'Close';
     return this.description;
   };
 
-  // }}}
-
   // dimensions
-  // {{{ initContainerDimensions()
 
   StoreProductImageDisplay.prototype.initContainerDimensions = function () {
     var el = this.container.firstChild;
@@ -524,9 +473,6 @@ StoreProductImageDisplay.close_text = 'Close';
     };
   };
 
-  // }}}
-  // {{{ initBodyDimensions()
-
   StoreProductImageDisplay.prototype.initBodyDimensions = function () {
     var el = this.body;
     this.dimensions.body = {
@@ -535,19 +481,13 @@ StoreProductImageDisplay.close_text = 'Close';
     };
   };
 
-  // }}}
-  // {{{ initDocumentDimensions()
-
   StoreProductImageDisplay.prototype.initDocumentDimensions = function () {
     this.dimensions.document = {
       height: Dom.getDocumentHeight()
     };
   };
 
-  // }}}
-
   // image selection
-  // {{{ selectImage()
 
   StoreProductImageDisplay.prototype.selectImage = function (index) {
     if (
@@ -673,9 +613,6 @@ StoreProductImageDisplay.close_text = 'Close';
     return true;
   };
 
-  // }}}
-  // {{{ selectPreviousImage()
-
   StoreProductImageDisplay.prototype.selectPreviousImage = function () {
     var index = this.current_image - 1;
 
@@ -685,9 +622,6 @@ StoreProductImageDisplay.close_text = 'Close';
 
     this.selectImage(index);
   };
-
-  // }}}
-  // {{{ selectNextImage()
 
   StoreProductImageDisplay.prototype.selectNextImage = function () {
     var index = this.current_image + 1;
@@ -699,9 +633,6 @@ StoreProductImageDisplay.close_text = 'Close';
     this.selectImage(index);
   };
 
-  // }}}
-  // {{{ setTitle()
-
   StoreProductImageDisplay.prototype.setTitle = function (image, product) {
     if (image.title) {
       // dash is nbsp padded
@@ -710,9 +641,6 @@ StoreProductImageDisplay.close_text = 'Close';
       this.title.innerHTML = product.title;
     }
   };
-
-  // }}}
-  // {{{ setDescription()
 
   StoreProductImageDisplay.prototype.setDescription = function (
     image,
@@ -723,24 +651,15 @@ StoreProductImageDisplay.close_text = 'Close';
     }
   };
 
-  // }}}
-  // {{{ getImageWidth()
-
   StoreProductImageDisplay.prototype.getImageWidth = function (image_data) {
     return image_data.large_width;
   };
-
-  // }}}
-  // {{{ getImageHeight()
 
   StoreProductImageDisplay.prototype.getImageHeight = function (image_data) {
     return image_data.large_height;
   };
 
-  // }}}
-
   // location
-  // {{{ initLocation()
 
   StoreProductImageDisplay.prototype.initLocation = function () {
     var hash = location.hash;
@@ -767,9 +686,6 @@ StoreProductImageDisplay.close_text = 'Close';
       that.checkLocation();
     }, this.config.period.locationCheck * 1000);
   };
-
-  // }}}
-  // {{{ checkLocation()
 
   StoreProductImageDisplay.prototype.checkLocation = function () {
     if (this.semaphore) {
@@ -805,10 +721,7 @@ StoreProductImageDisplay.close_text = 'Close';
     }
   };
 
-  // }}}
-
   // open/close
-  // {{{ open()
 
   StoreProductImageDisplay.prototype.open = function () {
     if (this.opened) {
@@ -820,9 +733,6 @@ StoreProductImageDisplay.close_text = 'Close';
     this.close_link.focus();
     this.opened = true;
   };
-
-  // }}}
-  // {{{ openWithAnimation()
 
   StoreProductImageDisplay.prototype.openWithAnimation = function () {
     if (typeof this.container.style.filter === 'string') {
@@ -865,9 +775,6 @@ StoreProductImageDisplay.close_text = 'Close';
     this.opened = true;
   };
 
-  // }}}
-  // {{{ close()
-
   StoreProductImageDisplay.prototype.close = function () {
     if (this.semaphore) {
       return;
@@ -904,9 +811,6 @@ StoreProductImageDisplay.close_text = 'Close';
     this.opened = false;
   };
 
-  // }}}
-  // {{{ showOverlay()
-
   StoreProductImageDisplay.prototype.showOverlay = function () {
     // init keydown handler for escape key to close
     Event.on(document, 'keydown', this.handleKeyDown, this, true);
@@ -923,15 +827,9 @@ StoreProductImageDisplay.close_text = 'Close';
     this.overlay.style.visible = 'visible';
   };
 
-  // }}}
-  // {{{ hideOverlay()
-
   StoreProductImageDisplay.prototype.hideOverlay = function () {
     this.overlay.style.display = 'none';
   };
-
-  // }}}
-  // {{{ updateOverlayHeight()
 
   StoreProductImageDisplay.prototype.updateOverlayHeight = function (
     viewport_height,
@@ -965,10 +863,7 @@ StoreProductImageDisplay.close_text = 'Close';
     }
   };
 
-  // }}}
-
   // keyboard
-  // {{{ handleKeyDown()
 
   StoreProductImageDisplay.prototype.handleKeyDown = function (e) {
     // close preview on backspace or escape
@@ -995,10 +890,7 @@ StoreProductImageDisplay.close_text = 'Close';
     }
   };
 
-  // }}}
-
   // resize
-  // {{{ handleResize()
 
   StoreProductImageDisplay.prototype.handleResize = function (e) {
     var new_height = Dom.getViewportHeight();
@@ -1013,9 +905,6 @@ StoreProductImageDisplay.close_text = 'Close';
     }
   };
 
-  // }}}
-  // {{{ updatePinkiesHeight()
-
   StoreProductImageDisplay.prototype.updatePinkiesHeight = function (
     viewport_height
   ) {
@@ -1023,6 +912,4 @@ StoreProductImageDisplay.close_text = 'Close';
     this.pinky_list.style.width = pinky_width + 46 + 'px';
     this.pinky_list.style.height = viewport_height - 50 + 'px';
   };
-
-  // }}}
 })();

@@ -8,14 +8,9 @@
  */
 class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $item_group;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -28,9 +23,6 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
             $this->ui->getWidget('shortname_field')->visible = false;
         }
     }
-
-    // }}}
-    // {{{ protected function initItemMinimumQuantityGroup()
 
     protected function initItemMinimumQuantityGroup()
     {
@@ -50,10 +42,7 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -75,9 +64,6 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function validateShortname()
-
     protected function validateShortname($shortname)
     {
         $valid = true;
@@ -95,9 +81,6 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateItemMinimumQuantityGroup();
@@ -113,9 +96,6 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function updateItemMinimumQuantityGroup()
-
     protected function updateItemMinimumQuantityGroup()
     {
         $values = $this->ui->getValues([
@@ -130,15 +110,10 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
         $this->item_group->part_unit_plural = $values['part_unit_plural'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
         $this->ui->setValues($this->item_group->getAttributes());
     }
-
-    // }}}
 }

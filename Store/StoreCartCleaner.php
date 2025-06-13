@@ -15,16 +15,11 @@
  */
 class StoreCartCleaner extends SiteCommandLineApplication
 {
-    // {{{ public function init()
-
     public function init()
     {
         $this->initModules();
         $this->db->loadModule('Datatype', null, true);
     }
-
-    // }}}
-    // {{{ public function run()
 
     public function run()
     {
@@ -86,9 +81,6 @@ class StoreCartCleaner extends SiteCommandLineApplication
         $this->debug(Store::_("done\n"));
     }
 
-    // }}}
-    // {{{ protected function getSessionIds()
-
     protected function getSessionIds()
     {
         $session_ids = [];
@@ -103,9 +95,6 @@ class StoreCartCleaner extends SiteCommandLineApplication
         return $session_ids;
     }
 
-    // }}}
-    // {{{ protected function validateSessionId()
-
     protected function validateSessionId($session_id)
     {
         $valid = true;
@@ -117,9 +106,6 @@ class StoreCartCleaner extends SiteCommandLineApplication
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function getDefaultModuleList()
 
     protected function getDefaultModuleList()
     {
@@ -133,9 +119,6 @@ class StoreCartCleaner extends SiteCommandLineApplication
         );
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -147,6 +130,4 @@ class StoreCartCleaner extends SiteCommandLineApplication
         parent::addConfigDefinitions($config);
         $config->addDefinitions(Store::getConfigDefinitions());
     }
-
-    // }}}
 }

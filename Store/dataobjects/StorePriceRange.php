@@ -6,8 +6,6 @@
  */
 class StorePriceRange extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -36,9 +34,6 @@ class StorePriceRange extends SwatDBDataObject
      */
     public $original_price = false;
 
-    // }}}
-    // {{{ public function getShortname()
-
     public function getShortname()
     {
         if ($this->start_price === null) {
@@ -59,9 +54,6 @@ class StorePriceRange extends SwatDBDataObject
 
         return $shortname;
     }
-
-    // }}}
-    // {{{ public function getTitle()
 
     public function getTitle()
     {
@@ -93,9 +85,6 @@ class StorePriceRange extends SwatDBDataObject
         return $title;
     }
 
-    // }}}
-    // {{{ public function normalize()
-
     public function normalize()
     {
         $changed = false;
@@ -111,17 +100,11 @@ class StorePriceRange extends SwatDBDataObject
         return $changed;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'PriceRange';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ protected function initFromRow()
 
     protected function initFromRow($value)
     {
@@ -148,6 +131,4 @@ class StorePriceRange extends SwatDBDataObject
             parent::initFromRow($value);
         }
     }
-
-    // }}}
 }

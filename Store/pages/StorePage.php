@@ -8,7 +8,6 @@
 abstract class StorePage extends SitePathPage
 {
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -25,13 +24,7 @@ abstract class StorePage extends SitePathPage
         $this->initInternal();
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal() {}
-
-    // }}}
-    // {{{ protected function getSelectedTopCategoryId()
 
     protected function getSelectedTopCategoryId()
     {
@@ -47,9 +40,6 @@ abstract class StorePage extends SitePathPage
         return $category_id;
     }
 
-    // }}}
-    // {{{ protected function getSelectedSecondaryCategoryId()
-
     protected function getSelectedSecondaryCategoryId()
     {
         $secondary_category_id = null;
@@ -64,18 +54,12 @@ abstract class StorePage extends SitePathPage
         return $secondary_category_id;
     }
 
-    // }}}
-    // {{{ protected function getSelectedCategoryId()
-
     protected function getSelectedCategoryId()
     {
         return null;
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -85,9 +69,6 @@ abstract class StorePage extends SitePathPage
 
         parent::build();
     }
-
-    // }}}
-    // {{{ protected function queryCategory()
 
     protected function queryCategory($category_id)
     {
@@ -118,6 +99,4 @@ abstract class StorePage extends SitePathPage
 
         return $category;
     }
-
-    // }}}
 }

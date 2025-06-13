@@ -13,24 +13,13 @@
  */
 class StoreCartProcessor extends SwatObject
 {
-    // {{{ class constants
-
     public const ENTRY_ADDED = 1;
     public const ENTRY_SAVED = 2;
-
-    // }}}
-    // {{{ protected properties
 
     protected $app;
     protected $entries_added = [];
 
-    // }}}
-    // {{{ public static properties
-
     public static $class_name = 'StoreCartProcessor';
-
-    // }}}
-    // {{{ public static function get()
 
     public static function get(SiteApplication $app)
     {
@@ -39,16 +28,10 @@ class StoreCartProcessor extends SwatObject
         return new $class_name($app);
     }
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct(SiteApplication $app)
     {
         $this->app = $app;
     }
-
-    // }}}
-    // {{{ public function createCartEntry()
 
     public function createCartEntry($item_id, $quantity = 1)
     {
@@ -69,9 +52,6 @@ class StoreCartProcessor extends SwatObject
 
         return $entry;
     }
-
-    // }}}
-    // {{{ public function addEntryToCart()
 
     /**
      * Add an entry to the cart.
@@ -108,16 +88,10 @@ class StoreCartProcessor extends SwatObject
         return $status;
     }
 
-    // }}}
-    // {{{ public function getEntriesAdded()
-
     public function getEntriesAdded()
     {
         return $this->entries_added;
     }
-
-    // }}}
-    // {{{ public function getUpdatedCartMessage()
 
     public function getUpdatedCartMessage()
     {
@@ -143,9 +117,6 @@ class StoreCartProcessor extends SwatObject
 
         return $cart_message;
     }
-
-    // }}}
-    // {{{ public function getProductCartMessage()
 
     public function getProductCartMessage(StoreProduct $product)
     {
@@ -236,6 +207,4 @@ class StoreCartProcessor extends SwatObject
 
         return $message;
     }
-
-    // }}}
 }

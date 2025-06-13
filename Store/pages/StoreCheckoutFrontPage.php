@@ -8,25 +8,17 @@
  */
 class StoreCheckoutFrontPage extends StoreCheckoutPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-front.xml';
     }
-
-    // }}}
-    // {{{ protected function getNextSource()
 
     protected function getNextSource()
     {
         return $this->getCheckoutSource() . '/first';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -41,9 +33,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         parent::init();
     }
 
-    // }}}
-    // {{{ protected function loadUI()
-
     /**
      * Subclassed to avoid loading xml from a form that doesn't exist.
      */
@@ -53,9 +42,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         $this->ui->loadFromXML($this->getUiXml());
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal()
     {
         foreach ($this->ui->getRoot()->getDescendants('SwatForm') as $form) {
@@ -63,10 +49,7 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -84,9 +67,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function processNewForm()
-
     protected function processNewForm($form)
     {
         $this->initDataObjects();
@@ -98,9 +78,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
         $this->relocate();
     }
-
-    // }}}
-    // {{{ protected function processLoginForm()
 
     protected function processLoginForm($form)
     {
@@ -137,18 +114,12 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         $this->app->relocate($this->getNextSource());
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -158,9 +129,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         $this->buildForgotPasswordLink();
     }
 
-    // }}}
-    // {{{ protected function buildMessages()
-
     protected function buildMessages()
     {
         $message_display = $this->ui->getWidget('message_display');
@@ -169,9 +137,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildForgotPasswordLink()
-
     protected function buildForgotPasswordLink()
     {
         $block = $this->ui->getWidget('forgot_password');
@@ -179,9 +144,6 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
         $block->content = $this->getForgotPasswordLink();
         $block->content_type = 'text/xml';
     }
-
-    // }}}
-    // {{{ protected function getForgotPasswordLink()
 
     protected function getForgotPasswordLink()
     {
@@ -201,6 +163,4 @@ class StoreCheckoutFrontPage extends StoreCheckoutPage
 
         return sprintf($link, $link_value);
     }
-
-    // }}}
 }

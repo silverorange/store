@@ -8,8 +8,6 @@
  */
 class StoreProductQueueAttributes extends AdminDBConfirmation
 {
-    // {{{ protected properties
-
     /**
      * A db-quoted array of attribute id's.
      *
@@ -38,24 +36,15 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
      */
     protected $category_id;
 
-    // }}}
-    // {{{ public function setAction()
-
     public function setAction($action)
     {
         $this->action = $action;
     }
 
-    // }}}
-    // {{{ public function setAttributes()
-
     public function setAttributes($attributes)
     {
         $this->attributes = $attributes;
     }
-
-    // }}}
-    // {{{ public function setCategory()
 
     public function setCategory($category_id)
     {
@@ -65,10 +54,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         }
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -88,18 +74,12 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         );
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/queue-attributes.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -113,9 +93,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
         parent::process();
     }
-
-    // }}}
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -163,9 +140,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{  protected function relocate()
-
     protected function relocate()
     {
         if ($this->category === false) {
@@ -180,10 +154,7 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         $this->app->relocate($uri);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -200,9 +171,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
         $item_list = $this->getItemList('integer');
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -234,9 +202,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
         $this->navbar->addEntry(new SwatNavBarEntry($this->getTitle()));
     }
-
-    // }}}
-    // {{{ protected function getConfirmationMessage()
 
     protected function getConfirmationMessage()
     {
@@ -276,9 +241,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         return ob_get_clean();
     }
 
-    // }}}
-    // {{{ protected function getTitle()
-
     protected function getTitle()
     {
         if ($this->action == 'add') {
@@ -289,9 +251,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
 
         return $title;
     }
-
-    // }}}
-    // {{{ protected function getAttributeTitles()
 
     protected function getAttributeTitles()
     {
@@ -310,9 +269,6 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         );
     }
 
-    // }}}
-    // {{{ protected function getProductTitles()
-
     protected function getProductTitles()
     {
         $where_clause = sprintf(
@@ -329,6 +285,4 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
             $where_clause
         );
     }
-
-    // }}}
 }

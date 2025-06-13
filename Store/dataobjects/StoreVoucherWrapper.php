@@ -10,8 +10,6 @@
  */
 class StoreVoucherWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public function getByCode()
-
     public function getByCode($code)
     {
         $voucher = null;
@@ -26,14 +24,9 @@ class StoreVoucherWrapper extends SwatDBRecordsetWrapper
         return $voucher;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->row_wrapper_class = SwatDBClassMap::get('StoreVoucher');
     }
-
-    // }}}
 }

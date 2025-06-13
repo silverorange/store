@@ -14,8 +14,6 @@
  */
 abstract class StoreAddress extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Address identifier.
      *
@@ -29,9 +27,6 @@ abstract class StoreAddress extends SwatDBDataObject
      * @var bool
      */
     public $po_box;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * The full name of the address holder.
@@ -92,9 +87,6 @@ abstract class StoreAddress extends SwatDBDataObject
      * @var text
      */
     protected $phone;
-
-    // }}}
-    // {{{ private properties
 
     /*
      * Array of common street suffixes and their proper postal abbreviations.
@@ -630,9 +622,6 @@ abstract class StoreAddress extends SwatDBDataObject
         'WLS'        => 'WLS',
     ];
 
-    // }}}
-    // {{{ public static function isPoBoxLine()
-
     /**
      * Checks whether or not an address string is a PO box.
      *
@@ -652,9 +641,6 @@ abstract class StoreAddress extends SwatDBDataObject
         return preg_match($po_box_exp, $string) == 1;
     }
 
-    // }}}
-    // {{{ public function isPoBox()
-
     /**
      * Gets whether or not this address is for a PO box.
      *
@@ -667,9 +653,6 @@ abstract class StoreAddress extends SwatDBDataObject
             || self::isPoBoxLine($this->getLine1())
             || self::isPoBoxLine($this->getLine2());
     }
-
-    // }}}
-    // {{{ public static function isVerificationAvailable()
 
     /**
      * Checks the application's config and returns whether a key to a
@@ -684,9 +667,6 @@ abstract class StoreAddress extends SwatDBDataObject
     {
         return isset($app->config->strikeiron->verify_address_usa_key);
     }
-
-    // }}}
-    // {{{ public function display()
 
     /**
      * Displays this address in postal format.
@@ -712,9 +692,6 @@ abstract class StoreAddress extends SwatDBDataObject
 
         $span_tag->close();
     }
-
-    // }}}
-    // {{{ public function displayCondensed()
 
     /**
      * Displays this address in a two-line condensed form.
@@ -744,9 +721,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function displayCondensedAsText()
-
     /**
      * Displays this address in a two-line condensed form.
      *
@@ -770,9 +744,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function copyFrom()
-
     public function copyFrom(StoreAddress $address)
     {
         $this->setFullName($address->getFullName());
@@ -788,9 +759,6 @@ abstract class StoreAddress extends SwatDBDataObject
         $this->country = $address->getInternalValue('country');
         $this->po_box = $address->po_box;
     }
-
-    // }}}
-    // {{{ public function compare()
 
     /**
      * Compares this address to another address.
@@ -839,9 +807,6 @@ abstract class StoreAddress extends SwatDBDataObject
         return $equal;
     }
 
-    // }}}
-    // {{{ public function verify()
-
     /**
      * Verify this address.
      *
@@ -863,9 +828,6 @@ abstract class StoreAddress extends SwatDBDataObject
 
         return $valid;
     }
-
-    // }}}
-    // {{{ public function mostlyEqual()
 
     /**
      * Compares this address to another address.
@@ -933,9 +895,6 @@ abstract class StoreAddress extends SwatDBDataObject
         return $equal;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->id_field = 'integer:id';
@@ -950,9 +909,6 @@ abstract class StoreAddress extends SwatDBDataObject
             SwatDBClassMap::get('StoreCountry')
         );
     }
-
-    // }}}
-    // {{{ protected function displayCA()
 
     /**
      * Displays this address in Canada Post format.
@@ -1024,9 +980,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayGB()
-
     /**
      * Displays this address in Royal Mail format.
      *
@@ -1064,9 +1017,6 @@ abstract class StoreAddress extends SwatDBDataObject
             );
         }
     }
-
-    // }}}
-    // {{{ protected function displayUS()
 
     /**
      * Displays this address in US Postal Service format.
@@ -1137,9 +1087,6 @@ abstract class StoreAddress extends SwatDBDataObject
             $span_tag->display();
         }
     }
-
-    // }}}
-    // {{{ protected function displayCondensedCA()
 
     /**
      * Displays this address in a two-line condensed form.
@@ -1226,9 +1173,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayCondensedGB()
-
     /**
      * Displays this address in a two-line condensed form.
      */
@@ -1266,9 +1210,6 @@ abstract class StoreAddress extends SwatDBDataObject
             );
         }
     }
-
-    // }}}
-    // {{{ protected function displayCondensedUS()
 
     /**
      * Displays this address in a two-line condensed form.
@@ -1355,9 +1296,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayCondensedAsTextCA()
-
     /**
      * Displays this address in a two-line condensed form.
      */
@@ -1401,9 +1339,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayCondensedAsTextGB()
-
     /**
      * Displays this address in a two-line condensed form.
      */
@@ -1441,9 +1376,6 @@ abstract class StoreAddress extends SwatDBDataObject
             );
         }
     }
-
-    // }}}
-    // {{{ protected function displayCondensedAsTextUS()
 
     /**
      * Displays this address in a two-line condensed form.
@@ -1488,9 +1420,6 @@ abstract class StoreAddress extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayLines()
-
     protected function displayLines()
     {
         if ($this->getLine1() != '') {
@@ -1517,9 +1446,6 @@ abstract class StoreAddress extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
-    // {{{ protected function verifyUS()
 
     protected function verifyUS(SiteApplication $app, $modify)
     {
@@ -1591,17 +1517,11 @@ abstract class StoreAddress extends SwatDBDataObject
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function verifyCA()
-
     protected function verifyCA(SiteApplication $app, $modify)
     {
         // TODO: actually verify canadian addresses.
         return true;
     }
-
-    // }}}
-    // {{{ protected function getProtectedPropertyList()
 
     protected function getProtectedPropertyList()
     {
@@ -1644,9 +1564,6 @@ abstract class StoreAddress extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ private static function differByStreetSuffixOnly()
-
     private static function differByStreetSuffixOnly($a, $b)
     {
         $result = false;
@@ -1668,9 +1585,6 @@ abstract class StoreAddress extends SwatDBDataObject
 
         return in_array($suffix, self::$street_suffixes);
     }
-
-    // }}}
-    // {{{ private static function differByStreetAbbreviationOnly()
 
     private static function differByStreetAbbreviationOnly($a, $b)
     {
@@ -1699,10 +1613,7 @@ abstract class StoreAddress extends SwatDBDataObject
         return $result;
     }
 
-    // }}}
-
     // getters
-    // {{{ public function getFullName()
 
     /**
      * Gets the full name of the person at this address.
@@ -1717,127 +1628,80 @@ abstract class StoreAddress extends SwatDBDataObject
         return $this->fullname;
     }
 
-    // }}}
-    // {{{ public function getCompany()
-
     public function getCompany()
     {
         return $this->company;
     }
-
-    // }}}
-    // {{{ public function getLine1()
 
     public function getLine1()
     {
         return $this->line1;
     }
 
-    // }}}
-    // {{{ public function getLine2()
-
     public function getLine2()
     {
         return $this->line2;
     }
-
-    // }}}
-    // {{{ public function getCity()
 
     public function getCity()
     {
         return $this->city;
     }
 
-    // }}}
-    // {{{ public function getProvStateOther()
-
     public function getProvStateOther()
     {
         return $this->provstate_other;
     }
-
-    // }}}
-    // {{{ public function getPostalCode()
 
     public function getPostalCode()
     {
         return $this->postal_code;
     }
 
-    // }}}
-    // {{{ public function getPhone()
-
     public function getPhone()
     {
         return $this->phone;
     }
 
-    // }}}
-
     // setters
-    // {{{ public function setFullName()
 
     public function setFullName($fullname)
     {
         $this->fullname = $fullname;
     }
 
-    // }}}
-    // {{{ public function setCompany()
-
     public function setCompany($company)
     {
         $this->company = $company;
     }
-
-    // }}}
-    // {{{ public function setLine1()
 
     public function setLine1($line1)
     {
         $this->line1 = $line1;
     }
 
-    // }}}
-    // {{{ public function setLine2()
-
     public function setLine2($line2)
     {
         $this->line2 = $line2;
     }
-
-    // }}}
-    // {{{ public function setCity()
 
     public function setCity($city)
     {
         $this->city = $city;
     }
 
-    // }}}
-    // {{{ public function setProvStateOther()
-
     public function setProvStateOther($provstate_other)
     {
         $this->provstate_other = $provstate_other;
     }
-
-    // }}}
-    // {{{ public function setPostalCode()
 
     public function setPostalCode($postal_code)
     {
         $this->postal_code = $postal_code;
     }
 
-    // }}}
-    // {{{ public function setPhone()
-
     public function setPhone($phone)
     {
         $this->phone = $phone;
     }
-
-    // }}}
 }

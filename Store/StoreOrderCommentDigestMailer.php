@@ -7,17 +7,12 @@
  */
 class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 {
-    // {{{ public properties
-
     /**
      * A convenience reference to the database object.
      *
      * @var MDB2_Driver
      */
     public $db;
-
-    // }}}
-    // {{{ public function run()
 
     public function run()
     {
@@ -73,9 +68,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         $this->debug("done\n", true);
     }
 
-    // }}}
-    // {{{ protected function getMailMessage()
-
     protected function getMailMessage()
     {
         $message = new SiteMultipartMailMessage($this);
@@ -97,9 +89,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         return $message;
     }
 
-    // }}}
-    // {{{ protected function getToAddress()
-
     protected function getToAddress()
     {
         // always return the first address in the list as the to address
@@ -108,9 +97,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
             $this->config->email->order_comments_digest_list
         )[0];
     }
-
-    // }}}
-    // {{{ protected function getCcList()
 
     protected function getCcList()
     {
@@ -123,9 +109,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
             1
         );
     }
-
-    // }}}
-    // {{{ protected function getHtmlContent()
 
     protected function getHtmlContent(StoreOrderWrapper $orders)
     {
@@ -203,16 +186,10 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         return ob_get_clean();
     }
 
-    // }}}
-    // {{{ protected function canDisplayOrder()
-
     protected function canDisplayOrder(StoreOrder $order)
     {
         return $order->comments !== null;
     }
-
-    // }}}
-    // {{{ protected function displayOrder()
 
     protected function displayOrder(StoreOrder $order)
     {
@@ -261,9 +238,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         }
     }
 
-    // }}}
-    // {{{ protected function getPendingOrderComments()
-
     protected function getPendingOrderComments()
     {
         $sql = 'select Orders.*
@@ -283,9 +257,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         );
     }
 
-    // }}}
-    // {{{ protected function updateOrdersCommentStatus()
-
     protected function updateOrdersCommentStatus(StoreOrderWrapper $orders)
     {
         foreach ($orders as $order) {
@@ -294,10 +265,7 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         }
     }
 
-    // }}}
-
     // boilerplate
-    // {{{ protected function getDefaultModuleList()
 
     /**
      * Gets the list of modules to load for this search indexer.
@@ -317,9 +285,6 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         );
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -332,14 +297,9 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         $config->addDefinitions(Store::getConfigDefinitions());
     }
 
-    // }}}
-    // {{{ protected function configure()
-
     protected function configure(SiteConfigModule $config)
     {
         parent::configure($config);
         $this->database->dsn = $config->database->dsn;
     }
-
-    // }}}
 }

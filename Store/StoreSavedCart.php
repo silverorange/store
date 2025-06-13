@@ -15,8 +15,6 @@
  */
 class StoreSavedCart extends StoreCart
 {
-    // {{{ public function load()
-
     /**
      * Loads this cart.
      */
@@ -34,9 +32,6 @@ class StoreSavedCart extends StoreCart
         }
     }
 
-    // }}}
-    // {{{ protected function preSaveEntry()
-
     /**
      * Sets the saved flag to true on entries in this cart that are about to be
      * saved.
@@ -49,6 +44,4 @@ class StoreSavedCart extends StoreCart
 
         $entry->saved = true;
     }
-
-    // }}}
 }

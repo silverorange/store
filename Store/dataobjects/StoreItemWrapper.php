@@ -7,8 +7,6 @@
  */
 class StoreItemWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public function setRegion()
-
     /**
      * Sets the region for all items in this record set.
      *
@@ -23,9 +21,6 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
         }
     }
 
-    // }}}
-    // {{{ publc function loadProducts()
-
     public function loadProducts()
     {
         return $this->loadAllSubDataObjects(
@@ -35,9 +30,6 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
             SwatDBClassMap::get('StoreProductWrapper')
         );
     }
-
-    // }}}
-    // {{{ public static function loadSetFromDB()
 
     public static function loadSetFromDB($db, $id_set)
     {
@@ -55,9 +47,6 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
             SwatDBClassMap::get('StoreItemWrapper')
         );
     }
-
-    // }}}
-    // {{{ public static function loadSetFromDBWithRegion()
 
     /**
      * Loads a set of items with region-specific fields filled in with a
@@ -117,15 +106,10 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
         return $items;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->row_wrapper_class = SwatDBClassMap::get('StoreItem');
         $this->index_field = 'id';
     }
-
-    // }}}
 }

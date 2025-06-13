@@ -8,8 +8,6 @@
  */
 class StoreCartPage extends SitePage
 {
-    // {{{ protected properties
-
     /**
      * @var SwatUI
      */
@@ -56,10 +54,7 @@ class StoreCartPage extends SitePage
      */
     protected $item_minimum_quantity_group_warnings = [];
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -96,23 +91,14 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function initInternal()
-
     protected function initInternal() {}
-
-    // }}}
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/cart.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -123,10 +109,7 @@ class StoreCartPage extends SitePage
         $this->processItemMinimumQuantityGroupMessages();
     }
 
-    // }}}
-
     // process phase - checkout cart
-    // {{{ protected function processCheckoutCart()
 
     protected function processCheckoutCart()
     {
@@ -170,9 +153,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function processCheckoutCartCheckoutButtons()
-
     protected function processCheckoutCartCheckoutButtons()
     {
         if ($this->continueButtonHasBeenClicked()) {
@@ -180,9 +160,6 @@ class StoreCartPage extends SitePage
             $this->app->relocate('checkout');
         }
     }
-
-    // }}}
-    // {{{ protected function updateCheckoutCart()
 
     protected function updateCheckoutCart()
     {
@@ -270,9 +247,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function continueButtonHasBeenClicked()
-
     /**
      * Whether or not a button has been clicked indicating the customer
      * wants to proceed to the checkout.
@@ -295,9 +269,6 @@ class StoreCartPage extends SitePage
         return $continue_button_clicked;
     }
 
-    // }}}
-    // {{{ protected function getContinueButtons()
-
     protected function getContinueButtons()
     {
         $buttons = [];
@@ -313,9 +284,6 @@ class StoreCartPage extends SitePage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function canCheckout()
-
     /**
      * Whether or not the current cart can proceed to the checkout.
      *
@@ -330,10 +298,7 @@ class StoreCartPage extends SitePage
         return $this->app->cart->checkout->checkoutEnabled();
     }
 
-    // }}}
-
     // process phase - checkout cart - available entries
-    // {{{ protected function getAvailableQuantityWidgets()
 
     protected function getAvailableQuantityWidgets()
     {
@@ -344,9 +309,6 @@ class StoreCartPage extends SitePage
         return $renderer->getWidgets('quantity_entry');
     }
 
-    // }}}
-    // {{{ protected function getAvailableQuantityWidget()
-
     protected function getAvailableQuantityWidget($id)
     {
         $view = $this->ui->getWidget('available_cart_view');
@@ -355,9 +317,6 @@ class StoreCartPage extends SitePage
 
         return $renderer->getWidget($id);
     }
-
-    // }}}
-    // {{{ protected function getAvailableMoveButtons()
 
     protected function getAvailableMoveButtons()
     {
@@ -373,9 +332,6 @@ class StoreCartPage extends SitePage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function getAvailableMoveAllButton()
-
     protected function getAvailableMoveAllButton()
     {
         if ($this->ui->hasWidget('available_move_all_button')) {
@@ -386,9 +342,6 @@ class StoreCartPage extends SitePage
 
         return $button;
     }
-
-    // }}}
-    // {{{ protected function getAvailableRemoveButtons()
 
     protected function getAvailableRemoveButtons()
     {
@@ -404,9 +357,6 @@ class StoreCartPage extends SitePage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function getAvailableRemoveAllButton()
-
     protected function getAvailableRemoveAllButton()
     {
         $button = null;
@@ -417,9 +367,6 @@ class StoreCartPage extends SitePage
 
         return $button;
     }
-
-    // }}}
-    // {{{ protected function moveAvailableEntries()
 
     /**
      * @return int the number of entries that were moved
@@ -459,9 +406,6 @@ class StoreCartPage extends SitePage
         return $num_entries_moved;
     }
 
-    // }}}
-    // {{{ protected function removeAvailableEntries()
-
     /**
      * @return int the number of entries that were removed
      */
@@ -483,9 +427,6 @@ class StoreCartPage extends SitePage
 
         return $num_entries_removed;
     }
-
-    // }}}
-    // {{{ protected function updateAvailableEntries()
 
     /**
      * @return int the number of entries that were updated
@@ -523,9 +464,6 @@ class StoreCartPage extends SitePage
             'num_entries_removed' => $num_entries_removed,
         ];
     }
-
-    // }}}
-    // {{{ protected function moveAllAvailableCheckoutCart()
 
     /**
      * moves all available cart items.
@@ -584,9 +522,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function removeAllAvailableCheckoutCart()
-
     /**
      * Removes all available cart items.
      */
@@ -626,10 +561,7 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-
     // process phase - checkout cart - unavailable entries
-    // {{{ protected function getUnavailableMoveButtons()
 
     protected function getUnavailableMoveButtons()
     {
@@ -645,9 +577,6 @@ class StoreCartPage extends SitePage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function getUnavailableRemoveButtons()
-
     protected function getUnavailableRemoveButtons()
     {
         $buttons = [];
@@ -662,16 +591,10 @@ class StoreCartPage extends SitePage
         return $buttons;
     }
 
-    // }}}
-    // {{{ protected function getUnavailableRemoveAllButton()
-
     protected function getUnavailableRemoveAllButton()
     {
         return $this->ui->getWidget('unavailable_remove_all_button');
     }
-
-    // }}}
-    // {{{ protected function moveUnavailableEntries()
 
     /**
      * @return int the number of entries that were moved
@@ -705,9 +628,6 @@ class StoreCartPage extends SitePage
         return $num_entries_moved;
     }
 
-    // }}}
-    // {{{ protected function removeUnavailableEntries()
-
     /**
      * @return int the number of entries that were removed
      */
@@ -727,9 +647,6 @@ class StoreCartPage extends SitePage
 
         return $num_entries_removed;
     }
-
-    // }}}
-    // {{{ protected function removeAllUnavailableCheckoutCart()
 
     /**
      * Removes all unavailable cart items.
@@ -769,10 +686,7 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-
     // process phase - saved cart
-    // {{{ protected function processSavedCart()
 
     protected function processSavedCart()
     {
@@ -809,9 +723,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function getSavedMoveButtons()
-
     protected function getSavedMoveButtons()
     {
         $view = $this->ui->getWidget('saved_cart_view');
@@ -821,16 +732,10 @@ class StoreCartPage extends SitePage
         return $renderer->getWidgets('saved_move_button');
     }
 
-    // }}}
-    // {{{ protected function getSavedMoveAllButton()
-
     protected function getSavedMoveAllButton()
     {
         return $this->ui->getWidget('saved_move_all_button');
     }
-
-    // }}}
-    // {{{ protected function getSavedRemoveButtons()
 
     protected function getSavedRemoveButtons()
     {
@@ -841,16 +746,10 @@ class StoreCartPage extends SitePage
         return $renderer->getWidgets('saved_remove_button');
     }
 
-    // }}}
-    // {{{ protected function getSavedRemoveAllButton()
-
     protected function getSavedRemoveAllButton()
     {
         return $this->ui->getWidget('saved_remove_all_button');
     }
-
-    // }}}
-    // {{{ protected function updateSavedCart()
 
     protected function updateSavedCart()
     {
@@ -879,9 +778,6 @@ class StoreCartPage extends SitePage
             ));
         }
     }
-
-    // }}}
-    // {{{ protected function moveSavedEntries()
 
     /**
      * @return int the number of entries that were moved
@@ -927,9 +823,6 @@ class StoreCartPage extends SitePage
         return $num_entries_moved;
     }
 
-    // }}}
-    // {{{ protected function removeSavedEntries()
-
     /**
      * @return int the number of entries that were removed
      */
@@ -949,9 +842,6 @@ class StoreCartPage extends SitePage
 
         return $num_entries_removed;
     }
-
-    // }}}
-    // {{{ protected function moveAllSavedCart()
 
     /**
      * Moves all saved cart items to checkout cart.
@@ -1003,9 +893,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function removeAllSavedCart()
-
     /**
      * Removes all saved cart items.
      */
@@ -1044,10 +931,7 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-
     // process item mininum quantity group messages
-    // {{{ protected function processItemMinimumQuantityGroupMessages()
 
     protected function processItemMinimumQuantityGroupMessages()
     {
@@ -1088,9 +972,6 @@ class StoreCartPage extends SitePage
             }
         }
     }
-
-    // }}}
-    // {{{ protected function addItemMinimumQuantityGroupMessage()
 
     protected function addItemMinimumQuantityGroupMessage(
         StoreItemMinimumQuantityGroup $group,
@@ -1152,9 +1033,6 @@ class StoreCartPage extends SitePage
         $message_display->add($m);
     }
 
-    // }}}
-    // {{{ protected function removeItemMinimumQuantityGroupEntries()
-
     protected function removeItemMinimumQuantityGroupEntries(stdClass $g)
     {
         foreach ($g->entries as $entry) {
@@ -1167,9 +1045,6 @@ class StoreCartPage extends SitePage
             $g->group->title
         )));
     }
-
-    // }}}
-    // {{{ protected function getItemMinimumQuantityGroupForm()
 
     protected function getItemMinimumQuantityGroupForm(
         StoreItemMinimumQuantityGroup $group
@@ -1188,10 +1063,7 @@ class StoreCartPage extends SitePage
         return $form;
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -1225,16 +1097,10 @@ class StoreCartPage extends SitePage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected function buildInternal()
-
     protected function buildInternal()
     {
         $this->buildPaymentNote();
     }
-
-    // }}}
-    // {{{ protected function getEmptyCartMessage()
 
     protected function getEmptyCartMessage()
     {
@@ -1251,9 +1117,6 @@ class StoreCartPage extends SitePage
 
         return $empty_message;
     }
-
-    // }}}
-    // {{{ protected function buildAvailableTableView()
 
     protected function buildAvailableTableView()
     {
@@ -1309,9 +1172,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function buildUnavailableTableView()
-
     protected function buildUnavailableTableView()
     {
         $unavailable_view = $this->ui->getWidget('unavailable_cart_view');
@@ -1363,9 +1223,6 @@ class StoreCartPage extends SitePage
             }
         }
     }
-
-    // }}}
-    // {{{ protected function buildSavedTableView()
 
     protected function buildSavedTableView()
     {
@@ -1449,9 +1306,6 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function getAvailableTableStore()
-
     protected function getAvailableTableStore()
     {
         $store = new SwatTableStore();
@@ -1464,9 +1318,6 @@ class StoreCartPage extends SitePage
 
         return $store;
     }
-
-    // }}}
-    // {{{ protected function getAvailableRow()
 
     /**
      * @return SwatDetailsStore
@@ -1513,9 +1364,6 @@ class StoreCartPage extends SitePage
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getImageDimension()
-
     /**
      * @return string Image dimension shortname
      */
@@ -1523,9 +1371,6 @@ class StoreCartPage extends SitePage
     {
         return 'pinky';
     }
-
-    // }}}
-    // {{{ protected function getUnavailableTableStore()
 
     protected function getUnavailableTableStore()
     {
@@ -1538,9 +1383,6 @@ class StoreCartPage extends SitePage
 
         return $store;
     }
-
-    // }}}
-    // {{{ protected function getUnavailableRow()
 
     /**
      * @return SwatDetailsStore
@@ -1581,9 +1423,6 @@ class StoreCartPage extends SitePage
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getSavedTableStore()
-
     protected function getSavedTableStore()
     {
         $store = new SwatTableStore();
@@ -1595,9 +1434,6 @@ class StoreCartPage extends SitePage
 
         return $store;
     }
-
-    // }}}
-    // {{{ protected function getSavedRow()
 
     /**
      * @return SwatDetailsStore
@@ -1637,9 +1473,6 @@ class StoreCartPage extends SitePage
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getEntryDescription()
-
     protected function getEntryDescription(StoreCartEntry $entry)
     {
         $description = [];
@@ -1656,9 +1489,6 @@ class StoreCartPage extends SitePage
         return implode("\n", $description);
     }
 
-    // }}}
-    // {{{ protected function buildMessages()
-
     protected function buildMessages()
     {
         try {
@@ -1669,9 +1499,6 @@ class StoreCartPage extends SitePage
         } catch (SwatWidgetNotFoundException $e) {
         }
     }
-
-    // }}}
-    // {{{ protected function buildPaymentNote()
 
     protected function buildPaymentNote()
     {
@@ -1684,9 +1511,6 @@ class StoreCartPage extends SitePage
         } catch (SwatWidgetNotFoundException $e) {
         }
     }
-
-    // }}}
-    // {{{ protected function displayPaymentNote()
 
     protected function displayPaymentNote()
     {
@@ -1711,9 +1535,6 @@ class StoreCartPage extends SitePage
         echo '</ul>';
     }
 
-    // }}}
-    // {{{ protected function displayPaymentType()
-
     protected function displayPaymentType(StorePaymentType $type)
     {
         if ($type->shortname == 'card') {
@@ -1722,9 +1543,6 @@ class StoreCartPage extends SitePage
             echo SwatString::minimizeEntities($type->title);
         }
     }
-
-    // }}}
-    // {{{ protected function displayAcceptedCardTypes()
 
     protected function displayAcceptedCardTypes(StorePaymentType $type)
     {
@@ -1753,10 +1571,7 @@ class StoreCartPage extends SitePage
         $span->display();
     }
 
-    // }}}
-
     // available_item_counts methods
-    // {{{ protected function getAvailableProductItemCount()
 
     protected function getAvailableProductItemCount(StoreCartEntry $entry)
     {
@@ -1777,9 +1592,6 @@ class StoreCartPage extends SitePage
         return $count;
     }
 
-    // }}}
-    // {{{ protected function addToAvailableProductCount()
-
     protected function addToAvailableProductCount(StoreCartEntry $entry)
     {
         $id = $this->getEntryIndex($entry);
@@ -1789,9 +1601,6 @@ class StoreCartPage extends SitePage
             $this->available_item_counts[$id] = 1;
         }
     }
-
-    // }}}
-    // {{{ protected function removeFromAvailableProductCount()
 
     protected function removeFromAvailableProductCount(StoreCartEntry $entry)
     {
@@ -1803,18 +1612,12 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function resetAvailableProductItemCount()
-
     protected function resetAvailableProductItemCount()
     {
         $this->available_item_counts = [];
     }
 
-    // }}}
-
     // unavailable_item_counts methods
-    // {{{ protected function getUnavailableProductItemCount()
 
     protected function getUnavailableProductItemCount(StoreCartEntry $entry)
     {
@@ -1835,9 +1638,6 @@ class StoreCartPage extends SitePage
         return $count;
     }
 
-    // }}}
-    // {{{ protected function addToUnavailableProductCount()
-
     protected function addToUnavailableProductCount(StoreCartEntry $entry)
     {
         $id = $this->getEntryIndex($entry);
@@ -1847,9 +1647,6 @@ class StoreCartPage extends SitePage
             $this->unavailable_item_counts[$id] = 1;
         }
     }
-
-    // }}}
-    // {{{ protected function removeFromUnvailableProductCount()
 
     protected function removeFromUnvailableProductCount(StoreCartEntry $entry)
     {
@@ -1861,18 +1658,12 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function resetUnavailableProductItemCount()
-
     protected function resetUnavailableProductItemCount()
     {
         $this->unavailable_item_counts = [];
     }
 
-    // }}}
-
     // saved_item_counts methods
-    // {{{ protected function getSavedProductItemCount()
 
     protected function getSavedProductItemCount(StoreCartEntry $entry)
     {
@@ -1893,9 +1684,6 @@ class StoreCartPage extends SitePage
         return $count;
     }
 
-    // }}}
-    // {{{ protected function addToSavedProductCount()
-
     protected function addToSavedProductCount(StoreCartEntry $entry)
     {
         $id = $this->getEntryIndex($entry);
@@ -1905,9 +1693,6 @@ class StoreCartPage extends SitePage
             $this->saved_item_counts[$id] = 1;
         }
     }
-
-    // }}}
-    // {{{ protected function removeFromSavedProductCount()
 
     protected function removeFromSavedProductCount(StoreCartEntry $entry)
     {
@@ -1919,26 +1704,17 @@ class StoreCartPage extends SitePage
         }
     }
 
-    // }}}
-    // {{{ protected function resetSavedProductItemCount()
-
     protected function resetSavedProductItemCount()
     {
         $this->saved_item_counts = [];
     }
-
-    // }}}
-    // {{{ protected function getEntryIndex()
 
     protected function getEntryIndex(StoreCartEntry $entry)
     {
         return $entry->item->getInternalValue('product');
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -1953,6 +1729,4 @@ class StoreCartPage extends SitePage
             $this->ui->getRoot()->getHtmlHeadEntrySet()
         );
     }
-
-    // }}}
 }

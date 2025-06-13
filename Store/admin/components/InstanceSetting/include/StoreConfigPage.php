@@ -9,15 +9,10 @@
  */
 class StoreConfigPage extends SiteAbstractConfigPage
 {
-    // {{{ public function getPageTitle()
-
     public function getPageTitle()
     {
         return 'Store Settings';
     }
-
-    // }}}
-    // {{{ public function getConfigSettings()
 
     public function getConfigSettings()
     {
@@ -35,13 +30,8 @@ class StoreConfigPage extends SiteAbstractConfigPage
         ];
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/config-page.xml';
     }
-
-    // }}}
 }

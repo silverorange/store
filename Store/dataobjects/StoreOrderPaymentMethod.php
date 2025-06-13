@@ -14,8 +14,6 @@
  */
 class StoreOrderPaymentMethod extends StorePaymentMethod
 {
-    // {{{ public properties
-
     /**
      * Optional amount to charge to this payment method.
      *
@@ -55,9 +53,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      * @var int
      */
     public $voucher_type;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * Id of the account payment method this order payment method was created
@@ -102,9 +97,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      */
     protected $paypal_token;
 
-    // }}}
-    // {{{ public function setCardVerificationValue()
-
     /**
      * Sets the card verification value (CVV) of this payment method.
      *
@@ -132,9 +124,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         }
     }
 
-    // }}}
-    // {{{ public function hasCardVerificationValue()
-
     /**
      * @return bool true if this payment method has a card verification
      *              value and false if it does not. Either an encrypted or
@@ -144,9 +133,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
     {
         return $this->unencrypted_card_verification_value != '';
     }
-
-    // }}}
-    // {{{ public function getUnencryptedCardVerificationValue()
 
     /**
      * Gets the unencrypted card verification value (CVV) of this payment
@@ -162,56 +148,35 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         return $this->unencrypted_card_verification_value;
     }
 
-    // }}}
-    // {{{ public function getAccountPaymentMethodId()
-
     public function getAccountPaymentMethodId()
     {
         return $this->account_payment_method_id;
     }
-
-    // }}}
-    // {{{ public function setAdjustable()
 
     public function setAdjustable($value = true)
     {
         $this->adjustable = $value;
     }
 
-    // }}}
-    // {{{ public function isAdjustable()
-
     public function isAdjustable()
     {
         return $this->adjustable;
     }
-
-    // }}}
-    // {{{ public function setMaxAmount()
 
     public function setMaxAmount($amount)
     {
         $this->max_amount = $amount;
     }
 
-    // }}}
-    // {{{ public function getMaxAmount()
-
     public function getMaxAmount()
     {
         return $this->max_amount;
     }
 
-    // }}}
-    // {{{ public function setTag()
-
     public function setTag($tag)
     {
         $this->tag = $tag;
     }
-
-    // }}}
-    // {{{ public function getTag()
 
     public function getTag()
     {
@@ -222,9 +187,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         return $this->tag;
     }
 
-    // }}}
-    // {{{ public function copyFrom()
-
     public function copyFrom(StorePaymentMethod $method)
     {
         parent::copyFrom($method);
@@ -233,9 +195,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
             $this->account_payment_method_id = $method->id;
         }
     }
-
-    // }}}
-    // {{{ public function duplicate()
 
     public function duplicate(): static
     {
@@ -256,9 +215,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         return $new_payment_method;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -268,9 +224,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
             SwatDBClassMap::get('StoreOrder')
         );
     }
-
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
 
     protected function getSerializablePrivateProperties()
     {
@@ -286,10 +239,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         );
     }
 
-    // }}}
-
     // display methods
-    // {{{ public function displayAmount()
 
     public function displayAmount()
     {
@@ -299,9 +249,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         }
     }
 
-    // }}}
-    // {{{ protected function displayInternal()
-
     protected function displayInternal($display_details = true)
     {
         if ($this->payment_type->isVoucher()) {
@@ -310,9 +257,6 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
             parent::displayInternal($display_details);
         }
     }
-
-    // }}}
-    // {{{ protected function displayVoucher()
 
     protected function displayVoucher()
     {
@@ -341,36 +285,24 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         );
     }
 
-    // }}}
-
     // PayPal fields
-    // {{{ public function setPayPalToken()
 
     public function setPayPalToken($token)
     {
         $this->paypal_token = strval($token);
     }
 
-    // }}}
-    // {{{ public function getPayPalToken()
-
     public function getPayPalToken()
     {
         return $this->paypal_token;
     }
-
-    // }}}
-    // {{{ public function hasPayPalToken()
 
     public function hasPayPalToken()
     {
         return $this->paypal_token != '';
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadTransactions()
 
     protected function loadTransactions()
     {
@@ -387,6 +319,4 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
             SwatDBClassMap::get('StorePaymentMethodTransactionWrapper')
         );
     }
-
-    // }}}
 }

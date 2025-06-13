@@ -23,8 +23,6 @@
  */
 class StoreCartEntry extends SwatDBDataObject
 {
-    // {{{ class constants
-
     /**
      * Valid sources for where the cart entry was created.
      */
@@ -35,9 +33,6 @@ class StoreCartEntry extends SwatDBDataObject
     public const SOURCE_ARTICLE_PAGE = 6;
     public const SOURCE_SEARCH_PAGE = 7;
     public const SOURCE_CART_PAGE = 8;
-
-    // }}}
-    // {{{ public properties
 
     /**
      * A unique identifier of this cart entry.
@@ -99,13 +94,7 @@ class StoreCartEntry extends SwatDBDataObject
      */
     public $custom_price;
 
-    // }}}
-    // {{{ private properties
-
     private $product_max_cart_entry_id;
-
-    // }}}
-    // {{{ public function getQuantity()
 
     /**
      * Gets the number of items this cart entry represents.
@@ -117,9 +106,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $this->quantity;
     }
 
-    // }}}
-    // {{{ public function setQuantity()
-
     /**
      * Sets the number of items this cart entry represents.
      *
@@ -129,9 +115,6 @@ class StoreCartEntry extends SwatDBDataObject
     {
         $this->quantity = (int) $quantity;
     }
-
-    // }}}
-    // {{{ public function getItemId()
 
     /**
      * Gets the id of the item in this cart entry.
@@ -143,9 +126,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $this->item->id;
     }
 
-    // }}}
-    // {{{ public function getItemSku()
-
     /**
      * Gets the sku of the item in this cart entry.
      *
@@ -155,9 +135,6 @@ class StoreCartEntry extends SwatDBDataObject
     {
         return $this->item->sku;
     }
-
-    // }}}
-    // {{{ public function getQuantityDiscountedItemPrice()
 
     /**
      * Gets the unit cost of the StoreItem with quantity discounts.
@@ -181,9 +158,6 @@ class StoreCartEntry extends SwatDBDataObject
 
         return $price;
     }
-
-    // }}}
-    // {{{ public function getCalculatedItemPrice()
 
     /**
      * Gets the unit cost of the StoreItem for this cart entry.
@@ -218,9 +192,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $price;
     }
 
-    // }}}
-    // {{{ public function getDiscount()
-
     /**
      * Gets how much money is saved by discounts.
      *
@@ -236,9 +207,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $this->item->getOriginalPrice() - $this->getCalculatedItemPrice();
     }
 
-    // }}}
-    // {{{ public function getDiscountExtension()
-
     /**
      * Gets how much total money is saved by discounts.
      *
@@ -251,9 +219,6 @@ class StoreCartEntry extends SwatDBDataObject
     {
         return $this->getDiscount() * $this->getQuantity();
     }
-
-    // }}}
-    // {{{ public function getExtension()
 
     /**
      * Gets the extension cost of this cart entry.
@@ -272,9 +237,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $price * $this->getQuantity();
     }
 
-    // }}}
-    // {{{ public function hasSameItem()
-
     /**
      * Compares this entry with another entry by item.
      *
@@ -289,9 +251,6 @@ class StoreCartEntry extends SwatDBDataObject
         return ($this->custom_price == $entry->custom_price)
             && ($this->getItemId() === $entry->getItemId());
     }
-
-    // }}}
-    // {{{ public function compare()
 
     /**
      * Compares this entry with another entry by item.
@@ -328,9 +287,6 @@ class StoreCartEntry extends SwatDBDataObject
         return 0;
     }
 
-    // }}}
-    // {{{ public function combine()
-
     /**
      * Combines an entry with this entry.
      *
@@ -347,9 +303,6 @@ class StoreCartEntry extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function isSaved()
-
     /**
      * Whether or not this entry is saved for later.
      *
@@ -359,9 +312,6 @@ class StoreCartEntry extends SwatDBDataObject
     {
         return $this->saved;
     }
-
-    // }}}
-    // {{{ public function isAvailable()
 
     /**
      * Whether or not this entry is available for order.
@@ -377,9 +327,6 @@ class StoreCartEntry extends SwatDBDataObject
     {
         return $this->item->isAvailableInRegion($region);
     }
-
-    // }}}
-    // {{{ public function createOrderItem()
 
     /**
      * Creates a new order item dataobject that corresponds to this cart entry.
@@ -429,9 +376,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $order_item;
     }
 
-    // }}}
-    // {{{ public function setProductMaxCartEntryId()
-
     /**
      * Sets the maximum StoreCartEntry::$id for all cart entries in the same
      * product as this entry.
@@ -449,9 +393,6 @@ class StoreCartEntry extends SwatDBDataObject
         $this->product_max_cart_entry_id = $id;
     }
 
-    // }}}
-    // {{{ public function getProductMaxCartEntryId()
-
     /**
      * Get the maximum StoreCartEntry::$id for all cart entries in the same
      * product as this entry.
@@ -464,9 +405,6 @@ class StoreCartEntry extends SwatDBDataObject
         return $this->product_max_cart_entry_id;
     }
 
-    // }}}
-    // {{{ protected function getOrderItemDescription()
-
     protected function getOrderItemDescription()
     {
         $description = [];
@@ -478,9 +416,6 @@ class StoreCartEntry extends SwatDBDataObject
 
         return implode("\n", $description);
     }
-
-    // }}}
-    // {{{ protected function init()
 
     /**
      * Sets up this cart entry data object.
@@ -510,6 +445,4 @@ class StoreCartEntry extends SwatDBDataObject
         $this->table = 'CartEntry';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
 }

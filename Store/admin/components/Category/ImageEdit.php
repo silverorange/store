@@ -8,8 +8,6 @@
  */
 class StoreCategoryImageEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * @var StoreCategoryImage
      */
@@ -23,10 +21,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
     protected $dimensions;
     protected $dimension_files;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -38,9 +33,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
         $this->initImage();
         $this->initDimensions();
     }
-
-    // }}}
-    // {{{ protected function initCategory()
 
     protected function initCategory()
     {
@@ -60,9 +52,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function initImage()
-
     protected function initImage()
     {
         $this->image = $this->getNewImageInstance();
@@ -73,9 +62,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
             );
         }
     }
-
-    // }}}
-    // {{{ protected function initDimensions()
 
     protected function initDimensions()
     {
@@ -116,9 +102,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getNewImageInstance()
-
     protected function getNewImageInstance()
     {
         $class_name = SwatDBClassMap::get('StoreCategoryImage');
@@ -128,18 +111,12 @@ class StoreCategoryImageEdit extends AdminDBEdit
         return $image;
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/image-edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     /**
      * Valid for new images when either the original image is uploaded, or if
@@ -165,9 +142,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function chackManualUploads()
-
     protected function checkManualUploads()
     {
         $uploaded = true;
@@ -178,9 +152,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
         return $uploaded;
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -195,9 +166,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
             $this->app->memcache->flushNs('product');
         }
     }
-
-    // }}}
-    // {{{ protected function processImage()
 
     protected function processImage()
     {
@@ -228,10 +196,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected buildInternal()
 
     protected function buildInternal()
     {
@@ -250,9 +215,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
         $form->addHiddenField('category', $this->category->id);
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->category->image->getAttributes());
@@ -262,9 +224,6 @@ class StoreCategoryImageEdit extends AdminDBEdit
         $image->width = $this->category->image->getWidth('thumb');
         $image->height = $this->category->image->getHeight('thumb');
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -296,6 +255,4 @@ class StoreCategoryImageEdit extends AdminDBEdit
         $this->navbar->addEntry($last_entry);
         $this->title = $this->category->title;
     }
-
-    // }}}
 }

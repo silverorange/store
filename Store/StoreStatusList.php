@@ -13,15 +13,10 @@
  */
 abstract class StoreStatusList extends SwatObject implements Iterator, Countable
 {
-    // {{{ private properties
-
     /**
      * Index value used to implement the iterator interface for this list.
      */
     private int $current_index = 0;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * An array of statuses indexed by id.
@@ -45,9 +40,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
      */
     protected $statuses = [];
 
-    // }}}
-    // {{{ public function getById()
-
     /**
      * Gets a status by its id.
      *
@@ -69,9 +61,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
         return $this->statuses_by_id[$id];
     }
 
-    // }}}
-    // {{{ public function getByShortname()
-
     /**
      * Gets an status by its shortname.
      *
@@ -90,9 +79,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
         return $status;
     }
 
-    // }}}
-    // {{{ public function current()
-
     /**
      * Returns the current status.
      *
@@ -102,9 +88,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
     {
         return $this->statuses[$this->current_index];
     }
-
-    // }}}
-    // {{{ public function key()
 
     /**
      * Returns the key of the current status.
@@ -116,9 +99,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
         return $this->current_index;
     }
 
-    // }}}
-    // {{{ public function next()
-
     /**
      * Moves forward to the next status.
      */
@@ -126,9 +106,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
     {
         $this->current_index++;
     }
-
-    // }}}
-    // {{{ public function prev()
 
     /**
      * Moves forward to the previous status.
@@ -138,9 +115,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
         $this->current_index--;
     }
 
-    // }}}
-    // {{{ public function rewind()
-
     /**
      * Rewinds this iterator to the first status.
      */
@@ -148,9 +122,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
     {
         $this->current_index = 0;
     }
-
-    // }}}
-    // {{{ public function valid()
 
     /**
      * Checks is there is a current status after calls to rewind() and next().
@@ -162,9 +133,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
     {
         return isset($this->statuses[$this->current_index]);
     }
-
-    // }}}
-    // {{{ public function count()
 
     /**
      * Gets the number of statuses in this list.
@@ -178,9 +146,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
         return count($this->statuses);
     }
 
-    // }}}
-    // {{{ protected function add()
-
     /**
      * Adds a status to this list.
      *
@@ -193,9 +158,6 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
         $this->statuses_by_shortname[$status->shortname] = $status;
     }
 
-    // }}}
-    // {{{ abstract protected function getDefinedStatuses()
-
     /**
      * Gets an array of defined statuses for this class of list.
      *
@@ -207,15 +169,10 @@ abstract class StoreStatusList extends SwatObject implements Iterator, Countable
      */
     abstract protected function getDefinedStatuses();
 
-    // }}}
-    // {{{ protected function __construct()
-
     protected function __construct()
     {
         foreach ($this->getDefinedStatuses() as $status) {
             $this->add($status);
         }
     }
-
-    // }}}
 }

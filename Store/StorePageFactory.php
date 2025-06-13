@@ -7,8 +7,6 @@
  */
 class StorePageFactory extends SitePageFactory
 {
-    // {{{ public function __construct()
-
     /**
      * Creates a StoreArticlePageFactory.
      */
@@ -19,9 +17,6 @@ class StorePageFactory extends SitePageFactory
         // set location to load Store page classes from
         $this->page_class_map['Store'] = 'Store/pages';
     }
-
-    // }}}
-    // {{{ public function resolvePage()
 
     public function resolvePage($source, ?SiteLayout $layout = null): SiteAbstractPage
     {
@@ -106,18 +101,12 @@ class StorePageFactory extends SitePageFactory
         throw new SiteNotFoundException();
     }
 
-    // }}}
-    // {{{ protected function resolveFrontPage()
-
     protected function resolveFrontPage($source, SiteLayout $layout)
     {
         throw new SiteNotFoundException();
     }
 
-    // }}}
-
     // products
-    // {{{ protected function resolveProductPage()
 
     protected function resolveProductPage(
         $source,
@@ -142,9 +131,6 @@ class StorePageFactory extends SitePageFactory
         return $page;
     }
 
-    // }}}
-    // {{{ protected function resolveProductLandingPage()
-
     protected function resolveProductLandingPage(
         $source,
         SiteLayout $layout,
@@ -158,9 +144,6 @@ class StorePageFactory extends SitePageFactory
 
         return $page;
     }
-
-    // }}}
-    // {{{ protected function resolveProductImagePage()
 
     protected function resolveProductImagePage(
         $source,
@@ -178,40 +161,25 @@ class StorePageFactory extends SitePageFactory
         return $page;
     }
 
-    // }}}
-    // {{{ protected function decorateProductPage()
-
     protected function decorateProductPage(SiteAbstractPage $page)
     {
         return $this->decorate($page, 'StoreProductPage');
     }
-
-    // }}}
-    // {{{ protected function decorateProductNotVisiblePage()
 
     protected function decorateProductNotVisiblePage(SiteAbstractPage $page)
     {
         return $this->decorate($page, 'StoreProductNotVisiblePage');
     }
 
-    // }}}
-    // {{{ protected function decorateProductImagePage()
-
     protected function decorateProductImagePage(SiteAbstractPage $page)
     {
         return $this->decorate($page, 'StoreProductImagePage');
     }
 
-    // }}}
-    // {{{ protected function decorateProductLandingPage()
-
     protected function decorateProductLandingPage(SiteAbstractPage $page)
     {
         return $page;
     }
-
-    // }}}
-    // {{{ protected function getProductInfo()
 
     /**
      * @param string $source
@@ -289,10 +257,7 @@ class StorePageFactory extends SitePageFactory
         return $data;
     }
 
-    // }}}
-
     // categories
-    // {{{ protected function resolveCategoryPage()
 
     protected function resolveCategoryPage(
         $source,
@@ -316,24 +281,15 @@ class StorePageFactory extends SitePageFactory
         return $page;
     }
 
-    // }}}
-    // {{{ protected function decorateCategoryPage()
-
     protected function decorateCategoryPage(SiteAbstractPage $page)
     {
         return $this->decorate($page, 'StoreCategoryPage');
     }
 
-    // }}}
-    // {{{ protected function decorateCategoryNotVisiblePage()
-
     protected function decorateCategoryNotVisiblePage(SiteAbstractPage $page)
     {
         return $this->decorate($page, 'StoreCategoryNotVisiblePage');
     }
-
-    // }}}
-    // {{{ protected function getCategoryId()
 
     /**
      * @param string $path
@@ -374,13 +330,8 @@ class StorePageFactory extends SitePageFactory
         );
     }
 
-    // }}}
-    // {{{ protected function getCategoryPath()
-
     protected function getCategoryPath($category_id = null)
     {
         return new StoreCategoryPath($this->app, $category_id);
     }
-
-    // }}}
 }

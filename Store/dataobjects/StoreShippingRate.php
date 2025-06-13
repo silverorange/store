@@ -8,8 +8,6 @@
  */
 class StoreShippingRate extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -38,9 +36,6 @@ class StoreShippingRate extends SwatDBDataObject
      */
     public $percentage;
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'ShippingRate';
@@ -56,6 +51,4 @@ class StoreShippingRate extends SwatDBDataObject
             SwatDBClassMap::get('StoreShipingType')
         );
     }
-
-    // }}}
 }

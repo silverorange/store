@@ -8,25 +8,17 @@
  */
 class StoreCheckoutShippingAddressVerificationPage extends StoreCheckoutAddressVerificationPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-shipping-address-verification.xml';
     }
-
-    // }}}
-    // {{{ protected function getWidgetPrefix()
 
     protected function getWidgetPrefix()
     {
         return 'shipping_';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -37,6 +29,4 @@ class StoreCheckoutShippingAddressVerificationPage extends StoreCheckoutAddressV
             $this->address = $this->app->session->order->shipping_address;
         }
     }
-
-    // }}}
 }

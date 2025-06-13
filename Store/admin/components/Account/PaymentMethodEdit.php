@@ -11,15 +11,10 @@
  */
 class StoreAccountPaymentMethodEdit extends AdminDBEdit
 {
-    // {{{ private properties
-
     private $payment_method;
     private $account;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -28,9 +23,6 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
         $this->ui->mapClassPrefixToPath('Store', 'Store');
         $this->ui->loadFromXML(__DIR__ . '/payment-method-edit.xml');
     }
-
-    // }}}
-    // {{{ protected function getAccount()
 
     protected function getAccount()
     {
@@ -52,9 +44,6 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
         return $this->account;
     }
-
-    // }}}
-    // {{{ protected function getPaymentMethod()
 
     protected function getPaymentMethod()
     {
@@ -80,10 +69,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
         return $this->payment_method;
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -107,10 +93,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
         $this->app->messages->add($message);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected buildInternal()
 
     protected function buildInternal()
     {
@@ -133,9 +116,6 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
         $form->addHiddenField('account', $this->getAccount()->id);
     }
 
-    // }}}
-    // {{{ protected buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -154,9 +134,6 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
 
         $this->title = $this->getAccount()->fullname;
     }
-
-    // }}}
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -179,6 +156,4 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
                 $payment_method->card_expiry;
         }
     }
-
-    // }}}
 }

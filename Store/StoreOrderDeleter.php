@@ -8,17 +8,12 @@
  */
 class StoreOrderDeleter extends SitePrivateDataDeleter
 {
-    // {{{ class constants
-
     /**
      * How many records to process in a single iteration.
      *
      * @var int
      */
     public const DATA_BATCH_SIZE = 100;
-
-    // }}}
-    // {{{ public function run()
 
     public function run()
     {
@@ -71,9 +66,6 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
         }
     }
 
-    // }}}
-    // {{{ protected function cleanOrder()
-
     /**
      * Clears an order of private data.
      *
@@ -118,9 +110,6 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
         }
     }
 
-    // }}}
-    // {{{ protected function cleanPostalCode()
-
     /**
      * Removes personally identifiable information from postal codes and Zip
      * Codes.
@@ -149,9 +138,6 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
         return $postal_code;
     }
 
-    // }}}
-    // {{{ protected function getOrders()
-
     protected function getOrders()
     {
         // join billing address for where clause
@@ -171,9 +157,6 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
         return SwatDB::query($this->app->db, $sql, $wrapper_class);
     }
 
-    // }}}
-    // {{{ protected function getTotal()
-
     protected function getTotal()
     {
         $sql = 'select count(Orders.id) from Orders
@@ -188,9 +171,6 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
         return SwatDB::queryOne($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getExpiryDate()
-
     protected function getExpiryDate()
     {
         $unix_time = strtotime('-' . $this->app->config->expiry->orders);
@@ -201,9 +181,6 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
 
         return $expiry_date;
     }
-
-    // }}}
-    // {{{ protected function getWhereClause()
 
     protected function getWhereClause()
     {
@@ -221,6 +198,4 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
             $this->app->db->quote($instance_id, 'integer')
         );
     }
-
-    // }}}
 }

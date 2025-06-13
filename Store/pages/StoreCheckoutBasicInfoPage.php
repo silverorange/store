@@ -8,17 +8,12 @@
  */
 class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-basic-info.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -44,10 +39,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function validateCommon()
 
     public function validateCommon()
     {
@@ -56,9 +48,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
             $this->validateAccount();
         }
     }
-
-    // }}}
-    // {{{ public function processCommon()
 
     public function processCommon()
     {
@@ -69,18 +58,12 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function saveDataToSession()
-
     protected function saveDataToSession()
     {
         $this->saveOrderToSession();
         $this->saveAccountToSession();
         $this->savePasswordToSession();
     }
-
-    // }}}
-    // {{{ protected function saveOrderToSession()
 
     protected function saveOrderToSession()
     {
@@ -95,9 +78,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function saveAccountToSession()
-
     protected function saveAccountToSession()
     {
         $order = $this->app->session->order;
@@ -108,9 +88,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         $account->phone = $order->phone;
         $account->company = $order->company;
     }
-
-    // }}}
-    // {{{ protected function savePasswordToSession()
 
     protected function savePasswordToSession()
     {
@@ -127,10 +104,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-
-    // {{{ protected function validateAccount()
-
     /**
      * Verifies entered email address is not a duplicate of an existing account.
      */
@@ -144,9 +117,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
             $email_entry->addMessage($message);
         }
     }
-
-    // }}}
-    // {{{ protected function validEmailAddress()
 
     protected function validEmailAddress($email)
     {
@@ -172,9 +142,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
 
         return true;
     }
-
-    // }}}
-    // {{{ protected function getInvalidEmailAddressMessage()
 
     /**
      * An error message for a duplicate email address.
@@ -202,18 +169,12 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         return $message;
     }
 
-    // }}}
-    // {{{ protected function getAccountLoginSource()
-
     protected function getAccountLoginSource()
     {
         return $this->getCheckoutSource();
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function buildCommon()
 
     public function buildCommon()
     {
@@ -221,9 +182,6 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
             $this->loadDataFromSession();
         }
     }
-
-    // }}}
-    // {{{ protected function loadDataFromSession()
 
     protected function loadDataFromSession()
     {
@@ -257,6 +215,4 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
             $this->ui->getWidget('comments')->value = $order->comments;
         }
     }
-
-    // }}}
 }

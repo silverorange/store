@@ -8,8 +8,6 @@
  */
 class StoreAccountAddressEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * @var array
      */
@@ -25,10 +23,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
      */
     protected $account;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -53,9 +48,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
             'text:company',
         ];
     }
-
-    // }}}
-    // {{{ protected function initAccount()
 
     protected function initAccount()
     {
@@ -89,9 +81,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function initDefaultAddressFields()
-
     protected function initDefaultAddressFields()
     {
         // if this address is already the default billing address, desensitize
@@ -124,18 +113,12 @@ class StoreAccountAddressEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/addressedit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
@@ -175,9 +158,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
         parent::process();
     }
 
-    // }}}
-    // {{{ protected function getCountry()
-
     protected function getCountry()
     {
         if (!$this->country instanceof StoreCountry) {
@@ -193,9 +173,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
         return $this->country;
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -260,9 +237,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function getUIValues()
-
     protected function getUIValues()
     {
         $values = $this->ui->getValues([
@@ -284,9 +258,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
         return $values;
     }
-
-    // }}}
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -339,19 +310,13 @@ class StoreAccountAddressEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function display()
 
     protected function display()
     {
         parent::display();
         Swat::displayInlineJavaScript($this->getInlineJavaScript());
     }
-
-    // }}}
-    // {{{ protected buildInternal()
 
     protected function buildInternal()
     {
@@ -389,9 +354,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
         $form->addHiddenField('account', $this->account->id);
     }
 
-    // }}}
-    // {{{ protected buildNavBar()
-
     protected function buildNavBar()
     {
         parent::buildNavBar();
@@ -410,9 +372,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
         $this->title = $this->account->getFullName();
     }
-
-    // }}}
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -441,9 +400,6 @@ class StoreAccountAddressEdit extends AdminDBEdit
         $this->ui->setValues(get_object_vars($row));
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScript()
-
     protected function getInlineJavaScript()
     {
         $provstate = $this->ui->getWidget('provstate');
@@ -458,10 +414,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -478,6 +431,4 @@ class StoreAccountAddressEdit extends AdminDBEdit
             'packages/store/admin/javascript/store-account-address-edit-page.js'
         );
     }
-
-    // }}}
 }

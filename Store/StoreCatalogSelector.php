@@ -7,15 +7,10 @@
  */
 class StoreCatalogSelector extends SwatFlydown
 {
-    // {{{ constants
-
     public const ALL_CATALOGS = 1;
     public const ONE_CATALOG = 2;
     public const ALL_ENABLED_CATALOGS = 3;
     public const ALL_ENABLED_CATALOGS_IN_REGION = 4;
-
-    // }}}
-    // {{{ public properties
 
     public $db;
 
@@ -23,17 +18,11 @@ class StoreCatalogSelector extends SwatFlydown
     public $catalog;
     public $region;
 
-    // }}}
-    // {{{ public function process()
-
     public function process()
     {
         parent::process();
         $this->parseValue($this->value);
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -45,17 +34,11 @@ class StoreCatalogSelector extends SwatFlydown
         parent::display();
     }
 
-    // }}}
-    // {{{ public function setState()
-
     public function setState($state)
     {
         parent::setState($state);
         $this->parseValue($this->value);
     }
-
-    // }}}
-    // {{{ private static function constructValue()
 
     private static function constructValue(
         $scope,
@@ -73,9 +56,6 @@ class StoreCatalogSelector extends SwatFlydown
                 return $scope;
         }
     }
-
-    // }}}
-    // {{{ private function parseValue()
 
     private function parseValue($value)
     {
@@ -101,9 +81,6 @@ class StoreCatalogSelector extends SwatFlydown
                 $this->scope = self::ALL_CATALOGS;
         }
     }
-
-    // }}}
-    // {{{ protected function &getOptions()
 
     protected function &getOptions()
     {
@@ -158,9 +135,6 @@ class StoreCatalogSelector extends SwatFlydown
         return $options;
     }
 
-    // }}}
-    // {{{ public function getSubQuery()
-
     public function getSubQuery()
     {
         switch ($this->scope) {
@@ -182,6 +156,4 @@ class StoreCatalogSelector extends SwatFlydown
                 );
         }
     }
-
-    // }}}
 }

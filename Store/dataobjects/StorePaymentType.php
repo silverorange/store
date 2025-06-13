@@ -21,8 +21,6 @@
  */
 class StorePaymentType extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier of this payment type.
      *
@@ -78,9 +76,6 @@ class StorePaymentType extends SwatDBDataObject
      */
     public $priority;
 
-    // }}}
-    // {{{ public function loadFromShortname()
-
     /**
      * Loads a payment type by its shortname.
      *
@@ -92,9 +87,6 @@ class StorePaymentType extends SwatDBDataObject
     {
         return $this->loadByShortname($shortname);
     }
-
-    // }}}
-    // {{{ public function loadByShortname()
 
     /**
      * Loads a payment type by its shortname.
@@ -126,9 +118,6 @@ class StorePaymentType extends SwatDBDataObject
 
         return true;
     }
-
-    // }}}
-    // {{{ public function isAvailableInRegion()
 
     /**
      * Whether or not this payment type is available in the given region.
@@ -164,9 +153,6 @@ class StorePaymentType extends SwatDBDataObject
         return SwatDB::queryOne($this->db, $sql) > 0;
     }
 
-    // }}}
-    // {{{ public function isCard()
-
     /**
      * Gets whether or not this payment type uses a card (debit or credit).
      *
@@ -182,9 +168,6 @@ class StorePaymentType extends SwatDBDataObject
         return in_array($this->shortname, $types);
     }
 
-    // }}}
-    // {{{ public function isPayPal()
-
     /**
      * Gets whether or not this payment type is PayPal.
      *
@@ -196,33 +179,21 @@ class StorePaymentType extends SwatDBDataObject
         return $this->shortname === 'paypal';
     }
 
-    // }}}
-    // {{{ public function isVoucher()
-
     public function isVoucher()
     {
         return $this->shortname === 'voucher';
     }
-
-    // }}}
-    // {{{ public function isAccount()
 
     public function isAccount()
     {
         return $this->shortname === 'account';
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'PaymentType';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ public function display()
 
     /**
      * Displays this payment type.
@@ -238,6 +209,4 @@ class StorePaymentType extends SwatDBDataObject
             );
         }
     }
-
-    // }}}
 }

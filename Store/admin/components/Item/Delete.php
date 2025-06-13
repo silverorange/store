@@ -9,7 +9,6 @@
 class StoreItemDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -37,9 +36,6 @@ class StoreItemDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         // we don't want to relocate to the Item Index page that doesn't exist
@@ -48,10 +44,7 @@ class StoreItemDelete extends AdminDBDelete
         $this->app->relocate($url);
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function buildInternal()
 
     public function buildInternal()
     {
@@ -84,9 +77,6 @@ class StoreItemDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getDependencies()
-
     protected function getDependencies($dep, $item_list)
     {
         // dependent quantity discounts
@@ -107,6 +97,4 @@ class StoreItemDelete extends AdminDBDelete
 
         $dep->addDependency($dep_discounts);
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StorePrivateDataDeleterApplication extends SitePrivateDataDeleterApplication
 {
-    // {{{ protected function getDefaultModuleList()
-
     /**
      * Gets the list of modules to load for this search indexer.
      *
@@ -27,9 +25,6 @@ class StorePrivateDataDeleterApplication extends SitePrivateDataDeleterApplicati
         );
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -41,6 +36,4 @@ class StorePrivateDataDeleterApplication extends SitePrivateDataDeleterApplicati
         parent::addConfigDefinitions($config);
         $config->addDefinitions(Store::getConfigDefinitions());
     }
-
-    // }}}
 }

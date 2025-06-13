@@ -8,8 +8,6 @@
  */
 abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessage
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrder
      */
@@ -25,16 +23,10 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
      */
     protected $www_path = '';
 
-    // }}}
-    // {{{ class constants
-
     /**
      * The string sequence to represent a line break in text email.
      */
     public const LINE_BREAK = "\n";
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct(SiteApplication $app, StoreOrder $order)
     {
@@ -66,13 +58,7 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         $this->text_body = $this->getTextBody();
     }
 
-    // }}}
-    // {{{ protected abstract function getFromName()
-
     abstract protected function getFromName();
-
-    // }}}
-    // {{{ protected function getSubject()
 
     protected function getSubject()
     {
@@ -82,10 +68,7 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         );
     }
 
-    // }}}
-
     // html email
-    // {{{ public function getHtmlBody()
 
     public function getHtmlBody()
     {
@@ -122,18 +105,12 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         return ob_get_clean();
     }
 
-    // }}}
-    // {{{ protected function displayHtmlHeadEntries()
-
     protected function displayHtmlHeadEntries(SwatHtmlHeadEntrySet $set, $root)
     {
         $factory = new SiteHtmlHeadEntrySetDisplayerFactory();
         $displayer = $factory->build($this->app);
         $displayer->displayInline($set, $root, 'SwatStyleSheetHtmlHeadEntry');
     }
-
-    // }}}
-    // {{{ protected function buildOrderHeader()
 
     protected function buildOrderHeader(SwatUI $ui)
     {
@@ -144,9 +121,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         );
     }
 
-    // }}}
-    // {{{ protected function buildOrderFooter()
-
     protected function buildOrderFooter(SwatUI $ui)
     {
         $footer = $ui->getWidget('footer');
@@ -155,9 +129,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
             $this->order->getReceiptFooter()
         ));
     }
-
-    // }}}
-    // {{{ protected function buildOrderDetails()
 
     protected function buildOrderDetails(SwatUI $ui)
     {
@@ -204,9 +175,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         $this->buildOrderFooter($ui);
     }
 
-    // }}}
-    // {{{ protected function getOrderDetailsStore()
-
     protected function getOrderDetailsStore(StoreOrder $order)
     {
         $ds = new SwatDetailsStore($order);
@@ -215,9 +183,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
         return $ds;
     }
-
-    // }}}
-    // {{{ protected function setupTableData()
 
     protected function setupTableData(SwatTableView $view, StoreOrder $order)
     {
@@ -256,15 +221,9 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         }
     }
 
-    // }}}
-    // {{{ abstract protected function getWebRoot()
-
     abstract protected function getWebRoot();
 
-    // }}}
-
     // text email
-    // {{{ public function getTextBody()
 
     public function getTextBody()
     {
@@ -278,9 +237,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
         return ob_get_clean();
     }
-
-    // }}}
-    // {{{ protected function displayDetailsText()
 
     protected function displayDetailsText()
     {
@@ -338,9 +294,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         echo self::LINE_BREAK, self::LINE_BREAK;
     }
 
-    // }}}
-    // {{{ protected function displayItemsText()
-
     protected function displayItemsText()
     {
         $locale = $this->order->locale->id;
@@ -364,9 +317,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         }
     }
 
-    // }}}
-    // {{{ protected function displayItemHeader()
-
     protected function displayItemHeader($item)
     {
         $locale = SwatI18NLocale::get($this->app->getLocale());
@@ -386,9 +336,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         }
     }
 
-    // }}}
-    // {{{ protected function displayItemFooter()
-
     protected function displayItemFooter($item)
     {
         $locale = $this->order->locale->id;
@@ -401,9 +348,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
             $formatter->formatCurrency($item->extension)
         );
     }
-
-    // }}}
-    // {{{ protected function displayTotalsText()
 
     protected function displayTotalsText()
     {
@@ -457,9 +401,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         );
     }
 
-    // }}}
-    // {{{ protected function displayHeaderText()
-
     protected function displayHeaderText()
     {
         $header = $this->order->getReceiptHeaderText();
@@ -469,9 +410,6 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
             echo self::LINE_BREAK;
         }
     }
-
-    // }}}
-    // {{{ protected function displayFooterText()
 
     protected function displayFooterText()
     {
@@ -483,14 +421,9 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
         }
     }
 
-    // }}}
-    // {{{ protected function displayPaymentMethodText()
-
     protected function displayPaymentMethodText(
         StoreOrderPaymentMethod $payment_method
     ) {
         $payment_method->displayAsText(true, self::LINE_BREAK);
     }
-
-    // }}}
 }

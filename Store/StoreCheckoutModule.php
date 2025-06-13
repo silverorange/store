@@ -10,12 +10,7 @@
  */
 class StoreCheckoutModule extends SiteApplicationModule
 {
-    // {{{ public function init()
-
     public function init() {}
-
-    // }}}
-    // {{{ public function depends()
 
     /**
      * Gets the module features this module depends on.
@@ -41,9 +36,6 @@ class StoreCheckoutModule extends SiteApplicationModule
 
         return $depends;
     }
-
-    // }}}
-    // {{{ public function initDataObjects()
 
     /**
      * Ensures the data-objects required by the checkout are created.
@@ -76,9 +68,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         }
     }
 
-    // }}}
-    // {{{ public function setProgress()
-
     /**
      * Sets a progress dependency as 'met'.
      *
@@ -96,9 +85,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         // add the met dependency
         $session->checkout_progress[] = $dependency;
     }
-
-    // }}}
-    // {{{ public function unsetProgress()
 
     /**
      * Sets a progress dependency as 'unmet'.
@@ -119,9 +105,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         $progress_array = array_diff($progress_array, [$dependency]);
         $session->checkout_progress = new ArrayObject($progress_array);
     }
-
-    // }}}
-    // {{{ public function hasProgressDependency()
 
     /**
      * Gets whether or not the checkout progress includes the specified
@@ -150,9 +133,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         return $has_dependency;
     }
 
-    // }}}
-    // {{{ public function resetProgress()
-
     /**
      * Resets checkout progress.
      *
@@ -171,9 +151,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         $session->checkout_progress = new ArrayObject();
         $session->checkout_email = null;
     }
-
-    // }}}
-    // {{{ public function buildOrder()
 
     public function buildOrder(StoreOrder $order)
     {
@@ -229,9 +206,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         return $order;
     }
 
-    // }}}
-    // {{{ protected function createOrderItems()
-
     protected function createOrderItems($order)
     {
         $region = $this->app->getRegion();
@@ -248,9 +222,6 @@ class StoreCheckoutModule extends SiteApplicationModule
         }
     }
 
-    // }}}
-    // {{{ protected function getSession()
-
     /**
      * Gets the session module of this module's application.
      *
@@ -261,9 +232,6 @@ class StoreCheckoutModule extends SiteApplicationModule
     {
         return $this->app->getModule('SiteAccountSessionModule');
     }
-
-    // }}}
-    // {{{ protected function getDB()
 
     /**
      * Gets the database connection of this module's application's database
@@ -277,6 +245,4 @@ class StoreCheckoutModule extends SiteApplicationModule
 
         return $module->getConnection();
     }
-
-    // }}}
 }

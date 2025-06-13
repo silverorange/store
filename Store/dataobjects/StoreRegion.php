@@ -16,8 +16,6 @@
  */
 class StoreRegion extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -34,9 +32,6 @@ class StoreRegion extends SwatDBDataObject
      */
     public $title;
 
-    // }}}
-    // {{{ public function getFirstLocale()
-
     /**
      * Gets the first locale of this region.
      *
@@ -47,17 +42,11 @@ class StoreRegion extends SwatDBDataObject
         return $this->locales->getFirst();
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'Region';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ protected function loadLocales()
 
     protected function loadLocales()
     {
@@ -69,9 +58,6 @@ class StoreRegion extends SwatDBDataObject
 
         return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
     }
-
-    // }}}
-    // {{{ protected function loadPaymentTypes()
 
     /**
      * Gets payment types that orders may use in this region.
@@ -97,9 +83,6 @@ class StoreRegion extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadCardTypes()
-
     /**
      * Gets payment card types that orders may use in this region.
      *
@@ -124,9 +107,6 @@ class StoreRegion extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadBillingCountries()
-
     /**
      * Gets countries that orders may be billed to in this region.
      *
@@ -147,9 +127,6 @@ class StoreRegion extends SwatDBDataObject
 
         return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
     }
-
-    // }}}
-    // {{{ protected function loadShippingCountries()
 
     /**
      * Gets countries that orders may be shipped to in this region.
@@ -172,9 +149,6 @@ class StoreRegion extends SwatDBDataObject
         return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
     }
 
-    // }}}
-    // {{{ protected function loadBillingProvStates()
-
     /**
      * Gets provinces and states that orders may be billed to in this region.
      *
@@ -196,9 +170,6 @@ class StoreRegion extends SwatDBDataObject
         return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
     }
 
-    // }}}
-    // {{{ protected function loadShippingProvStates()
-
     /**
      * Gets provinces and states that orders may be shipped to in this region.
      *
@@ -219,6 +190,4 @@ class StoreRegion extends SwatDBDataObject
 
         return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
     }
-
-    // }}}
 }

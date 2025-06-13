@@ -8,14 +8,9 @@
  */
 class StoreLocaleEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $locale;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -37,9 +32,6 @@ class StoreLocaleEdit extends AdminDBEdit
         ));
     }
 
-    // }}}
-    // {{{ protected function initLocale()
-
     protected function initLocale()
     {
         $class_name = SwatDBClassMap::get('StoreLocale');
@@ -47,10 +39,7 @@ class StoreLocaleEdit extends AdminDBEdit
         $this->locale->setDatabase($this->app->db);
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -65,9 +54,6 @@ class StoreLocaleEdit extends AdminDBEdit
             );
         }
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -85,9 +71,6 @@ class StoreLocaleEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateLocale()
-
     protected function updateLocale()
     {
         $values = $this->ui->getValues(['id', 'region']);
@@ -96,10 +79,7 @@ class StoreLocaleEdit extends AdminDBEdit
         $this->locale->region = $values['region'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -108,6 +88,4 @@ class StoreLocaleEdit extends AdminDBEdit
         $this->app->messages->add($message);
         $this->app->relocate('Locale');
     }
-
-    // }}}
 }

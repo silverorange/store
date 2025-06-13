@@ -12,8 +12,6 @@
  */
 class StoreProvStateEntry extends SwatInputControl
 {
-    // {{{ public properties
-
     /**
      * Selected provstate id.
      *
@@ -62,18 +60,12 @@ class StoreProvStateEntry extends SwatInputControl
      */
     public $data = [];
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * Country flydown controlling this provstate entry.
      *
      * @var SwatFlydown
      */
     protected $country_flydown;
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct($id = null)
     {
@@ -89,16 +81,10 @@ class StoreProvStateEntry extends SwatInputControl
         );
     }
 
-    // }}}
-    // {{{ public function setCountryFlydown()
-
     public function setCountryFlydown(SwatFlydown $country_flydown)
     {
         $this->country_flydown = $country_flydown;
     }
-
-    // }}}
-    // {{{ public function process()
 
     public function process()
     {
@@ -133,9 +119,6 @@ class StoreProvStateEntry extends SwatInputControl
             $this->provstate_other = null;
         }
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -183,18 +166,12 @@ class StoreProvStateEntry extends SwatInputControl
         Swat::displayInlineJavaScript($this->getInlineJavaScript());
     }
 
-    // }}}
-    // {{{ public function getFocusableHtmlId()
-
     public function getFocusableHtmlId()
     {
         $this->confirmCompositeWidgets();
 
         return $this->getCompositeWidget('flydown')->id;
     }
-
-    // }}}
-    // {{{ protected function getInlineJavaScript()
 
     protected function getInlineJavaScript()
     {
@@ -232,9 +209,6 @@ class StoreProvStateEntry extends SwatInputControl
         return $javascript;
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScriptTranslations()
-
     /**
      * Gets translatable string resources for the JavaScript object for
      * this widget.
@@ -251,9 +225,6 @@ class StoreProvStateEntry extends SwatInputControl
         );
     }
 
-    // }}}
-    // {{{ protected function createCompositeWidgets()
-
     protected function createCompositeWidgets()
     {
         $flydown = new SwatFlydown($this->id . '_flydown');
@@ -262,9 +233,6 @@ class StoreProvStateEntry extends SwatInputControl
         $entry = new SwatEntry($this->id . '_entry');
         $this->addCompositeWidget($entry, 'entry');
     }
-
-    // }}}
-    // {{{ protected function validate()
 
     protected function validate()
     {
@@ -355,6 +323,4 @@ class StoreProvStateEntry extends SwatInputControl
             }
         }
     }
-
-    // }}}
 }

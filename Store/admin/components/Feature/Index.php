@@ -9,16 +9,13 @@
 class StoreFeatureIndex extends AdminIndex
 {
     // init phase
-    // {{{ protected function initInternal()
+
     protected function initInternal()
     {
         $this->ui->loadFromXML(__DIR__ . '/index.xml');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -92,10 +89,7 @@ class StoreFeatureIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -115,9 +109,6 @@ class StoreFeatureIndex extends AdminIndex
             $view->getColumn('region')->visible = ($region_count > 1);
         }
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -175,6 +166,4 @@ class StoreFeatureIndex extends AdminIndex
 
         return $store;
     }
-
-    // }}}
 }

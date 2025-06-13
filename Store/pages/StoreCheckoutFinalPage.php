@@ -9,13 +9,9 @@
 abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 {
     // init phase
-    // {{{ protected function initInternal()
 
     // subclassed to avoid setting form that doesn't exist
     protected function initInternal() {}
-
-    // }}}
-    // {{{ protected function loadUI()
 
     // subclassed to avoid loading form xml that doesn't exist
     protected function loadUI()
@@ -24,35 +20,23 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         $this->ui->loadFromXML($this->getUiXml());
     }
 
-    // }}}
-    // {{{ protected function checkCart()
-
     protected function checkCart()
     {
         // always return true - cart should be empty now
         return true;
     }
 
-    // }}}
-    // {{{ protected function getProgressDependencies()
-
     protected function getProgressDependencies()
     {
         return [$this->getConfirmationSource()];
     }
-
-    // }}}
-    // {{{ protected function initDataObjects()
 
     protected function initDataObjects()
     {
         // do nothing
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function build()
 
     public function build()
     {
@@ -60,9 +44,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         $this->resetProgress();
         $this->logoutSession();
     }
-
-    // }}}
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -79,9 +60,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         $this->buildConversionTracking($order);
     }
 
-    // }}}
-    // {{{ protected function buildOrderHeader()
-
     protected function buildOrderHeader(StoreOrder $order)
     {
         $header = $this->ui->getWidget('header');
@@ -92,9 +70,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function buildOrderFooter()
-
     protected function buildOrderFooter(StoreOrder $order)
     {
         $footer = $this->ui->getWidget('footer');
@@ -103,9 +78,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
             $footer->content = SwatString::toXHTML($order->getReceiptFooter());
         }
     }
-
-    // }}}
-    // {{{ protected function buildOrderDetails()
 
     protected function buildOrderDetails(StoreOrder $order)
     {
@@ -144,9 +116,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ protected function getOrderDetailsStore()
-
     protected function getOrderDetailsStore(StoreOrder $order)
     {
         $ds = new SwatDetailsStore($order);
@@ -157,9 +126,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
         return $ds;
     }
-
-    // }}}
-    // {{{ protected function buildFinalNote()
 
     protected function buildFinalNote(StoreOrder $order)
     {
@@ -173,9 +139,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
             }
         }
     }
-
-    // }}}
-    // {{{ protected function buildAccountNote()
 
     protected function buildAccountNote(StoreOrder $order)
     {
@@ -196,9 +159,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         }
     }
 
-    // }}}
-    // {{{ abstract protected function displayFinalNote()
-
     /**
      * Displays the final note at the top of the page to the user.
      *
@@ -208,9 +168,6 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
      * @param StoreOrder $order the order for which to display the final note
      */
     abstract protected function displayFinalNote(StoreOrder $order);
-
-    // }}}
-    // {{{ protected function displayAccountNote()
 
     protected function displayAccountNote()
     {
@@ -237,16 +194,10 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         echo '</div>';
     }
 
-    // }}}
-    // {{{ protected function buildConversionTracking()
-
     protected function buildConversionTracking(StoreOrder $order)
     {
         // by default do nothing.
     }
-
-    // }}}
-    // {{{ protected function getOrder()
 
     /**
      * @return StoreOrder
@@ -256,18 +207,12 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         return $this->app->session->order;
     }
 
-    // }}}
-    // {{{ protected function logoutSession()
-
     protected function logoutSession()
     {
         $this->app->session->logout();
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -275,6 +220,4 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
 
         $this->layout->addHtmlHeadEntry('packages/store/styles/store-cart.css');
     }
-
-    // }}}
 }

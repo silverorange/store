@@ -16,8 +16,6 @@ use Braintree\Transaction;
  */
 class StoreBraintreePaymentProvider extends StorePaymentProvider
 {
-    // {{{ protected properties
-
     /**
      * @var string
      */
@@ -47,9 +45,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
      * @var string
      */
     protected $device_data;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new payment provider using the Braintree API.
@@ -108,9 +103,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
             $this->site_title = $parameters['site_title'];
         }
     }
-
-    // }}}
-    // {{{ public function pay()
 
     /**
      * Pay for an order immediately.
@@ -175,9 +167,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
         return $this->createPaymentMethodTransaction($response->transaction);
     }
-
-    // }}}
-    // {{{ public function getExceptionMessageId()
 
     public function getExceptionMessageId(Throwable $e)
     {
@@ -244,16 +233,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return null;
     }
 
-    // }}}
-    // {{{ public function setDeviceData()
-
     public function setDeviceData($device_data)
     {
         $this->device_data = $device_data;
     }
-
-    // }}}
-    // {{{ protected function createPaymentMethodTransaction()
 
     protected function createPaymentMethodTransaction(
         Transaction $external_transaction,
@@ -270,9 +253,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return $transaction;
     }
 
-    // }}}
-    // {{{ protected function setConfig()
-
     protected function setConfig()
     {
         Configuration::environment($this->environment);
@@ -280,9 +260,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         Configuration::publicKey($this->public_key);
         Configuration::privateKey($this->private_key);
     }
-
-    // }}}
-    // {{{ protected function getCreditCard()
 
     /**
      * @sensitive $card_number
@@ -323,9 +300,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
             'number'         => $card_number,
         ];
     }
-
-    // }}}
-    // {{{ protected function getBillingAddress()
 
     protected function getBillingAddress(StoreOrderAddress $address)
     {
@@ -379,9 +353,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return $request;
     }
 
-    // }}}
-    // {{{ protected function getCustomer()
-
     protected function getCustomer(StoreAccount $account)
     {
         $names = $this->getAccountNames($account);
@@ -409,9 +380,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return $request;
     }
 
-    // }}}
-    // {{{ protected function getCustomFields()
-
     protected function getCustomFields(StoreOrder $order)
     {
         return [
@@ -423,16 +391,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         ];
     }
 
-    // }}}
-    // {{{ protected function getOrderDescription()
-
     protected function getOrderDescription(StoreOrder $order)
     {
         return Store::_('Online Order');
     }
-
-    // }}}
-    // {{{ protected function getOrderId()
 
     protected function getOrderId(StoreOrder $order)
     {
@@ -445,24 +407,15 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return $order_id;
     }
 
-    // }}}
-    // {{{ protected function getAddressNames()
-
     protected function getAddressNames(StoreOrderAddress $address)
     {
         return $this->splitFullName($address->fullname);
     }
 
-    // }}}
-    // {{{ protected function getAccountNames()
-
     protected function getAccountNames(StoreAccount $account)
     {
         return $this->splitFullName($account->fullname);
     }
-
-    // }}}
-    // {{{ protected function formatCurrency()
 
     /**
      * @param float $value
@@ -476,9 +429,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return number_format($value, 2, '.', '');
     }
 
-    // }}}
-    // {{{ protected function truncateField()
-
     protected function truncateField($content, $maxlength)
     {
         $content = SwatString::condense($content, $maxlength - 4, ' ...');
@@ -486,9 +436,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
         return html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
     }
-
-    // }}}
-    // {{{ protected function generateExceptionFromResponse()
 
     protected function generateExceptionFromResponse(Base $response)
     {
@@ -525,9 +472,6 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return new StorePaymentBraintreeException($response->message);
     }
 
-    // }}}
-    // {{{ private function splitFullname()
-
     private function splitFullname($full_name)
     {
         $parts = explode(' ', $full_name, 2);
@@ -545,6 +489,4 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
             'last'  => $last,
         ];
     }
-
-    // }}}
 }

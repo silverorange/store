@@ -8,14 +8,9 @@
  */
 class StorePaymentTypeEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $payment_type;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -40,9 +35,6 @@ class StorePaymentTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function initPaymentType()
-
     protected function initPaymentType()
     {
         $class_name = SwatDBClassMap::get('StorePaymentType');
@@ -61,10 +53,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -86,9 +75,6 @@ class StorePaymentTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function validateShortname()
-
     protected function validateShortname($shortname)
     {
         $valid = true;
@@ -105,9 +91,6 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
         return $valid;
     }
-
-    // }}}
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -136,9 +119,6 @@ class StorePaymentTypeEdit extends AdminDBEdit
         $this->app->messages->add($message);
     }
 
-    // }}}
-    // {{{ protected function updatePaymentType()
-
     protected function updatePaymentType()
     {
         $values = $this->ui->getValues(['title', 'shortname']);
@@ -147,10 +127,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
         $this->payment_type->shortname = $values['shortname'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -165,6 +142,4 @@ class StorePaymentTypeEdit extends AdminDBEdit
             $this->id
         );
     }
-
-    // }}}
 }

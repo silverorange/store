@@ -8,8 +8,6 @@
  */
 class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 {
-    // {{{ protected properties
-
     protected $remove_button;
 
     /**
@@ -39,16 +37,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
      */
     protected $card_types;
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-payment-method.xml';
     }
-
-    // }}}
-    // {{{ protected function getArgumentMap()
 
     protected function getArgumentMap()
     {
@@ -56,9 +48,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             'tag' => [0, null],
         ];
     }
-
-    // }}}
-    // {{{ protected function getCartTotal()
 
     protected function getCartTotal()
     {
@@ -70,10 +59,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         );
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function init()
 
     public function init()
     {
@@ -93,9 +79,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             $this->ui->getWidget('footer_field')->add($this->remove_button);
         }
     }
-
-    // }}}
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -117,9 +100,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ public function postInitCommon()
-
     public function postInitCommon()
     {
         parent::postInitCommon();
@@ -128,9 +108,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         $methods = $this->getPaymentMethods();
         $this->initPaymentOptions($types, $methods);
     }
-
-    // }}}
-    // {{{ protected function initPaymentOptions()
 
     protected function initPaymentOptions(
         StorePaymentTypeWrapper $types,
@@ -162,9 +139,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function initPaymentType()
-
     protected function initPaymentType(
         StorePaymentType $type,
         SwatRadioNoteBook $list
@@ -180,9 +154,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function initPaymentTypeDefault()
-
     protected function initPaymentTypeDefault(
         StorePaymentType $type,
         SwatRadioNoteBook $list
@@ -197,9 +168,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $page;
     }
-
-    // }}}
-    // {{{ protected function initPaymentTypeCard()
 
     protected function initPaymentTypeCard(
         StorePaymentType $type,
@@ -247,9 +215,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $page;
     }
 
-    // }}}
-    // {{{ protected function initPaymentMethod()
-
     protected function initPaymentMethod(
         StorePaymentMethod $method,
         SwatRadioNoteBook $list,
@@ -268,9 +233,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $page;
     }
-
-    // }}}
-    // {{{ protected function getPaymentMethod()
 
     protected function getPaymentMethod(
         StorePaymentMethodWrapper $payment_methods
@@ -297,9 +259,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $payment_method;
     }
-
-    // }}}
-    // {{{ protected function getPaymentMethods()
 
     /**
      * Gets available payment methods.
@@ -372,9 +331,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $this->payment_methods;
     }
 
-    // }}}
-    // {{{ protected function getPaymentTypeTitle()
-
     protected function getPaymentTypeTitle(StorePaymentType $type)
     {
         $title = SwatString::minimizeEntities($type->title);
@@ -388,9 +344,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $title;
     }
-
-    // }}}
-    // {{{ protected function getPaymentTypes()
 
     /**
      * Gets available payment types for new payment methods.
@@ -407,16 +360,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $this->payment_types;
     }
 
-    // }}}
-    // {{{ protected function getCardTypeTitle()
-
     protected function getCardTypeTitle(StoreCardType $type)
     {
         return $type->title;
     }
-
-    // }}}
-    // {{{ protected function getCardTypes()
 
     /**
      * Gets available card types for new payment methods.
@@ -432,9 +379,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $this->card_types;
     }
-
-    // }}}
-    // {{{ protected function getOrderBalance()
 
     protected function getOrderBalance($exclude_current_method = false)
     {
@@ -454,9 +398,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $total - $payment_total;
     }
 
-    // }}}
-    // {{{ protected function orderHasAdjustableMethod()
-
     protected function orderHasAdjustableMethod($exclude_current_method = false)
     {
         $methods = $this->app->session->order->payment_methods;
@@ -474,10 +415,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $has_adjustable_method;
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function preProcessCommon()
 
     public function preProcessCommon()
     {
@@ -577,9 +515,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ public function validateCommon()
-
     public function validateCommon()
     {
         // make sure expiry date is after (or equal) to the inception date
@@ -639,16 +574,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ public function processCommon()
-
     public function processCommon()
     {
         $this->saveDataToSession();
     }
-
-    // }}}
-    // {{{ protected function setupCardVerificationValue()
 
     protected function setupCardVerificationValue(
         StoreCardVerificationValueEntry $card_verification_value_widget
@@ -677,9 +606,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             $card_verification_value_widget->process();
         }
     }
-
-    // }}}
-    // {{{ protected function saveDataToSession()
 
     protected function saveDataToSession()
     {
@@ -777,9 +703,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function getEditablePaymentMethods()
-
     protected function getEditablePaymentMethods($payment_methods)
     {
         $wrapper = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
@@ -796,9 +719,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $editable_methods;
     }
-
-    // }}}
-    // {{{ protected function updatePaymentMethod()
 
     /**
      * Updates session order payment method properties from form values.
@@ -862,9 +782,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function updatePaymentMethodCardNumber()
-
     /**
      * Updates session order payment method card number from form values.
      *
@@ -881,9 +798,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             $payment_method->card_type = $this->getCardType();
         }
     }
-
-    // }}}
-    // {{{ protected function updatePaymentMethodCardVerificationValue()
 
     /**
      * Updates session order payment method card verification value.
@@ -902,9 +816,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             $payment_method->setCardVerificationValue($value);
         }
     }
-
-    // }}}
-    // {{{ protected function getPaymentType()
 
     protected function getPaymentType()
     {
@@ -930,9 +841,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
         return $type;
     }
-
-    // }}}
-    // {{{ protected function getCardType()
 
     protected function getCardType()
     {
@@ -991,18 +899,12 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $card_type;
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function buildCommon()
 
     public function buildCommon()
     {
         $this->buildForm();
     }
-
-    // }}}
-    // {{{ public function postBuildCommon()
 
     public function postBuildCommon()
     {
@@ -1011,17 +913,11 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         $this->layout->endCapture();
     }
 
-    // }}}
-    // {{{ protected function buildInternal()
-
     protected function buildInternal()
     {
         parent::buildInternal();
         $this->buildCurrentPaymentMethods();
     }
-
-    // }}}
-    // {{{ protected function buildForm()
 
     protected function buildForm()
     {
@@ -1043,9 +939,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         $this->buildAccountSpecificFields();
     }
 
-    // }}}
-    // {{{ protected function buildAccountSpecificFields()
-
     protected function buildAccountSpecificFields()
     {
         if ($this->app->session->account->id != '') {
@@ -1063,9 +956,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             '</p>'
         );
     }
-
-    // }}}
-    // {{{ protected function getInlineJavaScript()
 
     protected function getInlineJavaScript()
     {
@@ -1100,16 +990,10 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         );
     }
 
-    // }}}
-    // {{{ protected function getNewPaymentMethodText()
-
     protected function getNewPaymentMethodText()
     {
         return Store::_('Add a New Payment Method');
     }
-
-    // }}}
-    // {{{ protected function loadDataFromSession()
 
     protected function loadDataFromSession()
     {
@@ -1211,9 +1095,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-    // {{{ protected function getDefaultPaymentMethod()
-
     protected function getDefaultPaymentMethod()
     {
         $payment_method = null;
@@ -1236,9 +1117,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         return $payment_method;
     }
 
-    // }}}
-    // {{{ protected function buildCurrentPaymentMethods()
-
     protected function buildCurrentPaymentMethods()
     {
         if ($this->app->config->store->multiple_payment_ui
@@ -1255,9 +1133,6 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             }
         }
     }
-
-    // }}}
-    // {{{ protected function displayMultiplePaymentMethods()
 
     protected function displayMultiplePaymentMethods($methods)
     {
@@ -1292,10 +1167,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         echo '</tfoot></table>';
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -1318,6 +1190,4 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
             'packages/store/javascript/store-checkout-payment-method-page.js'
         );
     }
-
-    // }}}
 }

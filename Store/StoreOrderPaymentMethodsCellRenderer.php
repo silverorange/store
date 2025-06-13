@@ -8,8 +8,6 @@
  */
 class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
 {
-    // {{{ public function __construct()
-
     public function __construct()
     {
         parent::__construct();
@@ -19,9 +17,6 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
             'store-order-payment-methods-cell-renderer.css'
         );
     }
-
-    // }}}
-    // {{{ public properties
 
     /**
      * The StoreOrderPaymentMethodWrapper dataobject to display.
@@ -57,9 +52,6 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
      * @var bool
      */
     public $show_card_fullname = true;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -112,6 +104,4 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
             $span_tag->display();
         }
     }
-
-    // }}}
 }

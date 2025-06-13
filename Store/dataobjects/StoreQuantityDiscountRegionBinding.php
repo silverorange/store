@@ -8,17 +8,12 @@
  */
 class StoreQuantityDiscountRegionBinding extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Price of the quantity discount.
      *
      * @var float
      */
     public $price;
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -34,6 +29,4 @@ class StoreQuantityDiscountRegionBinding extends SwatDBDataObject
 
         $this->table = 'QuantityDiscountRegionBinding';
     }
-
-    // }}}
 }

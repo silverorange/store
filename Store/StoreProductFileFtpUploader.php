@@ -10,15 +10,10 @@
  */
 abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 {
-    // {{{ private property
-
     private $path = '';
     private $upload = true;
     private $display = false;
     private $keep_file = false;
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct($id, $filename, $title, $documentation)
     {
@@ -52,40 +47,25 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
         $this->addCommandLineArgument($keep_file);
     }
 
-    // }}}
-    // {{{ public function setPath()
-
     public function setPath($path)
     {
         $this->path = $path;
     }
-
-    // }}}
-    // {{{ public function setDisplay()
 
     public function setDisplay()
     {
         $this->display = true;
     }
 
-    // }}}
-    // {{{ public function setNoUpload()
-
     public function setNoUpload()
     {
         $this->upload = false;
     }
 
-    // }}}
-    // {{{ public function setKeepFile()
-
     public function setKeepFile()
     {
         $this->keep_file = true;
     }
-
-    // }}}
-    // {{{ public function run()
 
     public function run()
     {
@@ -182,35 +162,17 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
         $this->debug(Store::_('All done.') . "\n");
     }
 
-    // }}}
-    // {{{ abstract protected function getGenerator()
-
     abstract protected function getGenerator();
-
-    // }}}
-    // {{{ abstract protected function getFilename()
 
     abstract protected function getFilename();
 
-    // }}}
-    // {{{ abstract protected function getFtpServer()
-
     abstract protected function getFtpServer();
-
-    // }}}
-    // {{{ abstract protected function getFtpUsername()
 
     abstract protected function getFtpUsername();
 
-    // }}}
-    // {{{ abstract protected function getFtpPassword()
-
     abstract protected function getFtpPassword();
 
-    // }}}
-
     // boilerplate
-    // {{{ protected function getDefaultModuleList()
 
     protected function getDefaultModuleList()
     {
@@ -223,9 +185,6 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
         );
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -237,6 +196,4 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
         parent::addConfigDefinitions($config);
         $config->addDefinitions(Store::getConfigDefinitions());
     }
-
-    // }}}
 }

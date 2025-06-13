@@ -8,14 +8,9 @@
  */
 class StoreCategoryAddProducts extends AdminSearch
 {
-    // {{{ private properties
-
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -27,9 +22,6 @@ class StoreCategoryAddProducts extends AdminSearch
         $this->category_id = SiteApplication::initVar('category');
         $this->initCatalogSelector();
     }
-
-    // }}}
-    // {{{ private function initCatalogSelector()
 
     /**
      * Builds the catalog selector. Selector does not get shown unless there is
@@ -46,10 +38,7 @@ class StoreCategoryAddProducts extends AdminSearch
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -104,10 +93,7 @@ class StoreCategoryAddProducts extends AdminSearch
         $pager->process();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -144,9 +130,6 @@ class StoreCategoryAddProducts extends AdminSearch
         $index_form->addHiddenField('category', $this->category_id);
     }
 
-    // }}}
-    // {{{ protected function getTableModel()
-
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
         $search = $this->getProductSearch();
@@ -173,9 +156,6 @@ class StoreCategoryAddProducts extends AdminSearch
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getProductSearch()
-
     /**
      * Gets the product search object.
      *
@@ -185,9 +165,6 @@ class StoreCategoryAddProducts extends AdminSearch
     {
         return new StoreProductSearch($this->ui, $this->app->db);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -211,6 +188,4 @@ class StoreCategoryAddProducts extends AdminSearch
 
         $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Add Products')));
     }
-
-    // }}}
 }

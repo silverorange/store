@@ -6,8 +6,6 @@
  */
 abstract class StoreProductFileGenerator extends SwatObject
 {
-    // {{{ protected properties
-
     /**
      * @var SiteApplication
      */
@@ -17,9 +15,6 @@ abstract class StoreProductFileGenerator extends SwatObject
      * @var StoreRegion
      */
     protected $region;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new product file generator.
@@ -35,21 +30,12 @@ abstract class StoreProductFileGenerator extends SwatObject
         $this->region = $this->loadRegion();
     }
 
-    // }}}
-    // {{{ abstract public function generate()
-
     abstract public function generate();
-
-    // }}}
-    // {{{ abstract protected function getItems()
 
     /**
      * @return StoreItemWrapper
      */
     abstract protected function getItems();
-
-    // }}}
-    // {{{ protected function loadRegion()
 
     protected function loadRegion()
     {
@@ -68,13 +54,8 @@ abstract class StoreProductFileGenerator extends SwatObject
         return $region;
     }
 
-    // }}}
-    // {{{ protected function getBaseHref()
-
     protected function getBaseHref()
     {
         return $this->app->config->uri->absolute_base;
     }
-
-    // }}}
 }

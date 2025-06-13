@@ -13,8 +13,6 @@
  */
 class StoreProductImageDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     /**
      * @var StoreProduct
      */
@@ -34,10 +32,7 @@ class StoreProductImageDelete extends AdminDBDelete
      */
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -68,18 +63,12 @@ class StoreProductImageDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/image-delete.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -120,9 +109,6 @@ class StoreProductImageDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     /**
      * Override the AdminDBDelete behaviour of redirecting to the component base
      * as there is always a details page to return to.
@@ -132,10 +118,7 @@ class StoreProductImageDelete extends AdminDBDelete
         AdminDBConfirmation::relocate();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -164,9 +147,6 @@ class StoreProductImageDelete extends AdminDBDelete
         $yes_button = $this->ui->getWidget('yes_button');
         $yes_button->title = Store::_('Remove');
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -216,6 +196,4 @@ class StoreProductImageDelete extends AdminDBDelete
 
         $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Remove Image')));
     }
-
-    // }}}
 }

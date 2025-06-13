@@ -5,8 +5,6 @@
  */
 abstract class StoreLocaleApplication extends StoreApplication
 {
-    // {{{ public function getBaseHref()
-
     public function getBaseHref()
     {
         $locale = $this->locale;
@@ -21,9 +19,6 @@ abstract class StoreLocaleApplication extends StoreApplication
         return parent::getBaseHref() . $country . '/' . $language . '/';
     }
 
-    // }}}
-    // {{{ public function getRegion()
-
     /**
      * @return StoreRegion
      */
@@ -32,9 +27,6 @@ abstract class StoreLocaleApplication extends StoreApplication
         return $this->region;
     }
 
-    // }}}
-    // {{{ public function getBaseHrefRelativeUri()
-
     public function getBaseHrefRelativeUri()
     {
         $uri = parent::getBaseHrefRelativeUri();
@@ -42,9 +34,6 @@ abstract class StoreLocaleApplication extends StoreApplication
         // trim locale from beginning of relative uri
         return preg_replace('|^[a-z][a-z]/[a-z][a-z]/|', '', $uri);
     }
-
-    // }}}
-    // {{{ public function getSwitchLocaleLink()
 
     /**
      * Gets the link to switch locales.
@@ -76,9 +65,6 @@ abstract class StoreLocaleApplication extends StoreApplication
 
         return $link;
     }
-
-    // }}}
-    // {{{ public function getSwitchMobileLink()
 
     /**
      * Gets the link to switch to the mobile, or non-mobile url.
@@ -122,18 +108,12 @@ abstract class StoreLocaleApplication extends StoreApplication
         return $link;
     }
 
-    // }}}
-    // {{{ protected function loadPage()
-
     protected function loadPage()
     {
         $this->parseLocale(self::initVar('locale'));
 
         parent::loadPage();
     }
-
-    // }}}
-    // {{{ protected function parseLocale()
 
     protected function parseLocale($locale)
     {
@@ -158,6 +138,4 @@ abstract class StoreLocaleApplication extends StoreApplication
             $this->locale = null;
         }
     }
-
-    // }}}
 }

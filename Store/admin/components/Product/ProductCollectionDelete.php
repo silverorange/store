@@ -8,31 +8,20 @@
  */
 class StoreProductProductCollectionDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     private $id;
     private $category_id;
-
-    // }}}
-    // {{{ public function setId()
 
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    // }}}
-    // {{{ public function setCategory()
-
     public function setCategory($category_id)
     {
         $this->category_id = $category_id;
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -54,10 +43,7 @@ class StoreProductProductCollectionDelete extends AdminDBDelete
         $yes_button->title = Store::_('Remove from Collection');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -91,9 +77,6 @@ class StoreProductProductCollectionDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function relocate()
-
     protected function relocate()
     {
         // don't use the AdminDBDelete relocate as its too smart for its own
@@ -101,10 +84,7 @@ class StoreProductProductCollectionDelete extends AdminDBDelete
         AdminConfirmation::relocate();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -144,9 +124,6 @@ class StoreProductProductCollectionDelete extends AdminDBDelete
             $this->switchToCancelButton();
         }
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -201,6 +178,4 @@ class StoreProductProductCollectionDelete extends AdminDBDelete
 
         $this->title = $product_title;
     }
-
-    // }}}
 }

@@ -16,8 +16,6 @@
  */
 class StoreOrderStatus extends StoreStatus
 {
-    // {{{ public static function compare()
-
     /**
      * Compares two order statuses.
      *
@@ -37,6 +35,4 @@ class StoreOrderStatus extends StoreStatus
 
         return $value;
     }
-
-    // }}}
 }

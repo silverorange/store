@@ -7,8 +7,6 @@
  */
 class StoreProvState extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Tax message.
      *
@@ -18,9 +16,6 @@ class StoreProvState extends SwatDBDataObject
      * @var string
      */
     public $tax_message;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * Unique identifier of this province or state.
@@ -45,9 +40,6 @@ class StoreProvState extends SwatDBDataObject
      */
     protected $abbreviation;
 
-    // }}}
-    // {{{ public static function getAbbreviationById()
-
     /**
      * Get the abbreviation of the provstate from an id.
      *
@@ -66,9 +58,6 @@ class StoreProvState extends SwatDBDataObject
         return SwatDB::queryOne($db, $sql);
     }
 
-    // }}}
-    // {{{ public static function getTitleById()
-
     /**
      * Get the title of the provstate from an id.
      *
@@ -86,9 +75,6 @@ class StoreProvState extends SwatDBDataObject
 
         return SwatDB::queryOne($db, $sql);
     }
-
-    // }}}
-    // {{{ public function loadFromAbbreviation()
 
     /**
      * Loads this province/state from an abbreviation and country code.
@@ -128,9 +114,6 @@ class StoreProvState extends SwatDBDataObject
         return $loaded;
     }
 
-    // }}}
-    // {{{ public function loadFromTitle()
-
     /**
      * Loads this province/state from a title and country code.
      *
@@ -169,9 +152,6 @@ class StoreProvState extends SwatDBDataObject
         return $loaded;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'ProvState';
@@ -182,9 +162,6 @@ class StoreProvState extends SwatDBDataObject
             SwatDBClassMap::get('StoreCountry')
         );
     }
-
-    // }}}
-    // {{{ protected function getProtectedPropertyList()
 
     protected function getProtectedPropertyList()
     {
@@ -207,57 +184,37 @@ class StoreProvState extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // getters
-    // {{{ public function getId()
 
     public function getId()
     {
         return $this->id;
     }
 
-    // }}}
-    // {{{ public function getTitle()
-
     public function getTitle()
     {
         return $this->title;
     }
-
-    // }}}
-    // {{{ public function getAbbreviation()
 
     public function getAbbreviation()
     {
         return $this->abbreviation;
     }
 
-    // }}}
-
     // setters
-    // {{{ public function setId()
 
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    // }}}
-    // {{{ public function setTitle()
-
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    // }}}
-    // {{{ public function setAbbreviation()
-
     public function setAbbreviation($abbreviation)
     {
         $this->abbreviation = $abbreviation;
     }
-
-    // }}}
 }

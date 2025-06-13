@@ -8,15 +8,10 @@
  */
 class StoreCategoryImage extends StoreImage
 {
-    // {{{ public function getUri()
-
     public function getUri($shortname = 'thumb', $prefix = null)
     {
         return parent::getUri($shortname, $prefix);
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -24,6 +19,4 @@ class StoreCategoryImage extends StoreImage
 
         $this->image_set_shortname = 'categories';
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreTotalRow extends SwatTableViewRow
 {
-    // {{{ public properties
-
     /**
      * Title of this total row.
      *
@@ -130,18 +128,12 @@ class StoreTotalRow extends SwatTableViewRow
      */
     public $null_display_value;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * Money cell renderer used to display the value.
      *
      * @var SwatMoneyCellRenderer
      */
     protected $money_cell_renderer;
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct()
     {
@@ -150,9 +142,6 @@ class StoreTotalRow extends SwatTableViewRow
         $this->money_cell_renderer = new SwatMoneyCellRenderer();
         $this->addStyleSheet('packages/store/styles/store-total-row.css');
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -179,9 +168,6 @@ class StoreTotalRow extends SwatTableViewRow
         $tr_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayHeader()
-
     protected function displayHeader()
     {
         $colspan = $this->view->getXhtmlColspan();
@@ -192,9 +178,6 @@ class StoreTotalRow extends SwatTableViewRow
         $this->displayTitle();
         $th_tag->close();
     }
-
-    // }}}
-    // {{{ protected function displayTitle()
 
     protected function displayTitle()
     {
@@ -227,9 +210,6 @@ class StoreTotalRow extends SwatTableViewRow
         }
     }
 
-    // }}}
-    // {{{ protected function displayTotal()
-
     protected function displayTotal()
     {
         $td_tag = new SwatHtmlTag('td');
@@ -243,9 +223,6 @@ class StoreTotalRow extends SwatTableViewRow
         $td_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayNullValue()
-
     protected function displayNullValue()
     {
         $span_tag = new SwatHtmlTag('span');
@@ -253,9 +230,6 @@ class StoreTotalRow extends SwatTableViewRow
         $span_tag->setContent($this->null_display_value);
         $span_tag->display();
     }
-
-    // }}}
-    // {{{ protected function displayValue()
 
     protected function displayValue()
     {
@@ -271,9 +245,6 @@ class StoreTotalRow extends SwatTableViewRow
         }
     }
 
-    // }}}
-    // {{{ protected function displayBlank()
-
     protected function displayBlank()
     {
         if ($this->offset > 0) {
@@ -283,9 +254,6 @@ class StoreTotalRow extends SwatTableViewRow
             $td_tag->display();
         }
     }
-
-    // }}}
-    // {{{ protected function getCSSClassNames()
 
     protected function getCSSClassNames()
     {
@@ -310,6 +278,4 @@ class StoreTotalRow extends SwatTableViewRow
         // user specified classes
         return array_merge($classes, $this->classes);
     }
-
-    // }}}
 }

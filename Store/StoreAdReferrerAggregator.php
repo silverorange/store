@@ -8,8 +8,6 @@
  */
 class StoreAdReferrerAggregator extends SiteCommandLineApplication
 {
-    // {{{ public properties
-
     /**
      * A convenience reference to the database object.
      *
@@ -17,18 +15,12 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
      */
     public $db;
 
-    // }}}
-    // {{{ public function run()
-
     public function run()
     {
         $this->initModules();
         $this->parseCommandLineArguments();
         $this->aggregate();
     }
-
-    // }}}
-    // {{{ protected function getDefaultModuleList()
 
     /**
      * Gets the list of modules to load for this search indexer.
@@ -48,9 +40,6 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
         );
     }
 
-    // }}}
-    // {{{ protected function addConfigDefinitions()
-
     /**
      * Adds configuration definitions to the config module of this application.
      *
@@ -62,9 +51,6 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
         parent::addConfigDefinitions($config);
         $config->addDefinitions(Store::getConfigDefinitions());
     }
-
-    // }}}
-    // {{{ protected function aggregate()
 
     protected function aggregate()
     {
@@ -108,6 +94,4 @@ class StoreAdReferrerAggregator extends SiteCommandLineApplication
 
         $this->debug(Store::_('done') . "\n\n");
     }
-
-    // }}}
 }

@@ -8,15 +8,10 @@
  */
 class StoreProductRelatedProduct extends AdminSearch
 {
-    // {{{ private properties
-
     private $category_id;
     private $product_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -30,9 +25,6 @@ class StoreProductRelatedProduct extends AdminSearch
 
         $this->initCatalogSelector();
     }
-
-    // }}}
-    // {{{ private function initCatalogSelector()
 
     /**
      * Builds the catalog selector. Selector does not get shown unless there is
@@ -49,26 +41,17 @@ class StoreProductRelatedProduct extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ protected function getSearchXml()
-
     protected function getSearchXml()
     {
         return __DIR__ . '/search.xml';
     }
-
-    // }}}
-    // {{{ protected function getUiXml()
 
     protected function getUiXml()
     {
         return __DIR__ . '/related-product.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -132,10 +115,7 @@ class StoreProductRelatedProduct extends AdminSearch
         $pager->process();
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -166,9 +146,6 @@ class StoreProductRelatedProduct extends AdminSearch
         $form->action = $this->getRelativeURL();
     }
 
-    // }}}
-    // {{{ protected function getTableModel()
-
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
         $search = $this->getProductSearch();
@@ -195,9 +172,6 @@ class StoreProductRelatedProduct extends AdminSearch
         return SwatDB::query($this->app->db, $sql);
     }
 
-    // }}}
-    // {{{ protected function getProductSearch()
-
     /**
      * Gets the product search object.
      *
@@ -207,9 +181,6 @@ class StoreProductRelatedProduct extends AdminSearch
     {
         return new StoreProductSearch($this->ui, $this->app->db);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -261,6 +232,4 @@ class StoreProductRelatedProduct extends AdminSearch
 
         $this->title = $product_title;
     }
-
-    // }}}
 }

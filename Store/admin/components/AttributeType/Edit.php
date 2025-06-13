@@ -8,17 +8,12 @@
  */
 class StoreAttributeTypeEdit extends AdminDBEdit
 {
-    // {{{ private properties
-
     /**
      * @var StoreAttributeType
      */
     private $attribute_type;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -28,9 +23,6 @@ class StoreAttributeTypeEdit extends AdminDBEdit
 
         $this->ui->loadFromXML(__DIR__ . '/edit.xml');
     }
-
-    // }}}
-    // {{{ protected function initAttributeType()
 
     protected function initAttributeType()
     {
@@ -50,10 +42,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -74,9 +63,6 @@ class StoreAttributeTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateAttributeType();
@@ -96,9 +82,6 @@ class StoreAttributeTypeEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateAttributeType()
-
     protected function updateAttributeType()
     {
         $values = $this->ui->getValues([
@@ -108,10 +91,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
         $this->attribute_type->shortname = $values['shortname'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -121,13 +101,8 @@ class StoreAttributeTypeEdit extends AdminDBEdit
         $form->subtitle = $this->attribute_type->shortname;
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->attribute_type->getAttributes());
     }
-
-    // }}}
 }

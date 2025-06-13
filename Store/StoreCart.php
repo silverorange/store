@@ -21,8 +21,6 @@
  */
 abstract class StoreCart extends SwatObject
 {
-    // {{{ protected properties
-
     /**
      * The entries in this cart.
      *
@@ -83,18 +81,12 @@ abstract class StoreCart extends SwatObject
      */
     protected $combine_entries = true;
 
-    // }}}
-    // {{{ private properties
-
     /**
      * An array of SwatMessages used to display cart entry status messages.
      *
      * @var array
      */
     private $messages = [];
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new cart.
@@ -106,13 +98,7 @@ abstract class StoreCart extends SwatObject
         $this->app = $app;
     }
 
-    // }}}
-    // {{{ public function init()
-
     public function init() {}
-
-    // }}}
-    // {{{ abstract public function load()
 
     /**
      * Loads this cart.
@@ -123,9 +109,6 @@ abstract class StoreCart extends SwatObject
      * @see StoreCartModule::getEntries()
      */
     abstract public function load();
-
-    // }}}
-    // {{{ public function save()
 
     /**
      * Saves this cart to the database.
@@ -138,9 +121,6 @@ abstract class StoreCart extends SwatObject
         }
     }
 
-    // }}}
-    // {{{ public function isEmpty()
-
     /**
      * Checks if this cart is empty.
      *
@@ -150,9 +130,6 @@ abstract class StoreCart extends SwatObject
     {
         return count($this->entries) ? false : true;
     }
-
-    // }}}
-    // {{{ public function addEntry()
 
     /**
      * Adds a StoreCartEntry to this cart.
@@ -216,9 +193,6 @@ abstract class StoreCart extends SwatObject
         return $added_entry;
     }
 
-    // }}}
-    // {{{ public function removeEntryById()
-
     /**
      * Removes a StoreCartEntry from this cart.
      *
@@ -238,9 +212,6 @@ abstract class StoreCart extends SwatObject
 
         return $old_entry;
     }
-
-    // }}}
-    // {{{ public function removeEntry()
 
     /**
      * Removes a StoreCartEntry from this cart.
@@ -273,9 +244,6 @@ abstract class StoreCart extends SwatObject
         return $old_entry;
     }
 
-    // }}}
-    // {{{ public function removeAllEntries()
-
     /**
      * Removes all entries from this cart.
      *
@@ -297,9 +265,6 @@ abstract class StoreCart extends SwatObject
         return $entries;
     }
 
-    // }}}
-    // {{{ public function getEntryById()
-
     /**
      * Gets an entry in this cart by its id.
      *
@@ -320,9 +285,6 @@ abstract class StoreCart extends SwatObject
         return $entry;
     }
 
-    // }}}
-    // {{{ public function getEntries()
-
     /**
      * Gets a reference to the internal array of StoreCartEntry objects.
      *
@@ -336,9 +298,6 @@ abstract class StoreCart extends SwatObject
 
         return $this->entries;
     }
-
-    // }}}
-    // {{{ public function getEntriesByItemId()
 
     /**
      * Returns an array of entries in the cart based on the database item id.
@@ -363,9 +322,6 @@ abstract class StoreCart extends SwatObject
         return $entries;
     }
 
-    // }}}
-    // {{{ public function getEntriesByItemSku()
-
     /**
      * Returns an array of entries in the cart based on the database item SKU.
      *
@@ -388,9 +344,6 @@ abstract class StoreCart extends SwatObject
         return $entries;
     }
 
-    // }}}
-    // {{{ public function getEntryCount()
-
     /**
      * Gets the number of StoreCartEntry objects in this cart.
      *
@@ -400,9 +353,6 @@ abstract class StoreCart extends SwatObject
     {
         return count($this->entries);
     }
-
-    // }}}
-    // {{{ public function getItemCount()
 
     /**
      * Returns the number of StoreItems in this cart.
@@ -421,9 +371,6 @@ abstract class StoreCart extends SwatObject
 
         return $total_quantity;
     }
-
-    // }}}
-    // {{{ public function getProductCount()
 
     /**
      * Gets the number of unique products in this cart.
@@ -445,9 +392,6 @@ abstract class StoreCart extends SwatObject
 
         return $count;
     }
-
-    // }}}
-    // {{{ public function setEntryQuantity()
 
     /**
      * Updates the quantity of an entry in this cart.
@@ -479,9 +423,6 @@ abstract class StoreCart extends SwatObject
         }
     }
 
-    // }}}
-    // {{{ public function setCombineEntries()
-
     /**
      * Set whether to combine entries for identical items in this cart.
      *
@@ -491,9 +432,6 @@ abstract class StoreCart extends SwatObject
     {
         $this->combine_entries = $combine_entries;
     }
-
-    // }}}
-    // {{{ public function getMessages()
 
     /**
      * Gets the status messages of this cart.
@@ -505,9 +443,6 @@ abstract class StoreCart extends SwatObject
         return $this->messages;
     }
 
-    // }}}
-    // {{{ public function hasMessages()
-
     /**
      * Returns whether or not this cart has messages.
      *
@@ -517,9 +452,6 @@ abstract class StoreCart extends SwatObject
     {
         return count($this->messages > 0);
     }
-
-    // }}}
-    // {{{ public function setCartModule()
 
     /**
      * Sets the cart module this cart belongs to.
@@ -531,9 +463,6 @@ abstract class StoreCart extends SwatObject
         $this->module = $module;
     }
 
-    // }}}
-    // {{{ protected function addMessage()
-
     /**
      * Adds a status messages to this cart.
      *
@@ -543,9 +472,6 @@ abstract class StoreCart extends SwatObject
     {
         $this->messages[] = $message;
     }
-
-    // }}}
-    // {{{ protected function validateEntry()
 
     /**
      * Checks to see if an entry is valid.
@@ -579,9 +505,6 @@ abstract class StoreCart extends SwatObject
         return $valid;
     }
 
-    // }}}
-    // {{{ protected function validateCombinedEntry()
-
     /**
      * Checks to see if an entry is valid after combining the entry with
      * existing entries in this cart.
@@ -602,9 +525,6 @@ abstract class StoreCart extends SwatObject
         return true;
     }
 
-    // }}}
-    // {{{ protected function preSaveEntry()
-
     /**
      * Performs pre-save processing on a single entry.
      *
@@ -616,9 +536,6 @@ abstract class StoreCart extends SwatObject
     {
         $entry->instance = $this->app->getInstance();
     }
-
-    // }}}
-    // {{{ protected function addNewEntry()
 
     /**
      * Adds a new entry to this cart.
@@ -642,9 +559,6 @@ abstract class StoreCart extends SwatObject
 
         $this->setChanged();
     }
-
-    // }}}
-    // {{{ protected function sort()
 
     /**
      * Sorts the entries of this cart.
@@ -675,9 +589,6 @@ abstract class StoreCart extends SwatObject
         }
     }
 
-    // }}}
-    // {{{ protected static function compare()
-
     /**
      * Compares two entries in this cart.
      *
@@ -700,10 +611,7 @@ abstract class StoreCart extends SwatObject
         return $entry1->compare($entry2);
     }
 
-    // }}}
-
     // caching methods
-    // {{{ public function setChanged()
 
     /**
      * Sets this cart as modified.
@@ -721,24 +629,15 @@ abstract class StoreCart extends SwatObject
         }
     }
 
-    // }}}
-    // {{{ protected function cachedValueExists()
-
     protected function cachedValueExists($name)
     {
         return isset($this->totals[$name]);
     }
 
-    // }}}
-    // {{{ protected function getCachedValue()
-
     protected function getCachedValue($name)
     {
         return $this->totals[$name];
     }
-
-    // }}}
-    // {{{ protected function setCachedValue()
 
     protected function setCachedValue($name, $value)
     {
@@ -749,6 +648,4 @@ abstract class StoreCart extends SwatObject
 
         $this->totals[$name] = $value;
     }
-
-    // }}}
 }

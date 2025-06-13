@@ -5,8 +5,6 @@
  */
 class StoreSearchPanelServer extends SiteXMLRPCServer
 {
-    // {{{ public function getContent()
-
     /**
      * Returns the XHTML required to display the search panel for the
      * advanced search.
@@ -74,9 +72,6 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
         return ob_get_clean();
     }
 
-    // }}}
-    // {{{ protected function getPanel()
-
     protected function getPanel()
     {
         return new StoreSearchPanel(
@@ -85,17 +80,11 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
         );
     }
 
-    // }}}
-    // {{{ protected function setValues()
-
     protected function setValues(StoreSearchPanel $panel)
     {
         $panel->setPriceRange($this->getPriceRange());
         $panel->setCategory($this->getCategory());
     }
-
-    // }}}
-    // {{{ protected function getPriceRange()
 
     /**
      * @xmlrpc.hidden
@@ -111,9 +100,6 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 
         return $range;
     }
-
-    // }}}
-    // {{{ protected function getCategory()
 
     /**
      * @xmlrpc.hidden
@@ -143,6 +129,4 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
 
         return $category;
     }
-
-    // }}}
 }

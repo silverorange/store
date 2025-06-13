@@ -8,12 +8,7 @@
  */
 class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
 {
-    // {{{ public properties
-
     public $billing_address;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -40,6 +35,4 @@ class StoreShippingAddressCellRenderer extends StoreAddressCellRenderer
             parent::render();
         }
     }
-
-    // }}}
 }

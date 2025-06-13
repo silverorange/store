@@ -18,8 +18,6 @@
  */
 abstract class StorePaymentMethod extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Payment method identifier.
      *
@@ -102,9 +100,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      */
     public $payer_email;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The unencrypted card number of this payment method.
      *
@@ -131,32 +126,20 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         'card_expiry'   => true,
     ];
 
-    // }}}
-    // {{{ public function showCardNumber()
-
     public function showCardNumber($display = true)
     {
         $this->display_parts['card_number'] = $display;
     }
-
-    // }}}
-    // {{{ public function showCardFullname()
 
     public function showCardFullname($display = true)
     {
         $this->display_parts['card_fullname'] = $display;
     }
 
-    // }}}
-    // {{{ public function showCardExpiry()
-
     public function showCardExpiry($display = true)
     {
         $this->display_parts['card_expiry'] = $display;
     }
-
-    // }}}
-    // {{{ public function setCardNumber()
 
     /**
      * Sets the card number of this payment method.
@@ -184,9 +167,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function hasCardNumber()
-
     /**
      * @return bool whether this objects contains an unencrypted card
      *              number
@@ -195,9 +175,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
     {
         return $this->unencrypted_card_number != '';
     }
-
-    // }}}
-    // {{{ public function getUnencryptedCardNumber()
 
     /**
      * Gets the unencrypted card number stored in this payment method.
@@ -213,9 +190,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         return $this->unencrypted_card_number;
     }
 
-    // }}}
-    // {{{ public function display()
-
     /**
      * Displays this payment method.
      *
@@ -230,9 +204,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         $this->displayInternal($display_details);
         $span_tag->close();
     }
-
-    // }}}
-    // {{{ public function displayAsText()
 
     /**
      * Displays this payment method.
@@ -255,9 +226,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function copyFrom()
-
     public function copyFrom(StorePaymentMethod $method)
     {
         $fields = [
@@ -274,9 +242,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         $this->payment_type = $method->getInternalValue('payment_type');
     }
 
-    // }}}
-    // {{{ public function duplicate()
-
     public function duplicate(): static
     {
         $new_payment_method = parent::duplicate();
@@ -291,9 +256,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
         return $new_payment_method;
     }
-
-    // }}}
-    // {{{ public function isSaveableWithAccount()
 
     /**
      * Whether or not this payment method should be saved with accounts.
@@ -313,9 +275,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         return $saveable;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->id_field = 'integer:id';
@@ -333,9 +292,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         $this->registerDateProperty('card_inception');
     }
 
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
-
     protected function getSerializablePrivateProperties()
     {
         $properties = parent::getSerializablePrivateProperties();
@@ -343,9 +299,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
         return $properties;
     }
-
-    // }}}
-    // {{{ protected function getKeyring()
 
     protected function getKeyring()
     {
@@ -355,9 +308,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
         return $keyrings . '/site';
     }
-
-    // }}}
-    // {{{ protected function displayInternal()
 
     protected function displayInternal($display_details = true)
     {
@@ -387,9 +337,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayCard()
-
     protected function displayCard()
     {
         $number_span = new SwatHtmlTag('span');
@@ -411,9 +358,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
             $number_span->display();
         }
     }
-
-    // }}}
-    // {{{ protected function displayCardDetails()
 
     protected function displayCardDetails()
     {
@@ -443,9 +387,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         $span_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayPayPal()
-
     protected function displayPayPal($display_details = true)
     {
         echo ': ';
@@ -473,9 +414,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
 
         $span_tag->close();
     }
-
-    // }}}
-    // {{{ protected function displayCardAsText()
 
     protected function displayCardAsText($display_details, $line_break)
     {
@@ -505,9 +443,6 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function displayPayPalAsText()
-
     protected function displayPayPalAsText($display_details, $line_break)
     {
         if ($this->card_number_preview !== null) {
@@ -520,6 +455,4 @@ abstract class StorePaymentMethod extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
 }

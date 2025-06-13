@@ -10,17 +10,12 @@
  */
 class StoreAccountAddress extends StoreAddress
 {
-    // {{{ protected properties
-
     /**
      * Creation date.
      *
      * @var SwatDate
      */
     protected $createdate;
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -36,9 +31,6 @@ class StoreAccountAddress extends StoreAddress
         $this->registerDateProperty('createdate');
     }
 
-    // }}}
-    // {{{ protected function getProtectedPropertyList()
-
     protected function getProtectedPropertyList()
     {
         return array_merge(
@@ -52,25 +44,17 @@ class StoreAccountAddress extends StoreAddress
         );
     }
 
-    // }}}
-
     // getters
-    // {{{ public function getCreateDate()
 
     public function getCreateDate()
     {
         return $this->createdate;
     }
 
-    // }}}
-
     // setters
-    // {{{ public function setCreateDate()
 
     public function setCreateDate(SwatDate $createdate)
     {
         $this->createdate = $createdate;
     }
-
-    // }}}
 }

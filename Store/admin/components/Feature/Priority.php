@@ -8,14 +8,9 @@
  */
 class StoreFeaturePriority extends AdminDBOrder
 {
-    // {{{ private properties
-
     private $slot;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -26,10 +21,7 @@ class StoreFeaturePriority extends AdminDBOrder
         $form->addHiddenField('slot', $this->slot);
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveIndex()
 
     protected function saveIndex($id, $index)
     {
@@ -47,19 +39,14 @@ class StoreFeaturePriority extends AdminDBOrder
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
+
     protected function buildInternal()
     {
         $frame = $this->ui->getWidget('order_frame');
         $frame->title = Admin::_('Priority');
         parent::buildInternal();
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -85,6 +72,4 @@ class StoreFeaturePriority extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
 }

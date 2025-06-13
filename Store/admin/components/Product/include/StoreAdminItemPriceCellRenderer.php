@@ -9,8 +9,6 @@
  */
 class StoreAdminItemPriceCellRenderer extends StoreItemPriceCellRenderer
 {
-    // {{{ public function __construct()
-
     public function __construct($id = null)
     {
         parent::__construct($id);
@@ -21,18 +19,12 @@ class StoreAdminItemPriceCellRenderer extends StoreItemPriceCellRenderer
         );
     }
 
-    // }}}
-    // {{{ public properties
-
     /**
      * Enabled.
      *
      * @var bool
      */
     public $enabled;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -47,13 +39,8 @@ class StoreAdminItemPriceCellRenderer extends StoreItemPriceCellRenderer
         }
     }
 
-    // }}}
-    // {{{ protected function isFree()
-
     protected function isFree()
     {
         return false;
     }
-
-    // }}}
 }

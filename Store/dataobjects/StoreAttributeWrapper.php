@@ -9,17 +9,12 @@
  */
 class StoreAttributeWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->row_wrapper_class = SwatDBClassMap::get('StoreAttribute');
         $this->index_field = 'id';
     }
-
-    // }}}
-    // {{{ public function getByType()
 
     public function getByType($shortname)
     {
@@ -34,10 +29,7 @@ class StoreAttributeWrapper extends SwatDBRecordsetWrapper
         return $attributes;
     }
 
-    // }}}
-
     // display methods
-    // {{{ public function display()
 
     public function display($link_to_search = false)
     {
@@ -53,9 +45,6 @@ class StoreAttributeWrapper extends SwatDBRecordsetWrapper
             echo '</ul>';
         }
     }
-
-    // }}}
-    // {{{ public function displayInline()
 
     public function displayInline($link_to_search = false)
     {
@@ -77,6 +66,4 @@ class StoreAttributeWrapper extends SwatDBRecordsetWrapper
             echo '</span>';
         }
     }
-
-    // }}}
 }

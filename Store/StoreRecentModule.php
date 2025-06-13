@@ -10,8 +10,6 @@
  */
 class StoreRecentModule extends SiteApplicationModule
 {
-    // {{{ protected properties
-
     /**
      * @var ArrayObject
      */
@@ -21,9 +19,6 @@ class StoreRecentModule extends SiteApplicationModule
      * @var array
      */
     protected $exclusion_ids = [];
-
-    // }}}
-    // {{{ public function depends()
 
     /**
      * Gets the module features this module depends on.
@@ -44,9 +39,6 @@ class StoreRecentModule extends SiteApplicationModule
         return $depends;
     }
 
-    // }}}
-    // {{{ public function init()
-
     public function init()
     {
         if ($this->stacks === null) {
@@ -59,9 +51,6 @@ class StoreRecentModule extends SiteApplicationModule
         }
     }
 
-    // }}}
-    // {{{ public function add()
-
     public function add($stack_name, $id)
     {
         $this->init();
@@ -73,9 +62,6 @@ class StoreRecentModule extends SiteApplicationModule
         $stack = $this->stacks[$stack_name];
         $stack->add($id);
     }
-
-    // }}}
-    // {{{ public function get()
 
     public function get($stack_name, $count = null)
     {
@@ -98,9 +84,6 @@ class StoreRecentModule extends SiteApplicationModule
         return $values;
     }
 
-    // }}}
-    // {{{ public function save()
-
     public function save()
     {
         // Only save recently viewed item when session is active. This
@@ -111,13 +94,8 @@ class StoreRecentModule extends SiteApplicationModule
         }
     }
 
-    // }}}
-    // {{{ public function setExclusionId()
-
     public function setExclusionId($stack_name, $id)
     {
         $this->exclusion_ids[$stack_name] = $id;
     }
-
-    // }}}
 }

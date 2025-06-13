@@ -9,8 +9,6 @@
  */
 class StoreProductWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public function initializeFromResultSet()
-
     public function initializeFromResultSet(MDB2_Result_Common $rs)
     {
         parent::initializeFromResultSet($rs);
@@ -20,9 +18,6 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
             $this->loadAttributes();
         }
     }
-
-    // }}}
-    // {{{ public function loadAttributes()
 
     public function loadAttributes()
     {
@@ -82,9 +77,6 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
         }
     }
 
-    // }}}
-    // {{{ public function setRegion()
-
     /**
      * Sets the region for all products in this record set.
      *
@@ -99,15 +91,10 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
         }
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
         $this->row_wrapper_class = SwatDBClassMap::get('StoreProduct');
         $this->index_field = 'id';
     }
-
-    // }}}
 }

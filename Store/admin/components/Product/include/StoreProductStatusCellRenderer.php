@@ -8,17 +8,12 @@
  */
 class StoreProductStatusCellRenderer extends SwatNullTextCellRenderer
 {
-    // {{{ public properties
-
     public $count_available = 0;
     public $count_available_instock = 0;
     public $count_available_outofstock = 0;
     public $count_unavailable = 0;
     public $count_unavailable_instock = 0;
     public $count_unavailable_outofstock = 0;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -55,16 +50,10 @@ class StoreProductStatusCellRenderer extends SwatNullTextCellRenderer
         }
     }
 
-    // }}}
-    // {{{ public function isSensitive()
-
     public function isSensitive()
     {
         return $this->count_available + $this->count_unavailable > 0;
     }
-
-    // }}}
-    // {{{ protected function getAvailableDescriptions()
 
     protected function getAvailableDescriptions()
     {
@@ -86,9 +75,6 @@ class StoreProductStatusCellRenderer extends SwatNullTextCellRenderer
 
         return $descriptions;
     }
-
-    // }}}
-    // {{{ protected function getUnavailableDescriptions()
 
     protected function getUnavailableDescriptions()
     {
@@ -113,6 +99,4 @@ class StoreProductStatusCellRenderer extends SwatNullTextCellRenderer
 
         return $descriptions;
     }
-
-    // }}}
 }

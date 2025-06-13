@@ -8,8 +8,6 @@
  */
 class StoreItemGroup extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier.
      *
@@ -31,9 +29,6 @@ class StoreItemGroup extends SwatDBDataObject
      */
     public $displayorder;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * The region to use when loading region-specific fields in item sub-data-
      * objects.
@@ -43,9 +38,6 @@ class StoreItemGroup extends SwatDBDataObject
      * @see StoreItemGroup::setRegion()
      */
     protected $region;
-
-    // }}}
-    // {{{ public function setRegion()
 
     /**
      * Sets the region to use when loading region-specific fields for item
@@ -64,9 +56,6 @@ class StoreItemGroup extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'ItemGroup';
@@ -78,10 +67,7 @@ class StoreItemGroup extends SwatDBDataObject
         );
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadItems()
 
     protected function loadItems()
     {
@@ -103,9 +89,6 @@ class StoreItemGroup extends SwatDBDataObject
 
         return $items;
     }
-
-    // }}}
-    // {{{ protected function loadCheapestItem()
 
     /**
      * Loads the cheapest item of this item group.
@@ -144,6 +127,4 @@ class StoreItemGroup extends SwatDBDataObject
 
         return $cheapest_item;
     }
-
-    // }}}
 }

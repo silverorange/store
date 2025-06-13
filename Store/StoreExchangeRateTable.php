@@ -12,8 +12,6 @@
  */
 class StoreExchangeRateTable
 {
-    // {{{ protected properties
-
     /**
      * Currency to convert from.
      *
@@ -42,13 +40,7 @@ class StoreExchangeRateTable
      */
     protected $cut_off_date;
 
-    // }}}
-    // {{{ private properties
-
     private $exchange_rates = [];
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new exchange rate table.
@@ -65,9 +57,6 @@ class StoreExchangeRateTable
         $this->to_currency = $to_currency;
         $this->cut_off_date = $cut_off_date;
     }
-
-    // }}}
-    // {{{ public function getRate()
 
     /**
      * Get an exchange rate.
@@ -106,9 +95,6 @@ class StoreExchangeRateTable
         return current($this->exchange_rates);
     }
 
-    // }}}
-    // {{{ private function getUrl()
-
     private function getUrl()
     {
         $conversion = $this->from_currency . '_' . $this->to_currency;
@@ -139,9 +125,6 @@ class StoreExchangeRateTable
             $filename
         );
     }
-
-    // }}}
-    // {{{ private function getRates()
 
     private function getRates()
     {
@@ -175,6 +158,4 @@ class StoreExchangeRateTable
 
         return $exchange_rates;
     }
-
-    // }}}
 }

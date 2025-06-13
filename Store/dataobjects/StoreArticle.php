@@ -15,8 +15,6 @@
  */
 class StoreArticle extends SiteArticle
 {
-    // {{{ protected properties
-
     /**
      * The region to use when loading region-specific sub-articles.
      *
@@ -25,9 +23,6 @@ class StoreArticle extends SiteArticle
      * @see StoreProduct::setRegion()
      */
     protected $region;
-
-    // }}}
-    // {{{ public function setRegion()
 
     /**
      * Sets the region to use when loading region-specific sub-articles.
@@ -42,9 +37,6 @@ class StoreArticle extends SiteArticle
             $this->sub_articles->setRegion($region);
         }
     }
-
-    // }}}
-    // {{{ public function getVisibleSubArticles()
 
     /**
      * Get the sub-articles of this article that are both shown and enabled
@@ -81,9 +73,6 @@ class StoreArticle extends SiteArticle
 
         return $articles;
     }
-
-    // }}}
-    // {{{ public function loadWithPathAndRegion()
 
     /**
      * Loads an article from the database with a path in a region.
@@ -142,10 +131,7 @@ class StoreArticle extends SiteArticle
         return $found;
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadRelatedCategories()
 
     /**
      * Loads related cateogries.
@@ -182,9 +168,6 @@ class StoreArticle extends SiteArticle
         return SwatDB::query($this->db, $sql, $wrapper);
     }
 
-    // }}}
-    // {{{ protected function loadRelatedProducts()
-
     /**
      * Loads related products.
      *
@@ -220,9 +203,6 @@ class StoreArticle extends SiteArticle
         return SwatDB::query($this->db, $sql, $wrapper);
     }
 
-    // }}}
-    // {{{ protected function loadSubArticles()
-
     /**
      * Loads the sub-articles of this article.
      *
@@ -257,6 +237,4 @@ class StoreArticle extends SiteArticle
 
         return $articles;
     }
-
-    // }}}
 }

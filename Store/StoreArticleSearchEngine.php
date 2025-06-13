@@ -7,8 +7,6 @@
  */
 class StoreArticleSearchEngine extends SiteArticleSearchEngine
 {
-    // {{{ protected function getWhereClause()
-
     protected function getWhereClause()
     {
         return sprintf(
@@ -19,6 +17,4 @@ class StoreArticleSearchEngine extends SiteArticleSearchEngine
             $this->app->db->quote($this->app->getRegion()->id, 'integer')
         );
     }
-
-    // }}}
 }

@@ -27,8 +27,6 @@
  */
 class StoreCardType extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * Unique identifier of this card type.
      *
@@ -69,9 +67,6 @@ class StoreCardType extends SwatDBDataObject
      */
     public $displayorder;
 
-    // }}}
-    // {{{ public function loadFromShortname()
-
     /**
      * Loads a card type by its shortname.
      *
@@ -102,9 +97,6 @@ class StoreCardType extends SwatDBDataObject
 
         return true;
     }
-
-    // }}}
-    // {{{ public function isAvailableInRegion()
 
     /**
      * Whether or not this card type is available in the given region.
@@ -139,9 +131,6 @@ class StoreCardType extends SwatDBDataObject
 
         return SwatDB::queryOne($this->db, $sql) > 0;
     }
-
-    // }}}
-    // {{{ public function getMaskedFormat()
 
     /**
      * Gets the masked format string for this card type.
@@ -180,9 +169,6 @@ class StoreCardType extends SwatDBDataObject
         return $mask;
     }
 
-    // }}}
-    // {{{ public function getFormat()
-
     /**
      * Gets the format string for this card type.
      *
@@ -220,9 +206,6 @@ class StoreCardType extends SwatDBDataObject
         return $mask;
     }
 
-    // }}}
-    // {{{ public function getNumberPreviewLength()
-
     /**
      * Gets the length of the card number preview field for this card type.
      *
@@ -256,9 +239,6 @@ class StoreCardType extends SwatDBDataObject
 
         return $length;
     }
-
-    // }}}
-    // {{{ public function getCardVerificationValueLength()
 
     /**
      * Gets the length of the card verification value for this card type.
@@ -294,9 +274,6 @@ class StoreCardType extends SwatDBDataObject
         return $length;
     }
 
-    // }}}
-    // {{{ public function hasInceptionDate()
-
     /**
      * Gets whether or not this card type uses an inception date.
      *
@@ -320,9 +297,6 @@ class StoreCardType extends SwatDBDataObject
         return in_array($this->shortname, $card_types);
     }
 
-    // }}}
-    // {{{ public function hasIssueNumber()
-
     /**
      * Gets whether or not this card type uses an issue number.
      *
@@ -343,9 +317,6 @@ class StoreCardType extends SwatDBDataObject
 
         return in_array($this->shortname, $card_types);
     }
-
-    // }}}
-    // {{{  public static function formatCardNumber()
 
     /**
      * Formats a card number according to a format string.
@@ -414,9 +385,6 @@ class StoreCardType extends SwatDBDataObject
         return $output;
     }
 
-    // }}}
-    // {{{  public static function getInfoFromCardNumber()
-
     /**
      * Looks up details about a card based on the card number.
      *
@@ -443,8 +411,6 @@ class StoreCardType extends SwatDBDataObject
     public static function getInfoFromCardNumber($number)
     {
         static $types = null;
-
-        // {{{ static card type data
 
         if ($types === null) {
             /*
@@ -556,8 +522,6 @@ class StoreCardType extends SwatDBDataObject
             $types[] = $type;
         }
 
-        // }}}
-
         $info = null;
         $number = str_replace(' ', '', $number);
         $number_length = mb_strlen($number);
@@ -578,9 +542,6 @@ class StoreCardType extends SwatDBDataObject
         return $info;
     }
 
-    // }}}
-    // {{{ public static function getAcceptedCardTypesMessage()
-
     public static function getAcceptedCardTypesMessage(
         StoreCardTypeWrapper $types
     ) {
@@ -596,17 +557,11 @@ class StoreCardType extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->table = 'CardType';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ public function display()
 
     /**
      * Displays this card type.
@@ -623,10 +578,7 @@ class StoreCardType extends SwatDBDataObject
         }
     }
 
-    // }}}
-
     // deprecated methods
-    // {{{ public function getCardMaskedFormat()
 
     /**
      * Gets the masked format string for this card type.
@@ -638,9 +590,6 @@ class StoreCardType extends SwatDBDataObject
         return $this->getMaskedFormat();
     }
 
-    // }}}
-    // {{{ public function getCardFormat()
-
     /**
      * Gets the format string for this card type.
      *
@@ -651,9 +600,6 @@ class StoreCardType extends SwatDBDataObject
         return $this->getFormat();
     }
 
-    // }}}
-    // {{{ public function getCardNumberPreviewLength()
-
     /**
      * Gets the length of the card number preview field for this card type.
      *
@@ -663,6 +609,4 @@ class StoreCardType extends SwatDBDataObject
     {
         return $this->getNumberPreviewLength();
     }
-
-    // }}}
 }

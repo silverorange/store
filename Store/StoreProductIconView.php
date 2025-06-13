@@ -8,8 +8,6 @@
  */
 class StoreProductIconView extends StoreProductView
 {
-    // {{{ public function display()
-
     /**
      * Displays this product icon view.
      *
@@ -33,9 +31,6 @@ class StoreProductIconView extends StoreProductView
         $ul_tag->close();
     }
 
-    // }}}
-    // {{{ protected function displayProduct()
-
     /**
      * Displays a single product as an icon.
      *
@@ -51,6 +46,4 @@ class StoreProductIconView extends StoreProductView
 
         $product->displayAsIcon($link);
     }
-
-    // }}}
 }

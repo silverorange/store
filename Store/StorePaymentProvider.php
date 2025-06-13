@@ -27,8 +27,6 @@
  */
 abstract class StorePaymentProvider
 {
-    // {{{ class constants
-
     /**
      * Use Address Verification Service (AVS).
      */
@@ -48,9 +46,6 @@ abstract class StorePaymentProvider
      * Don't use Three Domain Secure (3-D Secure).
      */
     public const THREE_DOMAIN_SECURE_OFF = false;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * The Address Verification Service (AVS) mode.
@@ -88,9 +83,6 @@ abstract class StorePaymentProvider
      * @see StorePaymentProvider::removePackage()
      */
     protected static $packages = ['Store'];
-
-    // }}}
-    // {{{ public static function factory()
 
     /**
      * Creates a new payment provider instance.
@@ -142,9 +134,6 @@ abstract class StorePaymentProvider
         return $reflector->newInstance($parameters);
     }
 
-    // }}}
-    // {{{ public static function addPackage()
-
     /**
      * Adds package that is searched for payment provider drivers.
      *
@@ -173,9 +162,6 @@ abstract class StorePaymentProvider
         array_unshift(self::$packages, $package);
     }
 
-    // }}}
-    // {{{ public static function removePackage()
-
     /**
      * Removes a package that is searched for payment provider drivers.
      *
@@ -191,9 +177,6 @@ abstract class StorePaymentProvider
         }
     }
 
-    // }}}
-    // {{{ abstract public function __construct()
-
     /**
      * Creates a new payment provider.
      *
@@ -203,9 +186,6 @@ abstract class StorePaymentProvider
      *                          parameters.
      */
     abstract public function __construct(array $paramaters);
-
-    // }}}
-    // {{{ public function setAvsMode()
 
     /**
      * Set the Address Verification Service (AVS) mode.
@@ -225,9 +205,6 @@ abstract class StorePaymentProvider
     {
         $this->avs_mode = (bool) $mode;
     }
-
-    // }}}
-    // {{{ public function setThreeDomainSecureMode()
 
     /**
      * Set the Three Domain Secure (3-D Secure) mode.
@@ -260,9 +237,6 @@ abstract class StorePaymentProvider
         $this->three_domain_secure_mode = (bool) $mode;
     }
 
-    // }}}
-    // {{{ public function pay()
-
     /**
      * Pay for an order immediately.
      *
@@ -286,9 +260,6 @@ abstract class StorePaymentProvider
             __FUNCTION__
         ));
     }
-
-    // }}}
-    // {{{ public function hold()
 
     /**
      * Place a hold on funds for an order.
@@ -316,9 +287,6 @@ abstract class StorePaymentProvider
         ));
     }
 
-    // }}}
-    // {{{ public function release()
-
     /**
      * Release funds held for an order payment.
      *
@@ -341,9 +309,6 @@ abstract class StorePaymentProvider
             __FUNCTION__
         ));
     }
-
-    // }}}
-    // {{{ public function abort()
 
     /**
      * Abort a hold on funds held for an order payment.
@@ -372,9 +337,6 @@ abstract class StorePaymentProvider
             __FUNCTION__
         ));
     }
-
-    // }}}
-    // {{{ public function verify()
 
     /**
      * Verifies a card payment for an order.
@@ -408,9 +370,6 @@ abstract class StorePaymentProvider
         ));
     }
 
-    // }}}
-    // {{{ public function verifiedPay()
-
     /**
      * Pays for an order using an already verified transaction.
      *
@@ -434,9 +393,6 @@ abstract class StorePaymentProvider
             __FUNCTION__
         ));
     }
-
-    // }}}
-    // {{{ public function refund()
 
     /**
      * Refunds all or part of a transaction.
@@ -472,9 +428,6 @@ abstract class StorePaymentProvider
         ));
     }
 
-    // }}}
-    // {{{ public function void()
-
     /**
      * Voids a transaction.
      *
@@ -502,9 +455,6 @@ abstract class StorePaymentProvider
             __FUNCTION__
         ));
     }
-
-    // }}}
-    // {{{ public function threeDomainSecureAuth()
 
     /**
      * Authenticates an existing 3-D Secure transaction.
@@ -542,13 +492,8 @@ abstract class StorePaymentProvider
         ));
     }
 
-    // }}}
-    // {{{ public function getExceptionMessageId()
-
     public function getExceptionMessageId(Throwable $e)
     {
         return null;
     }
-
-    // }}}
 }

@@ -10,8 +10,6 @@
  */
 class StoreCategoryWrapper extends SwatDBRecordsetWrapper
 {
-    // {{{ public function setRegion()
-
     /**
      * Sets the region for all categories in this record set.
      *
@@ -26,9 +24,6 @@ class StoreCategoryWrapper extends SwatDBRecordsetWrapper
         }
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         parent::init();
@@ -36,6 +31,4 @@ class StoreCategoryWrapper extends SwatDBRecordsetWrapper
 
         $this->index_field = 'id';
     }
-
-    // }}}
 }

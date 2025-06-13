@@ -8,22 +8,14 @@
  */
 class StoreItemQuantityDiscountDelete extends AdminDBDelete
 {
-    // {{{ private properties
-
     private $relocate_url;
-
-    // }}}
-    // {{{ public function setRelocateURL()
 
     public function setRelocateURL($url)
     {
         $this->relocate_url = $url;
     }
 
-    // }}}
-
     // process phaes
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -54,10 +46,7 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -91,9 +80,6 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function buildForm()
-
     protected function buildForm()
     {
         $form = $this->ui->getWidget('confirmation_form');
@@ -109,6 +95,4 @@ class StoreItemQuantityDiscountDelete extends AdminDBDelete
             $form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
         }
     }
-
-    // }}}
 }

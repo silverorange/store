@@ -8,16 +8,11 @@
  */
 class StoreItemOrder extends AdminDBOrder
 {
-    // {{{ protected properties
-
     protected $item_group_id;
     protected $product_id;
     protected $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -28,10 +23,7 @@ class StoreItemOrder extends AdminDBOrder
         $this->category_id = SiteApplication::initVar('category');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData()
     {
@@ -54,9 +46,6 @@ class StoreItemOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-    // {{{ protected function saveIndex()
-
     protected function saveIndex($id, $index)
     {
         SwatDB::updateColumn(
@@ -69,18 +58,12 @@ class StoreItemOrder extends AdminDBOrder
         );
     }
 
-    // }}}
-    // {{{ protected function getUpdatedMessage()
-
     protected function getUpdatedMessage()
     {
         return new SwatMessage(Store::_('Item order updated.'));
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildFrame()
 
     protected function buildFrame()
     {
@@ -89,9 +72,6 @@ class StoreItemOrder extends AdminDBOrder
         $frame = $this->ui->getWidget('order_frame');
         $frame->title = Store::_('Order Items');
     }
-
-    // }}}
-    // {{{ protected function buildForm()
 
     protected function buildForm()
     {
@@ -102,9 +82,6 @@ class StoreItemOrder extends AdminDBOrder
         $form->addHiddenField('product', $this->product_id);
         $form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -148,9 +125,6 @@ class StoreItemOrder extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -219,9 +193,6 @@ class StoreItemOrder extends AdminDBOrder
         $this->title = $product_title;
     }
 
-    // }}}
-    // {{{ protected function getItemDescription()
-
     protected function getItemDescription(StoreItem $item)
     {
         $text = $item->sku;
@@ -234,6 +205,4 @@ class StoreItemOrder extends AdminDBOrder
 
         return $text;
     }
-
-    // }}}
 }

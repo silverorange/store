@@ -6,17 +6,12 @@
  */
 class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
 {
-    // {{{ public function getUiXml()
-
     public function getUiXml()
     {
         return __DIR__ . '/checkout-pay-on-account.xml';
     }
 
-    // }}}
-
     // init phase
-    // {{{ public function initCommon()
 
     public function initCommon()
     {
@@ -49,10 +44,7 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function preProcessCommon()
 
     public function preProcessCommon()
     {
@@ -62,16 +54,10 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
         parent::preProcessCommon();
     }
 
-    // }}}
-    // {{{ public function processCommon()
-
     public function processCommon()
     {
         $this->saveDataToSession();
     }
-
-    // }}}
-    // {{{ protected function saveDataToSession()
 
     protected function saveDataToSession()
     {
@@ -103,10 +89,7 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ public function buildCommon()
 
     public function buildCommon()
     {
@@ -119,14 +102,9 @@ class StoreCheckoutPayOnAccountPage extends StoreCheckoutEditPage
         );
     }
 
-    // }}}
-    // {{{ protected function buildInternal()
-
     protected function buildInternal()
     {
         parent::buildInternal();
         $this->ui->getWidget('pay_on_account_note')->visible = false;
     }
-
-    // }}}
 }

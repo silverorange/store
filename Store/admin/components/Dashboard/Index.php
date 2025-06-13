@@ -8,8 +8,6 @@
  */
 class StoreDashboardIndex extends AdminIndex
 {
-    // {{{ protected properties
-
     /**
      * @var array
      */
@@ -20,10 +18,7 @@ class StoreDashboardIndex extends AdminIndex
      */
     protected $new_content_notes = [];
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -37,16 +32,10 @@ class StoreDashboardIndex extends AdminIndex
         parent::initInternal();
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
-
-    // }}}
-    // {{{ protected function initSuspiciousAccounts()
 
     protected function initSuspiciousAccounts()
     {
@@ -73,9 +62,6 @@ class StoreDashboardIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getSuspiciousAccountCount()
-
     protected function getSuspiciousAccountCount()
     {
         $sql = 'select count(Account.id) from Account
@@ -84,9 +70,6 @@ class StoreDashboardIndex extends AdminIndex
 
         return SwatDB::queryOne($this->app->db, $sql);
     }
-
-    // }}}
-    // {{{ protected function getSuspiciousAccountLink()
 
     protected function getSuspiciousAccountLink($count)
     {
@@ -97,10 +80,7 @@ class StoreDashboardIndex extends AdminIndex
         return $a_tag;
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -116,16 +96,10 @@ class StoreDashboardIndex extends AdminIndex
             $this->isNewContentFrameVisible();
     }
 
-    // }}}
-    // {{{ protected function isNewContentFrameVisible()
-
     protected function isNewContentFrameVisible()
     {
         return $this->app->session->user->hasAccessByShortname('Order');
     }
-
-    // }}}
-    // {{{ protected function buildOrders()
 
     protected function buildOrders()
     {
@@ -140,9 +114,6 @@ class StoreDashboardIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function getTableModel()
-
     protected function getTableModel(SwatView $view): ?SwatTableStore
     {
         switch ($view->id) {
@@ -153,10 +124,7 @@ class StoreDashboardIndex extends AdminIndex
         return null;
     }
 
-    // }}}
-
     // new content table
-    // {{{ protected function getNewContentTableModel()
 
     protected function getNewContentTableModel(SwatView $view): SwatTableStore
     {
@@ -186,9 +154,6 @@ class StoreDashboardIndex extends AdminIndex
         return $store;
     }
 
-    // }}}
-    // {{{ protected function buildNewContentData()
-
     protected function buildNewContentData()
     {
         if ($this->app->session->user->hasAccessByShortname('Order')) {
@@ -197,9 +162,6 @@ class StoreDashboardIndex extends AdminIndex
             $this->new_content_notes[] = Store::_('orders with comments');
         }
     }
-
-    // }}}
-    // {{{ protected function buildNewContentNote()
 
     protected function buildNewContentNote()
     {
@@ -227,9 +189,6 @@ class StoreDashboardIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function buildOrdersNewContentData()
-
     protected function buildOrdersNewContentData()
     {
         $orders = $this->getOrders();
@@ -251,9 +210,6 @@ class StoreDashboardIndex extends AdminIndex
         }
     }
 
-    // }}}
-    // {{{ protected function addNewContent()
-
     protected function addNewContent(
         SwatDate $date,
         $content,
@@ -268,16 +224,10 @@ class StoreDashboardIndex extends AdminIndex
         ];
     }
 
-    // }}}
-    // {{{ protected function sortNewContent()
-
     protected function sortNewContent($a, $b)
     {
         return SwatDate::compare($b['date'], $a['date']);
     }
-
-    // }}}
-    // {{{ protected function getNewContentCutoffDate()
 
     protected function getNewContentCutoffDate()
     {
@@ -286,9 +236,6 @@ class StoreDashboardIndex extends AdminIndex
 
         return $date;
     }
-
-    // }}}
-    // {{{ protected function getOrders()
 
     protected function getOrders()
     {
@@ -325,16 +272,10 @@ class StoreDashboardIndex extends AdminIndex
         return $orders;
     }
 
-    // }}}
-    // {{{ protected function getOrdersWhereClause()
-
     protected function getOrdersWhereClause()
     {
         return 'Orders.comments is not null';
     }
-
-    // }}}
-    // {{{ protected function getInstanceWhereClause()
 
     protected function getInstanceWhereClause()
     {
@@ -351,10 +292,7 @@ class StoreDashboardIndex extends AdminIndex
         );
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -363,6 +301,4 @@ class StoreDashboardIndex extends AdminIndex
             'packages/store/admin/styles/store-dashboard.css'
         );
     }
-
-    // }}}
 }

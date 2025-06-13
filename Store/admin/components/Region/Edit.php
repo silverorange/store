@@ -8,15 +8,10 @@
  */
 class StoreRegionEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $fields;
     protected $region;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -47,9 +42,6 @@ class StoreRegionEdit extends AdminDBEdit
         $this->fields = ['title'];
     }
 
-    // }}}
-    // {{{ protected function initRegion()
-
     protected function initRegion()
     {
         $class_name = SwatDBClassMap::get('StoreRegion');
@@ -68,10 +60,7 @@ class StoreRegionEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveDBData()
 
     protected function saveDBData(): void
     {
@@ -118,10 +107,7 @@ class StoreRegionEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function loadDBData()
 
     protected function loadDBData()
     {
@@ -149,6 +135,4 @@ class StoreRegionEdit extends AdminDBEdit
             $this->id
         );
     }
-
-    // }}}
 }

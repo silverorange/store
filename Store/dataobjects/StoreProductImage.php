@@ -8,15 +8,10 @@
  */
 class StoreProductImage extends StoreImage
 {
-    // {{{ public function getUri()
-
     public function getUri($shortname = 'large', $prefix = null)
     {
         return parent::getUri($shortname, $prefix);
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -24,6 +19,4 @@ class StoreProductImage extends StoreImage
 
         $this->image_set_shortname = 'products';
     }
-
-    // }}}
 }

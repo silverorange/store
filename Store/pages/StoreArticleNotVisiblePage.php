@@ -8,25 +8,17 @@
  */
 class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 {
-    // {{{ public function setArticle()
-
     public function setArticle(SiteArticle $article)
     {
         $this->article = $article;
     }
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * @var SiteArticle
      */
     protected $article;
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -41,9 +33,6 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
             SwatString::minimizeEntities($this->app->getRegion()->title)
         );
     }
-
-    // }}}
-    // {{{ protected function getAvailableRegions()
 
     protected function getAvailableRegions()
     {
@@ -64,9 +53,6 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
         );
     }
 
-    // }}}
-    // {{{ protected function buildNavBar()
-
     protected function buildNavBar($link_prefix = '')
     {
         if (isset($this->layout->navbar)) {
@@ -75,6 +61,4 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
             );
         }
     }
-
-    // }}}
 }

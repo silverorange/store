@@ -8,12 +8,7 @@
  */
 class StoreCartLightbox extends SwatControl
 {
-    // {{{ constants
-
     public const GOOGLE_ANALYTICS = 1;
-
-    // }}}
-    // {{{ public properties
 
     /**
      * Optional content to display when the cart is empty.
@@ -39,9 +34,6 @@ class StoreCartLightbox extends SwatControl
      */
     public $override_content;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * @var SiteApplication
      */
@@ -58,9 +50,6 @@ class StoreCartLightbox extends SwatControl
      * @var bool
      */
     protected $is_cached;
-
-    // }}}
-    // {{{ public function __construct()
 
     public function __construct(
         $id = null,
@@ -101,9 +90,6 @@ class StoreCartLightbox extends SwatControl
         $this->empty_content = ob_get_clean();
     }
 
-    // }}}
-    // {{{ public function init()
-
     public function init()
     {
         if (!$this->isInitialized()) {
@@ -112,9 +98,6 @@ class StoreCartLightbox extends SwatControl
             parent::init();
         }
     }
-
-    // }}}
-    // {{{ public function display()
 
     public function display()
     {
@@ -139,9 +122,6 @@ class StoreCartLightbox extends SwatControl
         Swat::displayInlineJavaScript($this->getInlineJavaScript());
     }
 
-    // }}}
-    // {{{ public function clearCache()
-
     public function clearCache()
     {
         if (isset($this->app->memcache)) {
@@ -151,9 +131,6 @@ class StoreCartLightbox extends SwatControl
         $this->initialized = false;
         $this->composite_widgets_created = false;
     }
-
-    // }}}
-    // {{{ protected function getInlineJavaScript()
 
     protected function getInlineJavaScript()
     {
@@ -212,24 +189,15 @@ class StoreCartLightbox extends SwatControl
         return $javascript;
     }
 
-    // }}}
-    // {{{ protected function getJavaScriptClassName()
-
     protected function getJavaScriptClassName()
     {
         return 'StoreCartLightbox';
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/cart-lightbox.xml';
     }
-
-    // }}}
-    // {{{ protected function createCompositeWidgets()
 
     protected function createCompositeWidgets()
     {
@@ -246,10 +214,7 @@ class StoreCartLightbox extends SwatControl
         }
     }
 
-    // }}}
-
     // cart content display methods
-    // {{{ public function displayContent()
 
     /**
      * Get a mini cart for a specific product page.
@@ -296,9 +261,6 @@ class StoreCartLightbox extends SwatControl
         }
     }
 
-    // }}}
-    // {{{ public function getAvailableHtmlHeadEntrySet()
-
     public function getAvailableHtmlHeadEntrySet()
     {
         $set = $this->app->getCacheValue(
@@ -325,9 +287,6 @@ class StoreCartLightbox extends SwatControl
 
         return $set;
     }
-
-    // }}}
-    // {{{ protected function displayCartEntries()
 
     /**
      * @return string the mini cart entries
@@ -356,13 +315,7 @@ class StoreCartLightbox extends SwatControl
         echo $cart;
     }
 
-    // }}}
-    // {{{ protected function initCartUI()
-
     protected function initCartUI() {}
-
-    // }}}
-    // {{{ protected function buildCartUI()
 
     protected function buildCartUI()
     {
@@ -399,16 +352,10 @@ class StoreCartLightbox extends SwatControl
             $this->getCartTitle();
     }
 
-    // }}}
-    // {{{ protected function getCartMessages()
-
     protected function getCartMessages()
     {
         return [];
     }
-
-    // }}}
-    // {{{ protected function getCartTitle()
 
     protected function getCartTitle()
     {
@@ -440,9 +387,6 @@ class StoreCartLightbox extends SwatControl
         return $title;
     }
 
-    // }}}
-    // {{{ protected function getAvailableEntries()
-
     /**
      * Gets the cart entries.
      */
@@ -450,9 +394,6 @@ class StoreCartLightbox extends SwatControl
     {
         return $this->app->cart->checkout->getAvailableEntries();
     }
-
-    // }}}
-    // {{{ protected function getCartTableStore()
 
     /**
      * Gets the cart data-store.
@@ -511,9 +452,6 @@ class StoreCartLightbox extends SwatControl
         return $store;
     }
 
-    // }}}
-    // {{{ protected function getCartDetailsStore()
-
     protected function getCartDetailsStore(StoreCartEntry $entry)
     {
         $ds = new SwatDetailsStore($entry);
@@ -542,9 +480,6 @@ class StoreCartLightbox extends SwatControl
 
         return $ds;
     }
-
-    // }}}
-    // {{{ protected function getMoreRow()
 
     /**
      * Gets the cart data-store for the product on this page.
@@ -583,9 +518,6 @@ class StoreCartLightbox extends SwatControl
         return $ds;
     }
 
-    // }}}
-    // {{{ protected function getImageDimension()
-
     /**
      * @return string Image dimension shortname
      */
@@ -593,9 +525,6 @@ class StoreCartLightbox extends SwatControl
     {
         return 'pinky';
     }
-
-    // }}}
-    // {{{ protected function getEntryDescription()
 
     protected function getEntryDescription(StoreCartEntry $entry)
     {
@@ -622,9 +551,6 @@ class StoreCartLightbox extends SwatControl
         return $description;
     }
 
-    // }}}
-    // {{{ protected function getItemDescriptionArray()
-
     protected function getItemDescriptionArray(StoreCartEntry $entry)
     {
         $description = [];
@@ -650,13 +576,8 @@ class StoreCartLightbox extends SwatControl
         return $description;
     }
 
-    // }}}
-    // {{{ protected function getProductLink()
-
     protected function getProductLink(StoreCartEntry $entry)
     {
         return $this->app->config->store->path . $entry->item->product->path;
     }
-
-    // }}}
 }

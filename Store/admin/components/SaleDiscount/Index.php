@@ -9,7 +9,6 @@
 class StoreSaleDiscountIndex extends AdminIndex
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -19,18 +18,12 @@ class StoreSaleDiscountIndex extends AdminIndex
         $this->ui->loadFromXML($this->getUiXml());
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -46,10 +39,7 @@ class StoreSaleDiscountIndex extends AdminIndex
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -69,9 +59,6 @@ class StoreSaleDiscountIndex extends AdminIndex
         $end_renderer->display_time_zone = $this->app->default_time_zone;
     }
 
-    // }}}
-    // {{{ protected function getTableModel()
-
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
         $sql = 'select SaleDiscount.*
@@ -85,6 +72,4 @@ class StoreSaleDiscountIndex extends AdminIndex
 
         return SwatDB::query($this->app->db, $sql);
     }
-
-    // }}}
 }

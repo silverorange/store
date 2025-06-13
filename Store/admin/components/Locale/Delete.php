@@ -9,7 +9,6 @@
 class StoreLocaleDelete extends AdminDBDelete
 {
     // process phase
-    // {{{ protected function processDBData()
 
     protected function processDBData(): void
     {
@@ -32,19 +31,13 @@ class StoreLocaleDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getProcessSQL()
-
     protected function getProcessSQL()
     {
         return 'delete from Locale where id in (%s)
 			and id not in (select locale from Orders)';
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -75,9 +68,6 @@ class StoreLocaleDelete extends AdminDBDelete
         }
     }
 
-    // }}}
-    // {{{ protected function getDependencies()
-
     protected function getDependencies($dep, $item_list)
     {
         // dependent orders
@@ -94,6 +84,4 @@ class StoreLocaleDelete extends AdminDBDelete
 
         $dep->addDependency($dep_orders);
     }
-
-    // }}}
 }

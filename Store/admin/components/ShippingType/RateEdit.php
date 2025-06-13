@@ -8,8 +8,6 @@
  */
 class StoreShippingTypeRateEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     /**
      * The id of the parent shipping type.
      *
@@ -24,10 +22,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
      */
     protected $shipping_rate;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -41,9 +36,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
             SwatDB::getOptionArray($this->app->db, 'Region', 'title', 'id')
         );
     }
-
-    // }}}
-    // {{{ private function initShippingRate()
 
     private function initShippingRate()
     {
@@ -64,18 +56,12 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/rate-edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -102,9 +88,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateShippingRate();
@@ -113,9 +96,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         $message = new SwatMessage(Store::_('Shipping Rate has been saved.'));
         $this->app->messages->add($message);
     }
-
-    // }}}
-    // {{{ protected function updateShippingRate()
 
     protected function updateShippingRate()
     {
@@ -136,10 +116,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -148,9 +125,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         $form = $this->ui->getWidget('edit_form');
         $form->addHiddenField('parent', $this->parent);
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -168,9 +142,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         $this->navbar->addEntry($final_entry);
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->shipping_rate->getAttributes());
@@ -179,9 +150,6 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 
         $this->setZeros();
     }
-
-    // }}}
-    // {{{ protected function setZeros()
 
     protected function setZeros()
     {
@@ -193,13 +161,8 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getWidgetIds()
-
     protected function getWidgetIds()
     {
         return ['amount', 'threshold', 'percentage'];
     }
-
-    // }}}
 }

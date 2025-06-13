@@ -8,8 +8,6 @@
  */
 class StoreItemEdit extends AdminDBEdit
 {
-    // {{{ protected properties
-
     protected $product;
     protected $item;
 
@@ -24,10 +22,7 @@ class StoreItemEdit extends AdminDBEdit
      */
     protected $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -106,9 +101,6 @@ class StoreItemEdit extends AdminDBEdit
         $form->addHiddenField('product', $this->product);
     }
 
-    // }}}
-    // {{{ protected function initItem()
-
     protected function initItem()
     {
         $class_name = SwatDBClassMap::get('StoreItem');
@@ -128,27 +120,18 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/edit.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ public function process()
 
     public function process()
     {
         $this->processPriceReplicators();
         parent::process();
     }
-
-    // }}}
-    // {{{ protected function processPriceReplicators()
 
     protected function processPriceReplicators()
     {
@@ -169,9 +152,6 @@ class StoreItemEdit extends AdminDBEdit
             $this->processPriceReplicatorByRegion($replicator, $region);
         }
     }
-
-    // }}}
-    // {{{ protected function processPriceReplicatorByRegion()
 
     protected function processPriceReplicatorByRegion(
         SwatReplicableContainer $replicator,
@@ -197,9 +177,6 @@ class StoreItemEdit extends AdminDBEdit
         $sale_discount_price->locale = $locale;
     }
 
-    // }}}
-    // {{{ protected function saveDBData()
-
     protected function saveDBData(): void
     {
         $this->updateItem();
@@ -211,9 +188,6 @@ class StoreItemEdit extends AdminDBEdit
             $this->app->memcache->flushNs('product');
         }
     }
-
-    // }}}
-    // {{{ protected function updateItem()
 
     protected function updateItem()
     {
@@ -250,9 +224,6 @@ class StoreItemEdit extends AdminDBEdit
         $this->updateProvstateExclusionBindings();
         $this->updateItemAliases();
     }
-
-    // }}}
-    // {{{ protected function validate()
 
     protected function validate(): void
     {
@@ -323,9 +294,6 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function updateRegionBindings()
-
     protected function updateRegionBindings()
     {
         // get old values before deleting the old bindings. If the
@@ -349,9 +317,6 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getRegionBindingsOldValues()
-
     protected function getRegionBindingsOldValues()
     {
         $old_values = [];
@@ -369,9 +334,6 @@ class StoreItemEdit extends AdminDBEdit
         return $old_values;
     }
 
-    // }}}
-    // {{{ protected function deleteRegionBindings()
-
     protected function deleteRegionBindings()
     {
         // Due to SwatDBDataObject not being able to delete when there is no id
@@ -385,9 +347,6 @@ class StoreItemEdit extends AdminDBEdit
 
         SwatDB::exec($this->app->db, $delete_sql);
     }
-
-    // }}}
-    // {{{ protected function getItemRegionBinding()
 
     protected function getItemRegionBinding(
         SwatReplicableContainer $replicator,
@@ -440,9 +399,6 @@ class StoreItemEdit extends AdminDBEdit
         return $region_binding;
     }
 
-    // }}}
-    // {{{ protected function isWidgetVisible()
-
     protected function isWidgetVisible($widget)
     {
         $visible = ($widget !== null && $widget->visible);
@@ -453,9 +409,6 @@ class StoreItemEdit extends AdminDBEdit
 
         return $visible;
     }
-
-    // }}}
-    // {{{ protected function updateProvstateExclusionBindings()
 
     protected function updateProvstateExclusionBindings()
     {
@@ -475,9 +428,6 @@ class StoreItemEdit extends AdminDBEdit
         );
     }
 
-    // }}}
-    // {{{ protected function updateItemAliases()
-
     protected function updateItemAliases()
     {
         $this->item->item_aliases->removeAll();
@@ -494,9 +444,6 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function getUpdateMessage()
-
     protected function getUpdateMessage()
     {
         return new SwatMessage(sprintf(
@@ -505,19 +452,13 @@ class StoreItemEdit extends AdminDBEdit
         ));
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function display()
 
     protected function display()
     {
         parent::display();
         Swat::displayInlineJavaScript($this->getInlineJavaScript());
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -579,9 +520,6 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ protected function loadDBData()
-
     protected function loadDBData()
     {
         $this->ui->setValues($this->item->getAttributes());
@@ -602,9 +540,6 @@ class StoreItemEdit extends AdminDBEdit
         $this->loadItemAliases();
     }
 
-    // }}}
-    // {{{ protected function getInlineJavaScript()
-
     protected function getInlineJavaScript()
     {
         $price_replicator = $this->ui->getWidget('price_replicator');
@@ -618,9 +553,6 @@ class StoreItemEdit extends AdminDBEdit
             $replicator_ids
         );
     }
-
-    // }}}
-    // {{{ protected function loadRegionBindings()
 
     protected function loadRegionBindings()
     {
@@ -642,9 +574,6 @@ class StoreItemEdit extends AdminDBEdit
             }
         }
     }
-
-    // }}}
-    // {{{ protected function loadPriceReplicatorByBinding()
 
     protected function loadPriceReplicatorByBinding(
         SwatReplicableContainer $replicator,
@@ -671,9 +600,6 @@ class StoreItemEdit extends AdminDBEdit
         $sale_discount_price->value = $binding->sale_discount_price;
     }
 
-    // }}}
-    // {{{ protected function loadProvstateExclusionBindings()
-
     protected function loadProvstateExclusionBindings()
     {
         if ($this->ui->hasWidget('provstate_exclusion')) {
@@ -684,9 +610,6 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-    // {{{ private function loadItemAliases()
-
     private function loadItemAliases()
     {
         $aliases = $this->ui->getWidget('aliases');
@@ -695,10 +618,7 @@ class StoreItemEdit extends AdminDBEdit
         }
     }
 
-    // }}}
-
     // finalize phase
-    // {{{ public function finalize()
 
     public function finalize()
     {
@@ -714,6 +634,4 @@ class StoreItemEdit extends AdminDBEdit
             'packages/store/admin/styles/store-item-edit-page.css'
         );
     }
-
-    // }}}
 }

@@ -8,15 +8,10 @@
  */
 class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateStepPage
 {
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/checkout-address-verification-step.xml';
     }
-
-    // }}}
-    // {{{ protected function instantiateEmbeddedEditPages()
 
     protected function instantiateEmbeddedEditPages()
     {
@@ -28,20 +23,14 @@ class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateSte
         ];
     }
 
-    // }}}
-
     // init phase
-    // {{{ protected function getProgressDependencies()
 
     protected function getProgressDependencies()
     {
         return [$this->getCheckoutSource() . '/first'];
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -57,6 +46,4 @@ class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateSte
             $this->relocate();
         }
     }
-
-    // }}}
 }

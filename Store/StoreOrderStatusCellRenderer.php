@@ -8,8 +8,6 @@
  */
 class StoreOrderStatusCellRenderer extends SwatCellRenderer
 {
-    // {{{ public properties
-
     /**
      * The status to render.
      *
@@ -30,9 +28,6 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
      * @var bool
      */
     public $show_summary = true;
-
-    // }}}
-    // {{{ public function render()
 
     public function render()
     {
@@ -91,6 +86,4 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
             }
         }
     }
-
-    // }}}
 }

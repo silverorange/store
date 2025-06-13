@@ -8,8 +8,6 @@
  */
 class StoreAdminMenuView extends AdminMenuView
 {
-    // {{{ protected properties
-
     /**
      * @var SwatForm
      */
@@ -19,9 +17,6 @@ class StoreAdminMenuView extends AdminMenuView
      * @var SwatEntry
      */
     protected $item_entry;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new store admin menu view with an item search box at the top.
@@ -36,9 +31,6 @@ class StoreAdminMenuView extends AdminMenuView
         );
     }
 
-    // }}}
-    // {{{public function getForm()
-
     /**
      * Gets the form containing the item search box of this menu.
      *
@@ -48,9 +40,6 @@ class StoreAdminMenuView extends AdminMenuView
     {
         return $this->getCompositeWidget('form');
     }
-
-    // }}}
-    // {{{ public function getItemEntry()
 
     /**
      * Gets the item search box of this menu.
@@ -63,9 +52,6 @@ class StoreAdminMenuView extends AdminMenuView
 
         return $this->item_entry;
     }
-
-    // }}}
-    // {{{ protected function displayMenuContent()
 
     /**
      * Displays this admin menu content.
@@ -82,9 +68,6 @@ class StoreAdminMenuView extends AdminMenuView
 
         parent::displayMenuContent();
     }
-
-    // }}}
-    // {{{ protected function createCompositeWidgets()
 
     protected function createCompositeWidgets()
     {
@@ -111,6 +94,4 @@ class StoreAdminMenuView extends AdminMenuView
 
         $this->addCompositeWidget($this->form, 'form');
     }
-
-    // }}}
 }

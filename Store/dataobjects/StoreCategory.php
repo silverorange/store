@@ -24,8 +24,6 @@
  */
 class StoreCategory extends SwatDBDataObject
 {
-    // {{{ class constants
-
     /**
      * The maximum depth of categories in the category tree.
      *
@@ -35,9 +33,6 @@ class StoreCategory extends SwatDBDataObject
      * The root category is the zero-th level category.
      */
     public const MAX_DEPTH = 8;
-
-    // }}}
-    // {{{ public properties
 
     /**
      * Unique identifier.
@@ -140,9 +135,6 @@ class StoreCategory extends SwatDBDataObject
      */
     public $ppc_ad_description2;
 
-    // }}}
-    // {{{ protected properties
-
     /**
      * @var StoreRegion
      */
@@ -194,9 +186,6 @@ class StoreCategory extends SwatDBDataObject
      */
     protected $admin_navbar_entries;
 
-    // }}}
-    // {{{ public function setRegion()
-
     public function setRegion(StoreRegion $region, $limiting = true)
     {
         $this->region = $region;
@@ -209,9 +198,6 @@ class StoreCategory extends SwatDBDataObject
             }
         }
     }
-
-    // }}}
-    // {{{ public function getProductCount()
 
     /**
      * Loads the count of visible products in this category in a region.
@@ -271,9 +257,6 @@ class StoreCategory extends SwatDBDataObject
         return $product_count;
     }
 
-    // }}}
-    // {{{ public function getAvailableProductCount()
-
     /**
      * Loads the count of available products in this category in a region.
      *
@@ -331,9 +314,6 @@ class StoreCategory extends SwatDBDataObject
 
         return $product_count;
     }
-
-    // }}}
-    // {{{ public function getItemCount()
 
     /**
      * Loads the count of visible items in this category in a region.
@@ -393,9 +373,6 @@ class StoreCategory extends SwatDBDataObject
         return $item_count;
     }
 
-    // }}}
-    // {{{ public function getVisibleSubCategories()
-
     public function getVisibleSubCategories(?StoreRegion $region = null)
     {
         if ($region === null) {
@@ -432,9 +409,6 @@ class StoreCategory extends SwatDBDataObject
 
         return $sub_categories;
     }
-
-    // }}}
-    // {{{ public function getVisibleProducts()
 
     public function getVisibleProducts(?StoreRegion $region = null)
     {
@@ -483,9 +457,6 @@ class StoreCategory extends SwatDBDataObject
         return $products;
     }
 
-    // }}}
-    // {{{ public function getNavBarEntries()
-
     /**
      * Gets the set of {@link SwatNavBarEntry} objects for this category.
      *
@@ -507,9 +478,6 @@ class StoreCategory extends SwatDBDataObject
         return $this->navbar_entries;
     }
 
-    // }}}
-    // {{{ public function getAdminNavBarEntries()
-
     /**
      * Gets the set of {@link SwatNavBarEntry} objects for this category
      * with links for the admin site.
@@ -530,9 +498,6 @@ class StoreCategory extends SwatDBDataObject
 
         return $this->admin_navbar_entries;
     }
-
-    // }}}
-    // {{{ public function loadByPath()
 
     /**
      * Loads a category from the database with a path.
@@ -590,9 +555,6 @@ class StoreCategory extends SwatDBDataObject
         return $found;
     }
 
-    // }}}
-    // {{{ protected function init()
-
     protected function init()
     {
         $this->registerDeprecatedProperty('ppc_ad_text');
@@ -612,9 +574,6 @@ class StoreCategory extends SwatDBDataObject
         $this->table = 'Category';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
-    // {{{ protected function initFromRow()
 
     /**
      * Initializes this category from a row object.
@@ -649,9 +608,6 @@ class StoreCategory extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ protected function getSerializableSubDataObjects()
-
     protected function getSerializableSubDataObjects()
     {
         return array_merge(
@@ -659,9 +615,6 @@ class StoreCategory extends SwatDBDataObject
             ['image', 'related_articles', 'path']
         );
     }
-
-    // }}}
-    // {{{ protected function getSerializablePrivateProperties()
 
     protected function getSerializablePrivateProperties()
     {
@@ -672,9 +625,6 @@ class StoreCategory extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function deleteInternal()
-
     protected function deleteInternal()
     {
         parent::deleteInternal();
@@ -684,10 +634,7 @@ class StoreCategory extends SwatDBDataObject
         }
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadPath()
 
     /**
      * Loads the URL fragment of this category.
@@ -716,9 +663,6 @@ class StoreCategory extends SwatDBDataObject
 
         return $path;
     }
-
-    // }}}
-    // {{{ protected function loadRelatedArticles()
 
     /**
      * Loads related articles.
@@ -763,9 +707,6 @@ class StoreCategory extends SwatDBDataObject
         );
     }
 
-    // }}}
-    // {{{ protected function loadSubCategories()
-
     /**
      * Loads the sub-categories of this category.
      *
@@ -802,9 +743,6 @@ class StoreCategory extends SwatDBDataObject
         return $categories;
     }
 
-    // }}}
-    // {{{ private function queryNavBar()
-
     /**
      * Helper method for loading navbar entries of this category.
      */
@@ -818,10 +756,7 @@ class StoreCategory extends SwatDBDataObject
         return SwatDB::query($this->db, $sql);
     }
 
-    // }}}
-
     // display methods
-    // {{{ public function displayAsTile()
 
     /**
      * Displays the category as:
@@ -868,16 +803,10 @@ class StoreCategory extends SwatDBDataObject
         }
     }
 
-    // }}}
-    // {{{ public function getThumbnailImgTag()
-
     public function getThumbnailImgTag()
     {
         return $this->getImgTag('thumb');
     }
-
-    // }}}
-    // {{{ public function getImgTag()
 
     public function getImgTag($dimension_shortname = 'thumb')
     {
@@ -902,16 +831,10 @@ class StoreCategory extends SwatDBDataObject
         return $img_tag;
     }
 
-    // }}}
-    // {{{ protected function getPlaceholderImageFilename()
-
     protected function getPlaceholderImageFilename()
     {
         return 'packages/store/images/category-placeholder.png';
     }
-
-    // }}}
-    // {{{ protected function getUnavailableSpan()
 
     protected function getUnavailableSpan()
     {
@@ -928,9 +851,6 @@ class StoreCategory extends SwatDBDataObject
         return $span;
     }
 
-    // }}}
-    // {{{ protected function getDetailsSpan()
-
     protected function getDetailsSpan()
     {
         $span = null;
@@ -946,6 +866,4 @@ class StoreCategory extends SwatDBDataObject
 
         return $span;
     }
-
-    // }}}
 }

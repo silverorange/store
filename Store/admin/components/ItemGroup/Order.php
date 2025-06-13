@@ -8,19 +8,11 @@
  */
 class StoreItemGroupOrder extends AdminDBOrder
 {
-    // {{{ protected properties
-
     protected $product_id;
-
-    // }}}
-    // {{{ private properties
 
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -29,10 +21,7 @@ class StoreItemGroupOrder extends AdminDBOrder
         $this->category_id = SiteApplication::initVar('category');
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function saveIndex()
 
     protected function saveIndex($id, $index)
     {
@@ -50,18 +39,12 @@ class StoreItemGroupOrder extends AdminDBOrder
         }
     }
 
-    // }}}
-    // {{{ protected function getUpdatedMessage()
-
     protected function getUpdatedMessage()
     {
         return new SwatMessage(Store::_('Item group order updated.'));
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -74,9 +57,6 @@ class StoreItemGroupOrder extends AdminDBOrder
         $form->addHiddenField('product', $this->product_id);
         $form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function loadData()
 
     protected function loadData()
     {
@@ -100,9 +80,6 @@ class StoreItemGroupOrder extends AdminDBOrder
         $options_list = $this->ui->getWidget('options');
         $options_list->value = ($sum == 0) ? 'auto' : 'custom';
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -160,6 +137,4 @@ class StoreItemGroupOrder extends AdminDBOrder
 
         $this->title = $product_title;
     }
-
-    // }}}
 }

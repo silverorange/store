@@ -8,8 +8,6 @@
  */
 class StoreAddressCellRenderer extends SwatCellRenderer
 {
-    // {{{ public properties
-
     /**
      * The store address object to render.
      *
@@ -24,9 +22,6 @@ class StoreAddressCellRenderer extends SwatCellRenderer
      * @var bool
      */
     public $condensed = true;
-
-    // }}}
-    // {{{ public function render()
 
     /**
      * Renders an address.
@@ -47,6 +42,4 @@ class StoreAddressCellRenderer extends SwatCellRenderer
             }
         }
     }
-
-    // }}}
 }

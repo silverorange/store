@@ -78,15 +78,10 @@
  */
 class StoreAccount extends SiteAccount
 {
-    // {{{ public properties
-
     /**
      * @var float
      */
     public $available_credit;
-
-    // }}}
-    // {{{ protected properties
 
     /**
      * Optional company name for this account.
@@ -101,9 +96,6 @@ class StoreAccount extends SiteAccount
      * @var string
      */
     protected $phone;
-
-    // }}}
-    // {{{ public function setDefaultBillingAddress()
 
     public function setDefaultBillingAddress(StoreAccountAddress $address)
     {
@@ -123,9 +115,6 @@ class StoreAccount extends SiteAccount
         $this->setInternalValue('default_billing_address', $address->getId());
     }
 
-    // }}}
-    // {{{ public function getDefaultBillingAddress()
-
     public function getDefaultBillingAddress()
     {
         $address = null;
@@ -141,9 +130,6 @@ class StoreAccount extends SiteAccount
 
         return $address;
     }
-
-    // }}}
-    // {{{ public function setDefaultShippingAddress()
 
     public function setDefaultShippingAddress(StoreAccountAddress $address)
     {
@@ -163,9 +149,6 @@ class StoreAccount extends SiteAccount
         $this->setInternalValue('default_shipping_address', $address->getId());
     }
 
-    // }}}
-    // {{{ public function getDefaultShippingAddress()
-
     public function getDefaultShippingAddress()
     {
         $address = null;
@@ -181,9 +164,6 @@ class StoreAccount extends SiteAccount
 
         return $address;
     }
-
-    // }}}
-    // {{{ public function setDefaultPaymentMethod()
 
     public function setDefaultPaymentMethod(
         StoreAccountPaymentMethod $payment_method
@@ -210,9 +190,6 @@ class StoreAccount extends SiteAccount
         );
     }
 
-    // }}}
-    // {{{ public function getDefaultPaymentMethod()
-
     public function getDefaultPaymentMethod()
     {
         $payment_method = null;
@@ -229,16 +206,10 @@ class StoreAccount extends SiteAccount
         return $payment_method;
     }
 
-    // }}}
-    // {{{ public function canPayOnAccount()
-
     public function canPayOnAccount()
     {
         return $this->available_credit > 0;
     }
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -266,9 +237,6 @@ class StoreAccount extends SiteAccount
         );
     }
 
-    // }}}
-    // {{{ protected function getProtectedPropertyList()
-
     protected function getProtectedPropertyList()
     {
         $properties = parent::getProtectedPropertyList();
@@ -286,46 +254,31 @@ class StoreAccount extends SiteAccount
         return $properties;
     }
 
-    // }}}
-
     // getters
-    // {{{ public function getCompany()
 
     public function getCompany()
     {
         return $this->company;
     }
 
-    // }}}
-    // {{{ public function getPhone()
-
     public function getPhone()
     {
         return $this->phone;
     }
 
-    // }}}
-
     // setters
-    // {{{ public function setCompany()
 
     public function setCompany($company)
     {
         $this->company = $company;
     }
 
-    // }}}
-    // {{{ public function setPhone()
-
     public function setPhone($phone)
     {
         $this->phone = $phone;
     }
 
-    // }}}
-
     // loader methods
-    // {{{ protected function loadAddresses()
 
     /**
      * Loads StoreAccountAddress sub-data-objects for this StoreAccount.
@@ -346,9 +299,6 @@ class StoreAccount extends SiteAccount
         );
     }
 
-    // }}}
-    // {{{ protected function loadPaymentMethods()
-
     /**
      * Loads StoreAccountPaymentMethod sub-data-objects for this StoreAccount.
      */
@@ -367,9 +317,6 @@ class StoreAccount extends SiteAccount
             SwatDBClassMap::get('StoreAccountPaymentMethodWrapper')
         );
     }
-
-    // }}}
-    // {{{ protected function loadOrders()
 
     /**
      * Loads StoreOrder sub-data-objects for this StoreAccount.
@@ -392,10 +339,7 @@ class StoreAccount extends SiteAccount
         );
     }
 
-    // }}}
-
     // saver methods
-    // {{{ protected function saveAddresses()
 
     /**
      * Automatically saves StoreAccontAddress sub-data-objects when this
@@ -411,9 +355,6 @@ class StoreAccount extends SiteAccount
         $this->addresses->save();
     }
 
-    // }}}
-    // {{{ protected function savePaymentMethods()
-
     /**
      * Automatically saves StoreAccontPaymentMethod sub-data-objects when this
      * StoreAccount object is saved.
@@ -427,6 +368,4 @@ class StoreAccount extends SiteAccount
         $this->payment_methods->setDatabase($this->db);
         $this->payment_methods->save();
     }
-
-    // }}}
 }

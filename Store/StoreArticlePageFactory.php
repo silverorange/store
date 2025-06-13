@@ -8,8 +8,6 @@
  */
 abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 {
-    // {{{ public function __construct()
-
     /**
      * Creates a StoreArticlePageFactory.
      */
@@ -20,9 +18,6 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
         // set location to load Store page classes from
         $this->page_class_map['Store'] = 'Store/pages';
     }
-
-    // }}}
-    // {{{ protected function isVisible()
 
     protected function isVisible(SiteArticle $article, string $source): bool
     {
@@ -49,9 +44,6 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
         return $count !== 0;
     }
 
-    // }}}
-    // {{{ protected function getNotVisiblePage()
-
     protected function getNotVisiblePage(
         SiteArticle $article,
         SiteLayout $layout
@@ -62,9 +54,6 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 
         return $page;
     }
-
-    // }}}
-    // {{{ protected function getArticle()
 
     /**
      * Gets an article object from the database.
@@ -81,6 +70,4 @@ abstract class StoreArticlePageFactory extends SiteArticlePageFactory
 
         return $article;
     }
-
-    // }}}
 }

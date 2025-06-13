@@ -7,8 +7,6 @@
  */
 class StoreSavingsCellRenderer extends SwatPercentageCellRenderer
 {
-    // {{{ public function __construct()
-
     public function __construct()
     {
         parent::__construct();
@@ -16,9 +14,6 @@ class StoreSavingsCellRenderer extends SwatPercentageCellRenderer
         $this->precision = 0;
         $this->classes[] = 'store-savings-cell-renderer';
     }
-
-    // }}}
-    // {{{ public function render()
 
     /**
      * Renders the contents of this cell.
@@ -46,6 +41,4 @@ class StoreSavingsCellRenderer extends SwatPercentageCellRenderer
         printf('Save %s', $value);
         $tag->close();
     }
-
-    // }}}
 }

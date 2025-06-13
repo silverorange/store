@@ -7,8 +7,6 @@
  */
 class StoreAdWordsTracker
 {
-    // {{{ protected properties
-
     /**
      * @var StoreOrder
      */
@@ -24,9 +22,6 @@ class StoreAdWordsTracker
      */
     protected $conversion_label;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct(
         StoreOrder $order,
         $conversion_id,
@@ -36,9 +31,6 @@ class StoreAdWordsTracker
         $this->conversion_id = $conversion_id;
         $this->conversion_label = $conversion_label;
     }
-
-    // }}}
-    // {{{ public function getInlineXhtml()
 
     public function getInlineXhtml()
     {
@@ -60,8 +52,6 @@ class StoreAdWordsTracker
         );
         $xml_value = SwatString::minimizeEntities($total);
         $xml_currency = SwatString::minimizeEntities($currency);
-
-        // {{{ returned HTML
 
         // Note: Format 3 is hiding the Google Site Stats box
         // @codingStandardsIgnoreStart
@@ -88,7 +78,6 @@ class StoreAdWordsTracker
             </div>
             HTML;
         // @codingStandardsIgnoreEnd
-        // }}}
 
         return sprintf(
             $html,
@@ -102,6 +91,4 @@ class StoreAdWordsTracker
             $xml_conversion_label
         );
     }
-
-    // }}}
 }

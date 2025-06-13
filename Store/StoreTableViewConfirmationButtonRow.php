@@ -7,17 +7,12 @@
  */
 class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
 {
-    // {{{ public properties
-
     /**
      * Confirmation message of the button.
      *
      * @var string
      */
     public $confirmation_message;
-
-    // }}}
-    // {{{ protected function displayButton()
 
     protected function displayButton()
     {
@@ -28,9 +23,6 @@ class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
         $this->button->display();
     }
 
-    // }}}
-    // {{{ protected function createEmbeddedWidgets()
-
     protected function createEmbeddedWidgets()
     {
         if (!$this->widgets_created) {
@@ -40,6 +32,4 @@ class StoreTableViewConfirmationButtonRow extends StoreTableViewButtonRow
             $this->widgets_created = true;
         }
     }
-
-    // }}}
 }

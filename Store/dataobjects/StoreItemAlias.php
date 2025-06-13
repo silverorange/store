@@ -10,8 +10,6 @@
  */
 class StoreItemAlias extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * unique id,.
      *
@@ -26,9 +24,6 @@ class StoreItemAlias extends SwatDBDataObject
      */
     public $sku;
 
-    // }}}
-    // {{{ protected function init()
-
     /**
      * Sets up this dataobject.
      */
@@ -42,6 +37,4 @@ class StoreItemAlias extends SwatDBDataObject
         $this->table = 'ItemAlias';
         $this->id_field = 'integer:id';
     }
-
-    // }}}
 }

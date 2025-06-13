@@ -8,8 +8,6 @@
  */
 class StoreArticleIndex extends SiteArticleIndex
 {
-    // {{{ private properties
-
     /**
      * Cache of regions used by queryRegions().
      *
@@ -17,10 +15,7 @@ class StoreArticleIndex extends SiteArticleIndex
      */
     private $regions;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -32,18 +27,12 @@ class StoreArticleIndex extends SiteArticleIndex
         $this->ui->getWidget('article_region_action')->db = $this->app->db;
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/index.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -51,10 +40,7 @@ class StoreArticleIndex extends SiteArticleIndex
         $processor->process($view, $actions);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -64,9 +50,6 @@ class StoreArticleIndex extends SiteArticleIndex
         $visibility->removeOptionsByValue('enable');
         $visibility->removeOptionsByValue('disable');
     }
-
-    // }}}
-    // {{{ protected function buildDetailsToolbar()
 
     protected function buildDetailsToolbar()
     {
@@ -110,9 +93,6 @@ class StoreArticleIndex extends SiteArticleIndex
         }
     }
 
-    // }}}
-    // {{{ protected final function queryRegions()
-
     final protected function queryRegions()
     {
         if ($this->regions === null) {
@@ -127,6 +107,4 @@ class StoreArticleIndex extends SiteArticleIndex
 
         return $this->regions;
     }
-
-    // }}}
 }

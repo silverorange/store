@@ -8,15 +8,10 @@
  */
 class StoreProductRelatedArticles extends AdminSearch
 {
-    // {{{ private properties
-
     private $product_id;
     private $category_id;
 
-    // }}}
-
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -35,9 +30,6 @@ class StoreProductRelatedArticles extends AdminSearch
         }
     }
 
-    // }}}
-    // {{{ private function getProductLink()
-
     private function getProductLink()
     {
         if ($this->category_id === null) {
@@ -53,18 +45,12 @@ class StoreProductRelatedArticles extends AdminSearch
         return $link;
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/relatedarticles.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processInternal()
 
     protected function processInternal()
     {
@@ -123,10 +109,7 @@ class StoreProductRelatedArticles extends AdminSearch
         }
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function buildInternal()
 
     protected function buildInternal()
     {
@@ -145,9 +128,6 @@ class StoreProductRelatedArticles extends AdminSearch
         $index_form->addHiddenField('product', $this->product_id);
         $index_form->addHiddenField('category', $this->category_id);
     }
-
-    // }}}
-    // {{{ protected function getTableModel()
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
@@ -181,9 +161,6 @@ class StoreProductRelatedArticles extends AdminSearch
 
         return $rs;
     }
-
-    // }}}
-    // {{{ protected function buildNavBar()
 
     protected function buildNavBar()
     {
@@ -223,9 +200,6 @@ class StoreProductRelatedArticles extends AdminSearch
 
         $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Add Articles')));
     }
-
-    // }}}
-    // {{{ private function getWhereClause()
 
     private function getWhereClause()
     {
@@ -270,6 +244,4 @@ class StoreProductRelatedArticles extends AdminSearch
 
         return $where;
     }
-
-    // }}}
 }

@@ -9,7 +9,6 @@
 class StoreArticleSearch extends SiteArticleSearch
 {
     // init phase
-    // {{{ protected function initInternal()
 
     protected function initInternal()
     {
@@ -28,18 +27,12 @@ class StoreArticleSearch extends SiteArticleSearch
         $this->ui->getWidget('article_region_action')->db = $this->app->db;
     }
 
-    // }}}
-    // {{{ protected function getUiXml()
-
     protected function getUiXml()
     {
         return __DIR__ . '/search.xml';
     }
 
-    // }}}
-
     // process phase
-    // {{{ protected function processActions()
 
     protected function processActions(SwatView $view, SwatActions $actions)
     {
@@ -47,10 +40,7 @@ class StoreArticleSearch extends SiteArticleSearch
         $processor->process($view, $actions);
     }
 
-    // }}}
-
     // build phase
-    // {{{ protected function getWhereClause()
 
     protected function getWhereClause()
     {
@@ -81,6 +71,4 @@ class StoreArticleSearch extends SiteArticleSearch
 
         return $this->where_clause;
     }
-
-    // }}}
 }

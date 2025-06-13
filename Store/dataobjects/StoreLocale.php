@@ -5,17 +5,12 @@
  */
 class StoreLocale extends SwatDBDataObject
 {
-    // {{{ public properties
-
     /**
      * not null,.
      *
      * @var string
      */
     public $id;
-
-    // }}}
-    // {{{ protected function init()
 
     protected function init()
     {
@@ -27,9 +22,6 @@ class StoreLocale extends SwatDBDataObject
         $this->table = 'Locale';
         $this->id_field = 'text:id';
     }
-
-    // }}}
-    // {{{ public function getURLLocale()
 
     /**
      * Get locale formatted for the URL.
@@ -44,9 +36,6 @@ class StoreLocale extends SwatDBDataObject
         return $country . '/' . $language . '/';
     }
 
-    // }}}
-    // {{{ public function getTitle()
-
     /**
      * Get a title that can be displayed for this locale.
      *
@@ -59,6 +48,4 @@ class StoreLocale extends SwatDBDataObject
     {
         return $this->id;
     }
-
-    // }}}
 }

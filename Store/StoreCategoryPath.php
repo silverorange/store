@@ -5,13 +5,8 @@
  */
 class StoreCategoryPath extends SitePath
 {
-    // {{{ public properties
-
     public static $twig_product_threshold = 60;
     public static $twig_category_threshold = 5;
-
-    // }}}
-    // {{{ public function __construct()
 
     /**
      * Creates a new category path object.
@@ -27,9 +22,6 @@ class StoreCategoryPath extends SitePath
             $this->loadFromId($app, $id);
         }
     }
-
-    // }}}
-    // {{{ protected function loadFromId()
 
     /**
      * Creates a new path object.
@@ -49,9 +41,6 @@ class StoreCategoryPath extends SitePath
         }
     }
 
-    // }}}
-    // {{{ protected function queryPath()
-
     protected function queryPath(StoreApplication $app, $category_id)
     {
         $sql = sprintf(
@@ -63,6 +52,4 @@ class StoreCategoryPath extends SitePath
 
         return SwatDB::query($app->db, $sql);
     }
-
-    // }}}
 }

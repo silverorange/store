@@ -11,8 +11,6 @@
  */
 class StoreSalesByRegionTaxationStartDate
 {
-    // {{{ protected properties
-
     /**
      * @var SwatDate
      */
@@ -23,25 +21,16 @@ class StoreSalesByRegionTaxationStartDate
      */
     protected $app;
 
-    // }}}
-    // {{{ public function __construct()
-
     public function __construct(AdminApplication $app)
     {
         $this->app = $app;
         $this->initStartDate();
     }
 
-    // }}}
-    // {{{ public function getDate()
-
     public function getDate()
     {
         return $this->start_date;
     }
-
-    // }}}
-    // {{{ public function getWarningMessage()
 
     public function getWarningMessage()
     {
@@ -63,9 +52,6 @@ class StoreSalesByRegionTaxationStartDate
 
         return $message;
     }
-
-    // }}}
-    // {{{ public function getTitlePatternFromDate()
 
     public function getTitlePatternFromDate(SwatDate $date)
     {
@@ -89,9 +75,6 @@ class StoreSalesByRegionTaxationStartDate
         return $title_pattern;
     }
 
-    // }}}
-    // {{{ protected function initStartDate()
-
     protected function initStartDate()
     {
         // These reports are for US tax savings on intenrational sales. This
@@ -102,6 +85,4 @@ class StoreSalesByRegionTaxationStartDate
         $this->start_date->setTime(0, 0, 0);
         $this->start_date->toUTC();
     }
-
-    // }}}
 }

@@ -8,8 +8,6 @@
  */
 class StoreShipmentMethod
 {
-    // {{{ public function getTimeToDeliver()
-
     /**
      * An approximation of how long it takes to ship items with this method.
      *
@@ -22,6 +20,4 @@ class StoreShipmentMethod
     {
         return null;
     }
-
-    // }}}
 }
