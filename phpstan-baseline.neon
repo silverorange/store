@@ -1,0 +1,271 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Access to constant PRODUCTION on an unknown class net\\\\authorize\\\\api\\\\constants\\\\ANetEnvironment\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Access to constant SANDBOX on an unknown class net\\\\authorize\\\\api\\\\constants\\\\ANetEnvironment\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\AnetApiResponseType not found\\.$#"
+			count: 2
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\TransactionResponseType not found\\.$#"
+			count: 2
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\CreateTransactionRequest not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\CreditCardType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\CustomerAddressType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\CustomerDataType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\ExtendedAmountType not found\\.$#"
+			count: 2
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\LineItemType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\MerchantAuthenticationType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\OrderType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\PaymentType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\contract\\\\v1\\\\TransactionRequestType not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Instantiated class net\\\\authorize\\\\api\\\\controller\\\\CreateTransactionController not found\\.$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Undefined variable\\: \\$mode$#"
+			count: 1
+			path: Store/StoreAuthorizeNetPaymentProvider.php
+
+		-
+			message: "#^Access to an undefined property StoreBingShoppingGenerator\\:\\:\\$last_header\\.$#"
+			count: 2
+			path: Store/StoreBingShoppingGenerator.php
+
+		-
+			message: "#^Instantiated class StoreBingShoppingGenerator is abstract\\.$#"
+			count: 1
+			path: Store/StoreBingShoppingUploader.php
+
+		-
+			message: "#^Access to constant AVS on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Access to constant AVS_AND_CVV on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Access to constant CVV on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Access to constant GATEWAY_REJECTED on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Access to constant PROCESSOR_DECLINED on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Access to constant SETTLEMENT_DECLINED on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Call to static method environment\\(\\) on an unknown class Braintree\\\\Configuration\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Call to static method merchantId\\(\\) on an unknown class Braintree\\\\Configuration\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Call to static method privateKey\\(\\) on an unknown class Braintree\\\\Configuration\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Call to static method publicKey\\(\\) on an unknown class Braintree\\\\Configuration\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Call to static method sale\\(\\) on an unknown class Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Class Braintree\\\\Exception\\\\Authentication not found\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Class Braintree\\\\Exception\\\\Authorization not found\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Class Braintree\\\\Exception\\\\Configuration not found\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Class Braintree\\\\Exception\\\\ServerError not found\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Class Braintree\\\\Exception\\\\UpgradeRequired not found\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Parameter \\$external_transaction of method StoreBraintreePaymentProvider\\:\\:createPaymentMethodTransaction\\(\\) has invalid type Braintree\\\\Transaction\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Parameter \\$response of method StoreBraintreePaymentProvider\\:\\:generateExceptionFromResponse\\(\\) has invalid type Braintree\\\\Base\\.$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Undefined variable\\: \\$environment$#"
+			count: 1
+			path: Store/StoreBraintreePaymentProvider.php
+
+		-
+			message: "#^Access to private property \\$composite_widgets_created of parent class SwatWidget\\.$#"
+			count: 1
+			path: Store/StoreCartLightbox.php
+
+		-
+			message: "#^Deprecated in PHP 8\\.0\\: Required parameter \\$app follows optional parameter \\$id\\.$#"
+			count: 1
+			path: Store/StoreCartLightbox.php
+
+		-
+			message: "#^Method StoreCartLightbox\\:\\:displayCartEntries\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: Store/StoreCartLightbox.php
+
+		-
+			message: "#^Method StoreCartLightbox\\:\\:displayContent\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: Store/StoreCartLightbox.php
+
+		-
+			message: "#^Access to constant ERROR_ERROR on an unknown class Payment_PayPal_SOAP\\.$#"
+			count: 1
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Access to constant ERROR_WARNING on an unknown class Payment_PayPal_SOAP\\.$#"
+			count: 6
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Caught class Payment_PayPal_SOAP_ErrorException not found\\.$#"
+			count: 6
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Class Payment_PayPal_SOAP_ErrorException not found\\.$#"
+			count: 1
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Instantiated class Payment_PayPal_SOAP not found\\.$#"
+			count: 1
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Instantiated class StorePaymentException is abstract\\.$#"
+			count: 1
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Undefined variable\\: \\$parameters$#"
+			count: 1
+			path: Store/StorePayPalPaymentProvider.php
+
+		-
+			message: "#^Undefined variable\\: \\$periods$#"
+			count: 5
+			path: Store/admin/components/Ad/Details.php
+
+		-
+			message: "#^Call to an undefined static method AdminDBOrder\\:\\:buildFrame\\(\\)\\.$#"
+			count: 1
+			path: Store/admin/components/Item/Order.php
+
+		-
+			message: "#^Caught class Services_StrikeIron_SoapException not found\\.$#"
+			count: 1
+			path: Store/dataobjects/StoreAddress.php
+
+		-
+			message: "#^Instantiated class Services_StrikeIron_VerifyAddressUsa not found\\.$#"
+			count: 1
+			path: Store/dataobjects/StoreAddress.php
+
+		-
+			message: "#^Instantiated class StoreOrderConfirmationMailMessage is abstract\\.$#"
+			count: 2
+			path: Store/dataobjects/StoreOrder.php
+
+		-
+			message: "#^Undefined variable\\: \\$card_type_id$#"
+			count: 1
+			path: Store/pages/StoreCheckoutPaymentMethodPage.php
