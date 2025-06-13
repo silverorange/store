@@ -1,50 +1,56 @@
 .store-checkout-progress {
-	padding: 3px 0;
-	background: #f5ede5;
-	border: 1px solid #d2c7ba;
-	border-radius: 4px;
+  padding: 3px 0;
+  background: #f5ede5;
+  border: 1px solid #d2c7ba;
+  border-radius: 4px;
 }
 
 .store-checkout-progress ol {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .store-checkout-progress-clear {
-	clear: both;
-	line-height: 0;
+  clear: both;
+  line-height: 0;
 }
 
 .store-checkout-progress li {
-	list-style-type: none;
-	float: left;
-	margin: 0%;
-	padding: 0;
-	width: 33.333%;
-	font-size: 85%;
-	font-weight: bold;
-	color: #afa499;
+  list-style-type: none;
+  float: left;
+  margin: 0%;
+  padding: 0;
+  width: 33.333%;
+  font-size: 85%;
+  font-weight: bold;
+  color: #afa499;
 }
 
 .store-checkout-progress li .store-checkout-progress-title {
-	border-radius: 4px;
-	background-color: #f9f5f1;
-	padding: 5px 8px;
-	margin: 0 3px;
-	display: block;
+  border-radius: 4px;
+  background-color: #f9f5f1;
+  padding: 5px 8px;
+  margin: 0 3px;
+  display: block;
 }
 
-.store-checkout-progress-step1 li.store-checkout-progress-step1 .store-checkout-progress-title {
-	background-color: #e1dacf;
-	color: #5f5851;
+.store-checkout-progress-step1
+  li.store-checkout-progress-step1
+  .store-checkout-progress-title {
+  background-color: #e1dacf;
+  color: #5f5851;
 }
 
-.store-checkout-progress-step2 li.store-checkout-progress-step2 .store-checkout-progress-title {
-	background-color: #e1dacf;
-	color: #5f5851;
+.store-checkout-progress-step2
+  li.store-checkout-progress-step2
+  .store-checkout-progress-title {
+  background-color: #e1dacf;
+  color: #5f5851;
 }
 
-.store-checkout-progress-step3 li.store-checkout-progress-step3 .store-checkout-progress-title {
-	background-color: #e1dacf;
-	color: #5f5851;
+.store-checkout-progress-step3
+  li.store-checkout-progress-step3
+  .store-checkout-progress-title {
+  background-color: #e1dacf;
+  color: #5f5851;
 }

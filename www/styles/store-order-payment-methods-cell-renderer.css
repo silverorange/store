@@ -1,32 +1,32 @@
 .store-order-payment-methods-cell-renderer {
-	border-top: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 .store-order-payment-methods-cell-renderer th,
 .store-order-payment-methods-cell-renderer td {
-	width: auto;
-	padding: 0.5em;
+  width: auto;
+  padding: 0.5em;
 }
 
 .store-order-payment-methods-cell-renderer .payment-amount {
-	text-align: right;
+  text-align: right;
 }
 
 .store-order-payment-methods-cell-renderer tbody th {
-	font-weight: normal;
-	text-align: left;
+  font-weight: normal;
+  text-align: left;
 }
 
 .store-order-payment-methods-cell-renderer tbody th.payment,
 .store-order-payment-methods-cell-renderer tbody td.payment-amount {
-	border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .store-order-payment-methods-cell-renderer tfoot th {
-	text-align: right;
-	font-weight: bold;
+  text-align: right;
+  font-weight: bold;
 }
 
 .store-order-payment-methods-cell-renderer tfoot td.payment-amount {
-	font-weight: bold;
+  font-weight: bold;
 }

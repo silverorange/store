@@ -1,19 +1,20 @@
 div.store-original-price {
-	text-decoration: line-through;
-	color: #666;
+  text-decoration: line-through;
+  color: #666;
 }
 
 #items_view .price-column {
-	white-space: nowrap;
+  white-space: nowrap;
 }
 
 div.store-sale-discount {
-	color: #990000;
+  color: #990000;
 }
 
 div.product-page-cart-message {
-	background: #FFFBC9 url(../../../packages/swat/images/swat-message-cart.png) no-repeat 0 0;
-	padding: 12px 12px 12px 48px;
-	border-radius: 8px;
-	min-height: 18px;
+  background: #fffbc9 url(../../../packages/swat/images/swat-message-cart.png)
+    no-repeat 0 0;
+  padding: 12px 12px 12px 48px;
+  border-radius: 8px;
+  min-height: 18px;
 }

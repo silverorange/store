@@ -1,26 +1,26 @@
 .catalog-switcher {
-	text-align: right;
-	margin-top: 1em;
+  text-align: right;
+  margin-top: 1em;
 }
 
 .catalog-switcher label {
-	font-size: 85%;
-	color: #837352;
+  font-size: 85%;
+  color: #837352;
 }
 
 .catalog-switcher .swat-form-field-contents {
-	display: inline;
+  display: inline;
 }
 
 .catalog-switcher select,
 .catalog-switcher input {
-	font-size: 85%;
-	vertical-align: middle;
-	padding: 1px;
-	border: 1px solid #dcceb2;
-	color: #837352;
+  font-size: 85%;
+  vertical-align: middle;
+  padding: 1px;
+  border: 1px solid #dcceb2;
+  color: #837352;
 }
 
 .catalog-switcher input {
-	background: #f6f2ea;
+  background: #f6f2ea;
 }

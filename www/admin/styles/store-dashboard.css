@@ -1,13 +1,13 @@
 #order_stats_frame .swat-frame-contents {
-	padding-bottom: 8px;
+  padding-bottom: 8px;
 }
 
 #new_content_frame .swat-footer-form-field form {
-	display: inline;
+  display: inline;
 }
 
 #new_content_note ul {
-	margin: 0;
+  margin: 0;
 }
 
 #new_content_view span.person,
@@ -17,62 +17,62 @@
 #new_content_view span.file-save-as,
 #new_content_view span.download,
 #new_content_view span.document {
-	float: left;
-	width: 22px;
-	height: 22px;
-	background-repeat: no-repeat;
-	background-position: 0 0;
-	background-image: url(../../../../packages/admin/images/admin-title-link-cell-renderer-icons.png);
+  float: left;
+  width: 22px;
+  height: 22px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-image: url(../../../../packages/admin/images/admin-title-link-cell-renderer-icons.png);
 }
 
 #new_content_view span.edit {
-	background-position: 0 -22px;
+  background-position: 0 -22px;
 }
 
 #new_content_view span.document-with-contents {
-	background-position: 0 -44px;
+  background-position: 0 -44px;
 }
 
 #new_content_view span.folder {
-	background-position: 0 -66px;
+  background-position: 0 -66px;
 }
 
 #new_content_view span.folder-with-contents {
-	background-position: 0 -88px;
+  background-position: 0 -88px;
 }
 
 #new_content_view span.person {
-	background-position: 0 -110px;
+  background-position: 0 -110px;
 }
 
 #new_content_view span.product {
-	background-position: 0 -132px;
+  background-position: 0 -132px;
 }
 
 #new_content_view span.file-save-as {
-	background-position: 0 -154px;
+  background-position: 0 -154px;
 }
 
 #new_content_view span.download {
-	background-position: 0 -176px;
+  background-position: 0 -176px;
 }
 
 #new_content_view td.content div {
-	margin-left: 28px;
+  margin-left: 28px;
 }
 
 #message_display .swat-message-with-secondary h3,
 #message_display .swat-message-with-secondary .swat-message-secondary-content,
 #message_display .swat-message-with-secondary form {
-	display: inline;
+  display: inline;
 }
 
 #message_display .swat-message-with-secondary .swat-message-secondary-content {
-	font-size: 122%;
-	font-weight: bold;
-	margin-left: 6px;
+  font-size: 122%;
+  font-weight: bold;
+  margin-left: 6px;
 }
 
 #message_display .swat-message-with-secondary form {
-	padding-left: 10px;
+  padding-left: 10px;
 }

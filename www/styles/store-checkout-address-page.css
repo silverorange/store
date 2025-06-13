@@ -2,40 +2,39 @@
 
 #billing_address_form,
 #shipping_address_form {
-	border: 0;
-	padding: 0;
-	/* Set a solid background color to make new address disclosure not */
-	/* have Cleartype issues in Windows XP. Background must be overridden */
-	/* On sites without a white background. */
-	background: #fff;
+  border: 0;
+  padding: 0;
+  /* Set a solid background color to make new address disclosure not */
+  /* have Cleartype issues in Windows XP. Background must be overridden */
+  /* On sites without a white background. */
+  background: #fff;
 }
 
 .add-new {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .swat-form #mailing_subscriber_field {
-	clear: left;
+  clear: left;
 }
 
 .swat-form #mailing_subscriber_field label {
-	font-weight: normal;
+  font-weight: normal;
 }
-
 
 /* Address Verification */
 
 .checkout-address-verified {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .checkout-address-verified span.address {
-	display: block;
-	padding: 0 0 1em 1em;
+  display: block;
+  padding: 0 0 1em 1em;
 }
 
 .swat-message-display .address-verification-yes {
-	margin-right: 0.5em;
-	font-weight: bold;
+  margin-right: 0.5em;
+  font-weight: bold;
 }

@@ -1,53 +1,51 @@
 .store-cart-entry-view-header .swat-form-field-contents,
 .store-cart-entry-view-footer .swat-form-field-contents {
-	text-align: right;
+  text-align: right;
 }
 
 .store-cart-entry-view-header .swat-button,
 .store-cart-entry-view-footer .swat-button {
-	vertical-align: middle;
+  vertical-align: middle;
 }
 
 #header_checkout_button,
 #footer_checkout_button {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .swat-table-view td.remove-column {
-	padding-left: 0;
-	padding-right: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .swat-table-view td.move-column {
-	padding-left: 0;
-	padding-right: 4px;
+  padding-left: 0;
+  padding-right: 4px;
 }
 
 .store-cart-entry-view .move-column .swat-button {
-	/*
+  /*
 	 * This is to provide column width consistency between saved and
 	 * checkout carts.
 	 */
-	width: 8.0em;
+  width: 8em;
 }
 
 .store-cart-entry-view .remove-column .swat-button {
-	width: 5.5em;
+  width: 5.5em;
 }
 
 #saved_cart_move_all_field {
-	text-align: right;
+  text-align: right;
 }
-
 
 .swat-table-view .store-total-row td.button-cell,
 .swat-table-view .store-table-view-button-row td.button-cell {
-	padding: 0.2em 4px 0.2em 0;
-	text-align: center;
+  padding: 0.2em 4px 0.2em 0;
+  text-align: center;
 }
 
 .swat-table-view .store-total-row #subtotal_button,
 .swat-table-view .store-table-view-button-row #remove_all_button {
-	margin-left: 4px;
+  margin-left: 4px;
 }
-

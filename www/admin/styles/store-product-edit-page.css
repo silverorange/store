@@ -1,28 +1,28 @@
 #attributes_form_field .swat-form-field {
-	float: left;
-	margin-right: 2em;
+  float: left;
+  margin-right: 2em;
 }
 
 #edit_warnings,
 #edit_warnings .swat-message {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .product-categories li {
-	margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .product-categories li .swat-nav-bar {
-	display: inline;
+  display: inline;
 }
 
 .product-categories .canonical-category {
-	margin-left: 6px;
-	display: inline-block;
-	background: #4e9a06;
-	color: #fff;
-	padding: 2px 4px;
-	font-size: 11px;
-	text-transform: uppercase;
-	border-radius: 2px;
+  margin-left: 6px;
+  display: inline-block;
+  background: #4e9a06;
+  color: #fff;
+  padding: 2px 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  border-radius: 2px;
 }

@@ -1,17 +1,17 @@
 #index_actions_sale_discount .swat-note {
-	display: inline;
-	margin-left: 1em;
+  display: inline;
+  margin-left: 1em;
 }
 
 #index_actions_sale_discount .swat-form-field-contents {
-	display: inline;
+  display: inline;
 }
 
 #attributes_form_field .swat-form-field,
 #remove_attributes_form_field .swat-form-field {
-	float: left;
+  float: left;
 }
 
 div.swat-actions-note {
-	clear: both;
+  clear: both;
 }
