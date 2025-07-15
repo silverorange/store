@@ -411,7 +411,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         );
 
         // set billing address if it was returned
-        if (isset($details->BillingAddress, $details->BillingAddress->Country)
+        if (
+            isset($details->BillingAddress, $details->BillingAddress->Country)
         ) {
             $billing_address = $this->getStoreOrderAddress(
                 $details->BillingAddress,
@@ -463,7 +464,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
      *
      * @param string     $token      the token of the active transaction
      * @param string     $action     one of 'Sale' or 'Authorization' or 'Order'
-     * @param string     $payer_id   payPal payer identification number as returned
+     * @param string     $payer_id   PayPal payer identification number as returned
      *                               by the <kbd>getExpressCheckout()</kbd> method
      * @param StoreOrder $order      the order to pay for
      * @param string     $notify_url optional. The URL where the Instant Payment
