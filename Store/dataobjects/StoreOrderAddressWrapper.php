@@ -14,6 +14,6 @@ class StoreOrderAddressWrapper extends SwatDBRecordsetWrapper
     {
         parent::init();
         $this->index_field = 'id';
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreOrderAddress');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreOrderAddress::class);
     }
 }

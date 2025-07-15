@@ -51,7 +51,7 @@ class StoreCatalog extends SwatDBDataObject
     {
         $this->registerInternalProperty(
             'clone_of',
-            SwatDBClassMap::get('StoreCatalog')
+            SwatDBClassMap::get(StoreCatalog::class)
         );
 
         $this->table = 'Catalog';
@@ -75,7 +75,7 @@ class StoreCatalog extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get('StoreCatalogWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreCatalogWrapper::class);
         $clones = SwatDB::query($this->db, $sql, $wrapper_class);
 
         return $clones->getFirst();

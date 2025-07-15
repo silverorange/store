@@ -31,7 +31,7 @@ class StoreProductImageOrder extends AdminDBOrder
         $this->category_id = SiteApplication::initVar('category');
 
         $product_id = SiteApplication::initVar('product');
-        $class_name = SwatDBClassMap::get('StoreProduct');
+        $class_name = SwatDBClassMap::get(StoreProduct::class);
         $this->product = new $class_name();
         $this->product->setDatabase($this->app->db);
 
@@ -182,7 +182,7 @@ class StoreProductImageOrder extends AdminDBOrder
         return SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('SiteImageDimensionWrapper')
+            SwatDBClassMap::get(SiteImageDimensionWrapper::class)
         )->getFirst();
     }
 }

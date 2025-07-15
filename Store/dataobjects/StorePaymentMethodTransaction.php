@@ -51,7 +51,7 @@ class StorePaymentMethodTransaction extends SwatDBDataObject
         $this->registerDateProperty('createdate');
         $this->registerInternalProperty(
             'payment_method',
-            SwatDBClassMap::get('StoreOrderPaymentMethod')
+            SwatDBClassMap::get(StoreOrderPaymentMethod::class)
         );
     }
 }

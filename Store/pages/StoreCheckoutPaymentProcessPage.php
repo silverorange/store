@@ -59,7 +59,7 @@ abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
     protected function clearPaymentMethods()
     {
         if (!$this->app->config->store->multiple_payment_support) {
-            $class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+            $class_name = SwatDBClassMap::get(StoreOrderPaymentMethodWrapper::class);
             $this->app->session->order->payment_methods = new $class_name();
         }
     }

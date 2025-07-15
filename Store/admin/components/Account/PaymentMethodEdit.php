@@ -36,7 +36,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
                 ));
             }
 
-            $class_name = SwatDBClassMap::get('StoreAccount');
+            $class_name = SwatDBClassMap::get(StoreAccount::class);
             $this->account = new $class_name();
             $this->account->setDatabase($this->app->db);
             $this->account->load($account_id);
@@ -48,7 +48,7 @@ class StoreAccountPaymentMethodEdit extends AdminDBEdit
     protected function getPaymentMethod()
     {
         if ($this->payment_method === null) {
-            $class_name = SwatDBClassMap::get('StoreAccountPaymentMethod');
+            $class_name = SwatDBClassMap::get(StoreAccountPaymentMethod::class);
             $this->payment_method = new $class_name();
             $this->payment_method->setDatabase($this->app->db);
 

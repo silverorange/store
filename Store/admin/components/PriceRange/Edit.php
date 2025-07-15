@@ -24,7 +24,7 @@ class StorePriceRangeEdit extends AdminDBEdit
 
     protected function initPriceRange()
     {
-        $class_name = SwatDBClassMap::get('StorePriceRange');
+        $class_name = SwatDBClassMap::get(StorePriceRange::class);
         $this->price_range = new $class_name();
         $this->price_range->setDatabase($this->app->db);
 

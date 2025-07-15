@@ -31,7 +31,7 @@ class StoreItemAlias extends SwatDBDataObject
     {
         $this->registerInternalProperty(
             'item',
-            SwatDBClassMap::get('StoreItem')
+            SwatDBClassMap::get(StoreItem::class)
         );
 
         $this->table = 'ItemAlias';

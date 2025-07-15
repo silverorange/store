@@ -85,7 +85,7 @@ class StoreCategoryIndex extends AdminIndex
         $attribute_types = SwatDB::query(
             $this->app->db,
             'select * from attributetype order by shortname',
-            SwatDBClassMap::get('StoreAttributeTypeWrapper')
+            SwatDBClassMap::get(StoreAttributeTypeWrapper::class)
         );
 
         foreach ($attribute_types as $type) {
@@ -1248,7 +1248,7 @@ class StoreCategoryIndex extends AdminIndex
         $attributes = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreAttributeWrapper')
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
         );
 
         $attributes_field = $this->ui->getWidget($form_field_id);
@@ -1336,7 +1336,7 @@ class StoreCategoryIndex extends AdminIndex
 
     private function loadCategory()
     {
-        $category_class = SwatDBClassMap::get('StoreCategory');
+        $category_class = SwatDBClassMap::get(StoreCategory::class);
 
         $category = new $category_class();
         $category->setDatabase($this->app->db);

@@ -82,7 +82,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
         $addresses = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreAccountAddressWrapper')
+            SwatDBClassMap::get(StoreAccountAddressWrapper::class)
         );
 
         $entries = [];
@@ -134,7 +134,7 @@ class StoreAccountAddressDelete extends AdminDBDelete
             )
         );
 
-        $class_name = SwatDBClassMap::get('StoreAccount');
+        $class_name = SwatDBClassMap::get(StoreAccount::class);
         $this->account = new $class_name();
         $this->account->setDatabase($this->app->db);
 

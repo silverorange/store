@@ -109,7 +109,7 @@ class StoreProductPage extends StorePage
             return;
         }
 
-        $product_class = SwatDBClassMap::get('StoreProduct');
+        $product_class = SwatDBClassMap::get(StoreProduct::class);
         $this->product = new $product_class();
         $this->product->setDatabase($this->app->db);
         $this->product->setRegion($this->app->getRegion());
@@ -121,7 +121,7 @@ class StoreProductPage extends StorePage
             $this->app->db->quote($this->product->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('StoreItemGroupWrapper');
+        $wrapper = SwatDBClassMap::get(StoreItemGroupWrapper::class);
         $this->product->items->loadAllSubDataObjects(
             'item_group',
             $this->app->db,
@@ -607,7 +607,7 @@ class StoreProductPage extends StorePage
             }
 
             foreach ($entries_to_relate as $entry) {
-                $category_class = SwatDBClassMap::get('StoreCategory');
+                $category_class = SwatDBClassMap::get(StoreCategory::class);
                 $category = new $category_class();
                 $category->id = $entry->id;
                 $category->setDatabase($this->app->db);

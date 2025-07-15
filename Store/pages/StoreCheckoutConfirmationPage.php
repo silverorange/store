@@ -818,7 +818,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         // check that address is not already in account
         if ($order_address->getAccountAddressId() === null) {
-            $class_name = SwatDBClassMap::get('StoreAccountAddress');
+            $class_name = SwatDBClassMap::get(StoreAccountAddress::class);
             $account_address = new $class_name();
             $account_address->copyFrom($order_address);
             $account_address->createdate = $this->getCurrentTime();
@@ -839,7 +839,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
         // check that payment method is not already in account
         if ($order_payment_method->getAccountPaymentMethodId() === null) {
-            $class_name = SwatDBClassMap::get('StoreAccountPaymentMethod');
+            $class_name = SwatDBClassMap::get(StoreAccountPaymentMethod::class);
             $account_payment_method = new $class_name();
             $account_payment_method->copyFrom($order_payment_method);
             $account->payment_methods->add($account_payment_method);
@@ -1718,7 +1718,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         // the session.
         $session_ad = $this->app->ads->getAd();
         if ($session_ad !== null) {
-            $ad_class = SwatDBClassMap::get('SiteAd');
+            $ad_class = SwatDBClassMap::get(SiteAd::class);
             $ad = new $ad_class();
             $ad->setDatabase($this->app->db);
             if ($ad->load($session_ad->id)) {
@@ -1731,7 +1731,7 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
     {
         $region = $this->app->getRegion();
 
-        $wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
+        $wrapper = SwatDBClassMap::get(StoreOrderItemWrapper::class);
         $order->items = new $wrapper();
 
         foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {

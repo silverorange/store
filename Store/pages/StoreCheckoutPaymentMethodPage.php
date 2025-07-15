@@ -268,7 +268,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
     protected function getPaymentMethods()
     {
         if ($this->payment_methods === null) {
-            $wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
+            $wrapper = SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class);
             $this->payment_methods = new $wrapper();
 
             if ($this->app->session->isLoggedIn()) {
@@ -292,7 +292,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
                     'payment_type',
                     $this->app->db,
                     $payment_type_sql,
-                    SwatDBClassMap::get('StorePaymentTypeWrapper')
+                    SwatDBClassMap::get(StorePaymentTypeWrapper::class)
                 );
 
                 // efficiently load card types on account payment methods
@@ -308,7 +308,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
                     'card_type',
                     $this->app->db,
                     $card_type_sql,
-                    SwatDBClassMap::get('StoreCardTypeWrapper')
+                    SwatDBClassMap::get(StoreCardTypeWrapper::class)
                 );
 
                 // filter account payment methods by card type and payment type
@@ -635,7 +635,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
                 );
             }
 
-            $class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
+            $class_name = SwatDBClassMap::get(StoreOrderPaymentMethod::class);
             $order_payment_method = new $class_name();
             $order_payment_method->copyFrom($account_payment_method);
 
@@ -661,7 +661,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
         } else {
             if ($order_payment_method === null
                 || $order_payment_method->getAccountPaymentMethodId() !== null) {
-                $class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
+                $class_name = SwatDBClassMap::get(StoreOrderPaymentMethod::class);
                 $order_payment_method = new $class_name();
                 $order_payment_method->setDatabase($this->app->db);
             }
@@ -682,7 +682,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
                 $this->ui->getWidget('save_account_payment_method')->value;
         }
 
-        $class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+        $class_name = SwatDBClassMap::get(StoreOrderPaymentMethodWrapper::class);
         $new_payment_methods = new $class_name();
 
         if ($order_payment_method !== null) {
@@ -705,7 +705,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
 
     protected function getEditablePaymentMethods($payment_methods)
     {
-        $wrapper = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
+        $wrapper = SwatDBClassMap::get(StoreOrderPaymentMethodWrapper::class);
 
         $editable_methods = new $wrapper();
         $editable_methods->setDatabase($this->app->db);
@@ -831,7 +831,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
                 // sub-tree before card type is set for validation
                 $option_list->processValue();
                 if (strncmp('type_', $option_list->selected_page, 5) === 0) {
-                    $class_name = SwatDBClassMap::get('StorePaymentType');
+                    $class_name = SwatDBClassMap::get(StorePaymentType::class);
                     $type = new $class_name();
                     $type->setDatabase($this->app->db);
                     $type->load(mb_substr($option_list->selected_page, 5));

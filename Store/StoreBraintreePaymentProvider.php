@@ -242,7 +242,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         Transaction $external_transaction,
         $type = StorePaymentRequest::TYPE_PAY
     ) {
-        $class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+        $class_name = SwatDBClassMap::get(StorePaymentMethodTransaction::class);
         $transaction = new $class_name();
 
         $transaction->transaction_type = $type;

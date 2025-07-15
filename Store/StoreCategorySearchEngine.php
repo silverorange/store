@@ -9,7 +9,7 @@ class StoreCategorySearchEngine extends SiteSearchEngine
 {
     protected function getResultWrapperClass()
     {
-        return SwatDBClassMap::get('StoreCategoryWrapper');
+        return SwatDBClassMap::get(StoreCategoryWrapper::class);
     }
 
     protected function getSelectClause()

@@ -56,7 +56,7 @@ class StorePriceRangeIndex extends AdminIndex
         $rs = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StorePriceRangeWrapper')
+            SwatDBClassMap::get(StorePriceRangeWrapper::class)
         );
 
         $store = new SwatTableStore();

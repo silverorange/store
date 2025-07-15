@@ -94,12 +94,12 @@ class StoreFeature extends SwatDBDataObject
         $this->registerDateProperty('end_date');
         $this->registerInternalProperty(
             'region',
-            SwatDBClassMap::get('StoreRegion')
+            SwatDBClassMap::get(StoreRegion::class)
         );
 
         $this->registerInternalProperty(
             'instance',
-            SwatDBClassMap::get('SiteInstance')
+            SwatDBClassMap::get(SiteInstance::class)
         );
     }
 

@@ -104,7 +104,7 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
         $methods = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreAccountPaymentMethodWrapper')
+            SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class)
         );
 
         $entries = [];
@@ -143,7 +143,7 @@ class StoreAccountPaymentMethodDelete extends AdminDBDelete
             )
         );
 
-        $class_name = SwatDBClassMap::get('StoreAccount');
+        $class_name = SwatDBClassMap::get(StoreAccount::class);
         $this->account = new $class_name();
         $this->account->setDatabase($this->app->db);
 

@@ -256,7 +256,7 @@ class StoreOrderItem extends SwatDBDataObject
         } else {
             $item = null;
 
-            $wrapper = SwatDBClassMap::get('StoreItemWrapper');
+            $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
 
             $sql = sprintf(
                 'select Item.* from Item
@@ -314,7 +314,7 @@ class StoreOrderItem extends SwatDBDataObject
         } else {
             $item = null;
 
-            $wrapper = SwatDBClassMap::get('StoreItemWrapper');
+            $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
 
             $sql = sprintf(
                 'select * from Item where id = %s',
@@ -366,7 +366,7 @@ class StoreOrderItem extends SwatDBDataObject
     {
         $this->registerInternalProperty(
             'ordernum',
-            SwatDBClassMap::get('StoreOrder')
+            SwatDBClassMap::get(StoreOrder::class)
         );
 
         $this->table = 'OrderItem';

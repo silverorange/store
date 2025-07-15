@@ -265,7 +265,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
         if ($products instanceof StoreProductWrapper) {
             $sql = 'select * from Image where id in (%s)';
-            $wrapper_class = SwatDBClassMap::get('StoreProductImageWrapper');
+            $wrapper_class = SwatDBClassMap::get(StoreProductImageWrapper::class);
             $products->loadAllSubDataObjects(
                 'primary_image',
                 $this->app->db,
@@ -277,7 +277,7 @@ class StoreProductSearchEngine extends SiteSearchEngine
 
     protected function getResultWrapperClass()
     {
-        return SwatDBClassMap::get('StoreProductWrapper');
+        return SwatDBClassMap::get(StoreProductWrapper::class);
     }
 
     protected function getSelectClause()

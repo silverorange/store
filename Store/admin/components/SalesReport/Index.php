@@ -242,7 +242,7 @@ class StoreSalesReportIndex extends AdminSearch
             $this->regions = SwatDB::query(
                 $this->app->db,
                 $sql,
-                SwatDBClassMap::get('StoreRegionWrapper')
+                SwatDBClassMap::get(StoreRegionWrapper::class)
             );
         }
 

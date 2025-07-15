@@ -35,11 +35,11 @@ class StoreCartProcessor extends SwatObject
 
     public function createCartEntry($item_id, $quantity = 1)
     {
-        $class_name = SwatDBClassMap::get('StoreCartEntry');
+        $class_name = SwatDBClassMap::get(StoreCartEntry::class);
         $entry = new $class_name();
         $entry->setDatabase($this->app->db);
 
-        $class_name = SwatDBClassMap::get('StoreItem');
+        $class_name = SwatDBClassMap::get(StoreItem::class);
         $item = new $class_name();
         $item->setDatabase($this->app->db);
         $item->setRegion($this->app->getRegion());

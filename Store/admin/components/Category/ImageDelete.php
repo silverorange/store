@@ -21,7 +21,7 @@ class StoreCategoryImageDelete extends AdminDBDelete
 
         $id = SiteApplication::initVar('id');
 
-        $class_name = SwatDBClassMap::get('StoreCategory');
+        $class_name = SwatDBClassMap::get(StoreCategory::class);
         $this->category = new $class_name();
         $this->category->setDatabase($this->app->db);
 

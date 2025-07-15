@@ -13,6 +13,6 @@ class StoreLocaleWrapper extends SwatDBRecordsetWrapper
     {
         parent::init();
         $this->index_field = 'id';
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreLocale');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreLocale::class);
     }
 }

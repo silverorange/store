@@ -53,7 +53,7 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 
     protected function queryCategories()
     {
-        $wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
+        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
 
         $sql = 'select id, shortname
 			from Category

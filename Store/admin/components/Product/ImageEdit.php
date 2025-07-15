@@ -51,7 +51,7 @@ class StoreProductImageEdit extends AdminDBEdit
     protected function initProduct()
     {
         $product_id = $this->app->initVar('product');
-        $class_name = SwatDBClassMap::get('StoreProduct');
+        $class_name = SwatDBClassMap::get(StoreProduct::class);
         $this->product = new $class_name();
         $this->product->setDatabase($this->app->db);
 
@@ -78,7 +78,7 @@ class StoreProductImageEdit extends AdminDBEdit
         if ($this->id !== null) {
             $this->dimensions = $this->image->image_set->dimensions;
         } else {
-            $class_name = SwatDBClassMap::get('SiteImageSet');
+            $class_name = SwatDBClassMap::get(SiteImageSet::class);
             $image_set = new $class_name();
             $image_set->setDatabase($this->app->db);
             $image_set->loadByShortname('products');
@@ -114,7 +114,7 @@ class StoreProductImageEdit extends AdminDBEdit
 
     protected function getNewImageInstance()
     {
-        $class_name = SwatDBClassMap::get('StoreProductImage');
+        $class_name = SwatDBClassMap::get(StoreProductImage::class);
         $image = new $class_name();
         $image->setDatabase($this->app->db);
 

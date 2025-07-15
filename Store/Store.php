@@ -134,10 +134,10 @@ class Store
 
         SwatUI::mapClassPrefixToPath('Store', 'Store');
 
-        SwatDBClassMap::add('SiteAccount', 'StoreAccount');
-        SwatDBClassMap::add('SiteContactMessage', 'StoreContactMessage');
-        SwatDBClassMap::add('SiteArticle', 'StoreArticle');
-        SwatDBClassMap::add('SiteArticleWrapper', 'StoreArticleWrapper');
+        SwatDBClassMap::add(SiteAccount::class, StoreAccount::class);
+        SwatDBClassMap::add(SiteContactMessage::class, StoreContactMessage::class);
+        SwatDBClassMap::add(SiteArticle::class, StoreArticle::class);
+        SwatDBClassMap::add(SiteArticleWrapper::class, StoreArticleWrapper::class);
 
         SiteViewFactory::addPath('Store/views');
 

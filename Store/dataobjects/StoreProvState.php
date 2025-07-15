@@ -159,7 +159,7 @@ class StoreProvState extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'country',
-            SwatDBClassMap::get('StoreCountry')
+            SwatDBClassMap::get(StoreCountry::class)
         );
     }
 

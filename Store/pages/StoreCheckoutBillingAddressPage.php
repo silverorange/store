@@ -47,7 +47,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         $countries = SwatDB::query(
             $this->app->db,
             $country_sql,
-            SwatDBClassMap::get('StoreCountryWrapper')
+            SwatDBClassMap::get(StoreCountryWrapper::class)
         );
 
         $provstate_where_clause = sprintf(
@@ -59,7 +59,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
         $provstates = $countries->loadAllSubRecordsets(
             'provstates',
-            SwatDBClassMap::get('StoreProvStateWrapper'),
+            SwatDBClassMap::get(StoreProvStateWrapper::class),
             'ProvState',
             'text:country',
             $provstate_where_clause,
@@ -130,7 +130,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
             $country_widget->process();
             $country_id = $country_widget->value;
 
-            $class_name = SwatDBClassMap::get('StoreCountry');
+            $class_name = SwatDBClassMap::get(StoreCountry::class);
             $this->country = new $class_name();
             $this->country->setDatabase($this->app->db);
             $this->country->load($country_id);
@@ -196,7 +196,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         }
 
         $address_list = $this->ui->getWidget('billing_address_list');
-        $class_name = SwatDBClassMap::get('StoreOrderAddress');
+        $class_name = SwatDBClassMap::get(StoreOrderAddress::class);
         $address = new $class_name();
 
         if ($address_list->value === null || $address_list->value === 'new') {
@@ -430,7 +430,7 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
             'country',
             $this->app->db,
             $country_sql,
-            SwatDBClassMap::get('StoreCountryWrapper'),
+            SwatDBClassMap::get(StoreCountryWrapper::class),
             'text'
         );
 
@@ -446,10 +446,10 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
             'provstate',
             $this->app->db,
             $provstate_sql,
-            SwatDBClassMap::get('StoreProvStateWrapper')
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
         );
 
-        $wrapper = SwatDBClassMap::get('StoreAccountAddressWrapper');
+        $wrapper = SwatDBClassMap::get(StoreAccountAddressWrapper::class);
         $out_addresses = new $wrapper();
 
         // filter account addresses by country and provstate region binding

@@ -26,7 +26,7 @@ class StoreShippingTypeEdit extends AdminDBEdit
 
     private function initShippingType()
     {
-        $class_name = SwatDBClassMap::get('StoreShippingType');
+        $class_name = SwatDBClassMap::get(StoreShippingType::class);
         $this->shipping_type = new $class_name();
         $this->shipping_type->setDatabase($this->app->db);
 

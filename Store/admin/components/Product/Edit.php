@@ -34,7 +34,7 @@ class StoreProductEdit extends AdminDBEdit
 
     protected function initProduct()
     {
-        $product_class = SwatDBClassMap::get('StoreProduct');
+        $product_class = SwatDBClassMap::get(StoreProduct::class);
 
         if ($this->id === null) {
             $this->product = new $product_class();
@@ -79,7 +79,7 @@ class StoreProductEdit extends AdminDBEdit
         $attribute_types = SwatDB::query(
             $this->app->db,
             'select * from AttributeType order by shortname',
-            SwatDBClassMap::get('StoreAttributeTypeWrapper')
+            SwatDBClassMap::get(StoreAttributeTypeWrapper::class)
         );
 
         foreach ($attribute_types as $type) {
@@ -481,7 +481,7 @@ class StoreProductEdit extends AdminDBEdit
         $attributes = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreAttributeWrapper')
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
         );
         $attributes_field = $this->ui->getWidget('attributes_form_field');
 

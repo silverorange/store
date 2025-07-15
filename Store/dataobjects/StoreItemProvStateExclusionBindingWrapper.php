@@ -11,6 +11,6 @@ class StoreItemProvStateExclusionBindingWrapper extends SwatDBRecordsetWrapper
     {
         parent::init();
         $this->row_wrapper_class =
-            SwatDBClassMap::get('StoreItemProvStateExclusionBinding');
+            SwatDBClassMap::get(StoreItemProvStateExclusionBinding::class);
     }
 }

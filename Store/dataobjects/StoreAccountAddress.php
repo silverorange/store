@@ -25,7 +25,7 @@ class StoreAccountAddress extends StoreAddress
 
         $this->registerInternalProperty(
             'account',
-            SwatDBClassMap::get('StoreAccount')
+            SwatDBClassMap::get(StoreAccount::class)
         );
 
         $this->registerDateProperty('createdate');

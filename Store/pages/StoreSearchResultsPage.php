@@ -74,7 +74,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         $products = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
 
         if (count($products) == 1) {
@@ -98,7 +98,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
         $products = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
 
         if (count($products) == 1) {
@@ -322,7 +322,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
             $attributes = SwatDB::query(
                 $this->app->db,
                 $sql,
-                SwatDBClassMap::get('StoreAttributeWrapper')
+                SwatDBClassMap::get(StoreAttributeWrapper::class)
             );
         }
 
@@ -447,7 +447,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 
         if ($group === null
             && $this->hasSearchDataValue('minimum_quantity_group')) {
-            $class_name = SwatDBClassMap::get('StoreItemMinimumQuantityGroup');
+            $class_name = SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class);
             $g = new $class_name();
             $g->setDatabase($this->app->db);
             if ($g->loadByShortname(

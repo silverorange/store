@@ -33,7 +33,7 @@ class StoreProvStateEdit extends AdminDBEdit
 
     protected function initProvState()
     {
-        $class_name = SwatDBClassMap::get('StoreProvState');
+        $class_name = SwatDBClassMap::get(StoreProvState::class);
         $this->prov_state = new $class_name();
         $this->prov_state->setDatabase($this->app->db);
 

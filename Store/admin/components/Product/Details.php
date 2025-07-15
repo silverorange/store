@@ -111,7 +111,7 @@ class StoreProductDetails extends AdminIndex
             );
         }
 
-        $product_class = SwatDBClassMap::get('StoreProduct');
+        $product_class = SwatDBClassMap::get(StoreProduct::class);
         $product = new $product_class($row);
         $product->setDatabase($this->app->db);
 
@@ -761,7 +761,7 @@ class StoreProductDetails extends AdminIndex
         $types = SwatDB::query(
             $this->app->db,
             'select * from attributetype order by shortname',
-            SwatDBClassMap::get('StoreAttributeTypeWrapper')
+            SwatDBClassMap::get(StoreAttributeTypeWrapper::class)
         );
 
         $count = 0;
@@ -985,7 +985,7 @@ class StoreProductDetails extends AdminIndex
         $items = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreItemWrapper')
+            SwatDBClassMap::get(StoreItemWrapper::class)
         );
 
         $store = new SwatTableStore();
@@ -1111,7 +1111,7 @@ class StoreProductDetails extends AdminIndex
             $this->regions = SwatDB::query(
                 $this->app->db,
                 $sql,
-                SwatDBClassMap::get('StoreRegionWrapper')
+                SwatDBClassMap::get(StoreRegionWrapper::class)
             );
         }
 

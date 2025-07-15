@@ -24,7 +24,7 @@ class StoreItemGroupEdit extends AdminDBEdit
 
     protected function initItemGroup()
     {
-        $class_name = SwatDBClassMap::get('StoreItemGroup');
+        $class_name = SwatDBClassMap::get(StoreItemGroup::class);
         $this->item_group = new $class_name();
         $this->item_group->setDatabase($this->app->db);
 

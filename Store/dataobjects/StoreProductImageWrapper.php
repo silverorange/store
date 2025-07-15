@@ -13,6 +13,6 @@ class StoreProductImageWrapper extends SiteImageWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreProductImage');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreProductImage::class);
     }
 }

@@ -329,41 +329,41 @@ class StoreOrder extends SwatDBDataObject
         $this->registerInternalProperty('status');
         $this->registerInternalProperty(
             'account',
-            SwatDBClassMap::get('StoreAccount')
+            SwatDBClassMap::get(StoreAccount::class)
         );
 
         $this->registerInternalProperty(
             'billing_address',
-            SwatDBClassMap::get('StoreOrderAddress'),
+            SwatDBClassMap::get(StoreOrderAddress::class),
             true
         );
 
         $this->registerInternalProperty(
             'shipping_address',
-            SwatDBClassMap::get('StoreOrderAddress'),
+            SwatDBClassMap::get(StoreOrderAddress::class),
             true
         );
 
         $this->registerInternalProperty(
             'shipping_type',
-            SwatDBClassMap::get('StoreShippingType')
+            SwatDBClassMap::get(StoreShippingType::class)
         );
 
         $this->registerInternalProperty(
             'locale',
-            SwatDBClassMap::get('StoreLocale'),
+            SwatDBClassMap::get(StoreLocale::class),
             true
         );
 
         $this->registerInternalProperty(
             'ad',
-            SwatDBClassMap::get('SiteAd'),
+            SwatDBClassMap::get(SiteAd::class),
             true
         );
 
         $this->registerInternalProperty(
             'instance',
-            SwatDBClassMap::get('SiteInstance')
+            SwatDBClassMap::get(SiteInstance::class)
         );
 
         $this->registerDateProperty('createdate');
@@ -533,7 +533,7 @@ class StoreOrder extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreOrderItemWrapper')
+            SwatDBClassMap::get(StoreOrderItemWrapper::class)
         );
     }
 
@@ -553,13 +553,13 @@ class StoreOrder extends SwatDBDataObject
         $payment_methods = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreOrderPaymentMethodWrapper')
+            SwatDBClassMap::get(StoreOrderPaymentMethodWrapper::class)
         );
 
         // efficiently load transactions for all payment methods
         $payment_methods->loadAllSubRecordsets(
             'transactions',
-            SwatDBClassMap::get('StorePaymentMethodTransactionWrapper'),
+            SwatDBClassMap::get(StorePaymentMethodTransactionWrapper::class),
             'PaymentMethodTransaction',
             'payment_method',
             '',

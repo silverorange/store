@@ -63,7 +63,7 @@ class StoreItemGroup extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'product',
-            SwatDBClassMap::get('StoreProduct')
+            SwatDBClassMap::get(StoreProduct::class)
         );
     }
 
@@ -80,7 +80,7 @@ class StoreItemGroup extends SwatDBDataObject
         $items = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreItemWrapper')
+            SwatDBClassMap::get(StoreItemWrapper::class)
         );
 
         foreach ($items as $item) {
@@ -118,7 +118,7 @@ class StoreItemGroup extends SwatDBDataObject
             );
         }
 
-        $wrapper = SwatDBClassMap::get('StoreItemWrapper');
+        $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
         $rs = SwatDB::query($this->db, $sql, $wrapper);
         if (count($rs) > 0) {
             $cheapest_item = $rs->getFirst();

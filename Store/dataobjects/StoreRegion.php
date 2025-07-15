@@ -79,7 +79,7 @@ class StoreRegion extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StorePaymentTypeWrapper')
+            SwatDBClassMap::get(StorePaymentTypeWrapper::class)
         );
     }
 
@@ -103,7 +103,7 @@ class StoreRegion extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreCardTypeWrapper')
+            SwatDBClassMap::get(StoreCardTypeWrapper::class)
         );
     }
 

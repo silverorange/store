@@ -38,7 +38,7 @@ class StoreOrderItemWrapper extends SwatDBRecordsetWrapper
 
         $this->checkDB();
 
-        $wrapper = SwatDBClassMap::get('StoreItemWrapper');
+        $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
 
         // return empty recordset if there are no item ids or skus in
         // this set of orderitems
@@ -102,6 +102,6 @@ class StoreOrderItemWrapper extends SwatDBRecordsetWrapper
     {
         parent::init();
         $this->index_field = 'id';
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreOrderItem');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreOrderItem::class);
     }
 }

@@ -133,7 +133,7 @@ class StoreAccountOrderPage extends SiteUiPage
     {
         if ($item_id !== null) {
             // load item manually here so we can specify region
-            $item_class = SwatDBClassMap::get('StoreItem');
+            $item_class = SwatDBClassMap::get(StoreItem::class);
             $item = new $item_class();
             $item->setDatabase($this->app->db);
             $item->setRegion($this->app->getRegion());
@@ -167,7 +167,7 @@ class StoreAccountOrderPage extends SiteUiPage
         StoreItem $item,
         StoreOrderItem $order_item
     ) {
-        $cart_entry_class = SwatDBClassMap::get('StoreCartEntry');
+        $cart_entry_class = SwatDBClassMap::get(StoreCartEntry::class);
         $cart_entry = new $cart_entry_class();
 
         $cart_entry->account = $this->app->session->getAccountId();

@@ -213,7 +213,7 @@ class StoreSearchPanel extends SwatObject
         $ranges = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StorePriceRangeWrapper')
+            SwatDBClassMap::get(StorePriceRangeWrapper::class)
         );
 
         if ($this->memcache !== null) {
@@ -244,7 +244,7 @@ class StoreSearchPanel extends SwatObject
         $categories = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreCategoryWrapper')
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
 
         if ($this->memcache !== null) {
@@ -281,7 +281,7 @@ class StoreSearchPanel extends SwatObject
         $attributes = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreAttributeWrapper')
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
         );
 
         if ($this->memcache !== null) {

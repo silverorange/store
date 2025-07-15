@@ -145,7 +145,7 @@ class StoreAccountDetails extends SiteAccountDetails
 
     protected function getPaymentMethodsTableModel(SwatTableView $view): SwatTableStore
     {
-        $wrapper = SwatDBClassMap::get('StoreAccountPaymentMethodWrapper');
+        $wrapper = SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class);
 
         $sql = sprintf(
             'select * from AccountPaymentMethod

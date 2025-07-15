@@ -84,7 +84,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
     {
         $form = $this->ui->getWidget('edit_form');
         if ($this->isNew($form)) {
-            $class = SwatDBClassMap::get('StoreAccountPaymentMethod');
+            $class = SwatDBClassMap::get(StoreAccountPaymentMethod::class);
             $payment_method = new $class();
             $payment_method->setDatabase($this->app->db);
             $payment_method->payment_type = $this->initPaymentType();
@@ -122,7 +122,7 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
     {
         // this page currently only supports editing of payment methods
         // with payment type is "card"
-        $class_name = SwatDBClassMap::get('StorePaymentType');
+        $class_name = SwatDBClassMap::get(StorePaymentType::class);
         $type = new $class_name();
         $type->setDatabase($this->app->db);
         $type->loadFromShortname('card');

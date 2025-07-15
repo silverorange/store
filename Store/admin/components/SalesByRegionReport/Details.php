@@ -297,7 +297,7 @@ class StoreSalesByRegionReportDetails extends AdminIndex
 					order by Country.title',
                     $this->getDetailCountriesWhereClause()
                 ),
-                SwatDBClassMap::get('StoreCountryWrapper')
+                SwatDBClassMap::get(StoreCountryWrapper::class)
             );
         }
 

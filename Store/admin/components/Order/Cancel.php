@@ -33,7 +33,7 @@ class StoreOrderCancel extends AdminConfirmation
 
     protected function initOrder()
     {
-        $order_class = SwatDBClassMap::get('StoreOrder');
+        $order_class = SwatDBClassMap::get(StoreOrder::class);
         $this->order = new $order_class();
 
         $this->order->setDatabase($this->app->db);

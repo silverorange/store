@@ -12,6 +12,6 @@ class StoreCategoryImageWrapper extends SiteImageWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreCategoryImage');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreCategoryImage::class);
     }
 }

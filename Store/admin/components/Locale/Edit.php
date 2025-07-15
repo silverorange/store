@@ -34,7 +34,7 @@ class StoreLocaleEdit extends AdminDBEdit
 
     protected function initLocale()
     {
-        $class_name = SwatDBClassMap::get('StoreLocale');
+        $class_name = SwatDBClassMap::get(StoreLocale::class);
         $this->locale = new $class_name();
         $this->locale->setDatabase($this->app->db);
     }

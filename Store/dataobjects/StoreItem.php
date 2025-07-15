@@ -698,22 +698,22 @@ class StoreItem extends SwatDBDataObject
         $this->registerInternalProperty('status');
         $this->registerInternalProperty(
             'product',
-            SwatDBClassMap::get('StoreProduct')
+            SwatDBClassMap::get(StoreProduct::class)
         );
 
         $this->registerInternalProperty(
             'item_group',
-            SwatDBClassMap::get('StoreItemGroup')
+            SwatDBClassMap::get(StoreItemGroup::class)
         );
 
         $this->registerInternalProperty(
             'minimum_quantity_group',
-            SwatDBClassMap::get('StoreItemMinimumQuantityGroup')
+            SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class)
         );
 
         $this->registerInternalProperty(
             'sale_discount',
-            SwatDBClassMap::get('StoreSaleDiscount')
+            SwatDBClassMap::get(StoreSaleDiscount::class)
         );
 
         $this->table = 'Item';
@@ -843,7 +843,7 @@ class StoreItem extends SwatDBDataObject
 
     protected function loadQuantityDiscounts()
     {
-        $wrapper_class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreQuantityDiscountWrapper::class);
         $wrapper = new $wrapper_class();
         $quantity_discounts = $wrapper->loadSetFromDB(
             $this->db,
@@ -866,7 +866,7 @@ class StoreItem extends SwatDBDataObject
         $sql = 'select * from ItemRegionBinding where item = %s';
         $sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 
-        $wrapper = SwatDBClassMap::get('StoreItemRegionBindingWrapper');
+        $wrapper = SwatDBClassMap::get(StoreItemRegionBindingWrapper::class);
 
         return SwatDB::query($this->db, $sql, $wrapper);
     }
@@ -879,7 +879,7 @@ class StoreItem extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreItemAliasWrapper')
+            SwatDBClassMap::get(StoreItemAliasWrapper::class)
         );
     }
 
@@ -891,7 +891,7 @@ class StoreItem extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreItemProvStateExclusionBindingWrapper')
+            SwatDBClassMap::get(StoreItemProvStateExclusionBindingWrapper::class)
         );
     }
 

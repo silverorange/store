@@ -280,12 +280,12 @@ abstract class StorePaymentMethod extends SwatDBDataObject
         $this->id_field = 'integer:id';
         $this->registerInternalProperty(
             'payment_type',
-            SwatDBClassMap::get('StorePaymentType')
+            SwatDBClassMap::get(StorePaymentType::class)
         );
 
         $this->registerInternalProperty(
             'card_type',
-            SwatDBClassMap::get('StoreCardType')
+            SwatDBClassMap::get(StoreCardType::class)
         );
 
         $this->registerDateProperty('card_expiry');

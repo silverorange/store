@@ -121,7 +121,7 @@ class StoreProductIndex extends AdminSearch
         $attribute_types = SwatDB::query(
             $this->app->db,
             'select * from attributetype order by shortname',
-            SwatDBClassMap::get('StoreAttributeTypeWrapper')
+            SwatDBClassMap::get(StoreAttributeTypeWrapper::class)
         );
 
         foreach ($attribute_types as $type) {
@@ -685,7 +685,7 @@ class StoreProductIndex extends AdminSearch
         $attributes = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreAttributeWrapper')
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
         );
 
         $attributes_field = $this->ui->getWidget($form_field_id);

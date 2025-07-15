@@ -231,7 +231,7 @@ class StoreProduct extends SwatDBDataObject
         $related_products = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
 
         $related_products->setRegion($this->region);
@@ -321,7 +321,7 @@ class StoreProduct extends SwatDBDataObject
         $this->registerDeprecatedProperty('ppc_ad_text');
         $this->registerInternalProperty(
             'primary_category',
-            SwatDBClassMap::get('StoreCategory')
+            SwatDBClassMap::get(StoreCategory::class)
         );
 
         $this->registerInternalProperty('path');
@@ -330,12 +330,12 @@ class StoreProduct extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'catalog',
-            SwatDBClassMap::get('StoreCatalog')
+            SwatDBClassMap::get(StoreCatalog::class)
         );
 
         $this->registerInternalProperty(
             'primary_image',
-            SwatDBClassMap::get('StoreProductImage')
+            SwatDBClassMap::get(StoreProductImage::class)
         );
 
         $this->table = 'Product';
@@ -413,7 +413,7 @@ class StoreProduct extends SwatDBDataObject
     protected function loadItems()
     {
         $items = null;
-        $wrapper = SwatDBClassMap::get('StoreItemWrapper');
+        $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
 
         if ($this->region === null) {
             $sql = 'select id from Item where product = %s';
@@ -440,7 +440,7 @@ class StoreProduct extends SwatDBDataObject
             }
 
             // load qty discounts here
-            $class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
+            $class = SwatDBClassMap::get(StoreQuantityDiscountWrapper::class);
             $wrapper = new $class();
             $quantity_discounts = $wrapper->loadSetFromDB(
                 $this->db,
@@ -527,7 +527,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreItemGroupWrapper')
+            SwatDBClassMap::get(StoreItemGroupWrapper::class)
         );
     }
 
@@ -543,7 +543,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreCategoryWrapper')
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
     }
 
@@ -560,7 +560,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreAttributeWrapper')
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
         );
     }
 
@@ -575,7 +575,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreCategoryWrapper')
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
     }
 
@@ -607,7 +607,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
     }
 
@@ -650,7 +650,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('SiteArticleWrapper')
+            SwatDBClassMap::get(SiteArticleWrapper::class)
         );
     }
 
@@ -678,7 +678,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
     }
 
@@ -705,7 +705,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
     }
 
@@ -743,7 +743,7 @@ class StoreProduct extends SwatDBDataObject
             );
         }
 
-        $wrapper = SwatDBClassMap::get('StoreItemWrapper');
+        $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
         $cheapest_item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
 
         if ($cheapest_item != null) {
@@ -787,7 +787,7 @@ class StoreProduct extends SwatDBDataObject
             );
         }
 
-        $wrapper = SwatDBClassMap::get('StoreProductImageWrapper');
+        $wrapper = SwatDBClassMap::get(StoreProductImageWrapper::class);
         $rs = SwatDB::query($this->db, $sql, $wrapper);
 
         return $rs->getFirst();
@@ -811,7 +811,7 @@ class StoreProduct extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreProductImageWrapper')
+            SwatDBClassMap::get(StoreProductImageWrapper::class)
         );
     }
 
@@ -939,7 +939,7 @@ class StoreProduct extends SwatDBDataObject
                 $img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
             }
         } else {
-            $class = SwatDBClassMap::get('SiteImageDimension');
+            $class = SwatDBClassMap::get(SiteImageDimension::class);
             $dimension = new $class();
             $dimension->setDatabase($this->db);
             $dimension->loadByShortname('products', $size);

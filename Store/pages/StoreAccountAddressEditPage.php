@@ -109,12 +109,12 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $countries = SwatDB::query(
             $this->app->db,
             $country_sql,
-            SwatDBClassMap::get('StoreCountryWrapper')
+            SwatDBClassMap::get(StoreCountryWrapper::class)
         );
 
         $provstates = $countries->loadAllSubRecordsets(
             'provstates',
-            SwatDBClassMap::get('StoreProvStateWrapper'),
+            SwatDBClassMap::get(StoreProvStateWrapper::class),
             'ProvState',
             'text:country',
             null,
@@ -166,7 +166,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $form = $this->ui->getWidget('edit_form');
 
         if ($this->isNew($form)) {
-            $class = SwatDBClassMap::get('StoreAccountAddress');
+            $class = SwatDBClassMap::get(StoreAccountAddress::class);
             $address = new $class();
             $address->setDatabase($this->app->db);
         } else {
@@ -344,7 +344,7 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         $country_widget->process();
         $country_id = $country_widget->value;
 
-        $class_name = SwatDBClassMap::get('StoreCountry');
+        $class_name = SwatDBClassMap::get(StoreCountry::class);
         $country = new $class_name();
         $country->setDatabase($this->app->db);
         if (!$country->load($country_id)) {

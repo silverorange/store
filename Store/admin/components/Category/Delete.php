@@ -90,7 +90,7 @@ class StoreCategoryDelete extends AdminDBDelete
         $categories = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreCategoryWrapper')
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
 
         $image_sql = 'select * from Image where id in (%s)';
@@ -98,7 +98,7 @@ class StoreCategoryDelete extends AdminDBDelete
             'image',
             $this->app->db,
             $image_sql,
-            SwatDBClassMap::get('StoreCategoryImageWrapper')
+            SwatDBClassMap::get(StoreCategoryImageWrapper::class)
         );
 
         return $categories;

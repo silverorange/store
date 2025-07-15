@@ -39,7 +39,7 @@ abstract class StoreProductFileGenerator extends SwatObject
 
     protected function loadRegion()
     {
-        $class_name = SwatDBClassMap::get('StoreRegion');
+        $class_name = SwatDBClassMap::get(StoreRegion::class);
         $region = new $class_name();
         $region->setDatabase($this->app->db);
 

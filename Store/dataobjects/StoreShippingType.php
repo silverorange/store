@@ -123,7 +123,7 @@ class StoreShippingType extends SwatDBDataObject
         $rate = SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreShippingRateWrapper')
+            SwatDBClassMap::get(StoreShippingRateWrapper::class)
         )->getFirst();
 
         $total = null;
@@ -202,7 +202,7 @@ class StoreShippingType extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreShippingRateWrapper')
+            SwatDBClassMap::get(StoreShippingRateWrapper::class)
         );
     }
 

@@ -26,7 +26,7 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
 
     protected function initItemMinimumQuantityGroup()
     {
-        $class_name = SwatDBClassMap::get('StoreItemMinimumQuantityGroup');
+        $class_name = SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class);
         $this->item_group = new $class_name();
         $this->item_group->setDatabase($this->app->db);
 
@@ -68,7 +68,7 @@ class StoreItemMinimumQuantityGroupEdit extends AdminDBEdit
     {
         $valid = true;
 
-        $class_name = SwatDBClassMap::get('StoreItemMinimumQuantityGroup');
+        $class_name = SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class);
         $item_group = new $class_name();
         $item_group->setDatabase($this->app->db);
 

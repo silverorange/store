@@ -336,7 +336,7 @@ class StoreCartEntry extends SwatDBDataObject
      */
     public function createOrderItem()
     {
-        $class = SwatDBClassMap::get('StoreOrderItem');
+        $class = SwatDBClassMap::get(StoreOrderItem::class);
         $order_item = new $class();
 
         $order_item->setCartEntryId($this->id);
@@ -424,22 +424,22 @@ class StoreCartEntry extends SwatDBDataObject
     {
         $this->registerInternalProperty(
             'instance',
-            SwatDBClassMap::get('SiteInstance')
+            SwatDBClassMap::get(SiteInstance::class)
         );
 
         $this->registerInternalProperty(
             'item',
-            SwatDBClassMap::get('StoreItem')
+            SwatDBClassMap::get(StoreItem::class)
         );
 
         $this->registerInternalProperty(
             'account',
-            SwatDBClassMap::get('StoreAccount')
+            SwatDBClassMap::get(StoreAccount::class)
         );
 
         $this->registerInternalProperty(
             'alias',
-            SwatDBClassMap::get('StoreItemAlias')
+            SwatDBClassMap::get(StoreItemAlias::class)
         );
 
         $this->table = 'CartEntry';

@@ -22,7 +22,7 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 
     protected function saveDataToSession()
     {
-        $class_name = SwatDBClassMap::get('StoreShippingType');
+        $class_name = SwatDBClassMap::get(StoreShippingType::class);
         $shipping_type = new $class_name();
         $shipping_type->setDatabase($this->app->db);
         $shortname = $this->ui->getWidget('shipping_type')->value;
@@ -102,7 +102,7 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
             $this->app->db->quote($this->app->getRegion()->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('StoreShippingTypeWrapper');
+        $wrapper = SwatDBClassMap::get(StoreShippingTypeWrapper::class);
 
         return SwatDB::query($this->app->db, $sql, $wrapper);
     }

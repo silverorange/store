@@ -1138,7 +1138,7 @@ class StoreCartPage extends SitePage
         $available_view->getRow('subtotal')->value =
             $this->app->cart->checkout->getSubtotal();
 
-        $class_name = SwatDBClassMap::get('StoreOrderAddress');
+        $class_name = SwatDBClassMap::get(StoreOrderAddress::class);
         $available_view->getRow('shipping')->value =
             $this->app->cart->checkout->getShippingTotal(
                 new $class_name(),

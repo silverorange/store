@@ -257,7 +257,7 @@ class StoreDashboardIndex extends AdminIndex
         $orders = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreOrderWrapper')
+            SwatDBClassMap::get(StoreOrderWrapper::class)
         );
 
         $account_sql = 'select * from Account where id in (%s)';
@@ -265,7 +265,7 @@ class StoreDashboardIndex extends AdminIndex
             'account',
             $this->app->db,
             $account_sql,
-            SwatDBClassMap::get('SiteAccountWrapper'),
+            SwatDBClassMap::get(SiteAccountWrapper::class),
             'integer'
         );
 

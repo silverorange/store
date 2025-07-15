@@ -22,7 +22,7 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
     public function loadAttributes()
     {
         if ($this->getCount() > 0) {
-            $wrapper_class = SwatDBClassMap::get('StoreAttributeWrapper');
+            $wrapper_class = SwatDBClassMap::get(StoreAttributeWrapper::class);
 
             $product_ids = [];
             foreach ($this->getArray() as $product) {
@@ -94,7 +94,7 @@ class StoreProductWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreProduct');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreProduct::class);
         $this->index_field = 'id';
     }
 }

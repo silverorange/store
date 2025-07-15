@@ -370,7 +370,7 @@ class StoreOrderIndex extends AdminSearch
                 $pager->getResultsMessage('result', 'results');
         }
 
-        $class_name = SwatDBClassMap::get('StoreOrder');
+        $class_name = SwatDBClassMap::get(StoreOrder::class);
         $store = new SwatTableStore();
         foreach ($orders as $row) {
             if ($row instanceof StoreOrder) {

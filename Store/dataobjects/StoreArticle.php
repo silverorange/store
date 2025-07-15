@@ -64,7 +64,7 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('SiteArticleWrapper');
+        $wrapper = SwatDBClassMap::get(SiteArticleWrapper::class);
         $articles = SwatDB::query($this->db, $sql, $wrapper);
 
         foreach ($articles as $article) {
@@ -163,7 +163,7 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
+        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
 
         return SwatDB::query($this->db, $sql, $wrapper);
     }
@@ -198,7 +198,7 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('StoreProductWrapper');
+        $wrapper = SwatDBClassMap::get(StoreProductWrapper::class);
 
         return SwatDB::query($this->db, $sql, $wrapper);
     }
@@ -228,7 +228,7 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('SiteArticleWrapper');
+        $wrapper = SwatDBClassMap::get(SiteArticleWrapper::class);
         $articles = SwatDB::query($this->db, $sql, $wrapper);
 
         foreach ($articles as $article) {

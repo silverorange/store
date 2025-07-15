@@ -44,7 +44,7 @@ class StoreRegionEdit extends AdminDBEdit
 
     protected function initRegion()
     {
-        $class_name = SwatDBClassMap::get('StoreRegion');
+        $class_name = SwatDBClassMap::get(StoreRegion::class);
         $this->region = new $class_name();
         $this->region->setDatabase($this->app->db);
 

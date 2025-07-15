@@ -26,7 +26,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
 
     protected function initAttributeType()
     {
-        $class_name = SwatDBClassMap::get('StoreAttributeType');
+        $class_name = SwatDBClassMap::get(StoreAttributeType::class);
         $this->attribute_type = new $class_name();
         $this->attribute_type->setDatabase($this->app->db);
 
@@ -48,7 +48,7 @@ class StoreAttributeTypeEdit extends AdminDBEdit
     {
         $shortname = $this->ui->getWidget('shortname');
 
-        $class_name = SwatDBClassMap::get('StoreAttributeType');
+        $class_name = SwatDBClassMap::get(StoreAttributeType::class);
         $attribute_type = new $class_name();
         $attribute_type->setDatabase($this->app->db);
 

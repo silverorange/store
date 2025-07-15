@@ -23,7 +23,7 @@ class StoreShippingTypeDetails extends AdminIndex
     private function initShippingType()
     {
         $id = SiteApplication::initVar('id');
-        $class_name = SwatDBClassMap::get('StoreShippingType');
+        $class_name = SwatDBClassMap::get(StoreShippingType::class);
         $this->shipping_type = new $class_name();
         $this->shipping_type->setDatabase($this->app->db);
 
@@ -89,7 +89,7 @@ class StoreShippingTypeDetails extends AdminIndex
         $rows = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreShippingRateWrapper')
+            SwatDBClassMap::get(StoreShippingRateWrapper::class)
         );
 
         $store = new SwatTableStore();

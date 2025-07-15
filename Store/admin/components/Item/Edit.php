@@ -103,7 +103,7 @@ class StoreItemEdit extends AdminDBEdit
 
     protected function initItem()
     {
-        $class_name = SwatDBClassMap::get('StoreItem');
+        $class_name = SwatDBClassMap::get(StoreItem::class);
         $this->item = new $class_name();
         $this->item->setDatabase($this->app->db);
 
@@ -143,7 +143,7 @@ class StoreItemEdit extends AdminDBEdit
         $regions = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreRegionWrapper')
+            SwatDBClassMap::get(StoreRegionWrapper::class)
         );
 
         $replicator = $this->ui->getWidget('price_replicator');
@@ -366,7 +366,7 @@ class StoreItemEdit extends AdminDBEdit
         // only create new binding if price exists, otherwise there is no
         // use for the binding, and it can lead to bad data on the site
         if ($price->getState() !== null) {
-            $class_name = SwatDBClassMap::get('StoreItemRegionBinding');
+            $class_name = SwatDBClassMap::get(StoreItemRegionBinding::class);
 
             $region_binding = new $class_name();
             $region_binding->region = $region_id;
@@ -434,7 +434,7 @@ class StoreItemEdit extends AdminDBEdit
 
         $aliases = $this->ui->getWidget('aliases');
         if (count($aliases->values)) {
-            $class_name = SwatDBClassMap::get('StoreItemAlias');
+            $class_name = SwatDBClassMap::get(StoreItemAlias::class);
 
             foreach ($aliases->values as $alias) {
                 $item_alias = new $class_name();

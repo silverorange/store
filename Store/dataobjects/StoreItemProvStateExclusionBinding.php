@@ -11,12 +11,12 @@ class StoreItemProvStateExclusionBinding extends SwatDBDataObject
     {
         $this->registerInternalProperty(
             'provstate',
-            SwatDBClassMap::get('StoreProvState')
+            SwatDBClassMap::get(StoreProvState::class)
         );
 
         $this->registerInternalProperty(
             'item',
-            SwatDBClassMap::get('StoreItem')
+            SwatDBClassMap::get(StoreItem::class)
         );
 
         $this->table = 'ItemProvStateExclusionBinding';

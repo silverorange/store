@@ -198,7 +198,7 @@ class StoreCategoryPage extends StorePage
             $this->app->db->quote($this->app->getRegion()->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get('StoreCategoryWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreCategoryWrapper::class);
         $sub_categories = SwatDB::query($this->app->db, $sql, $wrapper_class);
         $sub_categories->setRegion($this->app->getRegion());
 
@@ -207,7 +207,7 @@ class StoreCategoryPage extends StorePage
         }
 
         $sql = 'select * from Image where id in (%s)';
-        $wrapper_class = SwatDBClassMap::get('StoreCategoryImageWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreCategoryImageWrapper::class);
         $sub_categories->loadAllSubDataObjects(
             'image',
             $this->app->db,

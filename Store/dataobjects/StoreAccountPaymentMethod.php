@@ -16,7 +16,7 @@ class StoreAccountPaymentMethod extends StorePaymentMethod
         $this->table = 'AccountPaymentMethod';
         $this->registerInternalProperty(
             'account',
-            SwatDBClassMap::get('StoreAccount')
+            SwatDBClassMap::get(StoreAccount::class)
         );
     }
 }

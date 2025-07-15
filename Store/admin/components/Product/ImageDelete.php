@@ -41,7 +41,7 @@ class StoreProductImageDelete extends AdminDBDelete
         $this->category_id = SiteApplication::initVar('category');
 
         $product_id = SiteApplication::initVar('product');
-        $class_name = SwatDBClassMap::get('StoreProduct');
+        $class_name = SwatDBClassMap::get(StoreProduct::class);
         $this->product = new $class_name();
         $this->product->setDatabase($this->app->db);
 
@@ -52,7 +52,7 @@ class StoreProductImageDelete extends AdminDBDelete
         }
 
         $image_id = $this->getFirstItem();
-        $class_name = SwatDBClassMap::get('StoreProductImage');
+        $class_name = SwatDBClassMap::get(StoreProductImage::class);
         $this->image = new $class_name();
         $this->image->setDatabase($this->app->db);
 

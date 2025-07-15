@@ -39,7 +39,7 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
 
     private function initShippingRate()
     {
-        $class_name = SwatDBClassMap::get('StoreShippingRate');
+        $class_name = SwatDBClassMap::get(StoreShippingRate::class);
 
         $this->shipping_rate = new $class_name();
         $this->shipping_rate->setDatabase($this->app->db);

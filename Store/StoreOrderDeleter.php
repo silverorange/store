@@ -152,7 +152,7 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
 
         $this->app->db->setLimit(self::DATA_BATCH_SIZE);
 
-        $wrapper_class = SwatDBClassMap::get('StoreOrderWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreOrderWrapper::class);
 
         return SwatDB::query($this->app->db, $sql, $wrapper_class);
     }

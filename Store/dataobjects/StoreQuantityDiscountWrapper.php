@@ -15,7 +15,7 @@ class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
         $limiting = true
     ) {
         $quantity_discounts = null;
-        $wrapper = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
+        $wrapper = SwatDBClassMap::get(StoreQuantityDiscountWrapper::class);
 
         if ($region === null) {
             $sql = sprintf(
@@ -57,7 +57,7 @@ class StoreQuantityDiscountWrapper extends SwatDBRecordsetWrapper
     {
         parent::init();
 
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreQuantityDiscount');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreQuantityDiscount::class);
         $this->index_field = 'id';
     }
 }

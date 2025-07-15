@@ -73,7 +73,7 @@ class StoreItemStatusList extends StoreStatusList
     public static function statuses()
     {
         if (self::$instance === null) {
-            $list_class = SwatDBClassMap::get('StoreItemStatusList');
+            $list_class = SwatDBClassMap::get(StoreItemStatusList::class);
             self::$instance = new $list_class();
         }
 
@@ -94,7 +94,7 @@ class StoreItemStatusList extends StoreStatusList
         if (self::$defined_statuses === null) {
             self::$defined_statuses = [];
 
-            $status_class = SwatDBClassMap::get('StoreItemStatus');
+            $status_class = SwatDBClassMap::get(StoreItemStatus::class);
 
             $available_status =
                 new $status_class(0, 'available', Store::_('In-stock'));

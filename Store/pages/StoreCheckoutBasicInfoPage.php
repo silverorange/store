@@ -128,7 +128,7 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
             return true;
         }
 
-        $class_name = SwatDBClassMap::get('StoreAccount');
+        $class_name = SwatDBClassMap::get(StoreAccount::class);
         $account = new $class_name();
         $account->setDatabase($this->app->db);
         $found = $account->loadWithEmail($email, $this->app->getInstance());

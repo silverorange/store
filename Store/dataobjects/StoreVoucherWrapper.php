@@ -27,6 +27,6 @@ class StoreVoucherWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreVoucher');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreVoucher::class);
     }
 }

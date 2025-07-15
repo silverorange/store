@@ -24,7 +24,7 @@ class StoreProductImagePage extends StorePage
     {
         parent::init();
 
-        $product_class = SwatDBClassMap::get('StoreProduct');
+        $product_class = SwatDBClassMap::get(StoreProduct::class);
         $this->product = new $product_class();
         $this->product->setDatabase($this->app->db);
         $this->product->setRegion($this->app->getRegion());

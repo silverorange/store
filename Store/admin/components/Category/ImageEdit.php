@@ -37,7 +37,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
     protected function initCategory()
     {
         $category_id = $this->app->initVar('category');
-        $class_name = SwatDBClassMap::get('StoreCategory');
+        $class_name = SwatDBClassMap::get(StoreCategory::class);
         $this->category = new $class_name();
         $this->category->setDatabase($this->app->db);
 
@@ -68,7 +68,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
         if ($this->id !== null) {
             $this->dimensions = $this->image->image_set->dimensions;
         } else {
-            $class_name = SwatDBClassMap::get('SiteImageSet');
+            $class_name = SwatDBClassMap::get(SiteImageSet::class);
             $image_set = new $class_name();
             $image_set->setDatabase($this->app->db);
             $image_set->loadByShortname('categories');
@@ -104,7 +104,7 @@ class StoreCategoryImageEdit extends AdminDBEdit
 
     protected function getNewImageInstance()
     {
-        $class_name = SwatDBClassMap::get('StoreCategoryImage');
+        $class_name = SwatDBClassMap::get(StoreCategoryImage::class);
         $image = new $class_name();
         $image->setDatabase($this->app->db);
 

@@ -112,7 +112,7 @@ class StoreItemQuantityDiscount extends AdminIndex
             $this->regions = SwatDB::query(
                 $this->app->db,
                 $sql,
-                SwatDBClassMap::get('StoreRegionWrapper')
+                SwatDBClassMap::get(StoreRegionWrapper::class)
             );
         }
 

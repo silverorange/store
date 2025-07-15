@@ -221,7 +221,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         $this->table = 'OrderPaymentMethod';
         $this->registerInternalProperty(
             'ordernum',
-            SwatDBClassMap::get('StoreOrder')
+            SwatDBClassMap::get(StoreOrder::class)
         );
     }
 
@@ -316,7 +316,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StorePaymentMethodTransactionWrapper')
+            SwatDBClassMap::get(StorePaymentMethodTransactionWrapper::class)
         );
     }
 }

@@ -382,7 +382,7 @@ class StoreCountry extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreProvStateWrapper')
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
         );
     }
 }

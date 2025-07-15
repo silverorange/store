@@ -217,21 +217,21 @@ class StoreAccount extends SiteAccount
 
         $this->registerInternalProperty(
             'default_billing_address',
-            SwatDBClassMap::get('StoreAccountAddress'),
+            SwatDBClassMap::get(StoreAccountAddress::class),
             false,
             false
         );
 
         $this->registerInternalProperty(
             'default_shipping_address',
-            SwatDBClassMap::get('StoreAccountAddress'),
+            SwatDBClassMap::get(StoreAccountAddress::class),
             false,
             false
         );
 
         $this->registerInternalProperty(
             'default_payment_method',
-            SwatDBClassMap::get('StoreAccountPaymentMethod'),
+            SwatDBClassMap::get(StoreAccountPaymentMethod::class),
             false,
             false
         );
@@ -295,7 +295,7 @@ class StoreAccount extends SiteAccount
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreAccountAddressWrapper')
+            SwatDBClassMap::get(StoreAccountAddressWrapper::class)
         );
     }
 
@@ -314,7 +314,7 @@ class StoreAccount extends SiteAccount
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreAccountPaymentMethodWrapper')
+            SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class)
         );
     }
 
@@ -335,7 +335,7 @@ class StoreAccount extends SiteAccount
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreOrderWrapper')
+            SwatDBClassMap::get(StoreOrderWrapper::class)
         );
     }
 

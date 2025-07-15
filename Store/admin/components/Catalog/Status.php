@@ -36,7 +36,7 @@ class StoreCatalogStatus extends AdminDBEdit
 
     protected function initCatalog()
     {
-        $class_name = SwatDBClassMap::get('StoreCatalog');
+        $class_name = SwatDBClassMap::get(StoreCatalog::class);
         $this->catalog = new $class_name();
         $this->catalog->setDatabase($this->app->db);
 

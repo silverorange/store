@@ -91,7 +91,7 @@ class StoreAttribute extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'attribute_type',
-            SwatDBClassMap::get('StoreAttributeType')
+            SwatDBClassMap::get(StoreAttributeType::class)
         );
     }
 

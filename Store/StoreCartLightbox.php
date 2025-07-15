@@ -339,7 +339,7 @@ class StoreCartLightbox extends SwatControl
             }
 
             if ($view->hasRow('lightbox_shipping')) {
-                $class_name = SwatDBClassMap::get('StoreOrderAddress');
+                $class_name = SwatDBClassMap::get(StoreOrderAddress::class);
                 $view->getRow('lightbox_shipping')->value =
                     $this->app->cart->checkout->getShippingTotal(
                         new $class_name(),

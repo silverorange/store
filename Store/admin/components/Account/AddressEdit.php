@@ -63,7 +63,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
             );
         }
 
-        $class_name = SwatDBClassMap::get('StoreAccount');
+        $class_name = SwatDBClassMap::get(StoreAccount::class);
         $this->account = new $class_name();
         $this->account->setDatabase($this->app->db);
 
@@ -165,7 +165,7 @@ class StoreAccountAddressEdit extends AdminDBEdit
             $country_widget->process();
             $country_id = $country_widget->value;
 
-            $class_name = SwatDBClassMap::get('StoreCountry');
+            $class_name = SwatDBClassMap::get(StoreCountry::class);
             $this->country = new $class_name();
             $this->country->setDatabase($this->app->db);
             $this->country->load($country_id);

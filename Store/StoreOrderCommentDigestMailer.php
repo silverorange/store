@@ -253,7 +253,7 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('StoreOrderWrapper')
+            SwatDBClassMap::get(StoreOrderWrapper::class)
         );
     }
 

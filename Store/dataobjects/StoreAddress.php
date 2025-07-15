@@ -901,12 +901,12 @@ abstract class StoreAddress extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'provstate',
-            SwatDBClassMap::get('StoreProvState')
+            SwatDBClassMap::get(StoreProvState::class)
         );
 
         $this->registerInternalProperty(
             'country',
-            SwatDBClassMap::get('StoreCountry')
+            SwatDBClassMap::get(StoreCountry::class)
         );
     }
 
@@ -1493,7 +1493,7 @@ abstract class StoreAddress extends SwatDBDataObject
 
                 if ($this->provstate->abbreviation !==
                     $result->VerifyAddressUSAResult->State) {
-                    $class = SwatDBClassMap::get('StoreProvState');
+                    $class = SwatDBClassMap::get(StoreProvState::class);
                     $provstate = new $class();
                     $provstate->setDatabase($app->db);
                     $provstate->loadFromAbbreviation(

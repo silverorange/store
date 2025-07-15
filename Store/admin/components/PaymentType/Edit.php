@@ -37,7 +37,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
 
     protected function initPaymentType()
     {
-        $class_name = SwatDBClassMap::get('StorePaymentType');
+        $class_name = SwatDBClassMap::get(StorePaymentType::class);
         $this->payment_type = new $class_name();
         $this->payment_type->setDatabase($this->app->db);
 
@@ -79,7 +79,7 @@ class StorePaymentTypeEdit extends AdminDBEdit
     {
         $valid = true;
 
-        $class_name = SwatDBClassMap::get('StorePaymentType');
+        $class_name = SwatDBClassMap::get(StorePaymentType::class);
         $payment_type = new $class_name();
         $payment_type->setDatabase($this->app->db);
 

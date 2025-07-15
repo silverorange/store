@@ -392,7 +392,7 @@ abstract class StoreCheckoutCart extends StoreCart
     public function getShippingType()
     {
         $shortname = $this->getShippingTypeDefaultShortname();
-        $class_name = SwatDBClassMap::get('StoreShippingType');
+        $class_name = SwatDBClassMap::get(StoreShippingType::class);
         $shipping_type = new $class_name();
         $shipping_type->setDatabase($this->app->db);
         $found = $shipping_type->loadByShortname($shortname);

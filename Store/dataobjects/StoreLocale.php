@@ -16,7 +16,7 @@ class StoreLocale extends SwatDBDataObject
     {
         $this->registerInternalProperty(
             'region',
-            SwatDBClassMap::get('StoreRegion')
+            SwatDBClassMap::get(StoreRegion::class)
         );
 
         $this->table = 'Locale';

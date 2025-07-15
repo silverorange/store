@@ -92,7 +92,7 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
         $products = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
 
         if (count($products) > 0) {

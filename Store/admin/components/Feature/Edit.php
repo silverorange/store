@@ -52,7 +52,7 @@ class StoreFeatureEdit extends AdminDBEdit
 
     private function initFeature()
     {
-        $class_name = SwatDBClassMap::get('StoreFeature');
+        $class_name = SwatDBClassMap::get(StoreFeature::class);
         $this->feature = new $class_name();
         $this->feature->setDatabase($this->app->db);
 

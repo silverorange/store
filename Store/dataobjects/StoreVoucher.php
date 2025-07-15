@@ -179,7 +179,7 @@ class StoreVoucher extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'instance',
-            SwatDBClassMap::get('SiteInstance')
+            SwatDBClassMap::get(SiteInstance::class)
         );
 
         $this->registerDateProperty('used_date');

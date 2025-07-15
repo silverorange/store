@@ -151,7 +151,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
             throw $this->getException($response);
         }
 
-        $class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+        $class_name = SwatDBClassMap::get(StorePaymentMethodTransaction::class);
         $transaction = new $class_name();
 
         $transaction->transaction_type = StorePaymentRequest::TYPE_PAY;

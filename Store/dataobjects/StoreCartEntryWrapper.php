@@ -11,7 +11,7 @@ class StoreCartEntryWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreCartEntry');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreCartEntry::class);
 
         $this->index_field = 'id';
     }

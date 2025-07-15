@@ -27,7 +27,7 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
             'product',
             $this->db,
             'select * from Product where id in (%s)',
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
     }
 
@@ -44,7 +44,7 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
         return SwatDB::query(
             $db,
             $sql,
-            SwatDBClassMap::get('StoreItemWrapper')
+            SwatDBClassMap::get(StoreItemWrapper::class)
         );
     }
 
@@ -96,7 +96,7 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
         $items = SwatDB::query(
             $db,
             $sql,
-            SwatDBClassMap::get('StoreItemWrapper')
+            SwatDBClassMap::get(StoreItemWrapper::class)
         );
 
         if ($items !== null) {
@@ -109,7 +109,7 @@ class StoreItemWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreItem');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreItem::class);
         $this->index_field = 'id';
     }
 }

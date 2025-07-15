@@ -12,6 +12,6 @@ class StoreAttributeTypeWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreAttributeType');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreAttributeType::class);
     }
 }

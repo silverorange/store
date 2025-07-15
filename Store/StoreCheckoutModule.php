@@ -53,7 +53,7 @@ class StoreCheckoutModule extends SiteApplicationModule
 
         if (!isset($session->account)) {
             unset($session->account);
-            $account_class = SwatDBClassMap::get('StoreAccount');
+            $account_class = SwatDBClassMap::get(StoreAccount::class);
             $session->account = new $account_class();
             $session->account->setDatabase($this->getDB());
             $this->resetProgress();
@@ -61,7 +61,7 @@ class StoreCheckoutModule extends SiteApplicationModule
 
         if (!isset($session->order)) {
             unset($session->order);
-            $order_class = SwatDBClassMap::get('StoreOrder');
+            $order_class = SwatDBClassMap::get(StoreOrder::class);
             $session->order = new $order_class();
             $session->order->setDatabase($this->getDB());
             $this->resetProgress();
@@ -194,7 +194,7 @@ class StoreCheckoutModule extends SiteApplicationModule
             $ad_module = $this->app->getModule('SiteAdModule');
             $session_ad = $ad_module->getAd();
             if ($session_ad !== null) {
-                $ad_class = SwatDBClassMap::get('SiteAd');
+                $ad_class = SwatDBClassMap::get(SiteAd::class);
                 $ad = new $ad_class();
                 $ad->setDatabase($this->app->db);
                 if ($ad->load($session_ad->id)) {
@@ -210,7 +210,7 @@ class StoreCheckoutModule extends SiteApplicationModule
     {
         $region = $this->app->getRegion();
 
-        $wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
+        $wrapper = SwatDBClassMap::get(StoreOrderItemWrapper::class);
         $order->items = new $wrapper();
 
         foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {

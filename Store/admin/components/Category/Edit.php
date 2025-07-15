@@ -28,7 +28,7 @@ class StoreCategoryEdit extends AdminDBEdit
 
     protected function initCategory()
     {
-        $class_name = SwatDBClassMap::get('StoreCategory');
+        $class_name = SwatDBClassMap::get(StoreCategory::class);
         $this->category = new $class_name();
         $this->category->setDatabase($this->app->db);
 

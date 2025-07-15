@@ -85,6 +85,6 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class = SwatDBClassMap::get('StoreFeature');
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreFeature::class);
     }
 }

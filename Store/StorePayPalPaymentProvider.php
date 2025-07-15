@@ -175,7 +175,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             $exception->processAndContinue();
         }
 
-        $class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+        $class_name = SwatDBClassMap::get(StorePaymentMethodTransaction::class);
         $transaction = new $class_name();
 
         $transaction->createdate = new SwatDate();
@@ -230,7 +230,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             $response = $e->getResponse();
         }
 
-        $class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+        $class_name = SwatDBClassMap::get(StorePaymentMethodTransaction::class);
         $transaction = new $class_name();
 
         $transaction->createdate = new SwatDate();
@@ -530,7 +530,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         $details = $response->DoExpressCheckoutPaymentResponseDetails;
 
-        $class_name = SwatDBClassMap::get('StorePaymentMethodTransaction');
+        $class_name = SwatDBClassMap::get(StorePaymentMethodTransaction::class);
         $transaction = new $class_name();
 
         $transaction->createdate = new SwatDate();
@@ -1026,10 +1026,10 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
     protected function getStoreOrderPaymentMethod(MDB2_Driver_Common $db)
     {
-        $class_name = SwatDBClassMap::get('StoreOrderPaymentMethod');
+        $class_name = SwatDBClassMap::get(StoreOrderPaymentMethod::class);
         $payment_method = new $class_name();
 
-        $class_name = SwatDBClassMap::get('StorePaymentType');
+        $class_name = SwatDBClassMap::get(StorePaymentType::class);
         $payment_type = new $class_name();
         $payment_type->setDatabase($db);
 
@@ -1042,7 +1042,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
     protected function getStoreOrderAddress($address, MDB2_Driver_Common $db)
     {
-        $class_name = SwatDBClassMap::get('StoreOrderAddress');
+        $class_name = SwatDBClassMap::get(StoreOrderAddress::class);
         $order_address = new $class_name();
 
         $order_address->fullname = $address->Name;
@@ -1058,7 +1058,7 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         // PayPal sometimes returns an abbreviation and sometimes returns the
         // full title. Go figure.
         if ($address->StateOrProvince != '') {
-            $class_name = SwatDBClassMap::get('StoreProvState');
+            $class_name = SwatDBClassMap::get(StoreProvState::class);
             $provstate = new $class_name();
             $provstate->setDatabase($db);
             if (mb_strlen($address->StateOrProvince) === 2) {

@@ -403,7 +403,7 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get('StoreCategoryWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreCategoryWrapper::class);
         $sub_categories = SwatDB::query($this->db, $sql, $wrapper_class);
         $sub_categories->setRegion($region);
 
@@ -450,7 +450,7 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get('StoreProductWrapper');
+        $wrapper_class = SwatDBClassMap::get(StoreProductWrapper::class);
         $products = SwatDB::query($this->db, $sql, $wrapper_class);
         $products->setRegion($region);
 
@@ -563,12 +563,12 @@ class StoreCategory extends SwatDBDataObject
         $this->registerInternalProperty('path');
         $this->registerInternalProperty(
             'image',
-            SwatDBClassMap::get('StoreCategoryImage')
+            SwatDBClassMap::get(StoreCategoryImage::class)
         );
 
         $this->registerInternalProperty(
             'parent',
-            SwatDBClassMap::get('StoreCategory')
+            SwatDBClassMap::get(StoreCategory::class)
         );
 
         $this->table = 'Category';
@@ -703,7 +703,7 @@ class StoreCategory extends SwatDBDataObject
         return SwatDB::query(
             $this->db,
             $sql,
-            SwatDBClassMap::get('SiteArticleWrapper')
+            SwatDBClassMap::get(SiteArticleWrapper::class)
         );
     }
 
@@ -733,7 +733,7 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get('StoreCategoryWrapper');
+        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
         $categories = SwatDB::query($this->db, $sql, $wrapper);
 
         foreach ($categories as $category) {
@@ -817,7 +817,7 @@ class StoreCategory extends SwatDBDataObject
                 $img_tag->alt = sprintf(Store::_('Image of %s'), $this->title);
             }
         } else {
-            $class = SwatDBClassMap::get('SiteImageDimension');
+            $class = SwatDBClassMap::get(SiteImageDimension::class);
             $dimension = new $class();
             $dimension->setDatabase($this->db);
             $dimension->loadByShortname('categories', $dimension_shortname);

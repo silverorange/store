@@ -203,7 +203,7 @@ class StoreCartServer extends SiteXMLRPCServer
         $return['head_entries'] = $total_saved;
 
         if ($product_id !== null) {
-            $class_name = SwatDBClassMap::get('StoreProduct');
+            $class_name = SwatDBClassMap::get(StoreProduct::class);
             $product = new $class_name();
             $product->setDatabase($this->app->db);
             $product->load($product_id);

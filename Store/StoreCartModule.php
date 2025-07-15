@@ -378,7 +378,7 @@ class StoreCartModule extends SiteApplicationModule
 
     public function createCartEntry($id, $quantity = 1)
     {
-        $class_name = SwatDBClassMap::get('StoreItem');
+        $class_name = SwatDBClassMap::get(StoreItem::class);
         $item = new $class_name();
         $item->setDatabase($this->app->db);
         $item->setRegion($this->app->getRegion());
@@ -389,7 +389,7 @@ class StoreCartModule extends SiteApplicationModule
             );
         }
 
-        $class_name = SwatDBClassMap::get('StoreCartEntry');
+        $class_name = SwatDBClassMap::get(StoreCartEntry::class);
         $entry = new $class_name();
         $entry->setDatabase($this->app->db);
         $entry->item = $item;
@@ -635,7 +635,7 @@ class StoreCartModule extends SiteApplicationModule
         $this->entries = SwatDB::query(
             $this->app->db,
             $entry_sql,
-            SwatDBClassMap::get('StoreCartEntryWrapper')
+            SwatDBClassMap::get(StoreCartEntryWrapper::class)
         );
 
         if (count($this->entries) === 0) {
@@ -660,7 +660,7 @@ class StoreCartModule extends SiteApplicationModule
     protected function loadEntryItems(StoreCartEntryWrapper $entries)
     {
         $item_ids = $entries->getInternalValues('item');
-        $class = SwatDBClassMap::get('StoreItemWrapper');
+        $class = SwatDBClassMap::get(StoreItemWrapper::class);
 
         $quoted_item_ids =
             $this->app->db->datatype->implodeArray($item_ids, 'integer');
@@ -680,7 +680,7 @@ class StoreCartModule extends SiteApplicationModule
             'item_group',
             $this->app->db,
             'select * from ItemGroup where id in (%s)',
-            SwatDBClassMap::get('StoreItemGroupWrapper')
+            SwatDBClassMap::get(StoreItemGroupWrapper::class)
         );
     }
 
@@ -689,7 +689,7 @@ class StoreCartModule extends SiteApplicationModule
         // TODO: can we use loadAllSubRecordsets() here?
 
         $item_ids = $items->getIndexes();
-        $class = SwatDBClassMap::get('StoreQuantityDiscountWrapper');
+        $class = SwatDBClassMap::get(StoreQuantityDiscountWrapper::class);
         $wrapper = new $class();
         $quantity_discounts = $wrapper->loadSetFromDB(
             $this->app->db,
@@ -719,7 +719,7 @@ class StoreCartModule extends SiteApplicationModule
             'product',
             $this->app->db,
             $this->getProductSql(),
-            SwatDBClassMap::get('StoreProductWrapper')
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
     }
 
@@ -739,7 +739,7 @@ class StoreCartModule extends SiteApplicationModule
         $primary_images = SwatDB::query(
             $this->app->db,
             $sql,
-            SwatDBClassMap::get('StoreProductImageWrapper')
+            SwatDBClassMap::get(StoreProductImageWrapper::class)
         );
 
         foreach ($primary_images as $image) {
@@ -761,7 +761,7 @@ class StoreCartModule extends SiteApplicationModule
             'primary_category',
             $this->app->db,
             $category_sql,
-            SwatDBClassMap::get('StoreCategoryWrapper')
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
     }
 
@@ -773,7 +773,7 @@ class StoreCartModule extends SiteApplicationModule
             'catalog',
             $this->app->db,
             $catalog_sql,
-            SwatDBClassMap::get('StoreCatalogWrapper')
+            SwatDBClassMap::get(StoreCatalogWrapper::class)
         );
     }
 

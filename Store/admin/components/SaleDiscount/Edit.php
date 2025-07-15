@@ -24,7 +24,7 @@ class StoreSaleDiscountEdit extends AdminDBEdit
 
     protected function initSaleDiscount()
     {
-        $class_name = SwatDBClassMap::get('StoreSaleDiscount');
+        $class_name = SwatDBClassMap::get(StoreSaleDiscount::class);
         $this->sale_discount = new $class_name();
         $this->sale_discount->setDatabase($this->app->db);
 

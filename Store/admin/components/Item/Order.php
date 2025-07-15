@@ -109,7 +109,7 @@ class StoreItemOrder extends AdminDBOrder
             $where_clause
         );
 
-        $item_wrapper_class = SwatDBClassMap::get('StoreItemWrapper');
+        $item_wrapper_class = SwatDBClassMap::get(StoreItemWrapper::class);
         $items = call_user_func(
             [$item_wrapper_class, 'loadSetFromDb'],
             $this->app->db,

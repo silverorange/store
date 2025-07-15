@@ -96,17 +96,17 @@ abstract class StoreApplication extends SiteWebApplication
     {
         $this->session->registerDataObject(
             'account',
-            SwatDBClassMap::get('StoreAccount')
+            SwatDBClassMap::get(StoreAccount::class)
         );
 
         $this->session->registerDataObject(
             'order',
-            SwatDBClassMap::get('StoreOrder')
+            SwatDBClassMap::get(StoreOrder::class)
         );
 
         $this->session->registerDataObject(
             'vouchers',
-            SwatDBClassMap::get('StoreVoucherWrapper')
+            SwatDBClassMap::get(StoreVoucherWrapper::class)
         );
 
         parent::initModules();
