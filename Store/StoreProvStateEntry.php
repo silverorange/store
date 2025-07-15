@@ -243,9 +243,13 @@ class StoreProvStateEntry extends SwatInputControl
 
         // if country flydown is set and country is selected, required depends
         // on provstate data
-        if ($this->country_flydown instanceof SwatFlydown
+        if (
+            $this->country_flydown instanceof SwatFlydown
             && $this->country_flydown->value !== null
-            && isset($this->data[$this->country_flydown->value], $this->data[$this->country_flydown->value]['required'])
+            && isset(
+                $this->data[$this->country_flydown->value],
+                $this->data[$this->country_flydown->value]['required']
+            )
         ) {
             $required = ($this->required
                 && $this->data[$this->country_flydown->value]['required']);
