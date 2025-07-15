@@ -48,7 +48,7 @@ class StoreShippingRate extends SwatDBDataObject
 
         $this->registerInternalProperty(
             'shipping_type',
-            SwatDBClassMap::get(StoreShipingType::class)
+            SwatDBClassMap::get(StoreShippingType::class)
         );
     }
 }
