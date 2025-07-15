@@ -1,12 +1,13 @@
 <?php
 
-use Braintree\Base;
-use Braintree\Configuration;
-use Braintree\Exception\Authentication;
-use Braintree\Exception\Authorization;
-use Braintree\Exception\ServerError;
-use Braintree\Exception\UpgradeRequired;
-use Braintree\Transaction;
+use Braintree\Base as btBase;
+use Braintree\Configuration as btConfiguration;
+use Braintree\Exception\Authentication as btAuthenticationException;
+use Braintree\Exception\Authorization as btAuthorizationException;
+use Braintree\Exception\Configuration as btConfigurationException;
+use Braintree\Exception\ServerError as btServerErrorException;
+use Braintree\Exception\UpgradeRequired as btUpgradeRequiredException;
+use Braintree\Transaction as btTransaction;
 
 /**
  * @copyright 2011-2018 silverorange
@@ -158,7 +159,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
         // do transaction
         $this->setConfig();
-        $response = Transaction::sale($request);
+        $response = btTransaction::sale($request);
 
         // check for errors and throw exception
         if (!$response->success) {
@@ -170,11 +171,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
     public function getExceptionMessageId(Throwable $e)
     {
-        if ($e instanceof Authentication
-            || $e instanceof Authorization
-            || $e instanceof Braintree\Exception\Configuration
-            || $e instanceof ServerError
-            || $e instanceof UpgradeRequired
+        if ($e instanceof btAuthenticationException
+            || $e instanceof btAuthorizationException
+            || $e instanceof btConfigurationException
+            || $e instanceof btServerErrorException
+            || $e instanceof btUpgradeRequiredException
             || $e instanceof StorePaymentBraintreeValidationException
             || $e instanceof StorePaymentBraintreeSettlementException) {
             return 'payment-error';
@@ -218,11 +219,11 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
         if ($e instanceof StorePaymentBraintreeGatewayException) {
             switch ($e->getReason()) {
-                case Transaction::AVS:
+                case btTransaction::AVS:
                     return 'address-mismatch';
 
-                case Transaction::AVS_AND_CVV:
-                case Transaction::CVV:
+                case btTransaction::AVS_AND_CVV:
+                case btTransaction::CVV:
                     return 'card-verification-value';
 
                 default:
@@ -239,7 +240,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
     }
 
     protected function createPaymentMethodTransaction(
-        Transaction $external_transaction,
+        btTransaction $external_transaction,
         $type = StorePaymentRequest::TYPE_PAY
     ) {
         $class_name = SwatDBClassMap::get(StorePaymentMethodTransaction::class);
@@ -255,10 +256,10 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
 
     protected function setConfig()
     {
-        Configuration::environment($this->environment);
-        Configuration::merchantId($this->merchant_id);
-        Configuration::publicKey($this->public_key);
-        Configuration::privateKey($this->private_key);
+        btConfiguration::environment($this->environment);
+        btConfiguration::merchantId($this->merchant_id);
+        btConfiguration::publicKey($this->public_key);
+        btConfiguration::privateKey($this->private_key);
     }
 
     /**
@@ -437,7 +438,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         return html_entity_decode($content, ENT_QUOTES, 'ISO-8859-1');
     }
 
-    protected function generateExceptionFromResponse(Base $response)
+    protected function generateExceptionFromResponse(btBase $response)
     {
         // data validation error(s)
         if ($response->errors->deepSize() > 0) {
@@ -449,20 +450,20 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         $status = $response->transaction->status;
 
         // transaction error
-        if ($status === Transaction::PROCESSOR_DECLINED) {
+        if ($status === btTransaction::PROCESSOR_DECLINED) {
             return new StorePaymentBraintreeProcessorException(
                 $response->message,
                 $response->transaction->processorResponseCode
             );
         }
 
-        if ($status === Transaction::SETTLEMENT_DECLINED) {
+        if ($status === btTransaction::SETTLEMENT_DECLINED) {
             return new StorePaymentBraintreeSettlementException(
                 $response->message
             );
         }
 
-        if ($status === Transaction::GATEWAY_REJECTED) {
+        if ($status === btTransaction::GATEWAY_REJECTED) {
             $e = new StorePaymentBraintreeGatewayException($response->message);
             $e->setReason($response->transaction->gatewayRejectionReason);
 
