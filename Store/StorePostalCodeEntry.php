@@ -214,10 +214,6 @@ class StorePostalCodeEntry extends SwatEntry
     public function validateByProvince($code, $province)
     {
         switch ($province) {
-            case 'NU': // Nunavut
-                $districts = ['X'];
-                break;
-
             case 'YT': // Yukon Territory
                 $districts = ['Y'];
                 break;
