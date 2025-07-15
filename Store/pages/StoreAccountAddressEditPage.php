@@ -44,7 +44,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
      */
     protected $confirm_no_button;
 
-    // @var StoreGoogleAddressAutoComplete
+    /**
+     * @var StoreGoogleAddressAutoComplete
+     */
     protected $auto_complete;
 
     protected function getUiXml()
