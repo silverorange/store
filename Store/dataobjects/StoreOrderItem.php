@@ -15,6 +15,27 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreCartEntry::createOrderItem()
+ *
+ * @property int        $id
+ * @property ?string    $sku
+ * @property ?string    $alias_sku
+ * @property ?int       $quantity
+ * @property ?float     $price
+ * @property ?bool      $custom_price
+ * @property ?string    $description
+ * @property ?float     $extension
+ * @property ?int       $item
+ * @property ?int       $product
+ * @property ?string    $product_title
+ * @property ?string    $item_group_title
+ * @property ?int       $catalog
+ * @property ?int       $source
+ * @property ?int       $source_category
+ * @property ?int       $sale_discount
+ * @property ?float     $discount
+ * @property ?float     $discount_extension
+ * @property ?int       $cart_entry_id
+ * @property StoreOrder $ordernum
  */
 class StoreOrderItem extends SwatDBDataObject
 {
@@ -163,11 +184,9 @@ class StoreOrderItem extends SwatDBDataObject
      * Array keys are region ids. Array values are {@link StoreItem} items
      * or null if no items are available.
      *
-     * @var array
-     *
      * @see StoreOrderItem::getAvailableItem()
      */
-    protected $available_items_cache = [];
+    protected array $available_items_cache = [];
 
     /**
      * Cache of StoreItem for this order item.

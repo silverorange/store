@@ -5,13 +5,16 @@
  *
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property ?bool $border
+ * @property ?int  $product
  */
 class StoreImage extends SiteImage
 {
     /**
      * Whether to display with a border.
      *
-     * @var int
+     * @var bool
      */
     public $border;
 

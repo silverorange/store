@@ -2,6 +2,12 @@
 
 /**
  * @copyright 2008-2016 silverorange
+ *
+ * @property int                $id
+ * @property ?string            $shortname
+ * @property ?string            $title
+ * @property ?int               $displayorder
+ * @property StoreAttributeType $attribute_type
  */
 class StoreAttribute extends SwatDBDataObject
 {

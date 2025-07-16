@@ -2,6 +2,9 @@
 
 /**
  * @copyright 2006-2016 silverorange
+ *
+ * @property string      $id;
+ * @property StoreRegion $region
  */
 class StoreLocale extends SwatDBDataObject
 {

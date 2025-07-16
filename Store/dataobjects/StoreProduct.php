@@ -28,6 +28,33 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreProductWrapper
+ *
+ * @property int                      $id
+ * @property ?string                  $shortname
+ * @property ?string                  $title
+ * @property ?string                  $html_title
+ * @property ?string                  $keywords
+ * @property ?string                  $bodytext
+ * @property ?string                  $meta_description
+ * @property ?SwatDate                $createdate
+ * @property ?string                  $ppc_ad_headline
+ * @property ?string                  $ppc_ad_description1
+ * @property ?string                  $ppc_ad_description2
+ * @property ?StoreCategory           $primary_category
+ * @property ?string                  $path
+ * @property ?StoreItem               $cheapest_item
+ * @property ?StoreCatalog            $catalog
+ * @property ?StoreProductImage       $primary_image
+ * @property StoreAttributeWrapper    $attributes
+ * @property StoreCategoryWrapper     $categories
+ * @property StoreProductWrapper      $collection_member_products
+ * @property StoreProductWrapper      $collection_products
+ * @property StoreCategoryWrapper     $featured_categories
+ * @property StoreProductImageWrapper $images
+ * @property StoreItemGroupWrapper    $item_groups
+ * @property StoreItemWrapper         $items
+ * @property SiteArticleWrapper       $related_articles
+ * @property StoreProductWrapper      $related_products
  */
 class StoreProduct extends SwatDBDataObject
 {
@@ -136,22 +163,18 @@ class StoreProduct extends SwatDBDataObject
      * Whether or not to exclude items unavailable in the current join region
      * when loading item sub-data-objects.
      *
-     * @var bool
-     *
      * @see StoreProduct::setRegion()
      */
-    protected $limit_by_region = true;
+    protected bool $limit_by_region = true;
 
     /**
      * Cache of availability of this product indexed by region id.
      *
      * This is an array of boolean values.
      *
-     * @var array
-     *
      * @see StoreProduct::isAvailableInRegion()
      */
-    protected $is_available = [];
+    protected array $is_available = [];
 
     /**
      * Cache of item count.

@@ -5,13 +5,20 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int                      $id
+ * @property ?string                  $shortname
+ * @property ?string                  $title
+ * @property ?string                  $note
+ * @property ?int                     $displayorder
+ * @property StoreShippingRateWrapper $shipping_rates
  */
 class StoreShippingType extends SwatDBDataObject
 {
     /**
      * Unique identifier of this shipping type.
      *
-     * @var string
+     * @var int
      */
     public $id;
 

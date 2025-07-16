@@ -3,6 +3,35 @@
 /**
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int                            $id
+ * @property ?string                        $email
+ * @property ?string                        $cc_email
+ * @property ?string                        $company
+ * @property ?string                        $phone
+ * @property ?string                        $comments
+ * @property ?string                        $admin_comments
+ * @property ?string                        $notes
+ * @property SwatDate                       $createdate
+ * @property ?SwatDate                      $cancel_date
+ * @property ?float                         $total
+ * @property ?float                         $item_total
+ * @property ?float                         $surcharge_total
+ * @property ?float                         $shipping_total
+ * @property ?float                         $tax_total
+ * @property ?float                         $voucher_total
+ * @property bool                           $failed_attempt
+ * @property bool                           $comments_sent
+ * @property StoreOrderStatus               $stat
+ * @property StoreAccount                   $account
+ * @property ?StoreOrderAddress             $billing_address
+ * @property ?StoreOrderAddress             $shipping_address
+ * @property ?StoreShippingType             $shipping_type
+ * @property StoreLocale                    $locale
+ * @property ?SiteAd                        $ad
+ * @property ?SiteInstance                  $instance
+ * @property StoreOrderItemWrapper          $items
+ * @property StoreOrderPaymentMethodWrapper $payment_methods
  */
 class StoreOrder extends SwatDBDataObject
 {
@@ -121,27 +150,21 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Whether or not this order is cancelled.
      *
-     * @var bool
-     *
      * @deprecated use {@link StoreOrder::$cancel_date} instead
      */
-    public $cancelled = false;
+    public bool $cancelled = false;
 
     /**
      * Whether or not this order is a failed order attempt stored only
      * for debugging and recordkeeping.
-     *
-     * @var bool
      */
-    public $failed_attempt = false;
+    public bool $failed_attempt = false;
 
     /**
      * Whether or not the comments on this order have been sent to any
      * notification system in place.
-     *
-     * @var bool
      */
-    public $comments_sent = false;
+    public bool $comments_sent = false;
 
     /**
      * The id of the {@link StoreOrderStatus} of this order.

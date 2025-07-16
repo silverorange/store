@@ -11,6 +11,14 @@
  * @see       StorePaymentType
  * @see       StoreCardType
  * @see       StoreVoucher
+ *
+ * @property ?float                               $amount
+ * @property bool                                 $adjustable
+ * @property ?int                                 $displayorder
+ * @property ?string                              $voucher_code
+ * @property ?int                                 $voucher_type
+ * @property StoreOrder                           $ordernum
+ * @property StorePaymentMethodTransactionWrapper $transactions
  */
 class StoreOrderPaymentMethod extends StorePaymentMethod
 {
@@ -24,10 +32,8 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
     /**
      * Whether this payment method is adjustable when calculating multiple
      * payment amounts.
-     *
-     * @var bool
      */
-    public $adjustable = false;
+    public bool $adjustable = false;
 
     /**
      * Order of display.

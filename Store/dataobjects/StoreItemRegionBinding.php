@@ -4,6 +4,13 @@
  * Dataobject for item region bindings.
  *
  * @copyright 2006-2016 silverorange
+ *
+ * @property ?float      $price
+ * @property ?float      $original_price
+ * @property ?float      $sale_discount_price
+ * @property ?bool       $enabled
+ * @property StoreRegion $region
+ * @property StoreItem   $item
  */
 class StoreItemRegionBinding extends SwatDBDataObject
 {

@@ -4,6 +4,12 @@
  * A province/state data object.
  *
  * @copyright 2006-2016 silverorange
+ *
+ * @property int          $id
+ * @property ?string      $title
+ * @property ?string      $abbreviation
+ * @property ?string      $tax_message
+ * @property StoreCountry $country
  */
 class StoreProvState extends SwatDBDataObject
 {

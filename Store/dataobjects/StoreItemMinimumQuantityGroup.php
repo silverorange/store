@@ -6,6 +6,14 @@
  *
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int     $id
+ * @property ?string $shortname
+ * @property ?string $title
+ * @property ?int    $minimum_quantity
+ * @property ?string $description
+ * @property ?string $part_unit
+ * @property ?string $part_unit_plural
  */
 class StoreItemMinimumQuantityGroup extends SwatDBDataObject
 {
