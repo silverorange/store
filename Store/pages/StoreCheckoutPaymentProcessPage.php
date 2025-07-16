@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Processes the order payment response
+ * Processes the order payment response.
  *
  * This page serves as the landing page for processing authorized payments.
  * This page is responsible for:
@@ -11,99 +11,68 @@
  *  2. updating the checkout progress appropriately, and
  *  3. relocating to the appropriate checkout page.
  *
- * @package   Store
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutPaymentProcessPage extends StoreCheckoutPage
 {
-	// {{{ public function getUiXml()
+    public function getUiXml()
+    {
+        // this page does not have a ui
+        return null;
+    }
 
-	public function getUiXml()
-	{
-		// this page does not have a ui
-		return null;
-	}
+    // process phase
 
-	// }}}
+    public function process()
+    {
+        try {
+            $this->clearPaymentMethods();
 
-	// process phase
-	// {{{ public function process()
+            if ($this->processPayment()) {
+                $this->updateProgress();
+            } else {
+                $this->cancelPayment();
+            }
+        } catch (Throwable $e) {
+            $this->cancelPayment();
 
-	public function process()
-	{
-		try {
-			$this->clearPaymentMethods();
+            if ($this->handleException($e)) {
+                // log the exception
+                if (!$e instanceof SwatException) {
+                    $e = new SwatException($e);
+                }
+                $e->process(false);
+            } else {
+                // exception was not handled, rethrow
+                throw $e;
+            }
+        }
 
-			if ($this->processPayment()) {
-				$this->updateProgress();
-			} else {
-				$this->cancelPayment();
-			}
-		} catch (Throwable $e) {
+        $this->relocate();
+    }
 
-			$this->cancelPayment();
+    abstract protected function processPayment();
 
-			if ($this->handleException($e)) {
-				// log the exception
-				if (!($e instanceof SwatException)) {
-					$e = new SwatException($e);
-				}
-				$e->process(false);
-			} else {
-				// exception was not handled, rethrow
-				throw $e;
-			}
-		}
+    abstract protected function relocate();
 
-		$this->relocate();
-	}
+    protected function clearPaymentMethods()
+    {
+        if (!$this->app->config->store->multiple_payment_support) {
+            $class_name = SwatDBClassMap::get(StoreOrderPaymentMethodWrapper::class);
+            $this->app->session->order->payment_methods = new $class_name();
+        }
+    }
 
-	// }}}
-	// {{{ abstract protected function processPayment()
+    protected function handleException(Throwable $e)
+    {
+        return false;
+    }
 
-	abstract protected function processPayment();
+    protected function updateProgress()
+    {
+        $this->app->checkout->setProgress($this->getCheckoutSource() . '/first');
+    }
 
-	// }}}
-	// {{{ abstract protected function relocate()
-
-	abstract protected function relocate();
-
-	// }}}
-	// {{{ protected function clearPaymentMethods()
-
-	protected function clearPaymentMethods()
-	{
-		if (!$this->app->config->store->multiple_payment_support) {
-			$class_name = SwatDBClassMap::get('StoreOrderPaymentMethodWrapper');
-			$this->app->session->order->payment_methods = new $class_name();
-		}
-	}
-
-	// }}}
-	// {{{ protected funciton handleException()
-
-	protected function handleException(Throwable $e)
-	{
-		return false;
-	}
-
-	// }}}
-	// {{{ protected function updateProgress()
-
-	protected function updateProgress()
-	{
-		$this->app->checkout->setProgress($this->getCheckoutSource().'/first');
-	}
-
-	// }}}
-	// {{{ protected function cancelPayment()
-
-	protected function cancelPayment()
-	{
-	}
-
-	// }}}
+    protected function cancelPayment() {}
 }
-
-?>

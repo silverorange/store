@@ -9,129 +9,113 @@
  */
 class StoreOrderChart extends SwatControl
 {
-	// {{{ public properties
+    public $width = '100%';
+    public $height = '250px';
 
-	public $width = '100%';
-	public $height = '250px';
+    /**
+     * SiteApplication.
+     *
+     * @var SiteApplication
+     */
+    protected $app;
 
-	// }}}
-	// {{{ protected properties
+    protected $instance;
 
-	/**
-	 * SiteApplication
-	 *
-	 * @var SiteApplication
-	 */
-	protected $app;
+    /**
+     * Creates a new calendar.
+     *
+     * @param string $id a non-visible unique id for this widget
+     *
+     * @see SwatWidget::__construct()
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
 
-	protected $instance = null;
+        $this->requires_id = true;
 
-	// }}}
-	// {{{ public function __construct()
+        $this->addStyleSheet(
+            'packages/store/admin/styles/store-order-chart.css'
+        );
 
-	/**
-	 * Creates a new calendar
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
+        $this->addJavaScript(
+            'packages/store/admin/javascript/jquery-1.8.3.min.js'
+        );
 
-		$this->requires_id = true;
+        $this->addJavaScript(
+            'packages/store/admin/javascript/jquery.flot.js'
+        );
 
-		$this->addStyleSheet(
-			'packages/store/admin/styles/store-order-chart.css'
-		);
+        $this->addJavaScript(
+            'packages/store/admin/javascript/store-order-chart.js'
+        );
+    }
 
-		$this->addJavaScript(
-			'packages/store/admin/javascript/jquery-1.8.3.min.js'
-		);
+    public function setApplication(SiteApplication $app)
+    {
+        $this->app = $app;
+    }
 
-		$this->addJavaScript(
-			'packages/store/admin/javascript/jquery.flot.js'
-		);
+    public function setInstance(SiteInstance $instance)
+    {
+        $this->instance = $instance;
+    }
 
-		$this->addJavaScript(
-			'packages/store/admin/javascript/store-order-chart.js'
-		);
-	}
+    /**
+     * Displays this calendar widget.
+     */
+    public function display()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function setApplication()
+        parent::display();
 
-	public function setApplication(SiteApplication $app)
-	{
-		$this->app = $app;
-	}
+        if (!$this->app instanceof SiteApplication) {
+            throw new SwatException('Application must be set');
+        }
 
-	// }}}
-	// {{{ public function setInstance()
+        $container_div_tag = new SwatHtmlTag('div');
+        $container_div_tag->id = $this->id;
+        $container_div_tag->class = $this->getCSSClassString();
+        $container_div_tag->style = sprintf(
+            'width: %s; height: %s;',
+            $this->width,
+            $this->height
+        );
 
-	public function setInstance(SiteInstance $instance)
-	{
-		$this->instance = $instance;
-	}
+        $container_div_tag->open();
 
-	// }}}
-	// {{{ public function display()
+        Swat::displayInlineJavaScript($this->getInlineJavaScript());
 
-	/**
-	 * Displays this calendar widget
-	 */
-	public function display()
-	{
-		if (!$this->visible)
-			return;
+        $container_div_tag->close();
 
-		parent::display();
+        $this->displayLegend();
+    }
 
-		if (!$this->app instanceof SiteApplication) {
-			throw new SwatException('Application must be set');
-		}
+    protected function displayLegend()
+    {
+        $div_tag = new SwatHtmlTag('div');
+        $div_tag->id = $this->id . '_legend';
+        $div_tag->class = 'order-legend clearfix';
+        $div_tag->open();
+        $div_tag->close();
+    }
 
-		$container_div_tag = new SwatHtmlTag('div');
-		$container_div_tag->id = $this->id;
-		$container_div_tag->class = $this->getCSSClassString();
-		$container_div_tag->style = sprintf('width: %s; height: %s;',
-			$this->width, $this->height);
+    protected function getOrdersByDay($year)
+    {
+        $where_clause = '1 = 1';
 
-		$container_div_tag->open();
+        if ($this->instance !== null) {
+            $where_clause .= sprintf(
+                ' and Orders.instance = %s',
+                $this->app->db->quote($this->instance->id, 'integer')
+            );
+        }
 
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-
-		$container_div_tag->close();
-
-		$this->displayLegend();
-	}
-
-	// }}}
-	// {{{ protected function displayLegend()
-
-	protected function displayLegend()
-	{
-		$div_tag = new SwatHtmlTag('div');
-		$div_tag->id = $this->id.'_legend';
-		$div_tag->class = 'order-legend clearfix';
-		$div_tag->open();
-		$div_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function getOrdersByDay()
-
-	protected function getOrdersByDay($year)
-	{
-		$where_clause = '1 = 1';
-
-		if ($this->instance !== null) {
-			$where_clause.= sprintf(' and Orders.instance = %s',
-				$this->app->db->quote($this->instance->id, 'integer'));
-		}
-
-		$sql = sprintf('select sum(OrderCommissionTotalView.commission_total)
+        $sql = sprintf(
+            'select sum(OrderCommissionTotalView.commission_total)
 				as total,
 				date_part(\'doy\', convertTZ(createdate, %1$s)) as doy
 			from Orders
@@ -141,104 +125,102 @@ class StoreOrderChart extends SwatControl
 				and cancel_date is null
 				and %3$s
 			group by date_part(\'doy\', convertTZ(createdate, %1$s))',
-			$this->app->db->quote($this->app->config->date->time_zone, 'text'),
-			$this->app->db->quote($year, 'integer'),
-			$where_clause);
+            $this->app->db->quote($this->app->config->date->time_zone, 'text'),
+            $this->app->db->quote($year, 'integer'),
+            $where_clause
+        );
 
-		$orders = SwatDB::query($this->app->db, $sql);
-		$return = array();
-		foreach ($orders as $order) {
-			$return[$order->doy] = $order->total;
-		}
+        $orders = SwatDB::query($this->app->db, $sql);
+        $return = [];
+        foreach ($orders as $order) {
+            $return[$order->doy] = $order->total;
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
-	// }}}
-	// {{{ protected function getChartData()
+    protected function getChartData($orders, $remove_current_week = false)
+    {
+        $now = new SwatDate();
+        $now->convertTZ($this->app->default_time_zone);
+        $doy = $now->getDayOfYear();
 
-	protected function getChartData($orders, $remove_current_week = false)
-	{
-		$now = new SwatDate();
-		$now->convertTZ($this->app->default_time_zone);
-		$doy = $now->getDayOfYear();
+        $data = [];
 
-		$data = array();
+        $sum = 0;
+        for ($i = 0; $i < 365; $i++) {
+            if ($i > 0 && $i % 7 == 0 && $sum > 0
+                && (!$remove_current_week || $i < $doy)) {
+                $data[] = sprintf(
+                    '[%d, %f]',
+                    $i - 7,
+                    $sum
+                );
 
-		$sum = 0;
-		for ($i = 0; $i < 365; $i++) {
-			if ($i > 0 && $i % 7 == 0 && $sum > 0 &&
-				(!$remove_current_week || $i < $doy)) {
-				$data[] = sprintf('[%d, %f]',
-					$i - 7, $sum);
+                $sum = 0;
+            }
 
-				$sum = 0;
-			}
+            if (isset($orders[$i])) {
+                $sum += $orders[$i];
+            }
+        }
 
-			if (isset($orders[$i])) {
-				$sum += $orders[$i];
-			}
-		}
+        return $data;
+    }
 
-		return $data;
-	}
+    /**
+     * Gets inline calendar JavaScript.
+     */
+    protected function getInlineJavaScript()
+    {
+        $now = new SwatDate();
+        $now->convertTZ($this->app->default_time_zone);
 
-	// }}}
-	// {{{ protected function getInlineJavaScript()
+        $this_year = $now->getYear();
+        $orders_this_year = $this->getOrdersByDay($this_year);
+        $data_this_year = implode(
+            ', ',
+            $this->getChartData($orders_this_year, true)
+        );
 
-	/**
-	 * Gets inline calendar JavaScript
-	 */
-	protected function getInlineJavaScript()
-	{
-		$now = new SwatDate();
-		$now->convertTZ($this->app->default_time_zone);
+        $now->addYears(-1);
+        $last_year = $now->getYear();
+        $orders_last_year = $this->getOrdersByDay($last_year);
 
-		$this_year = $now->getYear();
-		$orders_this_year = $this->getOrdersByDay($this_year);
-		$data_this_year = implode(', ',
-			$this->getChartData($orders_this_year, true));
+        ob_start();
+        echo 'var chart_data = [];';
 
-		$now->addYears(-1);
-		$last_year = $now->getYear();
-		$orders_last_year = $this->getOrdersByDay($last_year);
+        if (count($orders_last_year)) {
+            $data_last_year = implode(
+                ', ',
+                $this->getChartData($orders_last_year)
+            );
 
-		ob_start();
-		echo 'var chart_data = [];';
-
-		if (count($orders_last_year)) {
-			$data_last_year = implode(', ',
-				$this->getChartData($orders_last_year));
-
-			printf(
-				"chart_data.push({
+            printf(
+                "chart_data.push({
 					data: [%s],
 					lines: { lineWidth: 1 },
 					shadowSize: 0,
 					label: '%s'
 				});",
-				$data_last_year,
-				$last_year
-			);
-		}
+                $data_last_year,
+                $last_year
+            );
+        }
 
-		printf(
-			"chart_data.push({
+        printf(
+            "chart_data.push({
 				data: [%s],
 				lines: { lineWidth: 2 },
 				label: '%s'
 			});
 
 			var chart = new StoreOrderChart('%s', chart_data);",
-			$data_this_year,
-			$this_year,
-			$this->id
-		);
+            $data_this_year,
+            $this_year,
+            $this->id
+        );
 
-		return ob_get_clean();
-	}
-
-	// }}}
+        return ob_get_clean();
+    }
 }
-
-?>

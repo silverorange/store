@@ -1,135 +1,121 @@
 <?php
 
 /**
- * Delete confirmation page for category images
+ * Delete confirmation page for category images.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryImageDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    /**
+     * @var StoreCategory
+     */
+    private $category;
 
-	/**
-	 * @var StoreCategory
-	 */
-	private $category;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $id = SiteApplication::initVar('id');
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $class_name = SwatDBClassMap::get(StoreCategory::class);
+        $this->category = new $class_name();
+        $this->category->setDatabase($this->app->db);
 
-		$id = SiteApplication::initVar('id');
+        if (!$this->category->load($id)) {
+            throw new AdminNotFoundException(
+                sprintf('Category with id ‘%s’ not found.', $id)
+            );
+        }
+    }
 
-		$class_name = SwatDBClassMap::get('StoreCategory');
-		$this->category = new $class_name();
-		$this->category->setDatabase($this->app->db);
+    protected function getUiXml()
+    {
+        return __DIR__ . '/../Product/image-delete.xml';
+    }
 
-		if (!$this->category->load($id))
-			throw new AdminNotFoundException(
-				sprintf('Category with id ‘%s’ not found.', $id));
-	}
+    // process phase
 
-	// }}}
-	// {{{ protected function getUiXml()
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/../Product/image-delete.xml';
-	}
+        $this->category->image->setFileBase('../images');
+        $this->category->image->delete();
 
-	// }}}
+        $message = new SwatMessage(
+            Store::_('The category image has been deleted.'),
+            'notice'
+        );
 
-	// process phase
-	// {{{ protected function processDBData()
+        $this->app->messages->add($message);
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$this->category->image->setFileBase('../images');
-		$this->category->image->delete();
+    /**
+     * Override the AdminDBDelete behaviour of redirecting to the component base
+     * as there is always a details page to return to.
+     */
+    protected function relocate()
+    {
+        AdminDBConfirmation::relocate();
+    }
 
-		$message = new SwatMessage(
-			Store::_('The category image has been deleted.'),
-			'notice');
+    // build phase
 
-		$this->app->messages->add($message);
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('id', $this->category->id);
 
-	// }}}
-	// {{{ protected function relocate()
+        $container = $this->ui->getWidget('confirmation_container');
+        $delete_view = $this->ui->getWidget('delete_view');
 
-	/**
-	 * Override the AdminDBDelete behaviour of redirecting to the component base
-	 * as there is always a details page to return to.
-	 */
-	protected function relocate()
-	{
-		AdminDBConfirmation::relocate();
-	}
+        $store = new SwatTableStore();
+        $ds = new SwatDetailsStore();
+        $ds->image = $this->category->image;
+        $store->add($ds);
+        $delete_view->model = $store;
 
-	// }}}
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content_type = 'text/xml';
+        $message->content = sprintf(
+            '<strong>%s</strong>',
+            Store::_('Are you sure you want to delete the following image?')
+        );
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $yes_button = $this->ui->getWidget('yes_button');
+        $yes_button->title = Store::_('Delete');
+    }
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('id', $this->category->id);
+        $this->navbar->popEntry();
 
-		$container = $this->ui->getWidget('confirmation_container');
-		$delete_view = $this->ui->getWidget('delete_view');
+        $cat_navbar_rs = SwatDB::executeStoredProc(
+            $this->app->db,
+            'getCategoryNavbar',
+            [$this->category->id]
+        );
 
-		$store = new SwatTableStore();
-		$ds = new SwatDetailsStore();
-		$ds->image = $this->category->image;
-		$store->add($ds);
-		$delete_view->model = $store;
+        foreach ($cat_navbar_rs as $entry) {
+            $this->title = $entry->title;
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                $entry->title,
+                'Category/Index?id=' . $entry->id
+            ));
+        }
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content_type = 'text/xml';
-		$message->content = sprintf('<strong>%s</strong>',
-			Store::_('Are you sure you want to delete the following image?'));
-
-		$yes_button = $this->ui->getWidget('yes_button');
-		$yes_button->title = Store::_('Delete');
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-
-		$this->navbar->popEntry();
-
-		$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-			'getCategoryNavbar', array($this->category->id));
-
-		foreach ($cat_navbar_rs as $entry) {
-			$this->title = $entry->title;
-			$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-				'Category/Index?id='.$entry->id));
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Image')));
-	}
-
-	// }}}
+        $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Image')));
+    }
 }
-
-?>

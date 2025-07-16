@@ -3,124 +3,103 @@
 /**
  * A viewer for an payment method object.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePaymentMethodView extends SwatControl
 {
-	// {{{ public properties
+    public $payment_method;
 
-	public $payment_method;
+    public $paymentMethodConfirmText;
 
-	public $paymentMethodConfirmText;
+    /**
+     * @var SwatButton
+     */
+    private $remove_button;
 
-	// }}}
-	// {{{ private properties
+    /**
+     * @var string
+     */
+    private $edit_link = 'account/paymentmethod%s';
 
-	/**
-	 * @var SwatButton
-	 */
-	private $remove_button;
+    public function init()
+    {
+        $this->remove_button =
+            new SwatConfirmationButton($this->id);
 
-	/**
-	 * @var string
-	 */
-	private $edit_link = 'account/paymentmethod%s';
+        $this->remove_button->parent = $this;
+    }
 
-	// }}}
-	// {{{ public function init()
+    public function process()
+    {
+        $this->remove_button->process();
+    }
 
-	public function init()
-	{
-		$this->remove_button =
-			new SwatConfirmationButton($this->id);
+    public function hasBeenClicked()
+    {
+        return $this->remove_button->hasBeenClicked();
+    }
 
-		$this->remove_button->parent = $this;
-	}
+    public function getHtmlHeadEntrySet()
+    {
+        $set = parent::getHtmlHeadEntrySet();
+        $set->addEntrySet($this->remove_button->getHtmlHeadEntrySet());
 
-	// }}}
-	// {{{ public function process()
+        return $set;
+    }
 
-	public function process()
-	{
-		$this->remove_button->process();
-	}
+    public function display()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function hasBeenClicked()
+        ob_start();
+        $this->payment_method->displayAsText();
+        $payment_method_text = ob_get_clean();
 
-	public function hasBeenClicked()
-	{
-		return $this->remove_button->hasBeenClicked();
-	}
+        $div = new SwatHtmlTag('div');
+        $div->class = $this->getCssClassString();
 
-	// }}}
-	// {{{ public function getHtmlHeadEntrySet()
+        $controls = new SwatHtmlTag('div');
+        $controls->class = 'store-payment-method-view-controls';
 
-	public function getHtmlHeadEntrySet()
-	{
-		$set = parent::getHtmlHeadEntrySet();
-		$set->addEntrySet($this->remove_button->getHtmlHeadEntrySet());
-		return $set;
-	}
+        $edit_link = new SwatToolLink();
+        $edit_link->link = sprintf(
+            $this->edit_link,
+            $this->payment_method->id
+        );
 
-	// }}}
-	// {{{ public function display()
+        $edit_link->title = Store::_('Edit Payment Method');
+        $edit_link->setFromStock('edit');
 
-	public function display()
-	{
-		if (!$this->visible)
-			return;
+        $this->remove_button->title = Store::_('Remove');
+        $this->remove_button->classes[] = 'store-remove';
+        $this->remove_button->confirmation_message = sprintf(
+            "%s\n\n%s",
+            $this->paymentMethodConfirmText,
+            $payment_method_text
+        );
 
-		ob_start();
-		$this->payment_method->displayAsText();
-		$payment_method_text = ob_get_clean();
+        $div->open();
+        $this->payment_method->display();
+        $controls->open();
+        $edit_link->display();
+        $this->remove_button->display();
+        $controls->close();
+        $div->close();
+    }
 
-		$div = new SwatHtmlTag('div');
-		$div->class = $this->getCssClassString();
+    /**
+     * Gets the array of CSS classes that are applied to this entry widget.
+     *
+     * @return array the array of CSS classes that are applied to this entry
+     *               widget
+     */
+    protected function getCSSClassNames()
+    {
+        $classes = ['store-payment-method-view'];
 
-		$controls = new SwatHtmlTag('div');
-		$controls->class = 'store-payment-method-view-controls';
-
-		$edit_link = new SwatToolLink();
-		$edit_link->link = sprintf($this->edit_link,
-			$this->payment_method->id);
-
-		$edit_link->title = Store::_('Edit Payment Method');
-		$edit_link->setFromStock('edit');
-
-		$this->remove_button->title = Store::_('Remove');
-		$this->remove_button->classes[] = 'store-remove';
-		$this->remove_button->confirmation_message = sprintf("%s\n\n%s",
-			$this->paymentMethodConfirmText, $payment_method_text);
-
-		$div->open();
-		$this->payment_method->display();
-		$controls->open();
-		$edit_link->display();
-		$this->remove_button->display();
-		$controls->close();
-		$div->close();
-	}
-
-	// }}}
-	// {{{ protected function getCSSClassNames()
-
-	/**
-	 * Gets the array of CSS classes that are applied to this entry widget
-	 *
-	 * @return array the array of CSS classes that are applied to this entry
-	 *                widget.
-	 */
-	protected function getCSSClassNames()
-	{
-		$classes = array('store-payment-method-view');
-		$classes = array_merge($classes, $this->classes);
-		return $classes;
-	}
-
-	// }}}
+        return array_merge($classes, $this->classes);
+    }
 }
-
-?>

@@ -1,60 +1,54 @@
 <?php
 
 /**
- * A shiping rate data object
+ * A shiping rate data object.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreShippingRate extends SwatDBDataObject
 {
-	// {{{ public properties
+    /**
+     * Unique identifier.
+     *
+     * @var int
+     */
+    public $id;
 
-	/**
-	 * Unique identifier
-	 *
-	 * @var integer
-	 */
-	public $id;
+    /**
+     * Threshold.
+     *
+     * @var float
+     */
+    public $threshold;
 
-	/**
-	 * Threshold
-	 *
-	 * @var float
-	 */
-	public $threshold;
+    /**
+     * Amount in dollars.
+     *
+     * @var float
+     */
+    public $amount;
 
-	/**
-	 * Amount in dollars
-	 *
-	 * @var float
-	 */
-	public $amount;
+    /**
+     * Percentage.
+     *
+     * @var float
+     */
+    public $percentage;
 
-	/**
-	 * Percentage
-	 *
-	 * @var float
-	 */
-	public $percentage;
+    protected function init()
+    {
+        $this->table = 'ShippingRate';
+        $this->id_field = 'integer:id';
 
-	// }}}
-	// {{{ protected function init()
+        $this->registerInternalProperty(
+            'region',
+            SwatDBClassMap::get(StoreRegion::class)
+        );
 
-	protected function init()
-	{
-		$this->table = 'ShippingRate';
-		$this->id_field = 'integer:id';
-
-		$this->registerInternalProperty('region',
-			SwatDBClassMap::get('StoreRegion'));
-
-		$this->registerInternalProperty('shipping_type',
-			SwatDBClassMap::get('StoreShipingType'));
-	}
-
-	// }}}
+        $this->registerInternalProperty(
+            'shipping_type',
+            SwatDBClassMap::get(StoreShippingType::class)
+        );
+    }
 }
-
-?>

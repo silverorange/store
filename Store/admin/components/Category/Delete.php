@@ -1,211 +1,223 @@
 <?php
 
 /**
- * Delete confirmation page for Categories
+ * Delete confirmation page for Categories.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    // used for custom relocate
+    private $relocate_id;
 
-	// used for custom relocate
-	private $relocate_id = null;
+    // process phase
 
-	// }}}
+    protected function processInternal()
+    {
+        // in case we cancel, relocate to the current item
+        if ($this->single_delete) {
+            $this->relocate_id = $this->getFirstItem();
+        }
 
-	// process phase
-	// {{{ protected function processInternal()
+        parent::processInternal();
+    }
 
-	protected function processInternal()
-	{
-		// in case we cancel, relocate to the current item
-		if ($this->single_delete)
-			$this->relocate_id = $this->getFirstItem();
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-		parent::processInternal();
-	}
+        $categories = $this->getCategories();
 
-	// }}}
-	// {{{ protected function processDBData()
+        if ($this->single_delete) {
+            $this->relocate_id =
+                $categories->getFirst()->getInternalValue('parent');
+        }
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+        $num = 0;
+        foreach ($categories as $category) {
+            if ($category->getInternalValue('image') !== null) {
+                $category->image->setFileBase('../images');
+            }
 
-		$categories = $this->getCategories();
+            $category->delete();
 
-		if ($this->single_delete) {
-			$this->relocate_id =
-				$categories->getFirst()->getInternalValue('parent');
-		}
+            $num++;
+        }
 
-		$num = 0;
-		foreach ($categories as $category) {
-			if ($category->getInternalValue('image') !== null) {
-				$category->image->setFileBase('../images');
-			}
+        $message = new SwatMessage(sprintf(
+            Store::ngettext(
+                'One category has been deleted.',
+                '%s categories have been deleted.',
+                $num
+            ),
+            SwatString::numberFormat($num)
+        ));
 
-			$category->delete();
+        $this->app->messages->add($message);
 
-			$num++;
-		}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One category has been deleted.',
-			'%s categories have been deleted.', $num),
-			SwatString::numberFormat($num)));
+    /**
+     * Relocate after process.
+     */
+    protected function relocate()
+    {
+        if ($this->single_delete) {
+            if ($this->relocate_id === null) {
+                $this->app->relocate('Category/Index');
+            } else {
+                $this->app->relocate(sprintf(
+                    'Category/Index?id=%s',
+                    $this->relocate_id
+                ));
+            }
+        } else {
+            parent::relocate();
+        }
+    }
 
-		$this->app->messages->add($message);
+    protected function getCategories()
+    {
+        $sql = sprintf(
+            'select * from Category where id in (%s)',
+            $this->getItemList('integer')
+        );
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        $categories = SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
 
-	// }}}
-	// {{{ protected function relocate()
+        $image_sql = 'select * from Image where id in (%s)';
+        $categories->loadAllSubDataObjects(
+            'image',
+            $this->app->db,
+            $image_sql,
+            SwatDBClassMap::get(StoreCategoryImageWrapper::class)
+        );
 
-	/**
-	 * Relocate after process
-	 */
-	protected function relocate()
-	{
-		if ($this->single_delete) {
-			if ($this->relocate_id === null)
-				$this->app->relocate('Category/Index');
-			else
-				$this->app->relocate(sprintf('Category/Index?id=%s',
-					$this->relocate_id));
-		} else {
-			parent::relocate();
-		}
-	}
+        return $categories;
+    }
 
-	// }}}
-	// {{{ protected function getCategories()
+    // build phase
 
-	protected function getCategories()
-	{
-		$sql = sprintf('select * from Category where id in (%s)',
-			$this->getItemList('integer'));
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		$categories = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreCategoryWrapper'));
+        $item_list = $this->getItemList('integer');
 
-		$image_sql = 'select * from Image where id in (%s)';
-		$categories->loadAllSubDataObjects(
-			'image',
-			$this->app->db,
-			$image_sql,
-			SwatDBClassMap::get('StoreCategoryImageWrapper'));
+        $dep = new AdminListDependency();
+        $dep->setTitle(Store::_('category'), Store::_('categories'));
+        $dep->entries = AdminListDependency::queryEntries(
+            $this->app->db,
+            'Category',
+            'integer:id',
+            null,
+            'text:title',
+            'title',
+            'id in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-		return $categories;
-	}
+        $this->getDependentCategories($dep, $item_list);
 
-	// }}}
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content_type = 'text/xml';
+        $message->content = $dep->getMessage();
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $note = $this->ui->getWidget('note');
+        $note->visible = true;
+        $note->content_type = 'text/xml';
+        $note->content = Store::_('Products contained in deleted categories ' .
+            'will <em>not</em> be deleted. A product will not be shown on the ' .
+            'website if all of the categories it belonged to are deleted.');
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
+            $this->switchToCancelButton();
+        }
+    }
 
-		$item_list = $this->getItemList('integer');
+    private function getDependentCategories($dep, $item_list)
+    {
+        $dep_subcategories = new AdminListDependency();
+        $dep_subcategories->setTitle(
+            Store::_('sub-category'),
+            Store::_('sub-categories')
+        );
 
-		$dep = new AdminListDependency();
-		$dep->setTitle(Store::_('category'), Store::_('categories'));
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'Category', 'integer:id', null, 'text:title', 'title',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
+        $dep_subcategories->entries = AdminListDependency::queryEntries(
+            $this->app->db,
+            'Category',
+            'integer:id',
+            'integer:parent',
+            'text:title',
+            'title',
+            'parent in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-		$this->getDependentCategories($dep, $item_list);
+        $dep->addDependency($dep_subcategories);
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content_type = 'text/xml';
-		$message->content = $dep->getMessage();
+        $this->getDependentProducts($dep, $item_list);
 
-		$note = $this->ui->getWidget('note');
-		$note->visible = true;
-		$note->content_type = 'text/xml';
-		$note->content = Store::_('Products contained in deleted categories '.
-			'will <em>not</em> be deleted. A product will not be shown on the '.
-			'website if all of the categories it belonged to are deleted.');
+        if ($dep_subcategories->getItemCount() > 0) {
+            $entries = [];
+            foreach ($dep_subcategories->entries as $entry) {
+                $entries[] = $this->app->db->quote($entry->id, 'integer');
+            }
 
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
-			$this->switchToCancelButton();
-	}
+            $item_list = implode(',', $entries);
 
-	// }}}
-	// {{{ protected function getDependentCategories()
+            $this->getDependentCategories($dep_subcategories, $item_list);
+        }
+    }
 
-	private function getDependentCategories($dep, $item_list)
-	{
-		$dep_subcategories = new AdminListDependency();
-		$dep_subcategories->setTitle(
-			Store::_('sub-category'), Store::_('sub-categories'));
+    private function getDependentProducts($dep, $item_list)
+    {
+        $dep_products = new StoreCategoryProductDependency();
+        $dep_products->summaries = AdminSummaryDependency::querySummaries(
+            $this->app->db,
+            'CategoryProductBinding',
+            'integer:product',
+            'integer:category',
+            'category in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-		$dep_subcategories->entries = AdminListDependency::queryEntries(
-			$this->app->db, 'Category', 'integer:id', 'integer:parent',
-			'text:title', 'title', 'parent in ('.$item_list.')',
-			AdminDependency::DELETE);
+        $dep->addDependency($dep_products);
+    }
 
-		$dep->addDependency($dep_subcategories);
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		$this->getDependentProducts($dep, $item_list);
+        $id = $this->getFirstItem();
+        $delete_entry = $this->navbar->popEntry();
 
-		if ($dep_subcategories->getItemCount() > 0) {
-			$entries = array();
-			foreach ($dep_subcategories->entries as $entry)
-				$entries[] = $this->app->db->quote($entry->id, 'integer');
+        $navbar_rs = SwatDB::executeStoredProc(
+            $this->app->db,
+            'getCategoryNavbar',
+            [$id]
+        );
 
-			$item_list = implode(',', $entries);
+        foreach ($navbar_rs as $row) {
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                $row->title,
+                'Category/Index?id=' . $row->id
+            ));
+        }
 
-			$this->getDependentCategories($dep_subcategories, $item_list);
-		}
-	}
+        if (!$this->single_delete) {
+            $this->navbar->popEntry();
+        }
 
-	// }}}
-	// {{{ protected function getDependentProducts()
-
-	private function getDependentProducts($dep, $item_list)
-	{
-		$dep_products = new StoreCategoryProductDependency();
-		$dep_products->summaries = AdminSummaryDependency::querySummaries(
-			$this->app->db, 'CategoryProductBinding', 'integer:product',
-			'integer:category', 'category in ('.$item_list.')',
-			AdminDependency::DELETE);
-
-		$dep->addDependency($dep_products);
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-
-		$id = $this->getFirstItem();
-		$delete_entry = $this->navbar->popEntry();
-
-		$navbar_rs = SwatDB::executeStoredProc($this->app->db,
-			'getCategoryNavbar', array($id));
-
-		foreach ($navbar_rs as $row)
-			$this->navbar->addEntry(new SwatNavBarEntry($row->title,
-				'Category/Index?id='.$row->id));
-
-		if (!$this->single_delete)
-			$this->navbar->popEntry();
-
-		$this->title = $this->navbar->getLastEntry()->title;
-		$this->navbar->addEntry($delete_entry);
-	}
-
-	// }}}
+        $this->title = $this->navbar->getLastEntry()->title;
+        $this->navbar->addEntry($delete_entry);
+    }
 }
-
-?>

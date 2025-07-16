@@ -1,109 +1,94 @@
 <?php
 
 /**
- * Edit page for Catalogs
+ * Edit page for Catalogs.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCatalogEdit extends AdminDBEdit
 {
-	protected StoreCatalog $catalog;
+    protected StoreCatalog $catalog;
 
-	// init phase
-	// {{{ protected function initInternal()
+    // init phase
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->getUiXml());
+        $this->ui->mapClassPrefixToPath('Store', 'Store');
+        $this->ui->loadFromXML($this->getUiXml());
 
-		$this->initCatalog();
-	}
+        $this->initCatalog();
+    }
 
-	// }}}
-	// {{{ protected function initCatalog()
+    protected function initCatalog()
+    {
+        $class_name = SwatDBClassMap::get(StoreCatalog::class);
+        $this->catalog = new $class_name();
+        $this->catalog->setDatabase($this->app->db);
 
-	protected function initCatalog()
-	{
-		$class_name = SwatDBClassMap::get(StoreCatalog::class);
-		$this->catalog = new $class_name();
-		$this->catalog->setDatabase($this->app->db);
+        if ($this->id !== null) {
+            if (!$this->catalog->load($this->id)) {
+                throw new AdminNotFoundException(
+                    sprintf(
+                        Store::_('Catalog with id “%s” not found.'),
+                        $this->id
+                    )
+                );
+            }
+        }
+    }
 
-		if ($this->id !== null) {
-			if (!$this->catalog->load($this->id))
-				throw new AdminNotFoundException(
-					sprintf(Store::_('Catalog with id “%s” not found.'),
-						$this->id));
-		}
-	}
+    protected function getUiXml()
+    {
+        return __DIR__ . '/edit.xml';
+    }
 
-	// }}}
-	// {{{ protected function getUiXml()
+    // process phase
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/edit.xml';
-	}
+    protected function saveDBData(): void
+    {
+        $this->updateCatalog();
+        $this->catalog->save();
 
-	// }}}
+        $message = new SwatMessage(sprintf(
+            Store::_('“%s” has been saved.'),
+            $this->catalog->title
+        ));
 
-	// process phase
-	// {{{ protected function saveDBData()
+        $this->app->messages->add($message);
 
-	protected function saveDBData(): void
-	{
-		$this->updateCatalog();
-		$this->catalog->save();
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$message = new SwatMessage(sprintf(
-			Store::_('“%s” has been saved.'),
-			$this->catalog->title));
+    protected function updateCatalog()
+    {
+        $values = $this->ui->getValues([
+            'title', 'in_season']);
 
-		$this->app->messages->add($message);
+        $this->catalog->title = $values['title'];
+        $this->catalog->in_season = $values['in_season'];
+    }
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+    // build phase
 
-	// }}}
-	// {{{ protected function updateCatalog()
+    protected function loadDBData()
+    {
+        $this->ui->setValues($this->catalog->getAttributes());
+    }
 
-	protected function updateCatalog()
-	{
-		$values = $this->ui->getValues(array(
-			'title', 'in_season'));
+    protected function buildNavBar()
+    {
+        if ($this->catalog->title !== null) {
+            $this->navbar->createEntry(
+                $this->catalog->title,
+                sprintf('Catalog/Details?id=%s', $this->catalog->id)
+            );
+        }
 
-		$this->catalog->title     = $values['title'];
-		$this->catalog->in_season = $values['in_season'];
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ protected function loadDBData()
-
-	protected function loadDBData()
-	{
-		$this->ui->setValues($this->catalog->getAttributes());
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		if ($this->catalog->title !== null)
-			$this->navbar->createEntry($this->catalog->title,
-				sprintf('Catalog/Details?id=%s', $this->catalog->id));
-
-		parent::buildNavBar();
-	}
-
-	// }}}
+        parent::buildNavBar();
+    }
 }
-
-?>

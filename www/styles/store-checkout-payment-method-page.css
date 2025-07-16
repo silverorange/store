@@ -1,21 +1,23 @@
 #payment_method_form {
-	border: 0;
-	padding: 0;
+  border: 0;
+  padding: 0;
 }
 
 .add-new {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .swat-form #payment_method_save_field label {
-	font-weight: normal;
+  font-weight: normal;
 }
 
-.swat-footer-form-field { clear: both; }
+.swat-footer-form-field {
+  clear: both;
+}
 
 #card_verification_value_field .swat-entry,
 #account_card_verification_value_field .swat-entry {
-	width: auto;
+  width: auto;
 }
 
 #card_verification_value_field .swat-form-field-contents,
@@ -30,48 +32,47 @@
 
 #card_verification_value_field .swat-note img,
 #account_card_verification_value_field .swat-note img {
-	vertical-align: middle;
+  vertical-align: middle;
 }
-
 
 /* Multiple Payments Table */
 
 .multiple-payment-table {
-	margin: 0;
+  margin: 0;
 }
 
 .multiple-payment-table th.payment {
-	width: 98%;
+  width: 98%;
 }
 
 .multiple-payment-table .payment-amount {
-	text-align: right;
+  text-align: right;
 }
 
 .multiple-payment-table tbody th {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .multiple-payment-table tbody th.payment,
 .multiple-payment-table tbody td.payment-amount {
-	border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .multiple-payment-table tfoot th {
-	text-align: right;
+  text-align: right;
 }
 
 .multiple-payment-table tfoot td.payment-amount {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .multiple-payment-table .payment-remaining .payment-amount {
-	background: #ffe3e0;
-	color: #c00;
-	font-weight: bold;
-	border: 1px solid #dc6e66;
+  background: #ffe3e0;
+  color: #c00;
+  font-weight: bold;
+  border: 1px solid #dc6e66;
 }
 
 .new-payment-link {
-	margin: 0.5em 0 0 0;
+  margin: 0.5em 0 0 0;
 }

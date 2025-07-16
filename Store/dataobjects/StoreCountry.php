@@ -1,428 +1,388 @@
 <?php
 
 /**
- * A country data object
+ * A country data object.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCountry extends SwatDBDataObject
 {
-	// {{{ protected properties
+    /**
+     * Unique identifier of this country.
+     *
+     * @var string
+     */
+    protected $id;
 
-	/**
-	 * Unique identifier of this country
-	 *
-	 * @var string
-	 */
-	protected $id;
+    /**
+     * User visible title of this country.
+     *
+     * @var string
+     */
+    protected $title;
 
-	/**
-	 * User visible title of this country
-	 *
-	 * @var string
-	 */
-	protected $title;
+    /**
+     * Whether or not to show this country on the front-end.
+     *
+     * @var bool
+     */
+    protected $visible;
 
-	/**
-	 * Whether or not to show this country on the front-end
-	 *
-	 * @var boolean
-	 */
-	protected $visible;
+    /**
+     * Whether or not this country has a postal code system.
+     *
+     * Some countries, such as the Republic of Ireland do not.
+     *
+     * @var bool
+     */
+    protected $has_postal_code;
 
-	/**
-	 * Whether or not this country has a postal code system
-	 *
-	 * Some countries, such as the Republic of Ireland do not.
-	 *
-	 * @var boolean
-	 */
-	protected $has_postal_code;
+    public function getRegionTitle()
+    {
+        switch ($this->id) {
+            case 'AU':
+            case 'MY':
+                $title = Store::_('State/Territory');
+                break;
 
-	// }}}
-	// {{{ public function getRegionTitle()
+            case 'AR':
+            case 'BE':
+            case 'CN':
+            case 'CR':
+            case 'CZ':
+            case 'ES':
+            case 'ID':
+            case 'IT':
+            case 'KP':
+            case 'NZ':
+            case 'UY':
+            case 'VE':
+                $title = Store::_('Province');
+                break;
 
-	public function getRegionTitle()
-	{
-		switch ($this->id) {
-		case 'AU':
-		case 'MY':
-			$title = Store::_('State/Territory');
-			break;
-		case 'AR':
-		case 'BE':
-		case 'CN':
-		case 'CR':
-		case 'CZ':
-		case 'ES':
-		case 'ID':
-		case 'IT':
-		case 'KP':
-		case 'NZ':
-		case 'UY':
-		case 'VE':
-			$title = Store::_('Province');
-			break;
-		case 'AT':
-		case 'BR':
-		case 'IN':
-		case 'MX':
-		case 'OM':
-		case 'US':
-			$title = Store::_('State');
-			break;
-		case 'CA':
-			$title = Store::_('Province/Territory');
-			break;
-		case 'CL':
-			$title = Store::_('Municipality');
-			break;
-		case 'DE':
-			$title = Store::_('Land');
-			break;
-		case 'DK':
-		case 'FI':
-		case 'GL':
-			$title = Store::_('Postal District');
-			break;
-		case 'ES':
-		case 'GB':
-		case 'IE':
-			$title = Store::_('County');
-			break;
-		case 'FR':
-		case 'ZA':
-			$title = Store::_('Locality');
-			break;
-		case 'IL':
-		case 'PK':
-			$title = Store::_('District');
-			break;
-		case 'LV':
-			$title = Store::_('Amalgameted Municipality');
-			break;
-		case 'PT':
-			$title = Store::_('Territory');
-			break;
-		case 'RO':
-			$title = Store::_('County/Sector');
-			break;
-		case 'TW':
-			$title = Store::_('Island');
-			break;
-		default:
-			$title = Store::_('Region');
-			break;
-		}
+            case 'AT':
+            case 'BR':
+            case 'IN':
+            case 'MX':
+            case 'OM':
+            case 'US':
+                $title = Store::_('State');
+                break;
 
-		return $title;
-	}
+            case 'CA':
+                $title = Store::_('Province/Territory');
+                break;
 
-	// }}}
-	// {{{ public function getRegionRequired()
+            case 'CL':
+                $title = Store::_('Municipality');
+                break;
 
-	public function getRegionRequired()
-	{
-		switch ($this->id) {
-		case 'AU':
-		case 'BR':
-		case 'CA':
-		case 'CN':
-		case 'CR':
-		case 'IT':
-		case 'JP':
-		case 'KP':
-		case 'MX':
-		case 'MY':
-		case 'RO':
-		case 'RU':
-		case 'US':
-			$required = true;
-			break;
-		default:
-			$required = false;
-			break;
-		}
+            case 'DE':
+                $title = Store::_('Land');
+                break;
 
-		return $required;
-	}
+            case 'DK':
+            case 'FI':
+            case 'GL':
+                $title = Store::_('Postal District');
+                break;
 
-	// }}}
-	// {{{ public function getRegionVisible()
+            case 'ES':
+            case 'GB':
+            case 'IE':
+                $title = Store::_('County');
+                break;
 
-	public function getRegionVisible()
-	{
-		switch ($this->id) {
-		case 'EE':
-		case 'IL':
-		case 'DE':
-		case 'FR':
-		case 'BE':
-		case 'NZ':
-		case 'CR':
-		case 'CZ':
-		case 'FJ':
-		case 'IS':
-		case 'LU':
-		case 'NL':
-		case 'NO':
-		case 'PL':
-		case 'SG':
-		case 'SE':
-		case 'AE':
-		case 'AT':
-		case 'OM':
-			$visible = false;
-			break;
-		default:
-			$visible = true;
-			break;
-		}
+            case 'FR':
+            case 'ZA':
+                $title = Store::_('Locality');
+                break;
 
-		return $visible;
-	}
+            case 'IL':
+            case 'PK':
+                $title = Store::_('District');
+                break;
 
-	// }}}
-	// {{{ public function getRegionSelectTitle()
+            case 'LV':
+                $title = Store::_('Amalgameted Municipality');
+                break;
 
-	public function getRegionSelectTitle()
-	{
-		switch ($this->id) {
-		case 'AU':
-		case 'MY':
-			$title = Store::_('Select a State/Territory …');
-			break;
-		case 'IT':
-			$title = Store::_('Select a Province …');
-			break;
-		case 'BR':
-		case 'US':
-			$title = Store::_('Select a State …');
-			break;
-		case 'CA':
-			$title = Store::_('Select a Province/Territory …');
-			break;
-		default:
-			$title = Store::_('Select a Region …');
-			break;
-		}
+            case 'PT':
+                $title = Store::_('Territory');
+                break;
 
-		return $title;
-	}
+            case 'RO':
+                $title = Store::_('County/Sector');
+                break;
 
-	// }}}
-	// {{{ public function getPostalCodeTitle()
+            case 'TW':
+                $title = Store::_('Island');
+                break;
 
-	public function getPostalCodeTitle()
-	{
-		switch ($this->id) {
-		case 'AU':
-		case 'CN':
-		case 'GB':
-		case 'IE':
-		case 'NZ':
-		case 'SG':
-			$title = Store::_('Postcode');
-			break;
-		case 'PK':
-			$title = Store::_('Post Code');
-			break;
-		case 'US':
-			$title = Store::_('ZIP Code');
-			break;
-		default:
-			$title = Store::_('Postal Code');
-			break;
-		}
+            default:
+                $title = Store::_('Region');
+                break;
+        }
 
-		return $title;
-	}
+        return $title;
+    }
 
-	// }}}
-	// {{{ public function getPostalCodeRequired()
+    public function getRegionRequired()
+    {
+        switch ($this->id) {
+            case 'AU':
+            case 'BR':
+            case 'CA':
+            case 'CN':
+            case 'CR':
+            case 'IT':
+            case 'JP':
+            case 'KP':
+            case 'MX':
+            case 'MY':
+            case 'RO':
+            case 'RU':
+            case 'US':
+                $required = true;
+                break;
 
-	public function getPostalCodeRequired()
-	{
-		return $this->has_postal_code;
-	}
+            default:
+                $required = false;
+                break;
+        }
 
-	// }}}
-	// {{{ public function getCityTitle()
+        return $required;
+    }
 
-	public function getCityTitle()
-	{
-		switch ($this->id) {
-		case 'GB':
-			$title = Store::_('City / Post Town');
-			break;
-		default:
-			$title = Store::_('City');
-			break;
-		}
+    public function getRegionVisible()
+    {
+        switch ($this->id) {
+            case 'EE':
+            case 'IL':
+            case 'DE':
+            case 'FR':
+            case 'BE':
+            case 'NZ':
+            case 'CR':
+            case 'CZ':
+            case 'FJ':
+            case 'IS':
+            case 'LU':
+            case 'NL':
+            case 'NO':
+            case 'PL':
+            case 'SG':
+            case 'SE':
+            case 'AE':
+            case 'AT':
+            case 'OM':
+                $visible = false;
+                break;
 
-		return $title;
-	}
+            default:
+                $visible = true;
+                break;
+        }
 
-	// }}}
-	// {{{ public function getCityRequired()
+        return $visible;
+    }
 
-	public function getCityRequired()
-	{
-		switch ($this->id) {
-		default:
-			$required = true;
-			break;
-		}
+    public function getRegionSelectTitle()
+    {
+        switch ($this->id) {
+            case 'AU':
+            case 'MY':
+                $title = Store::_('Select a State/Territory …');
+                break;
 
-		return $required;
-	}
+            case 'IT':
+                $title = Store::_('Select a Province …');
+                break;
 
-	// }}}
-	// {{{ public static function getTitleById()
+            case 'BR':
+            case 'US':
+                $title = Store::_('Select a State …');
+                break;
 
-	/**
-	 * Get the title of the country from an id.
-	 *
-	 * @param MDB2_Driver_Common $db the database connection.
-	 * @param string $id the ISO-3166-1 alpha-2 code for the country of the
-	 *                    province/state to load.
-	 *
-	 * @return string the title of the country, or null if not found.
-	 */
-	public static function getTitleById(MDB2_Driver_Common $db, $id)
-	{
-		$sql = sprintf('select title from Country where id = %s',
-			$db->quote($id, 'text'));
+            case 'CA':
+                $title = Store::_('Select a Province/Territory …');
+                break;
 
-		$title = SwatDB::queryOne($db, $sql);
+            default:
+                $title = Store::_('Select a Region …');
+                break;
+        }
 
-		return $title;
-	}
+        return $title;
+    }
 
-	// }}}
-	// {{{ protected function init()
+    public function getPostalCodeTitle()
+    {
+        switch ($this->id) {
+            case 'AU':
+            case 'CN':
+            case 'GB':
+            case 'IE':
+            case 'NZ':
+            case 'SG':
+                $title = Store::_('Postcode');
+                break;
 
-	protected function init()
-	{
-		$this->table = 'Country';
-		$this->id_field = 'text:id';
-	}
+            case 'PK':
+                $title = Store::_('Post Code');
+                break;
 
-	// }}}
-	// {{{ protected function getProtectedPropertyList()
+            case 'US':
+                $title = Store::_('ZIP Code');
+                break;
 
-	protected function getProtectedPropertyList()
-	{
-		return array_merge(
-			parent::getProtectedPropertyList(),
-			array(
-				'id' => array(
-					'get' => 'getId',
-					'set' => 'setId',
-				),
-				'title' => array(
-					'get' => 'getTitle',
-					'set' => 'setTitle',
-				),
-				'visible' => array(
-					'get' => 'getVisible',
-					'set' => 'setVisible',
-				),
-				'has_postal_code' => array(
-					'get' => 'getHasPostalCode',
-					'set' => 'setHasPostalCode',
-				)
-			)
-		);
-	}
+            default:
+                $title = Store::_('Postal Code');
+                break;
+        }
 
-	// }}}
+        return $title;
+    }
 
-	// getters
-	// {{{ public function getId()
+    public function getPostalCodeRequired()
+    {
+        return $this->has_postal_code;
+    }
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getCityTitle()
+    {
+        switch ($this->id) {
+            case 'GB':
+                $title = Store::_('City / Post Town');
+                break;
 
-	// }}}
-	// {{{ public function getTitle()
+            default:
+                $title = Store::_('City');
+                break;
+        }
 
-	public function getTitle()
-	{
-		return $this->title;
-	}
+        return $title;
+    }
 
-	// }}}
-	// {{{ public function getVisible()
+    public function getCityRequired()
+    {
+        switch ($this->id) {
+            default:
+                $required = true;
+                break;
+        }
 
-	public function getVisible()
-	{
-		return $this->visible;
-	}
+        return $required;
+    }
 
-	// }}}
-	// {{{ public function getHasPostalCode()
+    /**
+     * Get the title of the country from an id.
+     *
+     * @param MDB2_Driver_Common $db the database connection
+     * @param string             $id the ISO-3166-1 alpha-2 code for the country of the
+     *                               province/state to load
+     *
+     * @return string the title of the country, or null if not found
+     */
+    public static function getTitleById(MDB2_Driver_Common $db, $id)
+    {
+        $sql = sprintf(
+            'select title from Country where id = %s',
+            $db->quote($id, 'text')
+        );
 
-	public function getHasPostalCode()
-	{
-		return $this->has_postal_code;
-	}
+        return SwatDB::queryOne($db, $sql);
+    }
 
-	// }}}
+    protected function init()
+    {
+        $this->table = 'Country';
+        $this->id_field = 'text:id';
+    }
 
-	// setters
-	// {{{ public function setId()
+    protected function getProtectedPropertyList()
+    {
+        return array_merge(
+            parent::getProtectedPropertyList(),
+            [
+                'id' => [
+                    'get' => 'getId',
+                    'set' => 'setId',
+                ],
+                'title' => [
+                    'get' => 'getTitle',
+                    'set' => 'setTitle',
+                ],
+                'visible' => [
+                    'get' => 'getVisible',
+                    'set' => 'setVisible',
+                ],
+                'has_postal_code' => [
+                    'get' => 'getHasPostalCode',
+                    'set' => 'setHasPostalCode',
+                ],
+            ]
+        );
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    // getters
 
-	// }}}
-	// {{{ public function setTitle()
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setTitle($title)
-	{
-		$this->title = $title;
-	}
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	// }}}
-	// {{{ public function setVisible()
+    public function getVisible()
+    {
+        return $this->visible;
+    }
 
-	public function setVisible($visible)
-	{
-		$this->visible = $visible;
-	}
+    public function getHasPostalCode()
+    {
+        return $this->has_postal_code;
+    }
 
-	// }}}
-	// {{{ public function setHasPostalCode()
+    // setters
 
-	public function setHasPostalCode($has_postal_code)
-	{
-		$this->has_postal_code = $has_postal_code;
-	}
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
-	// }}}
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	// loader methods
-	// {{{ protected function loadProvStates()
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+    }
 
-	protected function loadProvStates()
-	{
-		$sql = sprintf(
-			'select * from ProvState where country = %s',
-			$this->db->quote($this->id, 'text')
-		);
+    public function setHasPostalCode($has_postal_code)
+    {
+        $this->has_postal_code = $has_postal_code;
+    }
 
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreProvStateWrapper'));
-	}
+    // loader methods
 
-	// }}}
+    protected function loadProvStates()
+    {
+        $sql = sprintf(
+            'select * from ProvState where country = %s',
+            $this->db->quote($this->id, 'text')
+        );
+
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
+        );
+    }
 }
-
-?>

@@ -1,81 +1,91 @@
 {
-	"name": "silverorange/store",
-	"description": "Framework for e-commerce sites.",
-	"type": "library",
-	"keywords": [ "e-commerce", "product", "catalog" ],
-	"homepage": "https://github.com/silverorange/store",
-	"license": "LGPL-2.1",
-	"authors": [
-		{
-			"name": "Charles Waddell",
-			"email": "charles@silverorange.com"
-		},
-		{
-			"name": "Isaac Grant",
-			"email": "isaac@silverorange.com"
-		},
-		{
-			"name": "Michael Gauthier",
-			"email": "mike@silverorange.com"
-		},
-		{
-			"name": "Nathan Frederikson",
-			"email": "nathan@silverorange.com"
-		},
-		{
-			"name": "Nick Burka",
-			"email": "nick@silverorange.com"
-		},
-		{
-			"name": "Stephen DesRoches",
-			"email": "desroches@silverorange.com"
-		},
-		{
-			"name": "Steven Garrity",
-			"email": "steven@silverorange.com"
-		}
-	],
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://composer.silverorange.com",
-			"only": ["silverorange/*"]
-		}
-	],
-	"require": {
-		"php": ">=8.2",
-		"ext-imagick": "*",
-		"pear/text_password": "^1.1.1",
-		"pear/validate_finance_creditcard": ">=0.5.2",
-		"silverorange/admin": "^6.2.0 || ^7.0.0",
-		"silverorange/site": "^14.5.0 || ^15.0.0",
-		"silverorange/swat": "^7.3.0",
-		"silverorange/xml_rpc_ajax": "^3.1.0",
-		"silverorange/yui": "^1.0.11"
-	},
-	"require-dev": {
-		"phpstan/phpstan": "^1.12",
-		"silverorange/coding-standard": "^1.0.0"
-	},
-	"suggest": {
-		"authorizenet/authorizenet": "Payments with Authorize.net.",
-		"braintree/braintree_php": "Payments with Braintree",
-		"pear/payment_paypal_soap": "Payments with PayPal.",
-		"silverorange/deliverance": "Email mailing list support."
-	},
-	"scripts": {
-		"lint": "./vendor/bin/phpcs",
-		"phpstan": "./vendor/bin/phpstan analyze",
-		"post-install-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src",
-		"post-update-cmd": "./vendor/bin/phpcs --config-set installed_paths vendor/silverorange/coding-standard/src"
-	},
-	"autoload": {
-		"classmap": [ "Store/" ]
-	},
-	"config": {
-		"sort-packages": true,
-		"allow-plugins": {
-			"php-http/discovery": true
-		}
-	}
+  "name": "silverorange/store",
+  "description": "Framework for e-commerce sites.",
+  "type": "library",
+  "keywords": [
+    "e-commerce",
+    "product",
+    "catalog"
+  ],
+  "homepage": "https://github.com/silverorange/store",
+  "license": "LGPL-2.1",
+  "authors": [
+    {
+      "name": "Charles Waddell",
+      "email": "charles@silverorange.com"
+    },
+    {
+      "name": "Isaac Grant",
+      "email": "isaac@silverorange.com"
+    },
+    {
+      "name": "Michael Gauthier",
+      "email": "mike@silverorange.com"
+    },
+    {
+      "name": "Nathan Frederikson",
+      "email": "nathan@silverorange.com"
+    },
+    {
+      "name": "Nick Burka",
+      "email": "nick@silverorange.com"
+    },
+    {
+      "name": "Stephen DesRoches",
+      "email": "desroches@silverorange.com"
+    },
+    {
+      "name": "Steven Garrity",
+      "email": "steven@silverorange.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://composer.silverorange.com",
+      "only": [
+        "silverorange/*"
+      ]
+    }
+  ],
+  "require": {
+    "php": ">=8.2",
+    "ext-imagick": "*",
+    "pear/text_password": "^1.1.1",
+    "pear/validate_finance_creditcard": ">=0.5.2",
+    "silverorange/admin": "^6.2.0 || ^7.0.0",
+    "silverorange/site": "^14.5.0 || ^15.0.0",
+    "silverorange/swat": "^7.3.0",
+    "silverorange/xml_rpc_ajax": "^3.1.0",
+    "silverorange/yui": "^1.0.11"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "3.64.0",
+    "phpstan/phpstan": "^1.12"
+  },
+  "suggest": {
+    "authorizenet/authorizenet": "Payments with Authorize.net.",
+    "braintree/braintree_php": "Payments with Braintree",
+    "pear/payment_paypal_soap": "Payments with PayPal.",
+    "silverorange/deliverance": "Email mailing list support."
+  },
+  "scripts": {
+    "phpcs": "./vendor/bin/php-cs-fixer check -v",
+    "phpcs:ci": "./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --no-interaction --show-progress=none --diff --using-cache=no -vvv",
+    "phpcs:write": "./vendor/bin/php-cs-fixer fix -v",
+    "phpstan": "./vendor/bin/phpstan analyze",
+    "phpstan:ci": "./vendor/bin/phpstan analyze -vvv --no-progress --memory-limit 2G",
+    "phpstan:baseline": "./vendor/bin/phpstan analyze --generate-baseline"
+  },
+  "autoload": {
+    "classmap": [
+      "Store/"
+    ]
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
 }

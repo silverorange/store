@@ -1,118 +1,97 @@
 <?php
 
 /**
- * An admin menu view that has an item search box at the top
+ * An admin menu view that has an item search box at the top.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAdminMenuView extends AdminMenuView
 {
-	// {{{ protected properties
+    /**
+     * @var SwatForm
+     */
+    protected $form;
 
-	/**
-	 * @var SwatForm
-	 */
-	protected $form;
+    /**
+     * @var SwatEntry
+     */
+    protected $item_entry;
 
-	/**
-	 * @var SwatEntry
-	 */
-	protected $item_entry;
+    /**
+     * Creates a new store admin menu view with an item search box at the top.
+     *
+     * @param string $id the unique identifier of this menu-view
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+        $this->html_head_entry_set->addEntry(
+            'packages/store/admin/styles/store-quick-search.css'
+        );
+    }
 
-	// }}}
-	// {{{ public function __construct()
+    /**
+     * Gets the form containing the item search box of this menu.
+     *
+     * @return SwatForm
+     */
+    public function getForm()
+    {
+        return $this->getCompositeWidget('form');
+    }
 
-	/**
-	 * Creates a new store admin menu view with an item search box at the top
-	 *
-	 * @param string $id the unique identifier of this menu-view.
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-		$this->html_head_entry_set->addEntry(
-			'packages/store/admin/styles/store-quick-search.css'
-		);
-	}
+    /**
+     * Gets the item search box of this menu.
+     *
+     * @return SwatEntry
+     */
+    public function getItemEntry()
+    {
+        $this->confirmCompositeWidgets();
 
-	// }}}
-	// {{{public function getForm()
+        return $this->item_entry;
+    }
 
-	/**
-	 * Gets the form containing the item search box of this menu
-	 *
-	 * @return SwatForm
-	 */
-	public function getForm()
-	{
-		return $this->getCompositeWidget('form');
-	}
+    /**
+     * Displays this admin menu content.
+     *
+     * The store admin menu displays an item search form on top of the menu.
+     */
+    protected function displayMenuContent()
+    {
+        // only show if we have access to products
+        if ($this->store->getComponentByName('Product') !== null) {
+            $form = $this->getCompositeWidget('form');
+            $form->display();
+        }
 
-	// }}}
-	// {{{ public function getItemEntry()
+        parent::displayMenuContent();
+    }
 
-	/**
-	 * Gets the item search box of this menu
-	 *
-	 * @return SwatEntry
-	 */
-	public function getItemEntry()
-	{
-		$this->confirmCompositeWidgets();
-		return $this->item_entry;
-	}
+    protected function createCompositeWidgets()
+    {
+        parent::createCompositeWidgets();
 
-	// }}}
-	// {{{ protected function displayMenuContent()
+        $entry = new SwatEntry('quick_search_item');
+        $entry->placeholder = Store::_('Item #');
+        $entry->access_key = '4';
+        $this->item_entry = $entry;
 
-	/**
-	 * Displays this admin menu content
-	 *
-	 * The store admin menu displays an item search form on top of the menu.
-	 */
-	protected function displayMenuContent()
-	{
-		// only show if we have access to products
-		if ($this->store->getComponentByName('Product') !== null) {
-			$form = $this->getCompositeWidget('form');
-			$form->display();
-		}
+        $button = new SwatButton();
+        $button->stock_id = 'submit';
+        $button->title = Store::_('Go');
 
-		parent::displayMenuContent();
-	}
+        $field = new SwatFormField('quick_search_item_field');
+        $field->add($entry);
+        $field->add($button);
 
-	// }}}
-	// {{{ protected function createCompositeWidgets()
+        $form = new SwatForm('quick_search_form');
+        $form->action = 'Product';
+        $form->add($field);
 
-	protected function createCompositeWidgets()
-	{
-		parent::createCompositeWidgets();
+        $this->form = $form;
 
-		$entry = new SwatEntry('quick_search_item');
-		$entry->placeholder = Store::_('Item #');
-		$entry->access_key = '4';
-		$this->item_entry = $entry;
-
-		$button = new SwatButton();
-		$button->stock_id = 'submit';
-		$button->title = Store::_('Go');
-
-		$field = new SwatFormField('quick_search_item_field');
-		$field->add($entry);
-		$field->add($button);
-
-		$form = new SwatForm('quick_search_form');
-		$form->action = 'Product';
-		$form->add($field);
-
-		$this->form = $form;
-
-		$this->addCompositeWidget($this->form, 'form');
-	}
-
-	// }}}
+        $this->addCompositeWidget($this->form, 'form');
+    }
 }
-
-?>

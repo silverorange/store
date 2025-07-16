@@ -1,129 +1,117 @@
 <?php
 
 /**
- * A sale with a percentage discount
+ * A sale with a percentage discount.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreItem
  */
 class StoreSaleDiscount extends SwatDBDataObject
 {
-	// {{{ public properties
+    /**
+     * Unique identifier for this sale.
+     *
+     * @var int
+     */
+    public $id;
 
-	/**
-	 * Unique identifier for this sale
-	 *
-	 * @var integer
-	 */
-	public $id;
+    /**
+     * A short, textual identifier for this sale.
+     *
+     * @var string
+     */
+    public $shortname;
 
-	/**
-	 * A short, textual identifier for this sale
-	 *
-	 * @var string
-	 */
-	public $shortname;
+    /**
+     * Discount percentage.
+     *
+     * @var float
+     */
+    public $discount_percentage;
 
-	/**
-	 * Discount percentage
-	 *
-	 * @var float
-	 */
-	public $discount_percentage;
+    /**
+     * A title for describing this sale.
+     *
+     * @var string
+     */
+    public $title;
 
-	/**
-	 * A title for describing this sale
-	 *
-	 * @var string
-	 */
-	public $title;
+    /**
+     * Start data.
+     *
+     * @var SwatDate
+     */
+    public $start_date;
 
-	/**
-	 * Start data
-	 *
-	 * @var SwatDate
-	 */
-	public $start_date;
+    /**
+     * End date.
+     *
+     * @var SwatDate
+     */
+    public $end_date;
 
-	/**
-	 * End date
-	 *
-	 * @var SwatDate
-	 */
-	public $end_date;
+    /**
+     * Loads a sale discount by its shortname.
+     *
+     * @param string $shortname the shortname of the sale discount to load
+     */
+    public function loadFromShortname($shortname)
+    {
+        $this->checkDB();
+        $row = null;
 
-	// }}}
-	// {{{ public function loadFromShortname()
+        if ($this->table !== null) {
+            $sql = sprintf(
+                'select * from %s where shortname = %s',
+                $this->table,
+                $this->db->quote($shortname, 'text')
+            );
 
-	/**
-	 * Loads a sale discount by its shortname
-	 *
-	 * @param string $shortname the shortname of the sale discount to load.
-	 */
-	public function loadFromShortname($shortname)
-	{
-		$this->checkDB();
-		$row = null;
+            $rs = SwatDB::query($this->db, $sql, null);
+            $row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+        }
 
-		if ($this->table !== null) {
-			$sql = sprintf('select * from %s where shortname = %s',
-				$this->table,
-				$this->db->quote($shortname, 'text'));
+        if ($row === null) {
+            return false;
+        }
 
-			$rs = SwatDB::query($this->db, $sql, null);
-			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
-		}
+        $this->initFromRow($row);
+        $this->generatePropertyHashes();
 
-		if ($row === null)
-			return false;
+        return true;
+    }
 
-		$this->initFromRow($row);
-		$this->generatePropertyHashes();
-		return true;
-	}
+    /**
+     * Checks if this sale is currently active.
+     *
+     * @param SwatDate $date optional. Date on which to check if the discount is
+     *                       active. If no date is specified, we check to see
+     *                       if the discount is currently active.
+     *
+     * @return bool true if this sale is active and false if it is not
+     */
+    public function isActive(?SwatDate $date = null)
+    {
+        if ($date === null) {
+            $date = new SwatDate();
+        }
 
-	// }}}
-	// {{{ public function isActive()
+        $date->toUTC();
 
-	/**
-	 * Checks if this sale is currently active
-	 *
-	 * @param SwatDate $date optional. Date on which to check if the discount is
-	 *                        active. If no date is specified, we check to see
-	 *                        if the discount is currently active.
-	 *
-	 * @return boolean true if this sale is active and false if it is not.
-	 */
-	public function isActive(SwatDate $date = null)
-	{
-		if ($date === null) {
-			$date = new SwatDate();
-		}
+        return
+            ($this->start_date === null
+                || SwatDate::compare($date, $this->start_date) >= 0)
+            && ($this->end_date === null
+                || SwatDate::compare($date, $this->end_date) <= 0);
+    }
 
-		$date->toUTC();
-
-		return (
-			($this->start_date === null ||
-				SwatDate::compare($date, $this->start_date) >= 0) &&
-			($this->end_date === null ||
-				SwatDate::compare($date, $this->end_date) <= 0)
-		);
-	}
-
-	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		$this->table = 'SaleDiscount';
-		$this->id_field = 'integer:id';
-		$this->registerDateProperty('start_date');
-		$this->registerDateProperty('end_date');
-	}
-
-	// }}}
+    protected function init()
+    {
+        $this->table = 'SaleDiscount';
+        $this->id_field = 'integer:id';
+        $this->registerDateProperty('start_date');
+        $this->registerDateProperty('end_date');
+    }
 }
-
-?>

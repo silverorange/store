@@ -1,87 +1,69 @@
 <?php
 
 /**
- * Search page for Related Products
+ * Search page for Related Products.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductRelatedProduct extends AdminSearch
 {
-	// {{{ private properties
+    private $category_id;
+    private $product_id;
 
-	private $category_id;
-	private $product_id;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->product_id = SiteApplication::initVar('product');
+        $this->category_id = SiteApplication::initVar('category');
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $this->ui->loadFromXML($this->getSearchXml());
+        $this->ui->loadFromXML($this->getUiXml());
 
-		$this->product_id = SiteApplication::initVar('product');
-		$this->category_id = SiteApplication::initVar('category');
+        $this->initCatalogSelector();
+    }
 
-		$this->ui->loadFromXML($this->getSearchXml());
-		$this->ui->loadFromXML($this->getUiXml());
+    /**
+     * Builds the catalog selector. Selector does not get shown unless there is
+     * more than one catalog, as its not useful when there is only one.
+     */
+    private function initCatalogSelector()
+    {
+        $this->ui->getWidget('catalog_selector')->db = $this->app->db;
 
-		$this->initCatalogSelector();
-	}
+        $sql = 'select count(id) from Catalog';
+        $catalog_count = SwatDB::queryOne($this->app->db, $sql);
+        if ($catalog_count == 1) {
+            $this->ui->getWidget('catalog_field')->visible = false;
+        }
+    }
 
-	// }}}
-	// {{{ private function initCatalogSelector()
+    protected function getSearchXml()
+    {
+        return __DIR__ . '/search.xml';
+    }
 
-	/**
-	 * Builds the catalog selector. Selector does not get shown unless there is
-	 * more than one catalog, as its not useful when there is only one.
-	 */
-	private function initCatalogSelector()
-	{
-		$this->ui->getWidget('catalog_selector')->db = $this->app->db;
+    protected function getUiXml()
+    {
+        return __DIR__ . '/related-product.xml';
+    }
 
-		$sql = 'select count(id) from Catalog';
-		$catalog_count = SwatDB::queryOne($this->app->db, $sql);
-		if ($catalog_count == 1)
-			$this->ui->getWidget('catalog_field')->visible = false;
-	}
+    // process phase
 
-	// }}}
-	// {{{ protected function getSearchXml()
+    protected function processInternal()
+    {
+        parent::processInternal();
 
-	protected function getSearchXml()
-	{
-		return __DIR__.'/search.xml';
-	}
+        $form = $this->ui->getWidget('index_form');
+        $view = $this->ui->getWidget('index_view');
 
-	// }}}
-	// {{{ protected function getUiXml()
-
-	protected function getUiXml()
-	{
-		return __DIR__.'/related-product.xml';
-	}
-
-	// }}}
-
-	// process phase
-	// {{{ protected function processInternal()
-
-	protected function processInternal()
-	{
-		parent::processInternal();
-
-		$form = $this->ui->getWidget('index_form');
-		$view = $this->ui->getWidget('index_view');
-
-		if ($form->isProcessed()) {
-			if (count($view->getSelection()) != 0) {
-
-				// relate products
-				$sql = 'insert into ProductRelatedProductBinding
+        if ($form->isProcessed()) {
+            if (count($view->getSelection()) != 0) {
+                // relate products
+                $sql = 'insert into ProductRelatedProductBinding
 						(source_product, related_product)
 					select %1$s, Product.id from Product where
 						Product.id not in (
@@ -90,146 +72,164 @@ class StoreProductRelatedProduct extends AdminSearch
 							where source_product = %1$s)
 						and Product.id in (%2$s)';
 
-				$sql = sprintf($sql,
-					$this->app->db->quote($this->product_id, 'integer'),
-					SwatDB::implodeSelection(
-						$this->app->db, $view->getSelection(), 'integer'));
+                $sql = sprintf(
+                    $sql,
+                    $this->app->db->quote($this->product_id, 'integer'),
+                    SwatDB::implodeSelection(
+                        $this->app->db,
+                        $view->getSelection(),
+                        'integer'
+                    )
+                );
 
-				$num = SwatDB::exec($this->app->db, $sql);
+                $num = SwatDB::exec($this->app->db, $sql);
 
-				$message = new SwatMessage(sprintf(Store::ngettext(
-					'One product has been related to this product.',
-					'%s products have been related to this product.', $num),
-					SwatString::numberFormat($num)),
-					'notice');
+                $message = new SwatMessage(
+                    sprintf(
+                        Store::ngettext(
+                            'One product has been related to this product.',
+                            '%s products have been related to this product.',
+                            $num
+                        ),
+                        SwatString::numberFormat($num)
+                    ),
+                    'notice'
+                );
 
-				$this->app->messages->add($message);
+                $this->app->messages->add($message);
 
-				if (isset($this->app->memcache))
-					$this->app->memcache->flushNs('product');
-			}
+                if (isset($this->app->memcache)) {
+                    $this->app->memcache->flushNs('product');
+                }
+            }
 
-			if ($this->category_id === null)
-				$this->app->relocate('Product/Details?id='.$this->product_id);
-			else
-				$this->app->relocate('Product/Details?id='.$this->product_id.
-					'&category='.$this->category_id);
-		}
+            if ($this->category_id === null) {
+                $this->app->relocate('Product/Details?id=' . $this->product_id);
+            } else {
+                $this->app->relocate('Product/Details?id=' . $this->product_id .
+                        '&category=' . $this->category_id);
+            }
+        }
 
-		$pager = $this->ui->getWidget('pager');
-		$pager->process();
-	}
+        $pager = $this->ui->getWidget('pager');
+        $pager->process();
+    }
 
-	// }}}
+    // build phase
 
-	// build phase
-	// {{{ protected function buildInternal()
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $category_flydown = $this->ui->getWidget('search_category');
 
-		$category_flydown = $this->ui->getWidget('search_category');
+        $tree = $category_flydown->getTree();
+        $tree->addChild(new SwatTreeFlydownNode(-1, '<uncategorized>'));
+        $tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
 
-		$tree = $category_flydown->getTree();
-		$tree->addChild(new SwatTreeFlydownNode(-1, '<uncategorized>'));
-		$tree->addChild(new SwatTreeFlydownNode(new SwatFlydownDivider()));
+        $rs = SwatDB::executeStoredProc(
+            $this->app->db,
+            'getCategoryTree',
+            'null'
+        );
 
-		$rs = SwatDB::executeStoredProc($this->app->db, 'getCategoryTree',
-			'null');
+        $category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
+        $tree->addTree($category_tree);
 
-		$category_tree = SwatDB::getDataTree($rs, 'title', 'id', 'levelnum');
-		$tree->addTree($category_tree);
+        $search_frame = $this->ui->getWidget('search_frame');
+        $search_frame->title = Store::_('Search for Related Products to Add');
 
-		$search_frame = $this->ui->getWidget('search_frame');
-		$search_frame->title = Store::_('Search for Related Products to Add');
+        $search_form = $this->ui->getWidget('search_form');
+        $search_form->action = $this->getRelativeURL();
 
-		$search_form = $this->ui->getWidget('search_form');
-		$search_form->action = $this->getRelativeURL();
+        $form = $this->ui->getWidget('index_form');
+        $form->action = $this->getRelativeURL();
+    }
 
-		$form = $this->ui->getWidget('index_form');
-		$form->action = $this->getRelativeURL();
-	}
+    protected function getTableModel(SwatView $view): ?SwatTableModel
+    {
+        $search = $this->getProductSearch();
 
-	// }}}
-	// {{{ protected function getTableModel()
+        $sql = sprintf(
+            'select count(id) from Product %s where %s',
+            $search->getJoinClause(),
+            $search->getWhereClause()
+        );
 
-	protected function getTableModel(SwatView $view): ?SwatTableModel
-	{
-		$search = $this->getProductSearch();
+        $pager = $this->ui->getWidget('pager');
+        $pager->total_records = SwatDB::queryOne($this->app->db, $sql);
 
-		$sql = sprintf('select count(id) from Product %s where %s',
-			$search->getJoinClause(),
-			$search->getWhereClause());
+        $sql = 'select id, title from Product %s where %s order by %s';
+        $sql = sprintf(
+            $sql,
+            $search->getJoinClause(),
+            $search->getWhereClause(),
+            $this->getOrderByClause($view, $search->getOrderByClause())
+        );
 
-		$pager = $this->ui->getWidget('pager');
-		$pager->total_records = SwatDB::queryOne($this->app->db, $sql);
+        $this->app->db->setLimit($pager->page_size, $pager->current_record);
 
-		$sql = 'select id, title from Product %s where %s order by %s';
-		$sql = sprintf($sql,
-			$search->getJoinClause(),
-			$search->getWhereClause(),
-			$this->getOrderByClause($view, $search->getOrderByClause()));
+        return SwatDB::query($this->app->db, $sql);
+    }
 
-		$this->app->db->setLimit($pager->page_size, $pager->current_record);
+    /**
+     * Gets the product search object.
+     *
+     * @return StoreProductSearch the product search object
+     */
+    protected function getProductSearch()
+    {
+        return new StoreProductSearch($this->ui, $this->app->db);
+    }
 
-		$rs = SwatDB::query($this->app->db, $sql);
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		return $rs;
-	}
+        if ($this->category_id !== null) {
+            $this->navbar->popEntry();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Product Categories'),
+                'Category'
+            ));
 
-	// }}}
-	// {{{ protected function getProductSearch()
+            $cat_navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->category_id]
+            );
 
-	/**
-	 * Gets the product search object
-	 *
-	 * @return StoreProductSearch the product search object.
-	 */
-	protected function getProductSearch()
-	{
-		return new StoreProductSearch($this->ui, $this->app->db);
-	}
+            foreach ($cat_navbar_rs as $entry) {
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $entry->title,
+                    'Category/Index?id=' . $entry->id
+                ));
+            }
+        }
 
-	// }}}
-	// {{{ protected function buildNavBar()
+        if ($this->category_id === null) {
+            $link = sprintf('Product/Details?id=%s', $this->product_id);
+        } else {
+            $link = sprintf(
+                'Product/Details?id=%s&category=%s',
+                $this->product_id,
+                $this->category_id
+            );
+        }
 
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
+        $product_title = SwatDB::queryOneFromTable(
+            $this->app->db,
+            'Product',
+            'text:title',
+            'id',
+            $this->product_id
+        );
 
-		if ($this->category_id !== null) {
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
+        $this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
+        $this->navbar->addEntry(new SwatNavBarEntry(
+            Store::_('Add Related Products')
+        ));
 
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry) {
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-			}
-		}
-
-		if ($this->category_id === null) {
-			$link = sprintf('Product/Details?id=%s', $this->product_id);
-		} else {
-			$link = sprintf('Product/Details?id=%s&category=%s',
-				$this->product_id, $this->category_id);
-		}
-
-		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
-			'text:title', 'id', $this->product_id);
-
-		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			Store::_('Add Related Products')));
-
-		$this->title = $product_title;
-	}
-
-	// }}}
+        $this->title = $product_title;
+    }
 }
-
-?>

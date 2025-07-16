@@ -1,122 +1,99 @@
 <?php
 
 /**
- * Edit page for Shipping Types
+ * Edit page for Shipping Types.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreShippingTypeEdit extends AdminDBEdit
 {
-	// {{{ protected properties
+    /**
+     * @var VanBourgondienShippingType
+     */
+    protected $shipping_type;
 
-	/**
-	 * @var VanBourgondienShippingType
-	 */
-	protected $shipping_type;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->initShippingType();
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $this->ui->loadFromXML($this->getUiXml());
+    }
 
-		$this->initShippingType();
+    private function initShippingType()
+    {
+        $class_name = SwatDBClassMap::get(StoreShippingType::class);
+        $this->shipping_type = new $class_name();
+        $this->shipping_type->setDatabase($this->app->db);
 
-		$this->ui->loadFromXML($this->getUiXml());
-	}
+        if ($this->id !== null) {
+            if (!$this->shipping_type->load($this->id)) {
+                throw new AdminNotFoundException(
+                    sprintf(Store::_(
+                        'Shipping Type with id ‘%s’ not found.'
+                    ), $this->id)
+                );
+            }
+        }
+    }
 
-	// }}}
-	// {{{ private function initShippingType()
+    protected function getUiXml()
+    {
+        return __DIR__ . '/edit.xml';
+    }
 
-	private function initShippingType()
-	{
-		$class_name = SwatDBClassMap::get('StoreShippingType');
-		$this->shipping_type = new $class_name();
-		$this->shipping_type->setDatabase($this->app->db);
+    // process phase
 
-		if ($this->id !== null) {
-			if (!$this->shipping_type->load($this->id)) {
-				throw new AdminNotFoundException(
-					sprintf(Store::_(
-						'Shipping Type with id ‘%s’ not found.'), $this->id));
-			}
-		}
-	}
+    protected function updateShippingType()
+    {
+        $values = $this->ui->getValues([
+            'title',
+            'shortname',
+            'note',
+        ]);
 
-	// }}}
-	// {{{ protected function getUiXml()
+        $this->shipping_type->title = $values['title'];
+        $this->shipping_type->shortname = $values['shortname'];
+        $this->shipping_type->note = $values['note'];
+    }
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/edit.xml';
-	}
+    protected function saveDBData(): void
+    {
+        $this->updateShippingType();
+        $this->shipping_type->save();
 
-	// }}}
+        $message = new SwatMessage(sprintf(
+            Store::_('Shipping Type “%s” has been saved.'),
+            $this->shipping_type->title
+        ));
 
-	// process phase
-	// {{{ protected function updateShippingType()
+        $this->app->messages->add($message);
+    }
 
-	protected function updateShippingType()
-	{
-		$values = $this->ui->getValues(array(
-			'title',
-			'shortname',
-			'note',
-		));
+    // build phase
 
-		$this->shipping_type->title     = $values['title'];
-		$this->shipping_type->shortname = $values['shortname'];
-		$this->shipping_type->note      = $values['note'];
-	}
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-	// }}}
-	// {{{ protected function saveDBData()
+        $final_entry = $this->navbar->popEntry();
 
-	protected function saveDBData(): void
-	{
-		$this->updateShippingType();
-		$this->shipping_type->save();
+        if ($this->id !== null) {
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Details'),
+                sprintf('ShippingType/Details?id=%s', $this->id)
+            ));
+        }
 
-		$message = new SwatMessage(sprintf(
-			Store::_('Shipping Type “%s” has been saved.'),
-			$this->shipping_type->title));
+        $this->navbar->addEntry($final_entry);
+    }
 
-		$this->app->messages->add($message);
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-
-		$final_entry = $this->navbar->popEntry();
-
-		if ($this->id !== null) {
-			$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Details'),
-				sprintf('ShippingType/Details?id=%s', $this->id)));
-		}
-
-		$this->navbar->addEntry($final_entry);
-	}
-
-	// }}}
-	// {{{ protected function loadDBData()
-
-	protected function loadDBData()
-	{
-		$this->ui->setValues($this->shipping_type->getAttributes());
-	}
-
-	// }}}
+    protected function loadDBData()
+    {
+        $this->ui->setValues($this->shipping_type->getAttributes());
+    }
 }
-
-?>

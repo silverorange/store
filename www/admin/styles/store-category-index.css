@@ -2,9 +2,9 @@
 #product_attributes_form_field .swat-form-field,
 #category_remove_attributes_form_field .swat-form-field,
 #product_remove_attributes_form_field .swat-form-field {
-	float: left;
+  float: left;
 }
 
 div.swat-actions-note {
-	clear: both;
+  clear: both;
 }

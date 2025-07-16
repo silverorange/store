@@ -1,423 +1,434 @@
 <?php
 
 /**
- * Admin page for adding and editing addresses stored on accounts
+ * Admin page for adding and editing addresses stored on accounts.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountAddressEdit extends AdminDBEdit
 {
-	// {{{ protected properties
+    /**
+     * @var array
+     */
+    protected $fields;
 
-	/**
-	 * @var array
-	 */
-	protected $fields;
+    /**
+     * @var StoreCountry
+     */
+    protected $country;
 
-	/**
-	 * @var StoreCountry
-	 */
-	protected $country;
+    /**
+     * @var StoreAccount
+     */
+    protected $account;
 
-	/**
-	 * @var StoreAccount
-	 */
-	protected $account;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->ui->mapClassPrefixToPath('Store', 'Store');
+        $this->ui->loadFromXML($this->getUiXml());
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $this->initAccount();
+        $this->initDefaultAddressFields();
 
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML($this->getUiXml());
+        $this->fields = [
+            'text:fullname',
+            'text:line1',
+            'text:line2',
+            'text:city',
+            'integer:provstate',
+            'text:provstate_other',
+            'text:country',
+            'text:postal_code',
+            'text:phone',
+            'text:company',
+        ];
+    }
 
-		$this->initAccount();
-		$this->initDefaultAddressFields();
+    protected function initAccount()
+    {
+        if ($this->id === null) {
+            $account_id = $this->app->initVar('account');
+        } else {
+            $account_id = SwatDB::queryOne(
+                $this->app->db,
+                sprintf(
+                    'select account from AccountAddress where id = %s',
+                    $this->app->db->quote($this->id, 'integer')
+                )
+            );
+        }
 
-		$this->fields = array(
-			'text:fullname',
-			'text:line1',
-			'text:line2',
-			'text:city',
-			'integer:provstate',
-			'text:provstate_other',
-			'text:country',
-			'text:postal_code',
-			'text:phone',
-			'text:company',
-		);
-	}
+        $class_name = SwatDBClassMap::get(StoreAccount::class);
+        $this->account = new $class_name();
+        $this->account->setDatabase($this->app->db);
 
-	// }}}
-	// {{{ protected function initAccount()
+        if (!$this->account->load($account_id)) {
+            throw new AdminNotFoundException(sprintf(
+                'Address cannot be ' .
+                "edited because an account with id '%s' does not exist.",
+                $account_id
+            ));
+        }
 
-	protected function initAccount()
-	{
-		if ($this->id === null) {
-			$account_id = $this->app->initVar('account');
-		} else {
-			$account_id = SwatDB::queryOne($this->app->db,
-				sprintf('select account from AccountAddress where id = %s',
-				$this->app->db->quote($this->id, 'integer')));
-		}
+        if ($this->id === null) {
+            $fullname_widget = $this->ui->getWidget('fullname');
+            $fullname_widget->value = $this->account->getFullname();
+        }
+    }
 
-		$class_name = SwatDBClassMap::get('StoreAccount');
-		$this->account = new $class_name();
-		$this->account->setDatabase($this->app->db);
+    protected function initDefaultAddressFields()
+    {
+        // if this address is already the default billing address, desensitize
+        // the checkbox
+        $account = $this->account;
+        $billing_id = $account->getInternalValue('default_billing_address');
+        if ($billing_id !== null && $this->id !== null
+            && $this->id === $billing_id) {
+            $billing_field =
+                $this->ui->getWidget('default_billing_address')->parent;
 
-		if (!$this->account->load($account_id)) {
-			throw new AdminNotFoundException(sprintf("Address cannot be ".
-				"edited because an account with id '%s' does not exist.",
-				$account_id));
-		}
+            $billing_field->sensitive = false;
+            $billing_field->note = Store::_(
+                'This address is already the default billing address.'
+            );
+        }
 
-		if ($this->id === null) {
-			$fullname_widget = $this->ui->getWidget('fullname');
-			$fullname_widget->value = $this->account->getFullname();
-		}
-	}
+        // if this address is already the default shipping address, desensitize
+        // the checkbox
+        $shipping_id = $account->getInternalValue('default_shipping_address');
+        if ($shipping_id !== null && $this->id !== null
+            && $this->id === $shipping_id) {
+            $shipping_field =
+                $this->ui->getWidget('default_shipping_address')->parent;
 
-	// }}}
-	// {{{ protected function initDefaultAddressFields()
+            $shipping_field->sensitive = false;
+            $shipping_field->note = Store::_(
+                'This address is already the default shipping address.'
+            );
+        }
+    }
 
-	protected function initDefaultAddressFields()
-	{
-		// if this address is already the default billing address, desensitize
-		// the checkbox
-		$account = $this->account;
-		$billing_id = $account->getInternalValue('default_billing_address');
-		if ($billing_id !== null && $this->id !== null &&
-			$this->id === $billing_id) {
+    protected function getUiXml()
+    {
+        return __DIR__ . '/addressedit.xml';
+    }
 
-			$billing_field =
-				$this->ui->getWidget('default_billing_address')->parent;
+    // process phase
 
-			$billing_field->sensitive = false;
-			$billing_field->note = Store::_(
-				'This address is already the default billing address.');
-		}
+    public function process()
+    {
+        if ($this->ui->getWidget('edit_form')->isSubmitted()) {
+            // set provsate and country on postal code entry
+            $country = $this->getCountry();
+            $postal_code = $this->ui->getWidget('postal_code');
+            $provstate = $this->ui->getWidget('provstate');
 
-		// if this address is already the default shipping address, desensitize
-		// the checkbox
-		$shipping_id = $account->getInternalValue('default_shipping_address');
-		if ($shipping_id !== null && $this->id !== null &&
-			$this->id === $shipping_id) {
-			$shipping_field =
-				$this->ui->getWidget('default_shipping_address')->parent;
+            if ($country->id === null) {
+                return;
+            }
 
-			$shipping_field->sensitive = false;
-			$shipping_field->note = Store::_(
-				'This address is already the default shipping address.');
-		}
-	}
+            $provstate->process();
 
-	// }}}
-	// {{{ protected function getUiXml()
-
-	protected function getUiXml()
-	{
-		return __DIR__.'/addressedit.xml';
-	}
-
-	// }}}
-
-	// process phase
-	// {{{ public function process()
-
-	public function process()
-	{
-		if ($this->ui->getWidget('edit_form')->isSubmitted()) {
-			// set provsate and country on postal code entry
-			$country     = $this->getCountry();
-			$postal_code = $this->ui->getWidget('postal_code');
-			$provstate   = $this->ui->getWidget('provstate');
-
-			if ($country->id === null) {
-				return;
-			}
-
-			$provstate->process();
-
-			if ($provstate->value === 'other') {
-				$this->ui->getWidget('provstate_other')->required = true;
-			} elseif ($provstate->value !== null) {
-				$sql = sprintf('select abbreviation from ProvState
+            if ($provstate->value === 'other') {
+                $this->ui->getWidget('provstate_other')->required = true;
+            } elseif ($provstate->value !== null) {
+                $sql = sprintf(
+                    'select abbreviation from ProvState
 					where id = %s',
-					$this->app->db->quote($provstate->value));
+                    $this->app->db->quote($provstate->value)
+                );
 
-				$provstate_abbreviation =
-					SwatDB::queryOne($this->app->db, $sql);
+                $provstate_abbreviation =
+                    SwatDB::queryOne($this->app->db, $sql);
 
-				$postal_code->country = $country->id;
-				$postal_code->provstate = $provstate_abbreviation;
-			}
+                $postal_code->country = $country->id;
+                $postal_code->provstate = $provstate_abbreviation;
+            }
 
-			if (!$country->has_postal_code) {
-				$postal_code->required = false;
-			}
-		}
+            if (!$country->has_postal_code) {
+                $postal_code->required = false;
+            }
+        }
 
-		parent::process();
-	}
+        parent::process();
+    }
 
-	// }}}
-	// {{{ protected function getCountry()
+    protected function getCountry()
+    {
+        if (!$this->country instanceof StoreCountry) {
+            $country_widget = $this->ui->getWidget('country');
+            $country_widget->process();
+            $country_id = $country_widget->value;
 
-	protected function getCountry()
-	{
-		if (!($this->country instanceof StoreCountry)) {
-			$country_widget = $this->ui->getWidget('country');
-			$country_widget->process();
-			$country_id = $country_widget->value;
+            $class_name = SwatDBClassMap::get(StoreCountry::class);
+            $this->country = new $class_name();
+            $this->country->setDatabase($this->app->db);
+            $this->country->load($country_id);
+        }
 
-			$class_name = SwatDBClassMap::get('StoreCountry');
-			$this->country = new $class_name();
-			$this->country->setDatabase($this->app->db);
-			$this->country->load($country_id);
-		}
+        return $this->country;
+    }
 
-		return $this->country;
-	}
+    protected function saveDBData(): void
+    {
+        $values = $this->getUIValues();
 
-	// }}}
-	// {{{ protected function saveDBData()
+        if ($this->id === null) {
+            $this->fields[] = 'date:createdate';
+            $date = new SwatDate();
+            $date->toUTC();
+            $values['createdate'] = $date->getDate();
 
-	protected function saveDBData(): void
-	{
-		$values = $this->getUIValues();
+            $this->fields[] = 'integer:account';
+            $values['account'] = $this->account->id;
 
-		if ($this->id === null) {
-			$this->fields[] = 'date:createdate';
-			$date = new SwatDate();
-			$date->toUTC();
-			$values['createdate'] = $date->getDate();
+            $this->id = SwatDB::insertRow(
+                $this->app->db,
+                'AccountAddress',
+                $this->fields,
+                $values,
+                'integer:id'
+            );
+        } else {
+            SwatDB::updateRow(
+                $this->app->db,
+                'AccountAddress',
+                $this->fields,
+                $values,
+                'id',
+                $this->id
+            );
+        }
 
-			$this->fields[] = 'integer:account';
-			$values['account'] = $this->account->id;
-
-			$this->id = SwatDB::insertRow($this->app->db, 'AccountAddress',
-				$this->fields, $values, 'integer:id');
-		} else {
-			SwatDB::updateRow($this->app->db, 'AccountAddress', $this->fields,
-				$values, 'id', $this->id);
-		}
-
-		// save default billing address
-		if ($this->ui->getWidget('default_billing_address')->value) {
-			$sql = sprintf('update Account set default_billing_address = %s
+        // save default billing address
+        if ($this->ui->getWidget('default_billing_address')->value) {
+            $sql = sprintf(
+                'update Account set default_billing_address = %s
 				where id = %s',
-				$this->app->db->quote($this->id, 'integer'),
-				$this->app->db->quote($this->account->id, 'integer'));
+                $this->app->db->quote($this->id, 'integer'),
+                $this->app->db->quote($this->account->id, 'integer')
+            );
 
-			SwatDB::exec($this->app->db, $sql);
-		}
+            SwatDB::exec($this->app->db, $sql);
+        }
 
-		// save default shipping address
-		if ($this->ui->getWidget('default_shipping_address')->value) {
-			$sql = sprintf('update Account set default_shipping_address = %s
+        // save default shipping address
+        if ($this->ui->getWidget('default_shipping_address')->value) {
+            $sql = sprintf(
+                'update Account set default_shipping_address = %s
 				where id = %s',
-				$this->app->db->quote($this->id, 'integer'),
-				$this->app->db->quote($this->account->id, 'integer'));
+                $this->app->db->quote($this->id, 'integer'),
+                $this->app->db->quote($this->account->id, 'integer')
+            );
 
-			SwatDB::exec($this->app->db, $sql);
-		}
+            SwatDB::exec($this->app->db, $sql);
+        }
 
-		$message = new SwatMessage(sprintf(
-			Store::_('Address for “%s” has been saved.'),
-			$this->account->getFullName()));
+        $message = new SwatMessage(sprintf(
+            Store::_('Address for “%s” has been saved.'),
+            $this->account->getFullName()
+        ));
 
-		$this->app->messages->add($message);
-	}
+        $this->app->messages->add($message);
+    }
 
-	// }}}
-	// {{{ protected function getUIValues()
+    protected function getUIValues()
+    {
+        $values = $this->ui->getValues([
+            'fullname',
+            'line1',
+            'line2',
+            'city',
+            'provstate',
+            'provstate_other',
+            'country',
+            'postal_code',
+            'phone',
+            'company',
+        ]);
 
-	protected function getUIValues()
-	{
-		$values = $this->ui->getValues(array(
-			'fullname',
-			'line1',
-			'line2',
-			'city',
-			'provstate',
-			'provstate_other',
-			'country',
-			'postal_code',
-			'phone',
-			'company',
-		));
+        if ($values['provstate'] === 'other') {
+            $values['provstate'] = null;
+        }
 
-		if ($values['provstate'] === 'other')
-			$values['provstate'] = null;
+        return $values;
+    }
 
-		return $values;
-	}
+    protected function validate(): void
+    {
+        $provstate = $this->ui->getWidget('provstate');
+        $country = $this->ui->getWidget('country');
+        $postal_code = $this->ui->getWidget('postal_code');
 
-	// }}}
-	// {{{ protected function validate()
+        if ($country->value !== null) {
+            $country_title = SwatDB::queryOne(
+                $this->app->db,
+                sprintf(
+                    'select title from Country where id = %s',
+                    $this->app->db->quote($country->value)
+                )
+            );
+        } else {
+            $country_title = null;
+        }
 
-	protected function validate(): void
-	{
-		$provstate = $this->ui->getWidget('provstate');
-		$country = $this->ui->getWidget('country');
-		$postal_code = $this->ui->getWidget('postal_code');
-
-		if ($country->value !== null) {
-			$country_title = SwatDB::queryOne($this->app->db,
-				sprintf('select title from Country where id = %s',
-				$this->app->db->quote($country->value)));
-		} else {
-			$country_title = null;
-		}
-
-		if ($provstate->value !== null && $provstate->value !== 'other') {
-			// validate provstate by country
-			$sql = sprintf('select count(id) from ProvState
+        if ($provstate->value !== null && $provstate->value !== 'other') {
+            // validate provstate by country
+            $sql = sprintf(
+                'select count(id) from ProvState
 				where id = %s and country = %s',
-				$this->app->db->quote($provstate->value, 'integer'),
-				$this->app->db->quote($country->value, 'text'));
+                $this->app->db->quote($provstate->value, 'integer'),
+                $this->app->db->quote($country->value, 'text')
+            );
 
-			$count = SwatDB::queryOne($this->app->db, $sql);
+            $count = SwatDB::queryOne($this->app->db, $sql);
 
-			if ($count == 0) {
-				if ($country_title === null) {
-					$message_content = Store::_('The selected %s is '.
-						'not a province or state of the selected country.');
-				} else {
-					$message_content = sprintf(Store::_('The selected '.
-						'%%s is not a province or state of the selected '.
-						'country %s%s%s.'),
-						'<strong>', $country_title, '</strong>');
-				}
+            if ($count == 0) {
+                if ($country_title === null) {
+                    $message_content = Store::_('The selected %s is ' .
+                        'not a province or state of the selected country.');
+                } else {
+                    $message_content = sprintf(
+                        Store::_('The selected ' .
+                        '%%s is not a province or state of the selected ' .
+                        'country %s%s%s.'),
+                        '<strong>',
+                        $country_title,
+                        '</strong>'
+                    );
+                }
 
-				$message = new SwatMessage($message_content, 'error');
-				$message->content_type = 'text/xml';
-				$provstate->addMessage($message);
-			}
-		}
-	}
+                $message = new SwatMessage($message_content, 'error');
+                $message->content_type = 'text/xml';
+                $provstate->addMessage($message);
+            }
+        }
+    }
 
-	// }}}
+    // build phase
 
-	// build phase
-	// {{{ protected function display()
+    protected function display()
+    {
+        parent::display();
+        Swat::displayInlineJavaScript($this->getInlineJavaScript());
+    }
 
-	protected function display()
-	{
-		parent::display();
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-	}
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	// }}}
-	// {{{ protected buildInternal()
+        $frame = $this->ui->getWidget('edit_frame');
+        $frame->subtitle = $this->account->getFullName();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $provstate_flydown = $this->ui->getWidget('provstate');
+        $provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
+            $this->app->db,
+            'ProvState',
+            'title',
+            'id',
+            'title'
+        ));
 
-		$frame = $this->ui->getWidget('edit_frame');
-		$frame->subtitle = $this->account->getFullName();
+        $provstate_other = $this->ui->getWidget('provstate_other');
+        if ($provstate_other->visible) {
+            $provstate_flydown->addDivider();
+            $option = new SwatOption('other', 'Other…');
+            $provstate_flydown->addOption($option);
+        }
 
-		$provstate_flydown = $this->ui->getWidget('provstate');
-		$provstate_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'ProvState', 'title', 'id', 'title'));
+        $country_flydown = $this->ui->getWidget('country');
+        $country_flydown->addOptionsByArray(SwatDB::getOptionArray(
+            $this->app->db,
+            'Country',
+            'title',
+            'id',
+            'title'
+        ));
 
-		$provstate_other = $this->ui->getWidget('provstate_other');
-		if ($provstate_other->visible) {
-			$provstate_flydown->addDivider();
-			$option = new SwatOption('other', 'Other…');
-			$provstate_flydown->addOption($option);
-		}
+        $form = $this->ui->getWidget('edit_form');
+        $form->addHiddenField('account', $this->account->id);
+    }
 
-		$country_flydown = $this->ui->getWidget('country');
-		$country_flydown->addOptionsByArray(SwatDB::getOptionArray(
-			$this->app->db, 'Country', 'title', 'id', 'title'));
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
+        $last_entry = $this->navbar->popEntry();
+        $last_entry->title = sprintf(
+            Store::_('%s Address'),
+            $last_entry->title
+        );
 
-		$form = $this->ui->getWidget('edit_form');
-		$form->addHiddenField('account', $this->account->id);
-	}
+        $this->navbar->addEntry(new SwatNavBarEntry(
+            $this->account->getFullName(),
+            sprintf('Account/Details?id=%s', $this->account->id)
+        ));
 
-	// }}}
-	// {{{ protected buildNavBar()
+        $this->navbar->addEntry($last_entry);
 
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-		$last_entry = $this->navbar->popEntry();
-		$last_entry->title = sprintf(Store::_('%s Address'),
-			$last_entry->title);
+        $this->title = $this->account->getFullName();
+    }
 
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			$this->account->getFullName(),
-			sprintf('Account/Details?id=%s', $this->account->id)));
+    protected function loadDBData()
+    {
+        $row = SwatDB::queryRowFromTable(
+            $this->app->db,
+            'AccountAddress',
+            $this->fields,
+            'id',
+            $this->id
+        );
 
-		$this->navbar->addEntry($last_entry);
+        if ($row === null) {
+            throw new AdminNotFoundException(
+                sprintf(
+                    Store::_('account address with id ‘%s’ not found.'),
+                    $this->id
+                )
+            );
+        }
 
-		$this->title = $this->account->getFullName();
-	}
+        $provstate_other = $this->ui->getWidget('provstate_other');
+        if ($provstate_other->visible && $row->provstate === null) {
+            $row->provstate = 'other';
+        }
 
-	// }}}
-	// {{{ protected function loadDBData()
+        $this->ui->setValues(get_object_vars($row));
+    }
 
-	protected function loadDBData()
-	{
-		$row = SwatDB::queryRowFromTable($this->app->db, 'AccountAddress',
-			$this->fields, 'id', $this->id);
+    protected function getInlineJavaScript()
+    {
+        $provstate = $this->ui->getWidget('provstate');
+        $provstate_other_index = count($provstate->options);
+        $id = 'account_address_page';
 
-		if ($row === null)
-			throw new AdminNotFoundException(
-				sprintf(Store::_('account address with id ‘%s’ not found.'),
-				$this->id));
+        return sprintf(
+            "var %s_obj = new StoreAccountAddressEditPage('%s', %s);",
+            $id,
+            $id,
+            $provstate_other_index
+        );
+    }
 
-		$provstate_other = $this->ui->getWidget('provstate_other');
-		if ($provstate_other->visible && $row->provstate === null)
-			$row->provstate = 'other';
+    // finalize phase
 
-		$this->ui->setValues(get_object_vars($row));
-	}
+    public function finalize()
+    {
+        parent::finalize();
+        $yui = new SwatYUI(['dom', 'event']);
+        $this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+        $this->layout->addHtmlHeadEntry(
+            'packages/store/admin/javascript/store-account-address-edit-page.js'
+        );
 
-	// }}}
-	// {{{ protected function getInlineJavaScript()
-
-	protected function getInlineJavaScript()
-	{
-		$provstate = $this->ui->getWidget('provstate');
-		$provstate_other_index = count($provstate->options);
-		$id = 'account_address_page';
-		return sprintf(
-			"var %s_obj = new StoreAccountAddressEditPage('%s', %s);",
-			$id, $id, $provstate_other_index);
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/admin/javascript/store-account-address-edit-page.js'
-		);
-
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/admin/javascript/store-account-address-edit-page.js'
-		);
-	}
-
-	// }}}
+        $yui = new SwatYUI(['dom', 'event']);
+        $this->layout->addHtmlHeadEntrySet($yui->getHtmlHeadEntrySet());
+        $this->layout->addHtmlHeadEntry(
+            'packages/store/admin/javascript/store-account-address-edit-page.js'
+        );
+    }
 }
-
-?>

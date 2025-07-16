@@ -3,211 +3,172 @@
 /**
  * Base class for a step page of checkout that is composed of other pages.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 {
-	// {{{ private properties
+    private $embedded_edit_pages = [];
 
-	private $embedded_edit_pages = array();
+    public function __construct(SiteAbstractPage $page)
+    {
+        parent::__construct($page);
 
-	// }}}
-	// {{{ public function __construct()
+        foreach ($this->instantiateEmbeddedEditPages() as $key => $page) {
+            $this->registerEmbeddedEditPage($key, $page);
+        }
+    }
 
-	public function __construct(SiteAbstractPage $page)
-	{
-		parent::__construct($page);
+    protected function registerEmbeddedEditPage($key, SiteAbstractPage $page)
+    {
+        $this->embedded_edit_pages[$key] = $page;
+    }
 
-		foreach ($this->instantiateEmbeddedEditPages() as $key => $page) {
-			$this->registerEmbeddedEditPage($key, $page);
-		}
-	}
+    protected function getEmbeddedEditPages()
+    {
+        return $this->embedded_edit_pages;
+    }
 
-	// }}}
-	// {{{ protected function registerEmbeddedEditPage()
+    abstract protected function instantiateEmbeddedEditPages();
 
-	protected function registerEmbeddedEditPage($key, SiteAbstractPage $page)
-	{
-		$this->embedded_edit_pages[$key] = $page;
-	}
+    // init phase
 
-	// }}}
-	// {{{ protected function getEmbeddedEditPages()
+    public function init()
+    {
+        parent::init();
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->postInitCommon();
+        }
+    }
 
-	protected function getEmbeddedEditPages()
-	{
-		return $this->embedded_edit_pages;
-	}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// }}}
-	// {{{ abstract protected function instantiateEmbeddedEditPages()
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->source = $this->source;
+        }
 
-	abstract protected function instantiateEmbeddedEditPages();
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->setUI($this->ui);
+        }
 
-	// }}}
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->initCommon();
+        }
+    }
 
-	// init phase
-	// {{{ public function init()
+    protected function loadUI()
+    {
+        parent::loadUI();
 
-	public function init()
-	{
-		parent::init();
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->postInitCommon();
-		}
-	}
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $container = $this->getContainer($page);
+            $this->ui->loadFromXML($page->getUiXml(), $container);
+        }
+    }
 
-	// }}}
-	// {{{ protected function initInternal()
+    protected function getContainer($page)
+    {
+        $class = get_class($page);
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $matches = [];
+        if (preg_match('/Checkout(.*)Page$/', $class, $matches) === 1) {
+            $container_id = mb_strtolower(
+                preg_replace('/([A-Z])/u', '_\1', $matches[1])
+            ) . '_container';
 
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->source = $this->source;
-		}
+            $container_id = mb_substr($container_id, 1);
+        } else {
+            throw new StoreException(
+                "Unable to guess container for page {$class}"
+            );
+        }
 
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->setUI($this->ui);
-		}
+        return $this->ui->getWidget($container_id);
+    }
 
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->initCommon();
-		}
-	}
+    // process phase
 
-	// }}}
-	// {{{ protected function loadUI()
+    public function process()
+    {
+        $form = $this->ui->getWidget('form');
 
-	protected function loadUI()
-	{
-		parent::loadUI();
+        if ($form->isSubmitted()) {
+            foreach ($this->getEmbeddedEditPages() as $page) {
+                $page->preProcessCommon();
+            }
+        }
 
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$container = $this->getContainer($page);
-			$this->ui->loadFromXML($page->getUiXml(), $container);
-		}
-	}
+        // skip StoreCheckoutStepPage::process as we don't want to update
+        // progress and relocate until after we've validated and run all
+        // embedded page's processCommon
+        StoreCheckoutPage::process();
 
-	// }}}
-	// {{{ protected function getContainer()
+        if ($form->isProcessed()) {
+            foreach ($this->getEmbeddedEditPages() as $page) {
+                $page->validateCommon();
+            }
 
-	protected function getContainer($page)
-	{
-		$class = get_class($page);
+            if (!$form->hasMessage()) {
+                foreach ($this->getEmbeddedEditPages() as $page) {
+                    try {
+                        $page->processCommon();
+                    } catch (Throwable $e) {
+                        if ($page->handleExceptionCommon($e)) {
+                            // log the exception
+                            if (!$e instanceof SwatException) {
+                                $e = new SwatException($e);
+                            }
+                            $e->process(false);
+                        } else {
+                            // exception was not handled, rethrow
+                            throw $e;
+                        }
+                    }
+                }
+            }
+        }
 
-		$matches = array();
-		if (preg_match('/Checkout(.*)Page$/', $class, $matches) === 1) {
-			$container_id = mb_strtolower(
-				preg_replace('/([A-Z])/u', '_\\1', $matches[1])).'_container';
+        if ($form->isProcessed()) {
+            if ($form->hasMessage()) {
+                $message = new SwatMessage(Store::_('There is a problem with ' .
+                    'the information submitted.'), SwatMessage::ERROR);
 
-			$container_id = mb_substr($container_id, 1);
-		} else {
-			throw new StoreException(
-				"Unable to guess container for page {$class}");
-		}
+                $message->secondary_content = Store::_('Please address the ' .
+                    'fields highlighted below and re-submit the form.');
 
-		$container = $this->ui->getWidget($container_id);
-		return $container;
-	}
+                $this->ui->getWidget('message_display')->add($message);
+            } else {
+                $this->updateProgress();
+                $this->relocate();
+            }
+        }
+    }
 
-	// }}}
+    // build phase
 
-	// process phase
-	// {{{ public function process()
+    public function build()
+    {
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->buildCommon();
+        }
 
-	public function process()
-	{
-		$form = $this->ui->getWidget('form');
+        parent::build();
 
-		if ($form->isSubmitted()) {
-			foreach ($this->getEmbeddedEditPages() as $page) {
-				$page->preProcessCommon();
-			}
-		}
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->postBuildCommon();
+        }
+    }
 
-		// skip StoreCheckoutStepPage::process as we don't want to update
-		// progress and relocate until after we've validated and run all
-		// embedded page's processCommon
-		StoreCheckoutPage::process();
+    // finalize phase
 
-		if ($form->isProcessed()) {
-			foreach ($this->getEmbeddedEditPages() as $page) {
-				$page->validateCommon();
-			}
+    public function finalize()
+    {
+        parent::finalize();
 
-			if (!$form->hasMessage()) {
-				foreach ($this->getEmbeddedEditPages() as $page) {
-					try {
-						$page->processCommon();
-					} catch (Throwable $e) {
-						if ($page->handleExceptionCommon($e)) {
-							// log the exception
-							if (!($e instanceof SwatException)) {
-								$e = new SwatException($e);
-							}
-							$e->process(false);
-						} else {
-							// exception was not handled, rethrow
-							throw $e;
-						}
-					}
-				}
-			}
-		}
-
-		if ($form->isProcessed()) {
-			if ($form->hasMessage()) {
-				$message = new SwatMessage(Store::_('There is a problem with '.
-					'the information submitted.'), SwatMessage::ERROR);
-
-				$message->secondary_content = Store::_('Please address the '.
-					'fields highlighted below and re-submit the form.');
-
-				$this->ui->getWidget('message_display')->add($message);
-			} else {
-				$this->updateProgress();
-				$this->relocate();
-			}
-		}
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ public function build()
-
-	public function build()
-	{
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->buildCommon();
-		}
-
-		parent::build();
-
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->postBuildCommon();
-		}
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-
-		foreach ($this->getEmbeddedEditPages() as $page) {
-			$page->finalize();
-		}
-	}
-
-	// }}}
+        foreach ($this->getEmbeddedEditPages() as $page) {
+            $page->finalize();
+        }
+    }
 }
-
-?>

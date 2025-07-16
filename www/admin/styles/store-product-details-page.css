@@ -1,66 +1,65 @@
 .store-product-image-display img {
-	float: left;
+  float: left;
 }
 
 .store-product-image-display {
-	float: left;
-	margin-right: 10px;
+  float: left;
+  margin-right: 10px;
 }
 
-
 .store-product-image-display ul.swat-toolbar {
-	float: left;
-	top: 0;    /* Override SwatToolbar default position when inside a SwatFrame */
-	margin: 0; /* Override SwatToolbar default margin when inside a SwatFrame */
-	padding: 0;
+  float: left;
+  top: 0; /* Override SwatToolbar default position when inside a SwatFrame */
+  margin: 0; /* Override SwatToolbar default margin when inside a SwatFrame */
+  padding: 0;
 }
 
 .store-product-image-display ul.swat-toolbar li,
 .store-product-image-display ul.swat-toolbar li a {
-	display: block;
-	border: 0;
+  display: block;
+  border: 0;
 }
 .store-product-images:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+  content: '.';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
 
 .store-product-images {
-	display: inline-block;
+  display: inline-block;
 }
 
 .store-product-images {
-	display: block;
+  display: block;
 }
 
 span.item-disabled {
-	color: #999;
-	text-decoration: line-through;
+  color: #999;
+  text-decoration: line-through;
 }
 
 div.store-sale-discount-original-price {
-	color: #999;
-	text-decoration: line-through;
+  color: #999;
+  text-decoration: line-through;
 }
 
 .product-categories li {
-	margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 .product-categories li .swat-nav-bar {
-	display: inline;
+  display: inline;
 }
 
 .product-categories .canonical-category {
-	margin-left: 6px;
-	display: inline-block;
-	background: #4e9a06;
-	color: #fff;
-	padding: 2px 4px;
-	font-size: 11px;
-	text-transform: uppercase;
-	border-radius: 2px;
+  margin-left: 6px;
+  display: inline-block;
+  background: #4e9a06;
+  color: #fff;
+  padding: 2px 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  border-radius: 2px;
 }

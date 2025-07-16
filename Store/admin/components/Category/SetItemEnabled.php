@@ -1,158 +1,144 @@
 <?php
 
 /**
- * Enable items confirmation page for Categories
+ * Enable items confirmation page for Categories.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategorySetItemEnabled extends AdminDBConfirmation
 {
-	// {{{ private properties
+    private $category_id;
+    private $enabled;
+    private $region;
+    private StoreCatalogSwitcher $catalog_switcher;
 
-	private $category_id;
-	private $enabled;
-	private $region = null;
-	private StoreCatalogSwitcher $catalog_switcher;
+    public function setCategory($category_id)
+    {
+        $this->category_id = $category_id;
+    }
 
-	// }}}
-	// {{{ public function setCategory()
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    }
 
-	public function setCategory($category_id)
-	{
-		$this->category_id = $category_id;
-	}
+    public function setRegion($region)
+    {
+        $this->region = $region;
+    }
 
-	// }}}
-	// {{{ public function setEnabled()
+    // init phase
 
-	public function setEnabled($enabled)
-	{
-		$this->enabled = $enabled;
-	}
+    protected function initInternal()
+    {
+        parent::initInternal();
+        $this->category_id = SiteApplication::initVar('category');
+        $this->region = SiteApplication::initVar('region');
+        $this->enabled = SiteApplication::initVar('enabled', false);
 
-	// }}}
-	// {{{ public function setRegion()
+        $this->catalog_switcher = new StoreCatalogSwitcher();
+        $this->catalog_switcher->db = $this->app->db;
+        $this->catalog_switcher->init();
+    }
 
-	public function setRegion($region)
-	{
-		$this->region = $region;
-	}
+    // process phase
 
-	// }}}
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-	// init phase
-	// {{{ protected function initInternal()
-
-	protected function initInternal()
-	{
-		parent::initInternal();
-		$this->category_id = SiteApplication::initVar('category');
-		$this->region = SiteApplication::initVar('region');
-		$this->enabled = SiteApplication::initVar('enabled', false);
-
-		$this->catalog_switcher = new StoreCatalogSwitcher();
-		$this->catalog_switcher->db = $this->app->db;
-		$this->catalog_switcher->init();
-	}
-
-	// }}}
-
-	// process phase
-	// {{{ protected function processDBData()
-
-	protected function processDBData(): void
-	{
-		parent::processDBData();
-
-		$sql = sprintf('update ItemRegionBinding set enabled = %s
+        $sql = sprintf(
+            'update ItemRegionBinding set enabled = %s
 			where price is not null and %s item in (%s)',
-			$this->app->db->quote($this->enabled, 'boolean'),
-			$this->getRegionQuerySQL(),
-			$this->getItemQuerySQL());
+            $this->app->db->quote($this->enabled, 'boolean'),
+            $this->getRegionQuerySQL(),
+            $this->getItemQuerySQL()
+        );
 
-		SwatDB::exec($this->app->db, $sql);
+        SwatDB::exec($this->app->db, $sql);
 
-		$rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
-		$count = count($rs);
+        $rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
+        $count = count($rs);
 
-		$message = new SwatMessage($this->getEnabledText('message', $count),
-			'notice');
+        $message = new SwatMessage(
+            $this->getEnabledText('message', $count),
+            'notice'
+        );
 
-		$this->app->messages->add($message);
+        $this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// }}}
+    // build phase
 
-	// build phase
-	// {{{ protected function buildInternal()
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
+        $count = count($rs);
 
-		$rs = SwatDB::query($this->app->db, $this->getItemQuerySQL());
-		$count = count($rs);
+        if ($count == 0) {
+            $this->switchToCancelButton();
+            $message_text = Store::_(
+                'There are no items in the selected categories.'
+            );
+        } else {
+            $message_text = $this->getEnabledText('confirmation', $count);
 
-		if ($count == 0) {
-			$this->switchToCancelButton();
-			$message_text = Store::_(
-				'There are no items in the selected categories.');
+            $this->ui->getWidget('yes_button')->title =
+                $this->getEnabledText('button', $count);
+        }
 
-		} else {
-			$message_text = $this->getEnabledText('confirmation', $count);
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $message_text;
+        $message->content_type = 'text/xml';
 
-			$this->ui->getWidget('yes_button')->title =
-				$this->getEnabledText('button', $count);
-		}
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('category', $this->category_id);
+        $form->addHiddenField('region', $this->region);
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $message_text;
-		$message->content_type = 'text/xml';
+        // since we can't preserve type information when adding hidden fields
+        if ($this->enabled) {
+            $form->addHiddenField('enabled', $this->enabled);
+        }
+    }
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('category', $this->category_id);
-		$form->addHiddenField('region', $this->region);
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		//since we can't preserve type information when adding hidden fields
-		if ($this->enabled)
-			$form->addHiddenField('enabled', $this->enabled);
-	}
+        $this->navbar->popEntry();
 
-	// }}}
-	// {{{ protected function buildNavBar()
+        if ($this->category_id !== null) {
+            $navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->category_id]
+            );
 
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
+            foreach ($navbar_rs as $row) {
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $row->title,
+                    'Category/Index?id=' . $row->id
+                ));
+            }
+        }
 
-		$this->navbar->popEntry();
+        $this->navbar->addEntry(new SwatNavBarEntry(
+            $this->getEnabledText('navbar')
+        ));
+    }
 
-		if ($this->category_id !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
+    private function getItemQuerySQL()
+    {
+        $item_list = $this->getItemList('integer');
 
-			foreach ($navbar_rs as $row)
-				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
-					'Category/Index?id='.$row->id));
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry(
-			$this->getEnabledText('navbar')));
-	}
-
-	// }}}
-	// {{{ private function getItemQuerySQL()
-
-	private function getItemQuerySQL()
-	{
-		$item_list = $this->getItemList('integer');
-
-		$sql = 'select distinct Item.id
+        $sql = 'select distinct Item.id
 				from Item
 					inner join Product on Product.id = Item.product
 					inner join CategoryProductBinding on
@@ -164,102 +150,120 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
 				where category_descendants.category in (%s)
 					and Product.catalog in (%s)';
 
-		$sql = sprintf($sql,
-			$item_list,
-			$this->catalog_switcher->getSubquery());
+        return sprintf(
+            $sql,
+            $item_list,
+            $this->catalog_switcher->getSubquery()
+        );
+    }
 
-		return $sql;
-	}
+    private function getRegionQuerySQL()
+    {
+        $sql = '';
 
-	// }}}
-	// {{{ private function getRegionQuerySQL()
+        if ($this->region > 0) {
+            $sql = sprintf(
+                'region = %s and',
+                $this->app->db->quote($this->region, 'integer')
+            );
+        }
 
-	private function getRegionQuerySQL()
-	{
-		$sql = '';
+        return $sql;
+    }
 
-		if ($this->region > 0)
-			$sql = sprintf('region = %s and',
-				$this->app->db->quote($this->region, 'integer'));
+    private function getRegionTitle()
+    {
+        if ($this->region > 0) {
+            $region_title = SwatDB::queryOne(
+                $this->app->db,
+                sprintf(
+                    'select title from Region where id = %s',
+                    $this->region
+                )
+            );
+        } else {
+            $region_title = Store::_('All Regions');
+        }
 
-		return $sql;
-	}
+        return $region_title;
+    }
 
-	// }}}
-	// {{{ private function getRegionTitle()
+    private function getEnabledText($id, $count = 0)
+    {
+        if ($this->enabled) {
+            switch ($id) {
+                case 'button':
+                    return Store::ngettext(
+                        'Set Item as Enabled',
+                        'Set Items as Enabled',
+                        $count
+                    );
 
-	private function getRegionTitle()
-	{
-		if ($this->region > 0) {
-			$region_title = SwatDB::queryOne($this->app->db,
-				sprintf('select title from Region where id = %s',
-					$this->region));
-		} else {
-			$region_title = Store::_('All Regions');
-		}
+                case 'confirmation':
+                    return '<h3>' . sprintf(
+                        Store::ngettext(
+                            'If you proceed, one item will be enabled for “%2$s”.',
+                            'If you proceed, %s items will be enabled for “%s”.',
+                            $count
+                        ),
+                        SwatString::numberFormat($count),
+                        $this->getRegionTitle()
+                    ) . '</h3>';
 
-		return $region_title;
-	}
+                case 'message':
+                    return sprintf(
+                        Store::ngettext(
+                            'One item has been enabled for “%2$s”.',
+                            '%s items have been enabled for “%s”.',
+                            $count
+                        ),
+                        SwatString::numberFormat($count),
+                        $this->getRegionTitle()
+                    );
 
-	// }}}
-	// {{{ private function getEnabledText()
+                case 'navbar':
+                    return Store::_('Enable Items Confirmation');
 
-	private function getEnabledText($id, $count = 0)
-	{
-		if ($this->enabled) {
-			switch ($id) {
-			case 'button':
-				return Store::ngettext('Set Item as Enabled',
-					'Set Items as Enabled', $count);
+                default:
+                    return null;
+            }
+        } else {
+            switch ($id) {
+                case 'button':
+                    return Store::ngettext(
+                        'Set Item as Disabled',
+                        'Set Items as Disabled',
+                        $count
+                    );
 
-			case 'confirmation':
-				return '<h3>'.sprintf(Store::ngettext(
-				'If you proceed, one item will be enabled for “%2$s”.',
-				'If you proceed, %s items will be enabled for “%s”.',
-				$count), SwatString::numberFormat($count),
-				$this->getRegionTitle()).'</h3>';
+                case 'confirmation':
+                    return '<h3>' . sprintf(
+                        Store::ngettext(
+                            'If you proceed, one item will be disabled for “%2$s”.',
+                            'If you proceed, %s items will be disabled for “%s”.',
+                            $count
+                        ),
+                        SwatString::numberFormat($count),
+                        $this->getRegionTitle()
+                    ) . '</h3>';
 
-			case 'message':
-				return sprintf(Store::ngettext(
-					'One item has been enabled for “%2$s”.',
-					'%s items have been enabled for “%s”.', $count),
-					SwatString::numberFormat($count), $this->getRegionTitle());
+                case 'message':
+                    return sprintf(
+                        Store::ngettext(
+                            'One item has been disabled for “%2$s”.',
+                            '%s items have been disabled for “%s”.',
+                            $count
+                        ),
+                        SwatString::numberFormat($count),
+                        $this->getRegionTitle()
+                    );
 
-			case 'navbar':
-				return Store::_('Enable Items Confirmation');
+                case 'navbar':
+                    return Store::_('Disable Items Confirmation');
 
-			default:
-				return null;
-			}
-		} else {
-			switch ($id) {
-			case 'button':
-				return Store::ngettext('Set Item as Disabled',
-					'Set Items as Disabled', $count);
-
-			case 'confirmation':
-				return '<h3>'.sprintf(Store::ngettext(
-				'If you proceed, one item will be disabled for “%2$s”.',
-				'If you proceed, %s items will be disabled for “%s”.',
-				$count), SwatString::numberFormat($count),
-				$this->getRegionTitle()).'</h3>';
-
-			case 'message':
-				return sprintf(Store::ngettext(
-					'One item has been disabled for “%2$s”.',
-					'%s items have been disabled for “%s”.', $count),
-					SwatString::numberFormat($count), $this->getRegionTitle());
-
-			case 'navbar':
-				return Store::_('Disable Items Confirmation');
-
-			default:
-				return null;
-			}
-		}
-	}
-
-	// }}}
+                default:
+                    return null;
+            }
+        }
+    }
 }
-
-?>

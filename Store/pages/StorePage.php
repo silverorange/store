@@ -1,118 +1,102 @@
 <?php
 
 /**
- * @package   Store
  * @copyright 2005-2016 silverorange
+ *
  * @see       StorePageFactory
  */
 abstract class StorePage extends SitePathPage
 {
-	// init phase
-	// {{{ public function init()
+    // init phase
 
-	public function init()
-	{
-		parent::init();
+    public function init()
+    {
+        parent::init();
 
-		$this->layout->selected_top_category_id =
-			$this->getSelectedTopCategoryId();
+        $this->layout->selected_top_category_id =
+            $this->getSelectedTopCategoryId();
 
-		$this->layout->selected_secondary_category_id =
-			$this->getSelectedSecondaryCategoryId();
+        $this->layout->selected_secondary_category_id =
+            $this->getSelectedSecondaryCategoryId();
 
-		$this->layout->selected_category_id = $this->getSelectedCategoryId();
+        $this->layout->selected_category_id = $this->getSelectedCategoryId();
 
-		$this->initInternal();
-	}
+        $this->initInternal();
+    }
 
-	// }}}
-	// {{{ protected function initInternal()
+    protected function initInternal() {}
 
-	protected function initInternal()
-	{
-	}
+    protected function getSelectedTopCategoryId()
+    {
+        $category_id = null;
 
-	// }}}
-	// {{{ protected function getSelectedTopCategoryId()
+        if ($this->path !== null) {
+            $top_category = $this->path->getFirst();
+            if ($top_category !== null) {
+                $category_id = $top_category->id;
+            }
+        }
 
-	protected function getSelectedTopCategoryId()
-	{
-		$category_id = null;
+        return $category_id;
+    }
 
-		if ($this->path !== null) {
-			$top_category = $this->path->getFirst();
-			if ($top_category !== null)
-				$category_id = $top_category->id;
-		}
+    protected function getSelectedSecondaryCategoryId()
+    {
+        $secondary_category_id = null;
 
-		return $category_id;
-	}
+        if ($this->path !== null) {
+            $secondary_category = $this->path->get(1);
+            if ($secondary_category !== null) {
+                $secondary_category_id = $secondary_category->id;
+            }
+        }
 
-	// }}}
-	// {{{ protected function getSelectedSecondaryCategoryId()
+        return $secondary_category_id;
+    }
 
-	protected function getSelectedSecondaryCategoryId()
-	{
-		$secondary_category_id = null;
+    protected function getSelectedCategoryId()
+    {
+        return null;
+    }
 
-		if ($this->path !== null) {
-			$secondary_category = $this->path->get(1);
-			if ($secondary_category !== null)
-				$secondary_category_id = $secondary_category->id;
-		}
+    // build phase
 
-		return $secondary_category_id;
-	}
+    public function build()
+    {
+        if (property_exists($this->layout, 'navbar')) {
+            $this->layout->navbar->createEntry(Store::_('Store'), 'store');
+        }
 
-	// }}}
-	// {{{ protected function getSelectedCategoryId()
+        parent::build();
+    }
 
-	protected function getSelectedCategoryId()
-	{
-		return null;
-	}
+    protected function queryCategory($category_id)
+    {
+        $key = 'StorePage.category.' . $category_id;
+        $category = $this->app->getCacheValue($key, 'product');
+        if ($category !== false) {
+            if ($category !== null) {
+                $category->setDatabase($this->app->db);
+                $category->setRegion($this->app->getRegion());
+            }
 
-	// }}}
+            return $category;
+        }
 
-	// build phase
-	// {{{ public function build()
+        $sql = sprintf(
+            'select * from Category where id = %s',
+            $this->app->db->quote($category_id, 'integer')
+        );
 
-	public function build()
-	{
-		if (property_exists($this->layout, 'navbar'))
-			$this->layout->navbar->createEntry(Store::_('Store'), 'store');
+        $categories = SwatDB::query(
+            $this->app->db,
+            $sql,
+            'StoreCategoryWrapper'
+        );
 
-		parent::build();
-	}
+        $category = $categories->getFirst();
+        $this->app->addCacheValue($category, $key, 'product');
 
-	// }}}
-	// {{{ protected function queryCategory()
-
-	protected function queryCategory($category_id)
-	{
-		$key = 'StorePage.category.'.$category_id;
-		$category = $this->app->getCacheValue($key, 'product');
-		if ($category !== false) {
-			if ($category !== null) {
-				$category->setDatabase($this->app->db);
-				$category->setRegion($this->app->getRegion());
-			}
-
-			return $category;
-		}
-
-		$sql = sprintf('select * from Category where id = %s',
-			$this->app->db->quote($category_id, 'integer'));
-
-		$categories = SwatDB::query($this->app->db, $sql,
-			'StoreCategoryWrapper');
-
-		$category = $categories->getFirst();
-		$this->app->addCacheValue($category, $key, 'product');
-		return $category;
-	}
-
-	// }}}
+        return $category;
+    }
 }
-
-?>

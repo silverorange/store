@@ -1,121 +1,112 @@
 <?php
 
 /**
- * Renders item prices
+ * Renders item prices.
  *
  * Outputs "Free" if value is 0. When displaying free, a CSS class called
  * store-free is appended to the list of TD classes.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StorePriceCellRenderer extends SwatMoneyCellRenderer
 {
-	// {{{ public properties
+    /**
+     * @var string
+     */
+    public $free_text;
 
-	/**
-	 * @var string
-	 */
-	public $free_text;
+    /**
+     * @var string
+     */
+    public $free_text_content_type = 'text/plain';
 
-	/**
-	 * @var string
-	 */
-	public $free_text_content_type = 'text/plain';
+    /**
+     * @var float
+     */
+    public $discount = 0;
 
-	/**
-	 * @var float
-	 */
-	public $discount = 0;
+    public function __construct()
+    {
+        parent::__construct();
+        $this->free_text = Store::_('Free!');
+    }
 
-	// }}}
-	// {{{ public function __construct()
+    public function render()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->free_text = Store::_('Free!');
-	}
+        if ($this->value === null) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function render()
+        if ($this->isFree()) {
+            if ($this->free_text_content_type == 'text/xml') {
+                echo $this->free_text;
+            } else {
+                echo SwatString::minimizeEntities($this->free_text);
+            }
+        } else {
+            parent::render();
+        }
 
-	public function render()
-	{
-		if (!$this->visible)
-			return;
+        if ($this->discount > 0) {
+            $this->displayDiscount();
+        }
+    }
 
-		if ($this->value === null)
-			return;
+    public function displayDiscount()
+    {
+        if ($this->discount == 0) {
+            return;
+        }
 
-		if ($this->isFree()) {
-			if ($this->free_text_content_type == 'text/xml') {
-				echo $this->free_text;
-			} else {
-				echo SwatString::minimizeEntities($this->free_text);
-			}
-		} else {
-			parent::render();
-		}
+        $locale = SwatI18NLocale::get($this->locale);
+        $format = $this->getCurrencyFormat();
 
-		if ($this->discount > 0)
-			$this->displayDiscount();
-	}
+        ob_start();
 
-	// }}}
-	// {{{ public function displayDiscount()
+        echo SwatString::minimizeEntities(
+            $locale->formatCurrency(
+                $this->discount,
+                $this->international,
+                $format
+            )
+        );
 
-	public function displayDiscount()
-	{
-		if ($this->discount == 0)
-			return;
+        if (!$this->international && $this->display_currency) {
+            echo '&nbsp;', SwatString::minimizeEntities(
+                $locale->getInternationalCurrencySymbol()
+            );
+        }
 
-		$locale = SwatI18NLocale::get($this->locale);
-		$format = $this->getCurrencyFormat();
+        $formatted_discount = ob_get_clean();
 
-		ob_start();
+        echo '<div class="store-cart-discount">';
 
-		echo SwatString::minimizeEntities(
-			$locale->formatCurrency($this->discount,
-				$this->international, $format));
+        printf(
+            Store::_('You save %s'),
+            $formatted_discount
+        );
 
-		if (!$this->international && $this->display_currency)
-			echo '&nbsp;', SwatString::minimizeEntities(
-				$locale->getInternationalCurrencySymbol());
+        echo '</div>';
+    }
 
-		$formatted_discount = ob_get_clean();
+    public function getDataSpecificCSSClassNames()
+    {
+        $classes = [];
 
-		echo '<div class="store-cart-discount">';
+        if ($this->isFree()) {
+            $classes[] = 'store-free';
+        }
 
-		printf(Store::_('You save %s'),
-			$formatted_discount);
+        return $classes;
+    }
 
-		echo '</div>';
-	}
-
-	// }}}
-	// {{{ public function getDataSpecificCSSClassNames()
-
-	public function getDataSpecificCSSClassNames()
-	{
-		$classes = array();
-
-		if ($this->isFree())
-			$classes[] = 'store-free';
-
-		return $classes;
-	}
-
-	// }}}
-	// {{{ protected function isFree()
-
-	protected function isFree()
-	{
-		return ($this->value == 0);
-	}
-
-	// }}}
+    protected function isFree()
+    {
+        return $this->value == 0;
+    }
 }
-
-?>

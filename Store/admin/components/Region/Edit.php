@@ -1,125 +1,138 @@
 <?php
 
 /**
- * Edit page for Regions
+ * Edit page for Regions.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreRegionEdit extends AdminDBEdit
 {
-	// {{{ protected properties
+    protected $fields;
+    protected $region;
 
-	protected $fields;
-	protected $region;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
+        $this->initRegion();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->ui->mapClassPrefixToPath('Store', 'Store');
+        $this->ui->loadFromXML(__DIR__ . '/edit.xml');
 
-	protected function initInternal()
-	{
-		parent::initInternal();
-		$this->initRegion();
+        $countries = SwatDB::getOptionArray(
+            $this->app->db,
+            'Country',
+            'title',
+            'text:id',
+            'title'
+        );
 
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(__DIR__.'/edit.xml');
+        $region_billing_country_list =
+            $this->ui->getWidget('region_billing_country');
 
-		$countries = SwatDB::getOptionArray($this->app->db, 'Country', 'title',
-			'text:id', 'title');
+        $region_billing_country_list->addOptionsByArray($countries);
 
-		$region_billing_country_list =
-			$this->ui->getWidget('region_billing_country');
+        $region_shipping_country_list =
+            $this->ui->getWidget('region_shipping_country');
 
-		$region_billing_country_list->addOptionsByArray($countries);
+        $region_shipping_country_list->addOptionsByArray($countries);
 
-		$region_shipping_country_list =
-			$this->ui->getWidget('region_shipping_country');
+        $this->fields = ['title'];
+    }
 
-		$region_shipping_country_list->addOptionsByArray($countries);
+    protected function initRegion()
+    {
+        $class_name = SwatDBClassMap::get(StoreRegion::class);
+        $this->region = new $class_name();
+        $this->region->setDatabase($this->app->db);
 
-		$this->fields = array('title');
-	}
+        if ($this->id !== null) {
+            if (!$this->region->load($this->id)) {
+                throw new AdminNotFoundException(
+                    sprintf(
+                        Admin::_('Region with an id "%s" not found.'),
+                        $this->id
+                    )
+                );
+            }
+        }
+    }
 
-	// }}}
-	// {{{ protected function initRegion()
+    // process phase
 
-	protected function initRegion()
-	{
-		$class_name = SwatDBClassMap::get('StoreRegion');
-		$this->region = new $class_name();
-		$this->region->setDatabase($this->app->db);
+    protected function saveDBData(): void
+    {
+        $values = $this->ui->getValues(['title']);
+        $this->region->title = $values['title'];
+        $this->region->save();
 
-		if ($this->id !== null) {
-			if (!$this->region->load($this->id)) {
-				throw new AdminNotFoundException(
-					sprintf(Admin::_('Region with an id "%s" not found.'),
-						$this->id));
-			}
-		}
-	}
+        $region_billing_country_list =
+            $this->ui->getWidget('region_billing_country');
 
-	// }}}
+        SwatDB::updateBinding(
+            $this->app->db,
+            'RegionBillingCountryBinding',
+            'region',
+            $this->region->id,
+            'text:country',
+            $region_billing_country_list->values,
+            'Country',
+            'text:id'
+        );
 
-	// process phase
-	// {{{ protected function saveDBData()
+        $region_shipping_country_list =
+            $this->ui->getWidget('region_shipping_country');
 
-	protected function saveDBData(): void
-	{
-		$values = $this->ui->getValues(array('title'));
-		$this->region->title = $values['title'];
-		$this->region->save();
+        SwatDB::updateBinding(
+            $this->app->db,
+            'RegionShippingCountryBinding',
+            'region',
+            $this->region->id,
+            'text:country',
+            $region_shipping_country_list->values,
+            'Country',
+            'text:id'
+        );
 
-		$region_billing_country_list =
-			$this->ui->getWidget('region_billing_country');
+        $message = new SwatMessage(
+            sprintf(Store::_('“%s” has been saved.'), $values['title'])
+        );
 
-		SwatDB::updateBinding($this->app->db, 'RegionBillingCountryBinding',
-			'region', $this->region->id, 'text:country',
-			$region_billing_country_list->values, 'Country', 'text:id');
+        $this->app->messages->add($message);
 
-		$region_shipping_country_list =
-			$this->ui->getWidget('region_shipping_country');
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		SwatDB::updateBinding($this->app->db, 'RegionShippingCountryBinding',
-			'region', $this->region->id, 'text:country',
-			$region_shipping_country_list->values, 'Country', 'text:id');
+    // build phase
 
-		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $values['title']));
+    protected function loadDBData()
+    {
+        $this->ui->setValues($this->region->getAttributes());
 
-		$this->app->messages->add($message);
+        $region_billing_country_list =
+            $this->ui->getWidget('region_billing_country');
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        $region_billing_country_list->values = SwatDB::queryColumn(
+            $this->app->db,
+            'RegionBillingCountryBinding',
+            'text:country',
+            'region',
+            $this->id
+        );
 
-	// }}}
+        $region_shipping_country_list =
+            $this->ui->getWidget('region_shipping_country');
 
-	// build phase
-	// {{{ protected function loadDBData()
-
-	protected function loadDBData()
-	{
-		$this->ui->setValues($this->region->getAttributes());
-
-		$region_billing_country_list =
-			$this->ui->getWidget('region_billing_country');
-
-		$region_billing_country_list->values = SwatDB::queryColumn(
-			$this->app->db, 'RegionBillingCountryBinding', 'text:country',
-			'region', $this->id);
-
-		$region_shipping_country_list =
-			$this->ui->getWidget('region_shipping_country');
-
-		$region_shipping_country_list->values = SwatDB::queryColumn(
-			$this->app->db, 'RegionShippingCountryBinding', 'text:country',
-			'region', $this->id);
-	}
-
-	// }}}
+        $region_shipping_country_list->values = SwatDB::queryColumn(
+            $this->app->db,
+            'RegionShippingCountryBinding',
+            'text:country',
+            'region',
+            $this->id
+        );
+    }
 }
-
-?>

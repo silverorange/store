@@ -24,7 +24,6 @@ Store:
     - Site
 
   Provides:
-
     # JavaScript resources
     packages/store/javascript/store-account-payment-method-page.js:
     packages/store/javascript/store-checkout-address-page.js:

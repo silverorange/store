@@ -1,227 +1,190 @@
 <?php
 
 /**
- * A table view row with an embedded button
+ * A table view row with an embedded button.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  */
 class StoreTableViewButtonRow extends SwatTableViewRow
 {
-	// {{{ class constants
+    /**
+     * Display the button in the left cell.
+     */
+    public const POSITION_LEFT = 0;
 
-	/**
-	 * Display the button in the left cell
-	 */
-	const POSITION_LEFT = 0;
+    /**
+     * Display the button in the right cell.
+     */
+    public const POSITION_RIGHT = 1;
 
-	/**
-	 * Display the button in the right cell
-	 */
-	const POSITION_RIGHT = 1;
+    /**
+     * Button title.
+     *
+     * @var string
+     */
+    public $title;
 
-	// }}}
-	// {{{ public properties
+    /**
+     * How far from the right side the table the button should be displayed
+     * measured in columns.
+     *
+     * @var int
+     */
+    public $offset = 0;
 
-	/**
-	 * Button title
-	 *
-	 * @var string
-	 */
-	public $title;
+    /**
+     * Tab index.
+     *
+     * The ordinal tab index position of the XHTML input tag, or null.
+     *
+     * @var int
+     */
+    public $tab_index;
 
-	/**
-	 * How far from the right side the table the button should be displayed
-	 * measured in columns
-	 *
-	 * @var integer
-	 */
-	public $offset = 0;
+    /**
+     * How many table-view columns the button should span.
+     *
+     * @var int
+     */
+    public $span = 1;
 
-	/**
-	 * Tab index
-	 *
-	 * The ordinal tab index position of the XHTML input tag, or null.
-	 *
-	 * @var integer
-	 */
-	public $tab_index = null;
+    /**
+     * Whether to display the button in the left or right cell or the row.
+     *
+     * By default, the vutton displays in the left cell. Use the POSITION_*
+     * constants to control the button position.
+     *
+     * @var int
+     */
+    public $position = self::POSITION_LEFT;
 
-	/**
-	 * How many table-view columns the button should span
-	 *
-	 * @var integer
-	 */
-	public $span = 1;
+    /**
+     * Whether or not the internal widgets used by this row have been created
+     * or not.
+     *
+     * @var bool
+     */
+    protected $widgets_created = false;
 
-	/**
-	 * Whether to display the button in the left or right cell or the row
-	 *
-	 * By default, the vutton displays in the left cell. Use the POSITION_*
-	 * constants to control the button position.
-	 *
-	 * @var integer
-	 */
-	public $position = self::POSITION_LEFT;
+    /**
+     * Button displayed in this row.
+     *
+     * @var SwatButton
+     */
+    protected $button;
 
-	// }}}
-	// {{{ protected properties
+    public function init()
+    {
+        $this->createEmbeddedWidgets();
+        $this->button->init();
+    }
 
-	/**
-	 * Whether or not the internal widgets used by this row have been created
-	 * or not
-	 *
-	 * @var boolean
-	 */
-	protected $widgets_created = false;
+    public function process()
+    {
+        $this->createEmbeddedWidgets();
+        $this->button->process();
+    }
 
-	/**
-	 * Button displayed in this row
-	 *
-	 * @var SwatButton
-	 */
-	protected $button = null;
+    public function display()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function init()
+        $this->createEmbeddedWidgets();
 
-	public function init()
-	{
-		$this->createEmbeddedWidgets();
-		$this->button->init();
-	}
+        $tr_tag = new SwatHtmlTag('tr');
+        $tr_tag->id = $this->id;
+        $tr_tag->class = $this->getCSSClassString();
 
-	// }}}
-	// {{{ public function process()
+        $colspan = $this->view->getXhtmlColspan();
+        $td_tag = new SwatHtmlTag('td');
+        $td_tag->colspan = $colspan - $this->offset;
 
-	public function process()
-	{
-		$this->createEmbeddedWidgets();
-		$this->button->process();
-	}
+        $tr_tag->open();
 
-	// }}}
-	// {{{ public function display()
+        if ($this->position === self::POSITION_LEFT || $this->offset == 0) {
+            $td_tag->class = 'button-cell';
+            $td_tag->open();
+            $this->displayButton();
+            $td_tag->close();
+        } else {
+            $td_tag->open();
+            $this->displayEmptyCell();
+            $td_tag->close();
+        }
 
-	public function display()
-	{
-		if (!$this->visible)
-			return;
+        if ($this->offset > 0) {
+            $td_tag->colspan = $this->offset;
 
-		$this->createEmbeddedWidgets();
+            if ($this->position === self::POSITION_RIGHT) {
+                $td_tag->class = 'button-cell';
+                $td_tag->open();
+                $this->displayButton();
+                $td_tag->close();
+            } else {
+                $td_tag->open();
+                $this->displayEmptyCell();
+                $td_tag->close();
+            }
+        }
 
-		$tr_tag = new SwatHtmlTag('tr');
-		$tr_tag->id = $this->id;
-		$tr_tag->class = $this->getCSSClassString();
+        $tr_tag->close();
+    }
 
-		$colspan = $this->view->getXhtmlColspan();
-		$td_tag = new SwatHtmlTag('td');
-		$td_tag->colspan = $colspan - $this->offset;
+    public function hasBeenClicked()
+    {
+        $this->createEmbeddedWidgets();
 
-		$tr_tag->open();
+        return $this->button->hasBeenClicked();
+    }
 
-		if ($this->position === self::POSITION_LEFT || $this->offset == 0) {
-			$td_tag->class = 'button-cell';
-			$td_tag->open();
-			$this->displayButton();
-			$td_tag->close();
-		} else {
-			$td_tag->open();
-			$this->displayEmptyCell();
-			$td_tag->close();
-		}
+    public function getHtmlHeadEntrySet()
+    {
+        $this->createEmbeddedWidgets();
+        $set = parent::getHtmlHeadEntrySet();
+        $set->addEntrySet($this->button->getHtmlHeadEntrySet());
 
-		if ($this->offset > 0) {
-			$td_tag->colspan = $this->offset;
+        return $set;
+    }
 
-			if ($this->position === self::POSITION_RIGHT) {
-				$td_tag->class = 'button-cell';
-				$td_tag->open();
-				$this->displayButton();
-				$td_tag->close();
-			} else {
-				$td_tag->open();
-				$this->displayEmptyCell();
-				$td_tag->close();
-			}
-		}
+    /**
+     * Displays the button contained by this row.
+     */
+    protected function displayButton()
+    {
+        // properties may have been modified since the widgets were created
+        $this->button->title = $this->title;
+        $this->button->tab_index = $this->tab_index;
+        $this->button->display();
+    }
 
-		$tr_tag->close();
-	}
+    /**
+     * Displays the empty cell in this row.
+     */
+    protected function displayEmptyCell()
+    {
+        echo '&nbsp;';
+    }
 
-	// }}}
-	// {{{ public function hasBeenClicked()
+    /**
+     * Gets the array of CSS classes that are applied to this row.
+     *
+     * @return array the array of CSS classes that are applied to this row
+     */
+    protected function getCSSClassNames()
+    {
+        $classes = ['store-table-view-button-row'];
 
-	public function hasBeenClicked()
-	{
-		$this->createEmbeddedWidgets();
-		return $this->button->hasBeenClicked();
-	}
+        return array_merge($classes, $this->classes);
+    }
 
-	// }}}
-	// {{{ public function getHtmlHeadEntrySet()
-
-	public function getHtmlHeadEntrySet()
-	{
-		$this->createEmbeddedWidgets();
-		$set = parent::getHtmlHeadEntrySet();
-		$set->addEntrySet($this->button->getHtmlHeadEntrySet());
-		return $set;
-	}
-
-	// }}}
-	// {{{ protected function displayButton()
-
-	/**
-	 * Displays the button contained by this row
-	 */
-	protected function displayButton()
-	{
-		// properties may have been modified since the widgets were created
-		$this->button->title = $this->title;
-		$this->button->tab_index = $this->tab_index;
-		$this->button->display();
-	}
-
-	// }}}
-	// {{{ protected function displayEmptyCell()
-
-	/**
-	 * Displays the empty cell in this row
-	 */
-	protected function displayEmptyCell()
-	{
-		echo '&nbsp;';
-	}
-
-	// }}}
-	// {{{ protected function getCSSClassNames()
-
-	/**
-	 * Gets the array of CSS classes that are applied to this row
-	 *
-	 * @return array the array of CSS classes that are applied to this row.
-	 */
-	protected function getCSSClassNames()
-	{
-		$classes = array('store-table-view-button-row');
-		$classes = array_merge($classes, $this->classes);
-		return $classes;
-	}
-
-	// }}}
-	// {{{ protected function createEmbeddedWidgets()
-
-	protected function createEmbeddedWidgets()
-	{
-		if (!$this->widgets_created) {
-			$this->button = new SwatButton($this->id.'_button');
-			$this->button->parent = $this;
-			$this->widgets_created = true;
-		}
-	}
-
-	// }}}
+    protected function createEmbeddedWidgets()
+    {
+        if (!$this->widgets_created) {
+            $this->button = new SwatButton($this->id . '_button');
+            $this->button->parent = $this;
+            $this->widgets_created = true;
+        }
+    }
 }
-
-?>

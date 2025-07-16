@@ -1,201 +1,199 @@
 <?php
 
 /**
- * Delete confirmation page for product images
+ * Delete confirmation page for product images.
  *
  * This delete page only deletes (removes) one image from a single product.
  * Multiple deletes are not supported. If the product image is present in more
  * than one product it is just unlinked from the product otherwise it is
  * removed from the images table and the file is deleted.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    /**
+     * @var StoreProduct
+     */
+    private $product;
 
-	/**
-	 * @var StoreProduct
-	 */
-	private $product;
+    /**
+     * @var StoreProductImage
+     */
+    private $image;
 
-	/**
-	 * @var StoreProductImage
-	 */
-	private $image;
+    /**
+     * Optional id of the product's current category. This is only used to
+     * maintain the proper navbar breadcrumbs when getting to this page by
+     * browsing the categories.
+     *
+     * @var int
+     */
+    private $category_id;
 
-	/**
-	 * Optional id of the product's current category. This is only used to
-	 * maintain the proper navbar breadcrumbs when getting to this page by
-	 * browsing the categories.
-	 *
-	 * @var integer
-	 */
-	private $category_id;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->category_id = SiteApplication::initVar('category');
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $product_id = SiteApplication::initVar('product');
+        $class_name = SwatDBClassMap::get(StoreProduct::class);
+        $this->product = new $class_name();
+        $this->product->setDatabase($this->app->db);
 
-		$this->category_id = SiteApplication::initVar('category');
+        if (!$this->product->load($product_id)) {
+            throw new AdminNotFoundException(
+                sprintf('Product with id ‘%s’ not found.', $product_id)
+            );
+        }
 
-		$product_id = SiteApplication::initVar('product');
-		$class_name = SwatDBClassMap::get('StoreProduct');
-		$this->product = new $class_name();
-		$this->product->setDatabase($this->app->db);
+        $image_id = $this->getFirstItem();
+        $class_name = SwatDBClassMap::get(StoreProductImage::class);
+        $this->image = new $class_name();
+        $this->image->setDatabase($this->app->db);
 
-		if (!$this->product->load($product_id))
-			throw new AdminNotFoundException(
-				sprintf('Product with id ‘%s’ not found.', $product_id));
+        if (!$this->image->load($image_id)) {
+            throw new AdminNotFoundException(
+                sprintf('Product mage with id ‘%s’ not found.', $image_id)
+            );
+        }
+    }
 
-		$image_id = $this->getFirstItem();
-		$class_name = SwatDBClassMap::get('StoreProductImage');
-		$this->image = new $class_name();
-		$this->image->setDatabase($this->app->db);
+    protected function getUiXml()
+    {
+        return __DIR__ . '/image-delete.xml';
+    }
 
-		if (!$this->image->load($image_id))
-			throw new AdminNotFoundException(
-				sprintf('Product mage with id ‘%s’ not found.', $image_id));
-	}
+    // process phase
 
-	// }}}
-	// {{{ protected function getUiXml()
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/image-delete.xml';
-	}
-
-	// }}}
-
-	// process phase
-	// {{{ protected function processDBData()
-
-	protected function processDBData(): void
-	{
-		parent::processDBData();
-
-		// we need a count products that use this image to help decide to delete
-		// the actual image or not
-		$sql = sprintf('select count(product) from ProductImageBinding
+        // we need a count products that use this image to help decide to delete
+        // the actual image or not
+        $sql = sprintf(
+            'select count(product) from ProductImageBinding
 			where image = %s',
-			$this->app->db->quote($this->image->id, 'integer'));
+            $this->app->db->quote($this->image->id, 'integer')
+        );
 
-		$num_products = SwatDB::queryOne($this->app->db, $sql);
+        $num_products = SwatDB::queryOne($this->app->db, $sql);
 
-		$sql = sprintf('delete from ProductImageBinding where image = %s
+        $sql = sprintf(
+            'delete from ProductImageBinding where image = %s
 			and product = %s',
-			$this->app->db->quote($this->image->id, 'integer'),
-			$this->app->db->quote($this->product->id, 'integer'));
+            $this->app->db->quote($this->image->id, 'integer'),
+            $this->app->db->quote($this->product->id, 'integer')
+        );
 
-		SwatDB::exec($this->app->db, $sql);
+        SwatDB::exec($this->app->db, $sql);
 
-		if ($num_products === 1) {
-			$this->image->setFileBase('../images');
-			$this->image->delete();
-			$message_text = Store::_('One product image has been deleted.');
-		} else {
-			$message_text = Store::_('One product image has been removed.');
-		}
+        if ($num_products === 1) {
+            $this->image->setFileBase('../images');
+            $this->image->delete();
+            $message_text = Store::_('One product image has been deleted.');
+        } else {
+            $message_text = Store::_('One product image has been removed.');
+        }
 
-		$message = new SwatMessage($message_text);
-		$this->app->messages->add($message);
+        $message = new SwatMessage($message_text);
+        $this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// }}}
-	// {{{ protected function relocate()
+    /**
+     * Override the AdminDBDelete behaviour of redirecting to the component base
+     * as there is always a details page to return to.
+     */
+    protected function relocate()
+    {
+        AdminDBConfirmation::relocate();
+    }
 
-	/**
-	 * Override the AdminDBDelete behaviour of redirecting to the component base
-	 * as there is always a details page to return to.
-	 */
-	protected function relocate()
-	{
-		AdminDBConfirmation::relocate();
-	}
+    // build phase
 
-	// }}}
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('category', $this->category_id);
+        $form->addHiddenField('product', $this->product->id);
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $container = $this->ui->getWidget('confirmation_container');
+        $delete_view = $this->ui->getWidget('delete_view');
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('category', $this->category_id);
-		$form->addHiddenField('product', $this->product->id);
+        $store = new SwatTableStore();
+        $ds = new SwatDetailsStore();
+        $ds->image = $this->image;
+        $store->add($ds);
+        $delete_view->model = $store;
 
-		$container = $this->ui->getWidget('confirmation_container');
-		$delete_view = $this->ui->getWidget('delete_view');
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content_type = 'text/xml';
+        $message->content = sprintf(
+            '<strong>%s</strong>',
+            Store::_('Are you sure you want to remove the following image?')
+        );
 
-		$store = new SwatTableStore();
-		$ds = new SwatDetailsStore();
-		$ds->image = $this->image;
-		$store->add($ds);
-		$delete_view->model = $store;
+        $yes_button = $this->ui->getWidget('yes_button');
+        $yes_button->title = Store::_('Remove');
+    }
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content_type = 'text/xml';
-		$message->content = sprintf('<strong>%s</strong>',
-			Store::_('Are you sure you want to remove the following image?'));
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
+        $this->navbar->popEntry();
 
-		$yes_button = $this->ui->getWidget('yes_button');
-		$yes_button->title = Store::_('Remove');
-	}
+        if ($this->category_id !== null) {
+            $this->navbar->popEntry();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Product Categories'),
+                'Category'
+            ));
 
-	// }}}
-	// {{{ protected function buildNavBar()
+            $cat_navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->category_id]
+            );
 
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-		$this->navbar->popEntry();
+            foreach ($cat_navbar_rs as $entry) {
+                $this->title = $entry->title;
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $entry->title,
+                    'Category/Index?id=' . $entry->id
+                ));
+            }
+        }
 
-		if ($this->category_id !== null) {
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
+        if ($this->single_delete) {
+            if ($this->category_id === null) {
+                $link = sprintf('Product/Details?id=%s', $this->product->id);
+            } else {
+                $link = sprintf(
+                    'Product/Details?id=%s&category=%s',
+                    $this->product->id,
+                    $this->category_id
+                );
+            }
 
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                $this->product->title,
+                $link
+            ));
 
-			foreach ($cat_navbar_rs as $entry) {
-				$this->title = $entry->title;
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-			}
-		}
+            $this->title = $this->product->title;
+        }
 
-		if ($this->single_delete) {
-			if ($this->category_id === null) {
-				$link = sprintf('Product/Details?id=%s', $this->product->id);
-			} else {
-				$link = sprintf('Product/Details?id=%s&category=%s',
-					$this->product->id, $this->category_id);
-			}
-
-			$this->navbar->addEntry(new SwatNavBarEntry($this->product->title,
-				$link));
-
-			$this->title = $this->product->title;
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Remove Image')));
-	}
-
-	// }}}
+        $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Remove Image')));
+    }
 }
-
-?>

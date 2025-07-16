@@ -1,116 +1,117 @@
 <?php
 
 /**
- * Order page for Categories
+ * Order page for Categories.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCategoryOrder extends AdminDBOrder
 {
-	// {{{ private properties
+    private $parent;
 
-	private $parent;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
+        $this->parent = SiteApplication::initVar('parent');
+    }
 
-	// init phase
-	// {{{ protected function initInternal()
+    // process phase
 
-	protected function initInternal()
-	{
-		parent::initInternal();
-		$this->parent = SiteApplication::initVar('parent');
-	}
+    protected function saveDBData()
+    {
+        SwatDB::exec(
+            $this->app->db,
+            'alter table Category
+			disable trigger CategoryVisibleProductCountByRegionTrigger'
+        );
 
-	// }}}
+        $this->saveIndexes();
 
-	// process phase
-	// {{{ protected function saveDBData()
+        SwatDB::exec(
+            $this->app->db,
+            'alter table Category
+			enable trigger CategoryVisibleProductCountByRegionTrigger'
+        );
 
-	protected function saveDBData()
-	{
-		SwatDB::exec($this->app->db,
-			'alter table Category
-			disable trigger CategoryVisibleProductCountByRegionTrigger');
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$this->saveIndexes();
+    protected function saveIndex($id, $index)
+    {
+        SwatDB::updateColumn(
+            $this->app->db,
+            'Category',
+            'integer:displayorder',
+            $index,
+            'integer:id',
+            [$id]
+        );
+    }
 
-		SwatDB::exec($this->app->db,
-			'alter table Category
-			enable trigger CategoryVisibleProductCountByRegionTrigger');
+    // build phase
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+    protected function buildInternal()
+    {
+        parent::buildInternal();
+        $form = $this->ui->getWidget('order_form');
+        $form->addHiddenField('parent', $this->parent);
+    }
 
-	// }}}
-	// {{{ protected function saveIndex()
+    protected function loadData()
+    {
+        $where_clause = sprintf(
+            'parent %s %s',
+            SwatDB::equalityOperator($this->parent),
+            $this->app->db->quote($this->parent, 'integer')
+        );
 
-	protected function saveIndex($id, $index)
-	{
-		SwatDB::updateColumn($this->app->db, 'Category', 'integer:displayorder',
-			$index, 'integer:id', array($id));
-	}
+        $order_widget = $this->ui->getWidget('order');
+        $order_widget->addOptionsByArray(SwatDB::getOptionArray(
+            $this->app->db,
+            'Category',
+            'title',
+            'id',
+            'displayorder, title',
+            $where_clause
+        ));
 
-	// }}}
+        $sql = sprintf(
+            'select sum(displayorder) from Category where parent %s %s',
+            SwatDB::equalityOperator($this->parent, true),
+            $this->app->db->quote($this->parent, 'integer')
+        );
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $sum = $this->app->db->queryOne($sql, 'integer');
+        $options_list = $this->ui->getWidget('options');
+        $options_list->value = ($sum == 0) ? 'auto' : 'custom';
+    }
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-		$form = $this->ui->getWidget('order_form');
-		$form->addHiddenField('parent', $this->parent);
-	}
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-	// }}}
-	// {{{ protected function loadData()
+        $order_entry = $this->navbar->popEntry();
 
-	protected function loadData()
-	{
-		$where_clause = sprintf('parent %s %s',
-			SwatDB::equalityOperator($this->parent),
-			$this->app->db->quote($this->parent, 'integer'));
+        if ($this->parent !== null) {
+            $navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->parent]
+            );
 
-		$order_widget = $this->ui->getWidget('order');
-		$order_widget->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
-			'Category', 'title', 'id', 'displayorder, title', $where_clause));
+            foreach ($navbar_rs as $row) {
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $row->title,
+                    'Category/Index?id=' . $row->id
+                ));
+            }
+        }
 
-		$sql = sprintf(
-			'select sum(displayorder) from Category where parent %s %s',
-			SwatDB::equalityOperator($this->parent, true),
-			$this->app->db->quote($this->parent, 'integer'));
-
-		$sum = $this->app->db->queryOne($sql, 'integer');
-		$options_list = $this->ui->getWidget('options');
-		$options_list->value = ($sum == 0) ? 'auto' : 'custom';
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-
-		$order_entry = $this->navbar->popEntry();
-
-		if ($this->parent !== null) {
-			$navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->parent));
-
-			foreach ($navbar_rs as $row)
-				$this->navbar->addEntry(new SwatNavBarEntry($row->title,
-					'Category/Index?id='.$row->id));
-		}
-
-		$this->navbar->addEntry($order_entry);
-	}
-
-	// }}}
+        $this->navbar->addEntry($order_entry);
+    }
 }
-
-?>

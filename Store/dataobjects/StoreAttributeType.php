@@ -1,87 +1,79 @@
 <?php
 
 /**
- * An attribute type data object
+ * An attribute type data object.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  */
 class StoreAttributeType extends SwatDBDataObject
 {
-	// {{{ public properties
+    /**
+     * Unique identifier.
+     *
+     * @var int
+     */
+    public $id;
 
-	/**
-	 * Unique identifier
-	 *
-	 * @var integer
-	 */
-	public $id;
+    /**
+     * Shortname.
+     *
+     * @var string
+     */
+    public $shortname;
 
-	/**
-	 * Shortname
-	 *
-	 * @var string
-	 */
-	public $shortname;
+    protected function init()
+    {
+        $this->table = 'AttributeType';
+        $this->id_field = 'integer:id';
+    }
 
-	// }}}
-	// {{{ protected function init()
+    /**
+     * Loads an attribute type by its shortname.
+     *
+     * @param string $shortname the shortname of the attribute type to load
+     *
+     * @return bool true if loading this attribute type was successful and
+     *              false if an attribute type with the given shortname does
+     *              not exist
+     */
+    public function loadFromShortname($shortname)
+    {
+        $this->checkDB();
 
-	protected function init()
-	{
-		$this->table = 'AttributeType';
-		$this->id_field = 'integer:id';
-	}
+        $row = null;
 
-	// }}}
-	// {{{ public function loadFromShortname()
+        if ($this->table !== null) {
+            $sql = sprintf(
+                'select * from %s where shortname = %s',
+                $this->table,
+                $this->db->quote($shortname, 'text')
+            );
 
-	/**
-	 * Loads an attribute type by its shortname
-	 *
-	 * @param string $shortname the shortname of the attribute type to load.
-	 *
-	 * @return boolean true if loading this attribute type was successful and
-	 *                  false if an attribute type with the given shortname does
-	 *                  not exist.
-	 */
-	public function loadFromShortname($shortname)
-	{
-		$this->checkDB();
+            $rs = SwatDB::query($this->db, $sql, null);
+            $row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
+        }
 
-		$row = null;
+        if ($row === null) {
+            return false;
+        }
 
-		if ($this->table !== null) {
-			$sql = sprintf('select * from %s where shortname = %s',
-				$this->table,
-				$this->db->quote($shortname, 'text'));
+        $this->initFromRow($row);
+        $this->generatePropertyHashes();
 
-			$rs = SwatDB::query($this->db, $sql, null);
-			$row = $rs->fetchRow(MDB2_FETCHMODE_ASSOC);
-		}
+        return true;
+    }
 
-		if ($row === null)
-			return false;
+    protected function loadAttributes()
+    {
+        $sql = sprintf(
+            'select * from Attribute where attribute_type = %s',
+            $this->db->quote($this->id, 'integer')
+        );
 
-		$this->initFromRow($row);
-		$this->generatePropertyHashes();
-
-		return true;
-	}
-
-	// }}}
-	// {{{ protected function loadAttributes()
-
-	protected function loadAttributes()
-	{
-		$sql = sprintf('select * from Attribute where attribute_type = %s',
-			$this->db->quote($this->id, 'integer'));
-
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreAttributeWrapper'));
-	}
-
-	// }}}
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
+        );
+    }
 }
-
-?>

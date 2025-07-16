@@ -2,358 +2,329 @@
 
 /**
  * Composite widget that handles provstate entry and cascades from a country
- * flydown
+ * flydown.
  *
  * If the selected country has no provstate data, a free-text entry is
  * displayed.
  *
- * @package   Store
  * @copyright 2012-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProvStateEntry extends SwatInputControl
 {
-	// {{{ public properties
+    /**
+     * Selected provstate id.
+     *
+     * @var int
+     */
+    public $provstate_id;
 
-	/**
-	 * Selected provstate id
-	 *
-	 * @var integer
-	 */
-	public $provstate_id = null;
+    /**
+     * Manually entered provstate value.
+     *
+     * @var string
+     */
+    public $provstate_other;
 
-	/**
-	 * Manually entered provstate value
-	 *
-	 * @var string
-	 */
-	public $provstate_other = null;
+    /**
+     * Country and provstate data in the form:
+     *
+     * <code>
+     * <?php
+     * array(
+     *     'country_id' => array(
+     *         'title'        => 'Country Title',
+     *         'select_title' => 'Select a State',
+     *         'provstates'   => array(
+     *             array(
+     *                 'id'    => 'provstate_id',
+     *                 'title' => 'Provstate Title',
+     *             ),
+     *             array(
+     *                 'id'    => 'provstate_id',
+     *                 'title' => 'Provstate Title',
+     *             ),
+     *             ...
+     *         ),
+     *     ),
+     *     'country_id' => array(
+     *         'title'        => 'Country Title',
+     *         'provstates'   => null,
+     *     ),
+     *     ...
+     * );
+     * ?>
+     * </code>
+     *
+     * @var array
+     */
+    public $data = [];
 
-	/**
-	 * Country and provstate data in the form:
-	 *
-	 * <code>
-	 * <?php
-	 * array(
-	 *     'country_id' => array(
-	 *         'title'        => 'Country Title',
-	 *         'select_title' => 'Select a State',
-	 *         'provstates'   => array(
-	 *             array(
-	 *                 'id'    => 'provstate_id',
-	 *                 'title' => 'Provstate Title',
-	 *             ),
-	 *             array(
-	 *                 'id'    => 'provstate_id',
-	 *                 'title' => 'Provstate Title',
-	 *             ),
-	 *             ...
-	 *         ),
-	 *     ),
-	 *     'country_id' => array(
-	 *         'title'        => 'Country Title',
-	 *         'provstates'   => null,
-	 *     ),
-	 *     ...
-	 * );
-	 * ?>
-	 * </code>
-	 *
-	 * @var array
-	 */
-	public $data = array();
+    /**
+     * Country flydown controlling this provstate entry.
+     *
+     * @var SwatFlydown
+     */
+    protected $country_flydown;
 
-	// }}}
-	// {{{ protected properties
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
 
-	/**
-	 * Country flydown controlling this provstate entry
-	 *
-	 * @var SwatFlydown
-	 */
-	protected $country_flydown = null;
+        $this->requires_id = true;
 
-	// }}}
-	// {{{ public function __construct()
+        $yui = new SwatYUI(['dom', 'event']);
+        $this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
 
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
+        $this->addJavaScript(
+            'packages/store/javascript/store-provstate-entry.js'
+        );
+    }
 
-		$this->requires_id = true;
+    public function setCountryFlydown(SwatFlydown $country_flydown)
+    {
+        $this->country_flydown = $country_flydown;
+    }
 
-		$yui = new SwatYUI(array('dom', 'event'));
-		$this->html_head_entry_set->addEntrySet($yui->getHtmlHeadEntrySet());
+    public function process()
+    {
+        $flydown = $this->getCompositeWidget('flydown');
+        $flydown->show_blank = true;
+        $flydown->serialize_values = false;
 
-		$this->addJavaScript(
-			'packages/store/javascript/store-provstate-entry.js'
-		);
-	}
+        parent::process();
 
-	// }}}
-	// {{{ public function setCountryFlydown()
+        $this->validate();
 
-	public function setCountryFlydown(SwatFlydown $country_flydown)
-	{
-		$this->country_flydown = $country_flydown;
-	}
+        $this->provstate_id = $this->getCompositeWidget('flydown')->value;
+        $this->provstate_other = $this->getCompositeWidget('entry')->value;
 
-	// }}}
-	// {{{ public function process()
+        // handle special mode flag set by JavaScript that says which type
+        // of input was used.
+        $raw_data = $this->getForm()->getFormData();
+        if (isset($raw_data[$this->id . '_mode'])) {
+            if ($raw_data[$this->id . '_mode'] == 'flydown') {
+                $this->provstate_other = null;
+            }
+            if ($raw_data[$this->id . '_mode'] == 'entry') {
+                $this->provstate_id = null;
+            }
+        }
 
-	public function process()
-	{
-		$flydown = $this->getCompositeWidget('flydown');
-		$flydown->show_blank = true;
-		$flydown->serialize_values = false;
+        // If JavaScript was not used, default to flydown unless the blank
+        // option was selected.
+        if ($this->provstate_id == '') {
+            $this->provstate_id = null;
+        } else {
+            $this->provstate_other = null;
+        }
+    }
 
-		parent::process();
+    public function display()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-		$this->validate();
+        parent::display();
 
-		$this->provstate_id = $this->getCompositeWidget('flydown')->value;
-		$this->provstate_other = $this->getCompositeWidget('entry')->value;
+        $div = new SwatHtmlTag('div');
+        $div->id = $this->id;
+        $div->class = 'store-provstate-entry';
+        $div->open();
 
-		// handle special mode flag set by JavaScript that says which type
-		// of input was used.
-		$raw_data = $this->getForm()->getFormData();
-		if (isset($raw_data[$this->id.'_mode'])) {
-			if ($raw_data[$this->id.'_mode'] == 'flydown') {
-				$this->provstate_other = null;
-			}
-			if ($raw_data[$this->id.'_mode'] == 'entry') {
-				$this->provstate_id = null;
-			}
-		}
+        $flydown = $this->getCompositeWidget('flydown');
 
-		// If JavaScript was not used, default to flydown unless the blank
-		// option was selected.
-		if ($this->provstate_id == '') {
-			$this->provstate_id = null;
-		} else {
-			$this->provstate_other = null;
-		}
-	}
+        // make flat array of provstates for non-JS users
+        $provstates = [];
+        foreach ($this->data as $country => $data) {
+            if (isset($data['provstates']) && is_array($data['provstates'])) {
+                foreach ($data['provstates'] as $provstate) {
+                    $provstates[$provstate['id']] = $provstate['title'];
+                }
+            }
+        }
 
-	// }}}
-	// {{{ public function display()
+        // sort alphabetically
+        asort($provstates);
 
-	public function display()
-	{
-		if (!$this->visible) {
-			return;
-		}
+        // add options to flydown and display
+        $flydown->show_blank = true;
+        $flydown->serialize_values = false;
+        $flydown->options = [];
+        $flydown->addOptionsByArray($provstates);
+        $flydown->value = $this->provstate_id;
+        $flydown->display();
 
-		parent::display();
+        // display provstate other entry
+        $entry = $this->getCompositeWidget('entry');
+        $entry->value = $this->provstate_other;
+        $entry->display();
 
-		$div = new SwatHtmlTag('div');
-		$div->id = $this->id;
-		$div->class = 'store-provstate-entry';
-		$div->open();
+        $div->close();
 
-		$flydown = $this->getCompositeWidget('flydown');
+        Swat::displayInlineJavaScript($this->getInlineJavaScript());
+    }
 
-		// make flat array of provstates for non-JS users
-		$provstates = array();
-		foreach ($this->data as $country => $data) {
-			if (isset($data['provstates']) && is_array($data['provstates'])) {
-				foreach ($data['provstates'] as $provstate) {
-					$provstates[$provstate['id']] = $provstate['title'];
-				}
-			}
-		}
+    public function getFocusableHtmlId()
+    {
+        $this->confirmCompositeWidgets();
 
-		// sort alphabetically
-		asort($provstates);
+        return $this->getCompositeWidget('flydown')->id;
+    }
 
-		// add options to flydown and display
-		$flydown->show_blank = true;
-		$flydown->serialize_values = false;
-		$flydown->options = array();
-		$flydown->addOptionsByArray($provstates);
-		$flydown->value = $this->provstate_id;
-		$flydown->display();
+    protected function getInlineJavaScript()
+    {
+        static $shown = false;
 
-		// display provstate other entry
-		$entry = $this->getCompositeWidget('entry');
-		$entry->value = $this->provstate_other;
-		$entry->display();
+        if (!$shown) {
+            $javascript = $this->getInlineJavaScriptTranslations();
+            $shown = true;
+        } else {
+            $javascript = '';
+        }
 
-		$div->close();
+        $javascript .= sprintf(
+            'var %s_obj = new StoreProvStateEntry(%s, %s);',
+            $this->id,
+            SwatString::quoteJavaScriptString($this->id),
+            json_encode($this->data)
+        );
 
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-	}
+        if (count($this->data) === 1) {
+            reset($this->data);
+            $javascript .= sprintf(
+                "\n%s_obj.setCountryId(%s);",
+                $this->id,
+                SwatString::quoteJavaScriptString(key($this->data))
+            );
+        } elseif ($this->country_flydown instanceof SwatFlydown) {
+            $javascript .= sprintf(
+                "\n%s_obj.setCountryFlydown(%s);",
+                $this->id,
+                SwatString::quoteJavaScriptString($this->country_flydown->id)
+            );
+        }
 
-	// }}}
-	// {{{ public function getFocusableHtmlId()
+        return $javascript;
+    }
 
-	public function getFocusableHtmlId()
-	{
-		$this->confirmCompositeWidgets();
-		return $this->getCompositeWidget('flydown')->id;
-	}
+    /**
+     * Gets translatable string resources for the JavaScript object for
+     * this widget.
+     *
+     * @return string translatable JavaScript string resources for this widget
+     */
+    protected function getInlineJavaScriptTranslations()
+    {
+        $required_text = Store::_('(required)');
 
-	// }}}
-	// {{{ protected function getInlineJavaScript()
+        return sprintf(
+            "StoreProvStateEntry.required_text = %s;\n",
+            SwatString::quoteJavaScriptString($required_text)
+        );
+    }
 
-	protected function getInlineJavaScript()
-	{
-		static $shown = false;
+    protected function createCompositeWidgets()
+    {
+        $flydown = new SwatFlydown($this->id . '_flydown');
+        $this->addCompositeWidget($flydown, 'flydown');
 
-		if (!$shown) {
-			$javascript = $this->getInlineJavaScriptTranslations();
-			$shown = true;
-		} else {
-			$javascript = '';
-		}
+        $entry = new SwatEntry($this->id . '_entry');
+        $this->addCompositeWidget($entry, 'entry');
+    }
 
-		$javascript.= sprintf(
-			'var %s_obj = new StoreProvStateEntry(%s, %s);',
-			$this->id,
-			SwatString::quoteJavaScriptString($this->id),
-			json_encode($this->data)
-		);
+    protected function validate()
+    {
+        $flydown = $this->getCompositeWidget('flydown');
+        $provstate_id = $flydown->value;
 
-		if (count($this->data) === 1) {
-			reset($this->data);
-			$javascript.= sprintf(
-				"\n%s_obj.setCountryId(%s);",
-				$this->id,
-				SwatString::quoteJavaScriptString(key($this->data))
-			);
-		} elseif ($this->country_flydown instanceof SwatFlydown) {
-			$javascript.= sprintf(
-				"\n%s_obj.setCountryFlydown(%s);",
-				$this->id,
-				SwatString::quoteJavaScriptString($this->country_flydown->id)
-			);
-		}
+        $entry = $this->getCompositeWidget('entry');
 
-		return $javascript;
-	}
+        // if country flydown is set and country is selected, required depends
+        // on provstate data
+        if (
+            $this->country_flydown instanceof SwatFlydown
+            && $this->country_flydown->value !== null
+            && isset(
+                $this->data[$this->country_flydown->value],
+                $this->data[$this->country_flydown->value]['required']
+            )
+        ) {
+            $required = ($this->required
+                && $this->data[$this->country_flydown->value]['required']);
+        } else {
+            $required = $this->required;
+        }
 
-	// }}}
-	// {{{ protected function getInlineJavaScriptTranslations()
+        // validate required
+        if ($required) {
+            $raw_data = $this->getForm()->getFormData();
+            if (isset($raw_data[$this->id . '_mode'])) {
+                $mode = $raw_data[$this->id . '_mode'];
+                if ($mode == 'flydown' && $provstate_id == '') {
+                    $this->addMessage($this->getValidationMessage('required'));
 
-	/**
-	 * Gets translatable string resources for the JavaScript object for
-	 * this widget
-	 *
-	 * @return string translatable JavaScript string resources for this widget.
-	 */
-	protected function getInlineJavaScriptTranslations()
-	{
-		$required_text = Store::_('(required)');
+                    return;
+                }
+                if ($mode == 'entry' && $entry->value == '') {
+                    $this->addMessage($this->getValidationMessage('required'));
 
-		return sprintf(
-			"StoreProvStateEntry.required_text = %s;\n",
-			SwatString::quoteJavaScriptString($required_text)
-		);
-	}
+                    return;
+                }
+            } else {
+                if ($provstate_id == '' && $entry->value == '') {
+                    $this->addMessage($this->getValidationMessage('required'));
 
-	// }}}
-	// {{{ protected function createCompositeWidgets()
+                    return;
+                }
+            }
+        }
 
-	protected function createCompositeWidgets()
-	{
-		$flydown = new SwatFlydown($this->id.'_flydown');
-		$this->addCompositeWidget($flydown, 'flydown');
+        // only validate provstate if country flydown is set
+        if (!$this->country_flydown instanceof SwatFlydown) {
+            return;
+        }
 
-		$entry = new SwatEntry($this->id.'_entry');
-		$this->addCompositeWidget($entry, 'entry');
-	}
+        // only validate provstate if country was selected
+        $country_id = $this->country_flydown->value;
+        if ($country_id === null) {
+            return;
+        }
 
-	// }}}
-	// {{{ protected function validate()
+        // only validate provstate if provstate was selected
+        if ($provstate_id == '') {
+            return;
+        }
 
-	protected function validate()
-	{
-		$flydown = $this->getCompositeWidget('flydown');
-		$provstate_id = $flydown->value;
+        if (isset($this->data[$country_id])
+            && is_array($this->data[$country_id]['provstates'])) {
+            $found = false;
+            $provstates = $this->data[$country_id]['provstates'];
+            foreach ($provstates as $provstate) {
+                if ($provstate['id'] == $provstate_id) {
+                    $found = true;
+                    break;
+                }
+            }
 
-		$entry = $this->getCompositeWidget('entry');
+            if (!$found) {
+                $message_content = sprintf(
+                    Store::_(
+                        'The selected %%s is not a province or state ' .
+                        'of %s%s%s.'
+                    ),
+                    '<strong>',
+                    SwatString::minimizeEntities(
+                        $this->data[$country_id]['title']
+                    ),
+                    '</strong>'
+                );
 
-		// if country flydown is set and country is selected, required depends
-		// on provstate data
-		if ($this->country_flydown instanceof SwatFlydown &&
-			$this->country_flydown->value !== null &&
-			isset($this->data[$this->country_flydown->value]) &&
-			isset($this->data[$this->country_flydown->value]['required'])) {
-			$required = ($this->required &&
-				$this->data[$this->country_flydown->value]['required']);
-		} else {
-			$required = $this->required;
-		}
-
-		// validate required
-		if ($required) {
-			$raw_data = $this->getForm()->getFormData();
-			if (isset($raw_data[$this->id.'_mode'])) {
-				$mode = $raw_data[$this->id.'_mode'];
-				if ($mode == 'flydown' && $provstate_id == '') {
-					$this->addMessage($this->getValidationMessage('required'));
-					return;
-				}
-				if ($mode == 'entry' && $entry->value == '') {
-					$this->addMessage($this->getValidationMessage('required'));
-					return;
-				}
-			} else {
-				if ($provstate_id == '' && $entry->value == '') {
-					$this->addMessage($this->getValidationMessage('required'));
-					return;
-				}
-			}
-		}
-
-		// only validate provstate if country flydown is set
-		if (!($this->country_flydown instanceof SwatFlydown)) {
-			return;
-		}
-
-		// only validate provstate if country was selected
-		$country_id = $this->country_flydown->value;
-		if ($country_id === null) {
-			return;
-		}
-
-		// only validate provstate if provstate was selected
-		if ($provstate_id == '') {
-			return;
-		}
-
-		if (isset($this->data[$country_id]) &&
-			is_array($this->data[$country_id]['provstates'])) {
-			$found = false;
-			$provstates = $this->data[$country_id]['provstates'];
-			foreach ($provstates as $provstate) {
-				if ($provstate['id'] == $provstate_id) {
-					$found = true;
-					break;
-				}
-			}
-
-			if (!$found) {
-				$message_content = sprintf(
-					Store::_(
-						'The selected %%s is not a province or state '.
-						'of %s%s%s.'
-					),
-					'<strong>',
-					SwatString::minimizeEntities(
-						$this->data[$country_id]['title']
-					),
-					'</strong>'
-				);
-
-				$message = new SwatMessage($message_content, 'error');
-				$message->content_type = 'text/xml';
-				$this->addMessage($message);
-			}
-		}
-	}
-
-	// }}}
+                $message = new SwatMessage($message_content, 'error');
+                $message->content_type = 'text/xml';
+                $this->addMessage($message);
+            }
+        }
+    }
 }
-
-?>

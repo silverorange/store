@@ -1,198 +1,188 @@
 <?php
 
 /**
- * Order page for product images
+ * Order page for product images.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductImageOrder extends AdminDBOrder
 {
-	// {{{ private properties
+    /**
+     * @var StoreProduct
+     */
+    private $product;
 
-	/**
-	 * @var StoreProduct
-	 */
-	private $product;
+    /**
+     * Optional id of the product's current category. This is only used to
+     * maintain the proper navbar breadcrumbs when getting to this page by
+     * browsing the categories.
+     *
+     * @var int
+     */
+    private $category_id;
 
-	/**
-	 * Optional id of the product's current category. This is only used to
-	 * maintain the proper navbar breadcrumbs when getting to this page by
-	 * browsing the categories.
-	 *
-	 * @var integer
-	 */
-	private $category_id;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->category_id = SiteApplication::initVar('category');
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $product_id = SiteApplication::initVar('product');
+        $class_name = SwatDBClassMap::get(StoreProduct::class);
+        $this->product = new $class_name();
+        $this->product->setDatabase($this->app->db);
 
-		$this->category_id = SiteApplication::initVar('category');
+        if (!$this->product->load($product_id)) {
+            throw new AdminNotFoundException(
+                sprintf('Product with id ‘%s’ not found.', $product_id)
+            );
+        }
+    }
 
-		$product_id = SiteApplication::initVar('product');
-		$class_name = SwatDBClassMap::get('StoreProduct');
-		$this->product = new $class_name();
-		$this->product->setDatabase($this->app->db);
+    // process phase
 
-		if (!$this->product->load($product_id))
-			throw new AdminNotFoundException(
-				sprintf('Product with id ‘%s’ not found.', $product_id));
-	}
+    /**
+     * Saves the updated ordering indexes of each option.
+     *
+     * @see AdminOrder::saveIndex()
+     */
+    protected function saveIndexes()
+    {
+        $count = 0;
+        $order_widget = $this->ui->getWidget('order');
 
-	// }}}
+        foreach ($order_widget->values as $id) {
+            $count++;
+            $this->saveIndex($id, $count);
+        }
 
-	// process phase
-	// {{{ protected function saveIndexes()
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	/**
-	 * Saves the updated ordering indexes of each option
-	 *
-	 * @see AdminOrder::saveIndex()
-	 */
-	protected function saveIndexes()
-	{
-		$count = 0;
-		$order_widget = $this->ui->getWidget('order');
+    protected function saveIndex($id, $index)
+    {
+        SwatDB::updateColumn(
+            $this->app->db,
+            'ProductImageBinding',
+            'integer:displayorder',
+            $index,
+            'integer:image',
+            [$id]
+        );
+    }
 
-		foreach ($order_widget->values as $id) {
-			$count++;
-			$this->saveIndex($id, $count);
-		}
+    protected function getUpdatedMessage()
+    {
+        return new SwatMessage(Store::_('Image order updated.'));
+    }
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+    // build phase
 
-	// }}}
-	// {{{ protected function saveIndex()
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	protected function saveIndex($id, $index)
-	{
-		SwatDB::updateColumn($this->app->db, 'ProductImageBinding',
-			'integer:displayorder', $index,
-			'integer:image', array($id));
-	}
+        $frame = $this->ui->getWidget('order_frame');
+        $frame->title = Store::_('Order Product Images');
 
-	// }}}
-	// {{{ protected function getUpdatedMessage()
+        $dimension = $this->getImageDimension();
 
-	protected function getUpdatedMessage()
-	{
-		return new SwatMessage(Store::_('Image order updated.'));
-	}
+        $this->ui->getWidget('options_field')->visible = false;
+        $this->ui->getWidget('order')->height = '350px';
 
-	// }}}
+        // use ImageDimension so width of change-order always fits
+        if ($dimension !== null) {
+            $this->ui->getWidget('order')->width =
+                ($dimension->max_width + 24) . 'px';
+        } else {
+            $this->ui->getWidget('order')->width = '105px';
+        }
+    }
 
-	// build phase
-	// {{{ protected function buildInternal()
+    protected function buildForm()
+    {
+        parent::buildForm();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $form = $this->ui->getWidget('order_form');
+        $form->addHiddenField('product', $this->product->id);
+        $form->addHiddenField('category', $this->category_id);
+    }
 
-		$frame = $this->ui->getWidget('order_frame');
-		$frame->title = Store::_('Order Product Images');
+    protected function loadData()
+    {
+        $order_widget = $this->ui->getWidget('order');
 
-		$dimension = $this->getImageDimension();
+        foreach ($this->product->images as $image) {
+            $order_widget->addOption(
+                $image->id,
+                $image->getImgTag('thumb', '../'),
+                'text/xml'
+            );
+        }
+    }
 
-		$this->ui->getWidget('options_field')->visible = false;
-		$this->ui->getWidget('order')->height = '350px';
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
+        $this->navbar->popEntry();
 
-		// use ImageDimension so width of change-order always fits
-		if ($dimension !== null) {
-			$this->ui->getWidget('order')->width =
-				($dimension->max_width + 24).'px';
-		} else {
-			$this->ui->getWidget('order')->width = '105px';
-		}
-	}
+        if ($this->category_id !== null) {
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Product Categories'),
+                'Category'
+            ));
 
-	// }}}
-	// {{{ protected function buildForm()
+            $cat_navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->category_id]
+            );
 
-	protected function buildForm()
-	{
-		parent::buildForm();
+            foreach ($cat_navbar_rs as $entry) {
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $entry->title,
+                    'Category/Index?id=' . $entry->id
+                ));
+            }
+        }
 
-		$form = $this->ui->getWidget('order_form');
-		$form->addHiddenField('product', $this->product->id);
-		$form->addHiddenField('category', $this->category_id);
-	}
+        if ($this->category_id === null) {
+            $link = sprintf('Product/Details?id=%s', $this->product->id);
+        } else {
+            $link = sprintf(
+                'Product/Details?id=%s&category=%s',
+                $this->product->id,
+                $this->category_id
+            );
+        }
 
-	// }}}
-	// {{{ protected function loadData()
+        $this->navbar->addEntry(
+            new SwatNavBarEntry($this->product->title, $link)
+        );
 
-	protected function loadData()
-	{
-		$order_widget = $this->ui->getWidget('order');
+        $this->navbar->addEntry(
+            new SwatNavBarEntry(Store::_('Order Product Images'))
+        );
 
-		foreach ($this->product->images as $image) {
-			$order_widget->addOption($image->id,
-				$image->getImgTag('thumb', '../'),
-				'text/xml');
-		}
-	}
+        $this->title = $this->product->title;
+    }
 
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-		$this->navbar->popEntry();
-
-		if ($this->category_id !== null) {
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
-
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry) {
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-			}
-		}
-
-		if ($this->category_id === null) {
-			$link = sprintf('Product/Details?id=%s', $this->product->id);
-		} else {
-			$link = sprintf('Product/Details?id=%s&category=%s',
-				$this->product->id, $this->category_id);
-		}
-
-		$this->navbar->addEntry(
-			new SwatNavBarEntry($this->product->title, $link));
-
-		$this->navbar->addEntry(
-			new SwatNavBarEntry(Store::_('Order Product Images')));
-
-		$this->title = $this->product->title;
-	}
-
-	// }}}
-	// {{{ protected function getImageDimension()
-
-	protected function getImageDimension()
-	{
-		$sql = 'select * from ImageDimension
+    protected function getImageDimension()
+    {
+        $sql = 'select * from ImageDimension
 			inner join ImageSet on ImageDimension.image_set = ImageSet.id
 			where ImageSet.shortname = \'products\' and
 			ImageDimension.shortname = \'thumb\'';
 
-		return SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('SiteImageDimensionWrapper'))->getFirst();
-
-	}
-
-	// }}}
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(SiteImageDimensionWrapper::class)
+        )->getFirst();
+    }
 }
-
-?>

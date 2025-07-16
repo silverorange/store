@@ -1,76 +1,60 @@
 <?php
 
 /**
- * An address belonging to an account for an e-commerce web application
+ * An address belonging to an account for an e-commerce web application.
  *
- * @package   Store
  * @copyright 2005-2006 silverorane
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreAddress
  */
 class StoreAccountAddress extends StoreAddress
 {
-	// {{{ protected properties
+    /**
+     * Creation date.
+     *
+     * @var SwatDate
+     */
+    protected $createdate;
 
-	/**
-	 * Creation date
-	 *
-	 * @var SwatDate
-	 */
-	protected $createdate;
+    protected function init()
+    {
+        parent::init();
 
-	// }}}
-	// {{{ protected function init()
+        $this->table = 'AccountAddress';
 
-	protected function init()
-	{
-		parent::init();
+        $this->registerInternalProperty(
+            'account',
+            SwatDBClassMap::get(StoreAccount::class)
+        );
 
-		$this->table = 'AccountAddress';
+        $this->registerDateProperty('createdate');
+    }
 
-		$this->registerInternalProperty('account',
-			SwatDBClassMap::get('StoreAccount'));
+    protected function getProtectedPropertyList()
+    {
+        return array_merge(
+            parent::getProtectedPropertyList(),
+            [
+                'createdate' => [
+                    'get' => 'getCreateDate',
+                    'set' => 'setCreateDate',
+                ],
+            ]
+        );
+    }
 
-		$this->registerDateProperty('createdate');
-	}
+    // getters
 
-	// }}}
-	// {{{ protected function getProtectedPropertyList()
+    public function getCreateDate()
+    {
+        return $this->createdate;
+    }
 
-	protected function getProtectedPropertyList()
-	{
-		return array_merge(
-			parent::getProtectedPropertyList(),
-			array(
-				'createdate' => array(
-					'get' => 'getCreateDate',
-					'set' => 'setCreateDate',
-				)
-			)
-		);
-	}
+    // setters
 
-	// }}}
-
-	// getters
-	// {{{ public function getCreateDate()
-
-	public function getCreateDate()
-	{
-		return $this->createdate;
-	}
-
-	// }}}
-
-	// setters
-	// {{{ public function setCreateDate()
-
-	public function setCreateDate(SwatDate $createdate)
-	{
-		$this->createdate = $createdate;
-	}
-
-	// }}}
+    public function setCreateDate(SwatDate $createdate)
+    {
+        $this->createdate = $createdate;
+    }
 }
-
-?>

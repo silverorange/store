@@ -1,52 +1,51 @@
 .swat-fieldset address {
-	font-style: normal;
+  font-style: normal;
 }
 
 #checkout_footer .swat-primary {
-	font-weight: bold;
-	font-size: 120%;
-	margin: 0;
+  font-weight: bold;
+  font-size: 120%;
+  margin: 0;
 }
-
 
 /* Multiple Payments Table */
 
 .multiple-payment-table {
-	margin: 0;
+  margin: 0;
 }
 
 .multiple-payment-table th.payment {
-	width: 98%;
+  width: 98%;
 }
 
 .multiple-payment-table .payment-amount {
-	text-align: right;
+  text-align: right;
 }
 
 .multiple-payment-table tbody th {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .multiple-payment-table tbody th.payment,
 .multiple-payment-table tbody td.payment-amount {
-	border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 .multiple-payment-table tfoot th {
-	text-align: right;
+  text-align: right;
 }
 
 .multiple-payment-table tfoot td.payment-amount {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 .multiple-payment-table .payment-remaining .payment-amount {
-	background: #ffe3e0;
-	color: #c00;
-	font-weight: bold;
-	border: 1px solid #dc6e66;
+  background: #ffe3e0;
+  color: #c00;
+  font-weight: bold;
+  border: 1px solid #dc6e66;
 }
 
 .new-payment-link {
-	margin: 0.5em 0 0 0;
+  margin: 0.5em 0 0 0;
 }

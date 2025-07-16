@@ -2,51 +2,49 @@
 
 #account_address_container,
 #account_payment_method_container {
-	float: left;
-	width: 48%;
+  float: left;
+  width: 48%;
 }
 
 #account_address_container {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 
 #account_order_container {
-	clear: left;
+  clear: left;
 }
-
 
 /* Addresses & Payment Methods */
 
 .store-address-view,
 .store-payment-method-view {
-	margin: 0 0 1em 0;
+  margin: 0 0 1em 0;
 }
 
 .store-address-view-controls,
 .store-payment-method-view-controls {
-	margin-top: 2px;
+  margin-top: 2px;
 }
 
 .store-address-view-controls input.store-remove,
 .store-payment-method-view-controls input.store-remove {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 #account_address_container p,
 #account_payment_method_container p {
-	margin: 0;
+  margin: 0;
 }
-
 
 /* Order History */
 
 #account_order_container ul {
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 #account_order_container li {
-	margin-bottom: 0.5em;
-	list-style-type: none;
+  margin-bottom: 0.5em;
+  list-style-type: none;
 }

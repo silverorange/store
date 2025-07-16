@@ -1,165 +1,171 @@
 <?php
 
 /**
- * Delete confirmation page for ItemGroups
+ * Delete confirmation page for ItemGroups.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemGroupDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    private $category_id;
 
-	private $category_id = null;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
+        $this->category_id = SiteApplication::initVar('category');
+    }
 
-	// init phase
-	// {{{ protected function initInternal()
+    // process phase
 
-	protected function initInternal()
-	{
-		parent::initInternal();
-		$this->category_id = SiteApplication::initVar('category');
-	}
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-	// }}}
+        $item_list = $this->getItemList('integer');
 
-	// process phase
-	// {{{ protected function processDBData()
+        $sql = sprintf(
+            'update Item set item_group = NULL where item_group in (%s)',
+            $item_list
+        );
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+        SwatDB::exec($this->app->db, $sql);
 
-		$item_list = $this->getItemList('integer');
+        $sql = sprintf('delete from ItemGroup where id in (%s)', $item_list);
+        $num = SwatDB::exec($this->app->db, $sql);
 
-		$sql = sprintf(
-			'update Item set item_group = NULL where item_group in (%s)',
-			$item_list);
+        $message = new SwatMessage(
+            sprintf(
+                Store::ngettext(
+                    'One group has been deleted.',
+                    '%s groups have been deleted.',
+                    $num
+                ),
+                SwatString::numberFormat($num)
+            ),
+            'notice'
+        );
 
-		SwatDB::exec($this->app->db, $sql);
+        $this->app->messages->add($message);
 
-		$sql = sprintf('delete from ItemGroup where id in (%s)', $item_list);
-		$num = SwatDB::exec($this->app->db, $sql);
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One group has been deleted.',
-			'%s groups have been deleted.', $num),
-			SwatString::numberFormat($num)),
-			'notice');
+    // build phase
 
-		$this->app->messages->add($message);
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('category', $this->category_id);
 
-	// }}}
+        $dep = new AdminListDependency();
+        $dep->setTitle(
+            Store::_('group'),
+            Store::_('groups')
+        );
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $dep->entries = $this->getDependencyEntries();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $message_content = '<p>' . Store::_('Items in removed groups will ' .
+            '%snot%s be deleted. Items in removed groups will still be ' .
+            'available for sale and will appear ungrouped on the website.') .
+            '</p>';
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('category', $this->category_id);
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $dep->getMessage() .
+            sprintf(
+                $message_content,
+                '<em>',
+                '</em>'
+            );
 
-		$dep = new AdminListDependency();
-		$dep->setTitle(
-			Store::_('group'),
-			Store::_('groups')
-		);
+        $message->content_type = 'text/xml';
 
-		$dep->entries = $this->getDependencyEntries();
+        if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
+            $this->switchToCancelButton();
+        }
+    }
 
-		$message_content = '<p>'.Store::_('Items in removed groups will '.
-			'%snot%s be deleted. Items in removed groups will still be '.
-			'available for sale and will appear ungrouped on the website.').
-			'</p>';
+    protected function getDependencyEntries()
+    {
+        $item_list = $this->getItemList('integer');
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $dep->getMessage().
-			sprintf(
-				$message_content,
-				'<em>',
-				'</em>'
-			);
+        return AdminListDependency::queryEntries(
+            $this->app->db,
+            'ItemGroup',
+            'integer:id',
+            null,
+            'text:title',
+            'displayorder, title, id',
+            'id in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
+    }
 
-		$message->content_type = 'text/xml';
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
-			$this->switchToCancelButton();
-		}
-	}
+        $this->navbar->popEntry();
 
-	// }}}
-	// {{{ protected function getDependencyEntries()
+        if ($this->category_id !== null) {
+            $this->navbar->popEntry();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Product Categories'),
+                'Category'
+            ));
 
-	protected function getDependencyEntries()
-	{
-		$item_list = $this->getItemList('integer');
+            $cat_navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->category_id]
+            );
 
-		return AdminListDependency::queryEntries(
-			$this->app->db,
-			'ItemGroup',
-			'integer:id',
-			null,
-			'text:title',
-			'displayorder, title, id',
-			'id in ('.$item_list.')',
-			AdminDependency::DELETE
-		);
-	}
+            foreach ($cat_navbar_rs as $entry) {
+                $this->title = $entry->title;
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $entry->title,
+                    'Category/Index?id=' . $entry->id
+                ));
+            }
+        }
 
-	// }}}
-	// {{{ protected function buildNavBar()
+        $id = $this->getFirstItem();
 
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
+        $product_id = SwatDB::queryOneFromTable(
+            $this->app->db,
+            'ItemGroup',
+            'integer:product',
+            'id',
+            $id
+        );
 
-		$this->navbar->popEntry();
+        $product_title = SwatDB::queryOneFromTable(
+            $this->app->db,
+            'Product',
+            'text:title',
+            'id',
+            $product_id
+        );
 
-		if ($this->category_id !== null) {
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
+        if ($this->category_id === null) {
+            $link = sprintf('Product/Details?id=%s', $product_id);
+        } else {
+            $link = sprintf(
+                'Product/Details?id=%s&category=%s',
+                $product_id,
+                $this->category_id
+            );
+        }
 
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry) {
-				$this->title = $entry->title;
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-			}
-		}
-
-		$id = $this->getFirstItem();
-
-		$product_id = SwatDB::queryOneFromTable($this->app->db, 'ItemGroup',
-			'integer:product', 'id', $id);
-
-		$product_title = SwatDB::queryOneFromTable($this->app->db, 'Product',
-			'text:title', 'id', $product_id);
-
-		if ($this->category_id === null) {
-			$link = sprintf('Product/Details?id=%s', $product_id);
-		} else {
-			$link = sprintf('Product/Details?id=%s&category=%s', $product_id,
-				$this->category_id);
-		}
-
-		$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
-		$this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Group')));
-		$this->title = $product_title;
-	}
-
-	// }}}
+        $this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
+        $this->navbar->addEntry(new SwatNavBarEntry(Store::_('Delete Group')));
+        $this->title = $product_title;
+    }
 }
-
-?>

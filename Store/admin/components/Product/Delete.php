@@ -1,179 +1,187 @@
 <?php
 
 /**
- * Delete confirmation page for products
+ * Delete confirmation page for products.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreProductDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    /**
+     * The category we came from for the deleted product.
+     *
+     * Used for the custom relocate.
+     *
+     * @var int
+     */
+    private $category_id;
 
-	/**
-	 * The category we came from for the deleted product
-	 *
-	 * Used for the custom relocate.
-	 *
-	 * @var integer
-	 */
-	private $category_id = null;
+    public function setCategory($category_id)
+    {
+        $this->category_id = $category_id;
+    }
 
-	// }}}
-	// {{{ public function setCategory()
+    // init phase
 
-	public function setCategory($category_id)
-	{
-		$this->category_id = $category_id;
-	}
+    protected function initInternal()
+    {
+        parent::initInternal();
+        $this->category_id = SiteApplication::initVar('category');
+    }
 
-	// }}}
+    // process phase
 
-	// init phase
-	// {{{ protected function initInternal()
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-	protected function initInternal()
-	{
-		parent::initInternal();
-		$this->category_id = SiteApplication::initVar('category');
-	}
+        $sql = 'delete from Product where id in (%s)';
+        $item_list = $this->getItemList('integer');
+        $sql = sprintf($sql, $item_list);
 
-	// }}}
+        $num = SwatDB::exec($this->app->db, $sql);
 
-	// process phase
-	// {{{ protected function processDBData()
+        $message = new SwatMessage(
+            sprintf(
+                Store::ngettext(
+                    'One product has been deleted.',
+                    '%s products have been deleted.',
+                    $num
+                ),
+                SwatString::numberFormat($num)
+            ),
+            'notice'
+        );
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+        $this->app->messages->add($message);
 
-		$sql = 'delete from Product where id in (%s)';
-		$item_list = $this->getItemList('integer');
-		$sql = sprintf($sql, $item_list);
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$num = SwatDB::exec($this->app->db, $sql);
+    protected function relocate()
+    {
+        if ($this->single_delete) {
+            $form = $this->ui->getWidget('confirmation_form');
 
-		$message = new SwatMessage(sprintf(
-			Store::ngettext('One product has been deleted.',
-			'%s products have been deleted.', $num),
-			SwatString::numberFormat($num)),
-			'notice');
+            if ($form->button->id == 'no_button') {
+                // single delete that was cancelled, go back to details page
+                parent::relocate();
+            } else {
+                if ($this->category_id === null) {
+                    $this->app->relocate('Product');
+                } else {
+                    $this->app->relocate('Category/Index?id=' .
+                            $this->category_id);
+                }
+            }
+        } else {
+            parent::relocate();
+        }
+    }
 
-		$this->app->messages->add($message);
+    // build phase
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	// }}}
-	// {{{  protected function relocate()
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('category', $this->category_id);
 
-	protected function relocate()
-	{
-		if ($this->single_delete) {
-			$form = $this->ui->getWidget('confirmation_form');
+        $item_list = $this->getItemList('integer');
 
-			if ($form->button->id == 'no_button') {
-				// single delete that was cancelled, go back to details page
-				parent::relocate();
-			} else {
-				if ($this->category_id === null)
-					$this->app->relocate('Product');
-				else
-					$this->app->relocate('Category/Index?id='.
-						$this->category_id);
-			}
-		} else {
-			parent::relocate();
-		}
-	}
+        $dep = new AdminListDependency();
+        $dep->setTitle(Store::_('product'), Store::_('products'));
+        $dep->entries = AdminListDependency::queryEntries(
+            $this->app->db,
+            'Product',
+            'integer:id',
+            null,
+            'text:title',
+            'title',
+            'id in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-	// }}}
+        $this->getDependentItems($dep, $item_list);
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $dep->getMessage();
+        $message->content_type = 'text/xml';
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
+            $this->switchToCancelButton();
+        }
+    }
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('category', $this->category_id);
+    protected function buildNavBar()
+    {
+        $last_entry = $this->navbar->popEntry();
 
-		$item_list = $this->getItemList('integer');
+        if ($this->category_id !== null) {
+            $this->navbar->popEntry();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Product Categories'),
+                'Category'
+            ));
 
-		$dep = new AdminListDependency();
-		$dep->setTitle(Store::_('product'), Store::_('products'));
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'Product', 'integer:id', null, 'text:title', 'title',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
+            $cat_navbar_rs = SwatDB::executeStoredProc(
+                $this->app->db,
+                'getCategoryNavbar',
+                [$this->category_id]
+            );
 
-		$this->getDependentItems($dep, $item_list);
+            foreach ($cat_navbar_rs as $entry) {
+                $this->title = $entry->title;
+                $this->navbar->addEntry(new SwatNavBarEntry(
+                    $entry->title,
+                    'Category/Index?id=' . $entry->id
+                ));
+            }
+        }
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $dep->getMessage();
-		$message->content_type = 'text/xml';
+        if ($this->single_delete) {
+            $id = $this->getFirstItem();
+            $product_title = SwatDB::queryOneFromTable(
+                $this->app->db,
+                'Product',
+                'text:title',
+                'id',
+                $id
+            );
 
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
-			$this->switchToCancelButton();
-	}
+            if ($this->category_id === null) {
+                $link = sprintf('Product/Details?id=%s', $id);
+            } else {
+                $link = sprintf(
+                    'Product/Details?id=%s&category=%s',
+                    $id,
+                    $this->category_id
+                );
+            }
 
-	// }}}
-	// {{{ protected function buildNavBar()
+            $this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
+            $this->title = $product_title;
+        }
 
-	protected function buildNavBar()
-	{
-		$last_entry = $this->navbar->popEntry();
+        $this->navbar->addEntry($last_entry);
+    }
 
-		if ($this->category_id !== null) {
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Product Categories'), 'Category'));
+    private function getDependentItems($dep, $item_list)
+    {
+        $dep_items = new StoreProductItemDependency();
+        $dep_items->summaries = AdminSummaryDependency::querySummaries(
+            $this->app->db,
+            'Item',
+            'integer:id',
+            'integer:product',
+            'product in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-			$cat_navbar_rs = SwatDB::executeStoredProc($this->app->db,
-				'getCategoryNavbar', array($this->category_id));
-
-			foreach ($cat_navbar_rs as $entry) {
-				$this->title = $entry->title;
-				$this->navbar->addEntry(new SwatNavBarEntry($entry->title,
-					'Category/Index?id='.$entry->id));
-			}
-		}
-
-		if ($this->single_delete) {
-			$id = $this->getFirstItem();
-			$product_title = SwatDB::queryOneFromTable($this->app->db,
-				'Product', 'text:title', 'id', $id);
-
-			if ($this->category_id === null) {
-				$link = sprintf('Product/Details?id=%s', $id);
-			} else {
-				$link = sprintf('Product/Details?id=%s&category=%s', $id,
-					$this->category_id);
-			}
-
-			$this->navbar->addEntry(new SwatNavBarEntry($product_title, $link));
-			$this->title = $product_title;
-		}
-
-		$this->navbar->addEntry($last_entry);
-	}
-
-	// }}}
-	// {{{ private function getDependentItems()
-
-	private function getDependentItems($dep, $item_list)
-	{
-		$dep_items = new StoreProductItemDependency();
-		$dep_items->summaries = AdminSummaryDependency::querySummaries(
-			$this->app->db, 'Item', 'integer:id', 'integer:product',
-			'product in ('.$item_list.')', AdminDependency::DELETE);
-
-		$dep->addDependency($dep_items);
-	}
-
-	// }}}
+        $dep->addDependency($dep_items);
+    }
 }
-
-?>

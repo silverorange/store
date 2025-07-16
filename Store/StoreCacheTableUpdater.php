@@ -1,178 +1,161 @@
 <?php
 
 /**
- * Cache table updater application
+ * Cache table updater application.
  *
  * This application checks the dirty cache table list and runs an SQL function
  * for each entry found in the dirty cache table list.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCacheTableUpdater extends SiteCommandLineApplication
 {
-	// {{{ public function run()
+    public function run()
+    {
+        $this->initModules();
+        $this->parseCommandLineArguments();
 
-	public function run()
-	{
-		$this->initModules();
-		$this->parseCommandLineArguments();
+        $this->lock();
+        $this->debug(Store::_('Pass 1/2:') . "\n\n", true);
 
-		$this->lock();
-		$this->debug(Store::_('Pass 1/2:')."\n\n", true);
+        $this->updateCacheTables();
 
-		$this->updateCacheTables();
+        // run twice to handle two-level dependencies
+        $this->debug("\n" . Store::_('Pass 2/2:') . "\n\n", true);
 
-		// run twice to handle two-level dependencies
-		$this->debug("\n".Store::_('Pass 2/2:')."\n\n", true);
+        $this->updateCacheTables();
+        $this->unlock();
+    }
 
-		$this->updateCacheTables();
-		$this->unlock();
-	}
+    protected function updateCacheTables()
+    {
+        $sql = 'select shortname from CacheFlag where dirty = true';
+        $tables = SwatDB::query($this->db, $sql);
+        $total = count($tables);
+        if ($total > 0) {
+            $this->debug(sprintf(
+                Store::_('Found %s dirty cache tables:') . "\n",
+                $total
+            ));
 
-	// }}}
-	// {{{ protected function updateCacheTables()
+            foreach ($tables as $row) {
+                $this->debug(sprintf(
+                    '=> ' . Store::_('updating %s ... '),
+                    $row->shortname
+                ));
 
-	protected function updateCacheTables()
-	{
-		$sql = 'select shortname from CacheFlag where dirty = true';
-		$tables = SwatDB::query($this->db, $sql);
-		$total = count($tables);
-		if ($total > 0) {
-			$this->debug(sprintf(Store::_('Found %s dirty cache tables:')."\n",
-				$total));
+                $update_function =
+                    $this->getCacheTableUpdateFunction($row->shortname);
 
-			foreach ($tables as $row) {
-				$this->debug(sprintf('=> '.Store::_('updating %s ... '),
-					$row->shortname));
+                $sql = sprintf('select * from %s()', $update_function);
+                SwatDB::exec($this->db, $sql);
+                $this->debug(Store::_('done') . "\n");
+            }
 
-				$update_function =
-					$this->getCacheTableUpdateFunction($row->shortname);
+            if (isset($this->memcache)) {
+                $this->flushMemcache();
+            }
 
-				$sql = sprintf('select * from %s()', $update_function);
-				SwatDB::exec($this->db, $sql);
-				$this->debug(Store::_('done')."\n");
-			}
+            $this->debug(Store::_('Done.') . "\n");
+        } else {
+            $this->debug(Store::_('No dirty cache tables found.') . "\n");
+        }
+    }
 
-			if (isset($this->memcache)) {
-				$this->flushMemcache();
-			}
+    /**
+     * Gets the SQL function to run for a dirty cache table entry.
+     *
+     * If the given table name does not correspond to a known cache table, this
+     * method displays an error message and terminates the application.
+     *
+     * @param string $table_name the name of the dirty cache table
+     *
+     * @return string the SQL function to update (clean) the dirty cache table
+     */
+    protected function getCacheTableUpdateFunction($table_name)
+    {
+        switch ($table_name) {
+            case 'CategoryVisibleProductCountByRegion':
+                $update_function = 'updateCategoryVisibleProductCountByRegion';
+                break;
 
-			$this->debug(Store::_('Done.')."\n");
-		} else {
-			$this->debug(Store::_('No dirty cache tables found.')."\n");
-		}
-	}
+            case 'VisibleProduct':
+                $update_function = 'updateVisibleProduct';
+                break;
 
-	// }}}
-	// {{{ protected function getCacheTableUpdateFunction()
+            case 'CategoryVisibleItemCountByRegion':
+                $update_function = 'updateCategoryVisibleItemCountByRegion';
+                break;
 
-	/**
-	 * Gets the SQL function to run for a dirty cache table entry
-	 *
-	 * If the given table name does not correspond to a known cache table, this
-	 * method displays an error message and terminates the application.
-	 *
-	 * @param string $table_name the name of the dirty cache table.
-	 *
-	 * @return string the SQL function to update (clean) the dirty cache table.
-	 */
-	protected function getCacheTableUpdateFunction($table_name)
-	{
-		switch ($table_name) {
-		case 'CategoryVisibleProductCountByRegion':
-			$update_function = 'updateCategoryVisibleProductCountByRegion';
-			break;
+            default:
+                $this->terminate(sprintf(
+                    Store::_('Unknown dirty cache table %s.') . "\n",
+                    $table_name
+                ));
 
-		case 'VisibleProduct':
-			$update_function = 'updateVisibleProduct';
-			break;
+                break;
+        }
 
-		case 'CategoryVisibleItemCountByRegion':
-			$update_function = 'updateCategoryVisibleItemCountByRegion';
-			break;
+        return $update_function;
+    }
 
-		default:
-			$this->terminate(sprintf(
-				Store::_('Unknown dirty cache table %s.')."\n", $table_name));
+    protected function getDefaultModuleList()
+    {
+        return array_merge(
+            parent::getDefaultModuleList(),
+            [
+                'config'   => StoreCommandLineConfigModule::class,
+                'database' => SiteDatabaseModule::class,
+            ]
+        );
+    }
 
-			break;
-		}
+    /**
+     * Adds configuration definitions to the config module of this application.
+     *
+     * @param SiteConfigModule $config the config module of this application to
+     *                                 which to add the config definitions
+     */
+    protected function addConfigDefinitions(SiteConfigModule $config)
+    {
+        parent::addConfigDefinitions($config);
+        $config->addDefinitions(Store::getConfigDefinitions());
+    }
 
-		return $update_function;
-	}
+    /**
+     * Configures modules of this application before they are initialized.
+     *
+     * @param SiteConfigModule $config the config module of this application to
+     *                                 use for configuration other modules
+     */
+    protected function configure(SiteConfigModule $config)
+    {
+        parent::configure($config);
 
-	// }}}
-	// {{{ protected function getDefaultModuleList()
+        if ($this->hasModule('SiteMemcacheModule')) {
+            $this->memcache->server = $config->memcache->server;
+            $this->memcache->app_ns = $config->memcache->app_ns;
+        }
+    }
 
-	protected function getDefaultModuleList()
-	{
-		return array_merge(
-			parent::getDefaultModuleList(),
-			[
-				'config' => StoreCommandLineConfigModule::class,
-				'database' => SiteDatabaseModule::class,
-			]
-		);
-	}
+    protected function flushMemcache()
+    {
+        $instances = SwatDB::queryColumn(
+            $this->db,
+            'Instance',
+            'text:shortname'
+        );
 
-	// }}}
-	// {{{ protected function addConfigDefinitions()
-
-	/**
-	 * Adds configuration definitions to the config module of this application
-	 *
-	 * @param SiteConfigModule $config the config module of this application to
-	 *                                  which to add the config definitions.
-	 */
-	protected function addConfigDefinitions(SiteConfigModule $config)
-	{
-		parent::addConfigDefinitions($config);
-		$config->addDefinitions(Store::getConfigDefinitions());
-	}
-
-	// }}}
-	// {{{ protected function configure()
-
-	/**
-	 * Configures modules of this application before they are initialized
-	 *
-	 * @param SiteConfigModule $config the config module of this application to
-	 *                                  use for configuration other modules.
-	 */
-	protected function configure(SiteConfigModule $config)
-	{
-		parent::configure($config);
-
-		if ($this->hasModule('SiteMemcacheModule')) {
-			$this->memcache->server = $config->memcache->server;
-			$this->memcache->app_ns = $config->memcache->app_ns;
-		}
-	}
-
-	// }}}
-	// {{{ protected function flushMemcache()
-
-	protected function flushMemcache()
-	{
-		$instances = SwatDB::queryColumn($this->db, 'Instance',
-			'text:shortname');
-
-		if (count($instances) == 0) {
-			$this->memcache->flushNs('product');
-			$this->debug('Memcache Flushed');
-		} else {
-			foreach ($instances as $shortname) {
-				$this->memcache->setInstance($shortname);
-				$this->memcache->flushNs('product');
-				$this->debug('Memcache Flushed ('.$shortname.')');
-			}
-		}
-	}
-
-	// }}}
-
+        if (count($instances) == 0) {
+            $this->memcache->flushNs('product');
+            $this->debug('Memcache Flushed');
+        } else {
+            foreach ($instances as $shortname) {
+                $this->memcache->setInstance($shortname);
+                $this->memcache->flushNs('product');
+                $this->debug('Memcache Flushed (' . $shortname . ')');
+            }
+        }
+    }
 }
-
-?>

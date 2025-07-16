@@ -3,233 +3,205 @@
 /**
  * Displays totals in a special row in a table view.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  */
 class StorePercentageTotalRow extends SwatTableViewRow
 {
-	// {{{ public properties
+    /**
+     * Title of this total row.
+     *
+     * @var string
+     */
+    public $title;
 
-	/**
-	 * Title of this total row
-	 *
-	 * @var string
-	 */
-	public $title = null;
+    /**
+     * Link href.
+     *
+     * If not specified, the title is displayed as a span. If specified, the
+     * title is displayed as an anchor element with this value as the href
+     * attribute value.
+     *
+     * @var string
+     */
+    public $link;
 
-	/**
-	 * Link href
-	 *
-	 * If not specified, the title is displayed as a span. If specified, the
-	 * title is displayed as an anchor element with this value as the href
-	 * attribute value.
-	 *
-	 * @var string
-	 */
-	public $link = null;
+    /**
+     * Link title.
+     *
+     * If the {@link StoreTotalRow::$link} is set, this value will be used as
+     * the anchor element's title attribute value.
+     *
+     * @var string
+     */
+    public $link_title;
 
-	/**
-	 * Link title
-	 *
-	 * If the {@link StoreTotalRow::$link} is set, this value will be used as
-	 * the anchor element's title attribute value.
-	 *
-	 * @var string
-	 */
-	public $link_title = null;
+    /**
+     * The total value to display for this row.
+     *
+     * If the value is null, this row is not displayed.
+     *
+     * @var float
+     */
+    public $value;
 
-	/**
-	 * The total value to display for this row
-	 *
-	 * If the value is null, this row is not displayed.
-	 *
-	 * @var float
-	 */
-	public $value = null;
+    /**
+     * Optional number of additional columns that exist to the right of the
+     * total column.
+     *
+     * Dy default, no additional columns are displayed and the total values are
+     * in the last column of the table.
+     *
+     * @var int
+     */
+    public $offset = 0;
 
-	/**
-	 * Optional number of additional columns that exist to the right of the
-	 * total column
-	 *
-	 * Dy default, no additional columns are displayed and the total values are
-	 * in the last column of the table.
-	 *
-	 * @var integer
-	 */
-	public $offset = 0;
+    /**
+     * Optional note to display with the title.
+     *
+     * @var string
+     */
+    public $note;
 
-	/**
-	 * Optional note to display with the title
-	 *
-	 * @var string
-	 */
-	public $note = null;
+    /**
+     * Optional content type for {@link StoreTotalRow::$note}.
+     *
+     * Defaults to text/plain, use text/xml for XHTML fragments.
+     *
+     * @var string
+     */
+    public $note_content_type = 'text/plain';
 
-	/**
-	 * Optional content type for {@link StoreTotalRow::$note}
-	 *
-	 * Defaults to text/plain, use text/xml for XHTML fragments.
-	 *
-	 * @var string
-	 */
-	public $note_content_type = 'text/plain';
+    /**
+     * Whether or not to show a colon following the title.
+     *
+     * By default, a colon is displayed following the row title.
+     *
+     * @var bool
+     */
+    public $show_colon = true;
 
-	/**
-	 * Whether or not to show a colon following the title
-	 *
-	 * By default, a colon is displayed following the row title.
-	 *
-	 * @var boolean
-	 */
-	public $show_colon = true;
+    /**
+     * Percentage cell renderer used to display the value.
+     *
+     * @var SwatPercentageCellRenderer
+     */
+    protected $percentage_cell_renderer;
 
-	// }}}
-	// {{{ protected properties
+    public function __construct()
+    {
+        parent::__construct();
+        $this->percentage_cell_renderer = new SwatPercentageCellRenderer();
+        $this->addStyleSheet('packages/store/styles/store-total-row.css');
+    }
 
-	/**
-	 * Percentage cell renderer used to display the value
-	 *
-	 * @var SwatPercentageCellRenderer
-	 */
-	protected $percentage_cell_renderer;
+    public function display()
+    {
+        if ($this->value === null) {
+            $this->visible = false;
+        }
 
-	// }}}
-	// {{{ public function __construct()
+        if (!$this->visible) {
+            return;
+        }
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->percentage_cell_renderer = new SwatPercentageCellRenderer();
-		$this->addStyleSheet('packages/store/styles/store-total-row.css');
-	}
+        parent::display();
 
-	// }}}
-	// {{{ public function display()
+        $tr_tag = new SwatHtmlTag('tr');
+        $tr_tag->class = 'store-total-row';
+        $tr_tag->id = $this->id;
 
-	public function display()
-	{
-		if ($this->value === null)
-			$this->visible = false;
+        $tr_tag->open();
 
-		if (!$this->visible)
-			return;
+        $this->displayHeader();
+        $this->displayTotal();
+        $this->displayBlank();
 
-		parent::display();
+        $tr_tag->close();
+    }
 
-		$tr_tag = new SwatHtmlTag('tr');
-		$tr_tag->class = 'store-total-row';
-		$tr_tag->id = $this->id;
+    protected function displayHeader()
+    {
+        $colspan = $this->view->getXhtmlColspan();
+        $th_tag = new SwatHtmlTag('th');
+        $th_tag->colspan = $colspan - 1 - $this->offset;
 
-		$tr_tag->open();
+        $th_tag->open();
+        $this->displayTitle();
+        $th_tag->close();
+    }
 
-		$this->displayHeader();
-		$this->displayTotal();
-		$this->displayBlank();
+    protected function displayTitle()
+    {
+        if ($this->link === null) {
+            $title = SwatString::minimizeEntities($this->title);
+        } else {
+            $anchor_tag = new SwatHtmlTag('a');
+            $anchor_tag->href = $this->link;
+            $anchor_tag->title = $this->link_title;
+            $anchor_tag->setContent($this->title);
+            $title = $anchor_tag->__toString();
+        }
 
-		$tr_tag->close();
-	}
+        if ($this->note !== null) {
+            $span = new SwatHtmlTag('span');
+            $span->class = 'note';
+            $span->setContent(
+                sprintf('(%s)', $this->note),
+                $this->note_content_type
+            );
 
-	// }}}
-	// {{{ protected function displayHeader()
+            $title .= ' ' . $span->__toString();
+        }
 
-	protected function displayHeader()
-	{
-		$colspan = $this->view->getXhtmlColspan();
-		$th_tag = new SwatHtmlTag('th');
-		$th_tag->colspan = $colspan - 1 - $this->offset;
+        if ($this->show_colon) {
+            printf(Store::_('%s:'), $title);
+        } else {
+            echo $title;
+        }
+    }
 
-		$th_tag->open();
-		$this->displayTitle();
-		$th_tag->close();
-	}
+    protected function displayTotal()
+    {
+        $td_tag = new SwatHtmlTag('td');
+        $td_tag->class = $this->getCSSClassString();
+        $td_tag->open();
+        $this->displayValue();
+        $td_tag->close();
+    }
 
-	// }}}
-	// {{{ protected function displayTitle()
+    protected function displayValue()
+    {
+        $this->percentage_cell_renderer->value = $this->value;
+        $this->percentage_cell_renderer->render();
+    }
 
-	protected function displayTitle()
-	{
-		if ($this->link === null) {
-			$title = SwatString::minimizeEntities($this->title);
-		} else {
-			$anchor_tag = new SwatHtmlTag('a');
-			$anchor_tag->href = $this->link;
-			$anchor_tag->title = $this->link_title;
-			$anchor_tag->setContent($this->title);
-			$title = $anchor_tag->__toString();
-		}
+    protected function displayBlank()
+    {
+        if ($this->offset > 0) {
+            $td_tag = new SwatHtmlTag('td');
+            $td_tag->colspan = $this->offset;
+            $td_tag->setContent('&nbsp;');
+            $td_tag->display();
+        }
+    }
 
-		if ($this->note !== null) {
-			$span = new SwatHtmlTag('span');
-			$span->class = 'note';
-			$span->setContent(sprintf('(%s)', $this->note),
-				$this->note_content_type);
+    protected function getCSSClassNames()
+    {
+        $classes = [];
 
-			$title.= ' '.$span->__toString();
-		}
+        // renderer inheritance classes
+        $classes = array_merge(
+            $classes,
+            $this->percentage_cell_renderer->getInheritanceCSSClassNames()
+        );
 
-		if ($this->show_colon) {
-			printf(Store::_('%s:'), $title);
-		} else {
-			echo $title;
-		}
-	}
+        // renderer base classes
+        $classes = array_merge(
+            $classes,
+            $this->percentage_cell_renderer->getBaseCSSClassNames()
+        );
 
-	// }}}
-	// {{{ protected function displayTotal()
-
-	protected function displayTotal()
-	{
-		$td_tag = new SwatHtmlTag('td');
-		$td_tag->class = $this->getCSSClassString();
-		$td_tag->open();
-		$this->displayValue();
-		$td_tag->close();
-	}
-
-	// }}}
-	// {{{ protected function displayValue()
-
-	protected function displayValue()
-	{
-		$this->percentage_cell_renderer->value = $this->value;
-		$this->percentage_cell_renderer->render();
-	}
-
-	// }}}
-	// {{{ protected function displayBlank()
-
-	protected function displayBlank()
-	{
-		if ($this->offset > 0) {
-			$td_tag = new SwatHtmlTag('td');
-			$td_tag->colspan = $this->offset;
-			$td_tag->setContent('&nbsp;');
-			$td_tag->display();
-		}
-	}
-
-	// }}}
-	// {{{ protected function getCSSClassNames()
-
-	protected function getCSSClassNames()
-	{
-		$classes = array();
-
-		// renderer inheritance classes
-		$classes = array_merge($classes,
-			$this->percentage_cell_renderer->getInheritanceCSSClassNames());
-
-		// renderer base classes
-		$classes = array_merge($classes,
-			$this->percentage_cell_renderer->getBaseCSSClassNames());
-
-		// user specified classes
-		$classes = array_merge($classes, $this->classes);
-
-		return $classes;
-	}
-
-	// }}}
+        // user specified classes
+        return array_merge($classes, $this->classes);
+    }
 }
-
-?>

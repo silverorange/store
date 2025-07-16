@@ -1,24 +1,18 @@
 <?php
 
 /**
- * A recordset wrapper class for StoreShippingRate objects
+ * A recordset wrapper class for StoreShippingRate objects.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreShippingRate
  */
 class StoreShippingRateWrapper extends SwatDBRecordsetWrapper
 {
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		parent::init();
-		$this->row_wrapper_class = SwatDBClassMap::get('StoreShippingRate');
-	}
-
-	// }}}
+    protected function init()
+    {
+        parent::init();
+        $this->row_wrapper_class = SwatDBClassMap::get(StoreShippingRate::class);
+    }
 }
-
-?>

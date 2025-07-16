@@ -1,79 +1,75 @@
 <?php
 
 /**
- * Order page for Attributes
+ * Order page for Attributes.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAttributeOrder extends AdminDBOrder
 {
-	// {{{ private properties
+    private $parent;
 
-	private $parent;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->parent = SiteApplication::initVar('parent');
+        $form = $this->ui->getWidget('order_form');
+        $form->addHiddenField('parent', $this->parent);
+    }
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+    // process phase
 
-		$this->parent = SiteApplication::initVar('parent');
-		$form = $this->ui->getWidget('order_form');
-		$form->addHiddenField('parent', $this->parent);
-	}
+    protected function saveIndex($id, $index)
+    {
+        SwatDB::updateColumn(
+            $this->app->db,
+            'Attribute',
+            'integer:displayorder',
+            $index,
+            'integer:id',
+            [$id]
+        );
 
-	// }}}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// process phase
-	// {{{ protected function saveIndex()
+    // build phase
 
-	protected function saveIndex($id, $index)
-	{
-		SwatDB::updateColumn($this->app->db, 'Attribute',
-			'integer:displayorder', $index, 'integer:id', array($id));
+    protected function buildInternal()
+    {
+        $frame = $this->ui->getWidget('order_frame');
+        $frame->title = Store::_('Order Attributes');
+        parent::buildInternal();
+    }
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+    protected function loadData()
+    {
+        $where_clause = sprintf(
+            'attribute_type = %s',
+            $this->app->db->quote($this->parent, 'integer')
+        );
 
-	// }}}
+        $order_widget = $this->ui->getWidget('order');
+        $order_widget->addOptionsByArray(SwatDB::getOptionArray(
+            $this->app->db,
+            'Attribute',
+            'title',
+            'id',
+            'displayorder, title',
+            $where_clause
+        ));
 
-	// build phase
-	// {{{ protected function buildInternal()
-	protected function buildInternal()
-	{
-		$frame = $this->ui->getWidget('order_frame');
-		$frame->title = Store::_('Order Attributes');
-		parent::buildInternal();
-	}
+        $sql = 'select sum(displayorder) from Attribute where ' .
+            $where_clause;
 
-	// }}}
-	// {{{ protected function loadData()
-
-	protected function loadData()
-	{
-		$where_clause = sprintf('attribute_type = %s',
-			$this->app->db->quote($this->parent, 'integer'));
-
-		$order_widget = $this->ui->getWidget('order');
-		$order_widget->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
-			'Attribute', 'title', 'id', 'displayorder, title',
-			$where_clause));
-
-		$sql = 'select sum(displayorder) from Attribute where '.
-			$where_clause;
-
-		$sum = SwatDB::queryOne($this->app->db, $sql, 'integer');
-		$options_list = $this->ui->getWidget('options');
-		$options_list->value = ($sum == 0) ? 'auto' : 'custom';
-	}
-
-	// }}}
+        $sum = SwatDB::queryOne($this->app->db, $sql, 'integer');
+        $options_list = $this->ui->getWidget('options');
+        $options_list->value = ($sum == 0) ? 'auto' : 'custom';
+    }
 }
-
-?>

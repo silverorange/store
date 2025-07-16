@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract base class for an object status
+ * Abstract base class for an object status.
  *
  * This class forms the base of StoreItemStatus and StoreOrderStatus.
  *
@@ -22,56 +22,46 @@
  * echo $order->getStatus()->title;
  * </code>
  *
- * @package   Store
  * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreStatus extends SwatObject
 {
-	// {{{ public properties
+    /**
+     * The 'value' of this status.
+     *
+     * This is often what is saved in the database for an object.
+     *
+     * @var int
+     */
+    public $id;
 
-	/**
-	 * The 'value' of this status
-	 *
-	 * This is often what is saved in the database for an object.
-	 *
-	 * @var integer
-	 */
-	public $id;
+    /**
+     * User visible title of this status.
+     *
+     * @var string
+     */
+    public $title;
 
-	/**
-	 * User visible title of this status
-	 *
-	 * @var string
-	 */
-	public $title;
+    /**
+     * Mnemonic shortname used primarily when assigning statuses to objects
+     * or when writing conditional code.
+     *
+     * @var string
+     */
+    public $shortname;
 
-	/**
-	 * Mnemonic shortname used primarily when assigning statuses to objects
-	 * or when writing conditional code
-	 *
-	 * @var string
-	 */
-	public $shortname;
-
-	// }}}
-	// {{{ public function __construct()
-
-	/**
-	 * Creates a new status object
-	 *
-	 * @param integer $id the valud of this status.
-	 * @param string $shortname the mnemonic shortname of this status.
-	 * @param string $title the user visible title of this status.
-	 */
-	public function __construct($id, $shortname, $title)
-	{
-		$this->id = (integer)$id;
-		$this->shortname = (string)$shortname;
-		$this->title = (string)$title;
-	}
-
-	// }}}
+    /**
+     * Creates a new status object.
+     *
+     * @param int    $id        the valud of this status
+     * @param string $shortname the mnemonic shortname of this status
+     * @param string $title     the user visible title of this status
+     */
+    public function __construct($id, $shortname, $title)
+    {
+        $this->id = (int) $id;
+        $this->shortname = (string) $shortname;
+        $this->title = (string) $title;
+    }
 }
-
-?>

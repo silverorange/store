@@ -1,226 +1,199 @@
 <?php
 
 /**
- * Abstract application to upload product listing files to a ftp server
+ * Abstract application to upload product listing files to a ftp server.
  *
- * @package   Store
  * @copyright 2011-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @todo      Figure out when setPath() is used, it may be a dead code path.
  */
 abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 {
-	// {{{ private property
+    private $path = '';
+    private $upload = true;
+    private $display = false;
+    private $keep_file = false;
 
-	private $path      = '';
-	private $upload    = true;
-	private $display   = false;
-	private $keep_file = false;
+    public function __construct($id, $filename, $title, $documentation)
+    {
+        parent::__construct($id, $filename, $title, $documentation);
 
-	// }}}
-	// {{{ public function __construct()
+        // add display argument
+        $display = new SiteCommandLineArgument(
+            ['-d', '--display'],
+            'setDisplay',
+            Store::_('Display the generated file.')
+        );
 
-	public function __construct($id, $filename, $title, $documentation)
-	{
-		parent::__construct($id, $filename, $title, $documentation);
+        $this->addCommandLineArgument($display);
 
-		// add display argument
-		$display = new SiteCommandLineArgument(
-			array('-d', '--display'), 'setDisplay',
-			Store::_('Display the generated file.'));
+        // add no-upload argument
+        $no_upload = new SiteCommandLineArgument(
+            ['-n', '--no-upload'],
+            'setNoUpload',
+            Store::_('Do not upload the generated file to the ftp server.')
+        );
 
-		$this->addCommandLineArgument($display);
+        $this->addCommandLineArgument($no_upload);
 
-		// add no-upload argument
-		$no_upload = new SiteCommandLineArgument(
-			array('-n', '--no-upload'), 'setNoUpload',
-			Store::_('Do not upload the generated file to the ftp server.'));
+        // add keep file argument
+        $keep_file = new SiteCommandLineArgument(
+            ['-f', '--keep-file'],
+            'setKeepFile',
+            Store::_('Keep the generated file after the script is done.')
+        );
 
-		$this->addCommandLineArgument($no_upload);
+        $this->addCommandLineArgument($keep_file);
+    }
 
-		// add keep file argument
-		$keep_file = new SiteCommandLineArgument(
-			array('-f', '--keep-file'), 'setKeepFile',
-			Store::_('Keep the generated file after the script is done.'));
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
 
-		$this->addCommandLineArgument($keep_file);
-	}
+    public function setDisplay()
+    {
+        $this->display = true;
+    }
 
-	// }}}
-	// {{{ public function setPath()
+    public function setNoUpload()
+    {
+        $this->upload = false;
+    }
 
-	public function setPath($path)
-	{
-		$this->path = $path;
-	}
+    public function setKeepFile()
+    {
+        $this->keep_file = true;
+    }
 
-	// }}}
-	// {{{ public function setDisplay()
+    public function run()
+    {
+        parent::run();
 
-	public function setDisplay()
-	{
-		$this->display = true;
-	}
+        if ($this->config->uri->cdn_base != '') {
+            SiteImage::$cdn_base = $this->config->uri->cdn_base;
+        }
 
-	// }}}
-	// {{{ public function setNoUpload()
+        $this->lock();
 
-	public function setNoUpload()
-	{
-		$this->upload = false;
-	}
+        $filename = $this->getFilename();
+        $generator = $this->getGenerator();
+        $filename_with_path = $this->path . $filename;
 
-	// }}}
-	// {{{ public function setKeepFile()
+        $this->debug(sprintf(
+            Store::_('Generating Product file for %s ... '),
+            $this->config->site->title
+        ));
 
-	public function setKeepFile()
-	{
-		$this->keep_file = true;
-	}
+        $contents = $generator->generate();
+        if (file_put_contents($filename_with_path, $contents, LOCK_EX) ===
+            false) {
+            $this->terminate(sprintf(Store::_(
+                'Error writing file: %s',
+                $filename_with_path
+            )) . "\n\n");
+        }
 
-	// }}}
-	// {{{ public function run()
+        $this->debug(Store::_('done') . "\n\n");
 
-	public function run()
-	{
-		parent::run();
+        if ($this->display) {
+            $this->debug(Store::_('Generated File:') . "\n\n");
 
-		if ($this->config->uri->cdn_base != '') {
-			SiteImage::$cdn_base = $this->config->uri->cdn_base;
-		}
+            echo $contents;
 
-		$this->lock();
+            $this->debug("\n\n");
+        }
 
-		$filename  = $this->getFilename();
-		$generator = $this->getGenerator();
-		$filename_with_path = $this->path.$filename;
+        if ($this->upload) {
+            $server = $this->getFtpServer();
+            $username = $this->getFtpUsername();
+            $password = $this->getFtpPassword();
 
-		$this->debug(sprintf(
-			Store::_('Generating Product file for %s ... '),
-			$this->config->site->title));
+            $this->debug(sprintf(
+                Store::_('Logging into %s as %s ... '),
+                $server,
+                $username
+            ));
 
-		$contents = $generator->generate();
-		if (file_put_contents($filename_with_path, $contents, LOCK_EX) ===
-			false) {
-			$this->terminate(sprintf(Store::_(
-				'Error writing file: %s', $filename_with_path))."\n\n");
-		}
+            $ftp_connection = ftp_connect($server);
 
-		$this->debug(Store::_('done')."\n\n");
+            if ($ftp_connection === false) {
+                throw new SwatException('Unable to connect to FTP server: ' .
+                    $server);
+            }
 
-		if ($this->display) {
-			$this->debug(Store::_('Generated File:')."\n\n");
+            $login_result = ftp_login(
+                $ftp_connection,
+                $username,
+                $password
+            );
 
-			echo $contents;
+            if ($ftp_connection == null || $login_result == null) {
+                $this->terminate(Store::_('failed to log in') . "\n\n");
+            } else {
+                $this->debug(Store::_('done') . "\n\n");
+            }
 
-			$this->debug("\n\n");
-		}
+            $this->debug(Store::_('Uploading Product file ... '));
 
-		if ($this->upload) {
-			$server   = $this->getFtpServer();
-			$username = $this->getFtpUsername();
-			$password = $this->getFtpPassword();
+            $upload_result = ftp_put(
+                $ftp_connection,
+                $filename,
+                $filename_with_path,
+                FTP_BINARY
+            );
 
-			$this->debug(sprintf(Store::_('Logging into %s as %s ... '),
-				$server, $username));
+            if (!$upload_result) {
+                $this->terminate(Store::_('failed uploading') . "\n");
+            } else {
+                $this->debug(Store::_('done') . "\n\n");
+            }
 
-			$ftp_connection = ftp_connect($server);
+            ftp_close($ftp_connection);
+        }
 
-			if ($ftp_connection === false) {
-				throw new SwatException('Unable to connect to FTP server: '.
-					$server);
-			}
+        if (!$this->keep_file) {
+            unlink($filename_with_path);
+        }
 
-			$login_result = ftp_login($ftp_connection,
-				$username,
-				$password);
+        $this->unlock();
 
-			if ($ftp_connection == null || $login_result == null) {
-				$this->terminate(Store::_('failed to log in')."\n\n");
-			} else {
-				$this->debug(Store::_('done')."\n\n");
-			}
+        $this->debug(Store::_('All done.') . "\n");
+    }
 
-			$this->debug(Store::_('Uploading Product file ... '));
+    abstract protected function getGenerator();
 
-			$upload_result = ftp_put($ftp_connection, $filename,
-				$filename_with_path, FTP_BINARY);
+    abstract protected function getFilename();
 
-			if (!$upload_result) {
-				$this->terminate(Store::_('failed uploading')."\n");
-			} else {
-				$this->debug(Store::_('done')."\n\n");
-			}
+    abstract protected function getFtpServer();
 
-			ftp_close($ftp_connection);
-		}
+    abstract protected function getFtpUsername();
 
-		if (!$this->keep_file) {
-			unlink($filename_with_path);
-		}
+    abstract protected function getFtpPassword();
 
-		$this->unlock();
+    // boilerplate
 
-		$this->debug(Store::_('All done.')."\n");
-	}
+    protected function getDefaultModuleList()
+    {
+        return array_merge(
+            parent::getDefaultModuleList(),
+            [
+                'config'   => StoreCommandLineConfigModule::class,
+                'database' => SiteDatabaseModule::class,
+            ]
+        );
+    }
 
-	// }}}
-	// {{{ abstract protected function getGenerator()
-
-	abstract protected function getGenerator();
-
-	// }}}
-	// {{{ abstract protected function getFilename()
-
-	abstract protected function getFilename();
-
-	// }}}
-	// {{{ abstract protected function getFtpServer()
-
-	abstract protected function getFtpServer();
-
-	// }}}
-	// {{{ abstract protected function getFtpUsername()
-
-	abstract protected function getFtpUsername();
-
-	// }}}
-	// {{{ abstract protected function getFtpPassword()
-
-	abstract protected function getFtpPassword();
-
-	// }}}
-
-	// boilerplate
-	// {{{ protected function getDefaultModuleList()
-
-	protected function getDefaultModuleList()
-	{
-		return array_merge(
-			parent::getDefaultModuleList(),
-			[
-				'config' => StoreCommandLineConfigModule::class,
-				'database' => SiteDatabaseModule::class,
-			]
-		);
-	}
-
-	// }}}
-	// {{{ protected function addConfigDefinitions()
-
-	/**
-	 * Adds configuration definitions to the config module of this application
-	 *
-	 * @param SiteConfigModule $config the config module of this application to
-	 *                                  which to add the config definitions.
-	 */
-	protected function addConfigDefinitions(SiteConfigModule $config)
-	{
-		parent::addConfigDefinitions($config);
-		$config->addDefinitions(Store::getConfigDefinitions());
-	}
-
-	// }}}
+    /**
+     * Adds configuration definitions to the config module of this application.
+     *
+     * @param SiteConfigModule $config the config module of this application to
+     *                                 which to add the config definitions
+     */
+    protected function addConfigDefinitions(SiteConfigModule $config)
+    {
+        parent::addConfigDefinitions($config);
+        $config->addDefinitions(Store::getConfigDefinitions());
+    }
 }
-
-?>

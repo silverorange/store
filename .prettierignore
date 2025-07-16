@@ -1,0 +1,5 @@
+/composer.lock
+/pnpm-lock.yaml
+/.pnpm-store
+/www/admin/javascript/jquery-1.8.3.min.js
+/www/admin/javascript/jquery.flot.js

@@ -1,186 +1,152 @@
 <?php
 
 /**
- * A widget for basic validation of a credit card verification value
+ * A widget for basic validation of a credit card verification value.
  *
- * @package   Store
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardVerificationValueEntry extends SwatEntry
 {
-	// {{{ public properties
+    /**
+     * Whether or not to show a blank_value.
+     *
+     * @var bool
+     */
+    public $show_blank_value = false;
 
-	/**
-	 * Whether or not to show a blank_value
-	 *
-	 * @var boolean
-	 */
-	public $show_blank_value = false;
+    /**
+     * @var StoreCardType
+     */
+    protected $card_type;
 
-	// }}}
-	// {{{ protected properties
+    /**
+     * Creates a new card entry widget.
+     *
+     * @param string $id a non-visible unique id for this widget
+     *
+     * @see SwatWidget::__construct()
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+        $this->size = 4;
+    }
 
-	/**
-	 * @var StoreCardType
-	 */
-	protected $card_type;
+    public function setCardType(StoreCardType $card_type)
+    {
+        $this->card_type = $card_type;
+    }
 
-	// }}}
-	// {{{ public function __construct()
+    public function getBlankValue()
+    {
+        $length = 3;
 
-	/**
-	 * Creates a new card entry widget
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-		$this->size = 4;
-	}
+        if ($this->card_type instanceof StoreCardType) {
+            $length = $this->card_type->getCardVerificationValueLength();
+        }
 
-	// }}}
-	// {{{ public function setCardType()
+        return str_repeat('●', $length);
+    }
 
-	public function setCardType(StoreCardType $card_type)
-	{
-		$this->card_type = $card_type;
-	}
+    public function process()
+    {
+        if ($this->isProcessed()) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function getBlankValue()
+        parent::process();
 
-	public function getBlankValue()
-	{
-		$length = 3;
+        $data = &$this->getForm()->getFormData();
 
-		if ($this->card_type instanceof StoreCardType) {
-			$length = $this->card_type->getCardVerificationValueLength();
-		}
+        if (isset($data[$this->id . '_blank_value'])
+            && $this->value == $data[$this->id . '_blank_value']) {
+            $this->value = null;
+            $this->show_blank_value = true;
+        }
 
-		return str_repeat('●', $length);
-	}
+        if ($this->value === null) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function process()
+        if (!$this->hasMessage()) {
+            $this->validate();
+        }
+    }
 
-	public function process()
-	{
-		if ($this->isProcessed()) {
-			return;
-		}
+    public function display()
+    {
+        parent::display();
 
-		parent::process();
+        if (!$this->visible) {
+            return;
+        }
 
-		$data = &$this->getForm()->getFormData();
+        // add a hidden field to track how the widget was displayed
+        if ($this->show_blank_value) {
+            $this->getForm()->addHiddenField(
+                $this->id . '_blank_value',
+                $this->getBlankValue()
+            );
+        }
+    }
 
-		if (isset($data[$this->id.'_blank_value']) &&
-			$this->value == $data[$this->id.'_blank_value']) {
+    protected function validate()
+    {
+        $locale = SwatI18NLocale::get();
+        $message = null;
 
-			$this->value = null;
-			$this->show_blank_value = true;
-		}
+        // make sure it's all numeric
+        if (preg_match('/\D/', $this->value) == 1) {
+            $message = new SwatMessage(
+                Store::_(
+                    'The %s field must be a number.',
+                    'error'
+                )
+            );
+        }
 
-		if ($this->value === null) {
-			return;
-		}
+        if ($this->card_type instanceof StoreCardType) {
+            $length = $this->card_type->getCardVerificationValueLength();
+            if (mb_strlen($this->value) != $length) {
+                $message_content = sprintf(
+                    Store::_(
+                        'The %%s for %s%s%s must be a %s digit number.'
+                    ),
+                    '<strong>',
+                    SwatString::minimizeEntities($this->card_type->title),
+                    '</strong>',
+                    $locale->formatNumber(
+                        $this->card_type->getCardVerificationValueLength()
+                    )
+                );
 
-		if (!$this->hasMessage()) {
-			$this->validate();
-		}
-	}
+                $message = new SwatMessage($message_content, 'error');
+                $message->content_type = 'text/xml';
+            }
+        }
 
-	// }}}
-	// {{{ public function display()
+        if ($message instanceof SwatMessage) {
+            $this->addMessage($message);
+        }
+    }
 
-	public function display()
-	{
-		parent::display();
+    protected function getInputTag()
+    {
+        $tag = parent::getInputTag();
+        $tag->autocomplete = 'off';
 
-		if (!$this->visible) {
-			return;
-		}
+        return $tag;
+    }
 
-		// add a hidden field to track how the widget was displayed
-		if ($this->show_blank_value) {
-			$this->getForm()->addHiddenField(
-				$this->id.'_blank_value',
-				$this->getBlankValue()
-			);
-		}
-	}
+    protected function getDisplayValue($value)
+    {
+        $value = $this->value;
 
-	// }}}
-	// {{{ protected function validate()
+        if ($this->show_blank_value && $this->value === null) {
+            $value = $this->getBlankValue();
+        }
 
-	protected function validate()
-	{
-		$locale = SwatI18NLocale::get();
-		$message = null;
-
-		// make sure it's all numeric
-		if (preg_match('/\D/', $this->value) == 1) {
-			$message = new SwatMessage(
-				Store::_(
-					'The %s field must be a number.',
-					'error'
-				)
-			);
-		}
-
-		if ($this->card_type instanceof StoreCardType) {
-			$length = $this->card_type->getCardVerificationValueLength();
-			if (mb_strlen($this->value) != $length) {
-				$message_content = sprintf(
-					Store::_(
-						'The %%s for %s%s%s must be a %s digit number.'
-					),
-					'<strong>',
-					SwatString::minimizeEntities($this->card_type->title),
-					'</strong>',
-					$locale->formatNumber(
-						$this->card_type->getCardVerificationValueLength()
-					)
-				);
-
-				$message = new SwatMessage($message_content, 'error');
-				$message->content_type = 'text/xml';
-			}
-		}
-
-		if ($message instanceof SwatMessage) {
-			$this->addMessage($message);
-		}
-	}
-
-	// }}}
-	// {{{ protected function getInputTag()
-
-	protected function getInputTag()
-	{
-		$tag = parent::getInputTag();
-		$tag->autocomplete = 'off';
-		return $tag;
-	}
-
-	// }}}
-	// {{{ protected function getDisplayValue()
-
-	protected function getDisplayValue($value)
-	{
-		$value = $this->value;
-
-		if ($this->show_blank_value && $this->value === null) {
-			$value = $this->getBlankValue();
-		}
-
-		return $value;
-	}
-
-	// }}}
+        return $value;
+    }
 }
-
-?>

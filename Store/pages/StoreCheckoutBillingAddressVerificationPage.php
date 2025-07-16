@@ -1,43 +1,29 @@
 <?php
 
 /**
- * Billing address verification page of checkout
+ * Billing address verification page of checkout.
  *
- * @package   Store
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
-class StoreCheckoutBillingAddressVerificationPage extends
-	StoreCheckoutAddressVerificationPage
+class StoreCheckoutBillingAddressVerificationPage extends StoreCheckoutAddressVerificationPage
 {
-	// {{{ public function getUiXml()
+    public function getUiXml()
+    {
+        return __DIR__ . '/checkout-billing-address-verification.xml';
+    }
 
-	public function getUiXml()
-	{
-		return __DIR__.'/checkout-billing-address-verification.xml';
-	}
+    protected function getWidgetPrefix()
+    {
+        return 'billing_';
+    }
 
-	// }}}
-	// {{{ protected function getWidgetPrefix()
+    // init phase
 
-	protected function getWidgetPrefix()
-	{
-		return 'billing_';
-	}
+    public function initCommon()
+    {
+        parent::initCommon();
 
-	// }}}
-
-	// init phase
-	// {{{ public function initCommon()
-
-	public function initCommon()
-	{
-		parent::initCommon();
-
-		$this->address = $this->app->session->order->billing_address;
-	}
-
-	// }}}
+        $this->address = $this->app->session->order->billing_address;
+    }
 }
-
-?>

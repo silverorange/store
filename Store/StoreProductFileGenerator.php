@@ -1,85 +1,61 @@
 <?php
 
 /**
- * @package   Store
  * @copyright 2011-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 abstract class StoreProductFileGenerator extends SwatObject
 {
-	// {{{ protected properties
+    /**
+     * @var SiteApplication
+     */
+    protected $app;
 
-	/**
-	 * @var SiteApplication
-	 */
-	protected $app;
+    /**
+     * @var StoreRegion
+     */
+    protected $region;
 
-	/**
-	 * @var StoreRegion
-	 */
-	protected $region;
+    /**
+     * Creates a new product file generator.
+     */
+    public function __construct(SiteApplication $app)
+    {
+        $this->app = $app;
 
-	// }}}
-	// {{{ public function __construct()
+        if ($this->app->config->uri->cdn_base != '') {
+            SiteImage::$cdn_base = $this->app->config->uri->cdn_base;
+        }
 
-	/**
-	 * Creates a new product file generator
-	 *
-	 * @param SiteApplication $app
-	 */
-	public function __construct(SiteApplication $app)
-	{
-		$this->app = $app;
+        $this->region = $this->loadRegion();
+    }
 
-		if ($this->app->config->uri->cdn_base != '') {
-			SiteImage::$cdn_base = $this->app->config->uri->cdn_base;
-		}
+    abstract public function generate();
 
-		$this->region = $this->loadRegion();
-	}
+    /**
+     * @return StoreItemWrapper
+     */
+    abstract protected function getItems();
 
-	// }}}
-	// {{{ abstract public function generate()
+    protected function loadRegion()
+    {
+        $class_name = SwatDBClassMap::get(StoreRegion::class);
+        $region = new $class_name();
+        $region->setDatabase($this->app->db);
 
-	abstract public function generate();
+        // Note: this depends on us naming our contants the same on all sites.
+        // if we ever don't, subclass this method. Also, we currently don't
+        // upload anything but US Catalogs, if that changes this will need to
+        // as well.
+        $reflector = new ReflectionObject($region);
+        $us_constant = $reflector->getConstant('REGION_US');
+        $region->load($us_constant);
 
-	// }}}
-	// {{{ abstract protected function getItems()
+        return $region;
+    }
 
-	/**
-	 * @return StoreItemWrapper
-	 */
-	abstract protected function getItems();
-
-	// }}}
-	// {{{ protected function loadRegion()
-
-	protected function loadRegion()
-	{
-		$class_name = SwatDBClassMap::get('StoreRegion');
-		$region = new $class_name();
-		$region->setDatabase($this->app->db);
-
-		// Note: this depends on us naming our contants the same on all sites.
-		// if we ever don't, subclass this method. Also, we currently don't
-		// upload anything but US Catalogs, if that changes this will need to
-		// as well.
-		$reflector   = new ReflectionObject($region);
-		$us_constant = $reflector->getConstant('REGION_US');
-		$region->load($us_constant);
-
-		return $region;
-	}
-
-	// }}}
-	// {{{ protected function getBaseHref()
-
-	protected function getBaseHref()
-	{
-		return $this->app->config->uri->absolute_base;
-	}
-
-	// }}}
+    protected function getBaseHref()
+    {
+        return $this->app->config->uri->absolute_base;
+    }
 }
-
-?>

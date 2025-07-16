@@ -1,78 +1,88 @@
 <?php
 
 /**
- * Delete confirmation page for Attribute Types
+ * Delete confirmation page for Attribute Types.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAttributeTypeDelete extends AdminDBDelete
 {
-	// process phase
-	// {{{ protected function processDBData()
+    // process phase
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-		$item_list = $this->getItemList('integer');
+        $item_list = $this->getItemList('integer');
 
-		$sql = sprintf('delete from AttributeType where id in (%s)
+        $sql = sprintf(
+            'delete from AttributeType where id in (%s)
 			and id not in (select attribute_type from Attribute)',
-			$item_list);
+            $item_list
+        );
 
-		$num = SwatDB::exec($this->app->db, $sql);
+        $num = SwatDB::exec($this->app->db, $sql);
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One attribute type has been deleted.',
-			'%s attribute types have been deleted.',
-			$num), SwatString::numberFormat($num)), 'notice');
+        $message = new SwatMessage(sprintf(Store::ngettext(
+            'One attribute type has been deleted.',
+            '%s attribute types have been deleted.',
+            $num
+        ), SwatString::numberFormat($num)), 'notice');
 
-		$this->app->messages->add($message);
+        $this->app->messages->add($message);
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// }}}
+    // build phase
 
-	// build phase
-	// {{{ protected function buildInternal()
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $item_list = $this->getItemList('integer');
 
-		$item_list = $this->getItemList('integer');
+        $dep = new AdminListDependency();
+        $dep->setTitle(Store::_('attribute type'), Store::_('attribute types'));
+        $dep->entries = AdminListDependency::queryEntries(
+            $this->app->db,
+            'AttributeType',
+            'integer:id',
+            null,
+            'text:shortname',
+            'shortname',
+            'id in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-		$dep = new AdminListDependency();
-		$dep->setTitle(Store::_('attribute type'), Store::_('attribute types'));
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'AttributeType', 'integer:id', null, 'text:shortname', 'shortname',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
+        // dependent order addresses
+        $attribute_dependency = new AdminSummaryDependency();
+        $attribute_dependency->setTitle(
+            Store::_('attribute'),
+            Store::_('attributes')
+        );
 
-		// dependent order addresses
-		$attribute_dependency = new AdminSummaryDependency();
-		$attribute_dependency->setTitle(
-			Store::_('attribute'), Store::_('attributes'));
+        $attribute_dependency->summaries =
+            AdminSummaryDependency::querySummaries(
+                $this->app->db,
+                'Attribute',
+                'integer:id',
+                'integer:attribute_type',
+                'attribute_type in (' . $item_list . ')',
+                AdminDependency::NODELETE
+            );
 
-		$attribute_dependency->summaries =
-			AdminSummaryDependency::querySummaries(
-			$this->app->db, 'Attribute', 'integer:id', 'integer:attribute_type',
-			'attribute_type in ('.$item_list.')', AdminDependency::NODELETE);
+        $dep->addDependency($attribute_dependency);
 
-		$dep->addDependency($attribute_dependency);
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $dep->getMessage();
+        $message->content_type = 'text/xml';
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $dep->getMessage();
-		$message->content_type = 'text/xml';
-
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
-			$this->switchToCancelButton();
-	}
-
-	// }}}
+        if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
+            $this->switchToCancelButton();
+        }
+    }
 }
-
-?>

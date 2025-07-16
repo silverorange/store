@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A account for an e-commerce web application
+ * A account for an e-commerce web application.
  *
  * StoreAccount objects contain data like name and email that correspond
  * directly to database fields. StoreAccount objects may have one or more
@@ -71,329 +71,301 @@
  * $account->save();
  * </code>
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreAccountWrapper
  */
 class StoreAccount extends SiteAccount
 {
-	// {{{ public properties
+    /**
+     * @var float
+     */
+    public $available_credit;
 
-	/**
-	 * @var float
-	 */
-	public $available_credit;
+    /**
+     * Optional company name for this account.
+     *
+     * @var string
+     */
+    protected $company;
 
-	// }}}
-	// {{{ protected properties
+    /**
+     * Phone number of this account.
+     *
+     * @var string
+     */
+    protected $phone;
 
-	/**
-	 * Optional company name for this account
-	 *
-	 * @var string
-	 */
-	protected $company;
+    public function setDefaultBillingAddress(StoreAccountAddress $address)
+    {
+        if ($address->getId() === null) {
+            $this->addresses->add($address);
+        } else {
+            $actual_address = $this->addresses->getByIndex($address->getId());
+            if ($actual_address === null) {
+                throw new SwatObjectNotFoundException(
+                    'Address does not belong to this account and cannot be ' .
+                    'set as the default address.'
+                );
+            }
+        }
 
-	/**
-	 * Phone number of this account
-	 *
-	 * @var string
-	 */
-	protected $phone;
+        $this->setSubDataObject('default_billing_address', $address);
+        $this->setInternalValue('default_billing_address', $address->getId());
+    }
 
-	// }}}
-	// {{{ public function setDefaultBillingAddress()
+    public function getDefaultBillingAddress()
+    {
+        $address = null;
 
-	public function setDefaultBillingAddress(StoreAccountAddress $address)
-	{
-		if ($address->getId() === null) {
-			$this->addresses->add($address);
-		} else {
-			$actual_address = $this->addresses->getByIndex($address->getId());
-			if ($actual_address === null) {
-				throw new SwatObjectNotFoundException(
-					'Address does not belong to this account and cannot be '.
-					'set as the default address.');
-			}
-		}
+        if ($this->hasSubDataObject('default_billing_address')) {
+            $address = $this->getSubDataObject('default_billing_address');
+        } else {
+            $id = $this->getInternalValue('default_billing_address');
+            if ($id !== null) {
+                $address = $this->addresses->getByIndex($id);
+            }
+        }
 
-		$this->setSubDataObject('default_billing_address', $address);
-		$this->setInternalValue('default_billing_address', $address->getId());
-	}
+        return $address;
+    }
 
-	// }}}
-	// {{{ public function getDefaultBillingAddress()
+    public function setDefaultShippingAddress(StoreAccountAddress $address)
+    {
+        if ($address->getId() === null) {
+            $this->addresses->add($address);
+        } else {
+            $actual_address = $this->addresses->getByIndex($address->getId());
+            if ($actual_address === null) {
+                throw new SwatObjectNotFoundException(
+                    'Address does not belong to this account and cannot be ' .
+                    'set as the default address.'
+                );
+            }
+        }
 
-	public function getDefaultBillingAddress()
-	{
-		$address = null;
+        $this->setSubDataObject('default_shipping_address', $address);
+        $this->setInternalValue('default_shipping_address', $address->getId());
+    }
 
-		if ($this->hasSubDataObject('default_billing_address')) {
-			$address = $this->getSubDataObject('default_billing_address');
-		} else {
-			$id = $this->getInternalValue('default_billing_address');
-			if ($id !== null) {
-				$address = $this->addresses->getByIndex($id);
-			}
-		}
+    public function getDefaultShippingAddress()
+    {
+        $address = null;
 
-		return $address;
-	}
+        if ($this->hasSubDataObject('default_shipping_address')) {
+            $address = $this->getSubDataObject('default_shipping_address');
+        } else {
+            $id = $this->getInternalValue('default_shipping_address');
+            if ($id !== null) {
+                $address = $this->addresses->getByIndex($id);
+            }
+        }
 
-	// }}}
-	// {{{ public function setDefaultShippingAddress()
+        return $address;
+    }
 
-	public function setDefaultShippingAddress(StoreAccountAddress $address)
-	{
-		if ($address->getId() === null) {
-			$this->addresses->add($address);
-		} else {
-			$actual_address = $this->addresses->getByIndex($address->getId());
-			if ($actual_address === null) {
-				throw new SwatObjectNotFoundException(
-					'Address does not belong to this account and cannot be '.
-					'set as the default address.');
-			}
-		}
+    public function setDefaultPaymentMethod(
+        StoreAccountPaymentMethod $payment_method
+    ) {
+        if ($payment_method->getId() === null) {
+            $this->payment_methods->add($payment_method);
+        } else {
+            $actual_payment_method = $this->payment_methods->getByIndex(
+                $payment_method->getId()
+            );
 
-		$this->setSubDataObject('default_shipping_address', $address);
-		$this->setInternalValue('default_shipping_address', $address->getId());
-	}
+            if ($actual_payment_method === null) {
+                throw new SwatObjectNotFoundException(
+                    'Payment method does not belong to this account and ' .
+                    'cannot be set as the default payment method.'
+                );
+            }
+        }
 
-	// }}}
-	// {{{ public function getDefaultShippingAddress()
+        $this->setSubDataObject('default_payment_method', $payment_method);
+        $this->setInternalValue(
+            'default_payment_method',
+            $payment_method->getId()
+        );
+    }
 
-	public function getDefaultShippingAddress()
-	{
-		$address = null;
+    public function getDefaultPaymentMethod()
+    {
+        $payment_method = null;
 
-		if ($this->hasSubDataObject('default_shipping_address')) {
-			$address = $this->getSubDataObject('default_shipping_address');
-		} else {
-			$id = $this->getInternalValue('default_shipping_address');
-			if ($id !== null) {
-				$address = $this->addresses->getByIndex($id);
-			}
-		}
+        if ($this->hasSubDataObject('default_payment_method')) {
+            $payment_method = $this->getSubDataObject('default_payment_method');
+        } else {
+            $id = $this->getInternalValue('default_payment_method');
+            if ($id !== null) {
+                $payment_method = $this->payment_methods->getByIndex($id);
+            }
+        }
 
-		return $address;
-	}
+        return $payment_method;
+    }
 
-	// }}}
-	// {{{ public function setDefaultPaymentMethod()
+    public function canPayOnAccount()
+    {
+        return $this->available_credit > 0;
+    }
 
-	public function setDefaultPaymentMethod(
-		StoreAccountPaymentMethod $payment_method
-	) {
-		if ($payment_method->getId() === null) {
-			$this->payment_methods->add($payment_method);
-		} else {
-			$actual_payment_method = $this->payment_methods->getByIndex(
-				$payment_method->getId());
+    protected function init()
+    {
+        parent::init();
 
-			if ($actual_payment_method === null) {
-				throw new SwatObjectNotFoundException(
-					'Payment method does not belong to this account and '.
-					'cannot be set as the default payment method.');
-			}
-		}
+        $this->registerInternalProperty(
+            'default_billing_address',
+            SwatDBClassMap::get(StoreAccountAddress::class),
+            false,
+            false
+        );
 
-		$this->setSubDataObject('default_payment_method', $payment_method);
-		$this->setInternalValue('default_payment_method',
-			$payment_method->getId());
-	}
+        $this->registerInternalProperty(
+            'default_shipping_address',
+            SwatDBClassMap::get(StoreAccountAddress::class),
+            false,
+            false
+        );
 
-	// }}}
-	// {{{ public function getDefaultPaymentMethod()
+        $this->registerInternalProperty(
+            'default_payment_method',
+            SwatDBClassMap::get(StoreAccountPaymentMethod::class),
+            false,
+            false
+        );
+    }
 
-	public function getDefaultPaymentMethod()
-	{
-		$payment_method = null;
+    protected function getProtectedPropertyList()
+    {
+        $properties = parent::getProtectedPropertyList();
 
-		if ($this->hasSubDataObject('default_payment_method')) {
-			$payment_method = $this->getSubDataObject('default_payment_method');
-		} else {
-			$id = $this->getInternalValue('default_payment_method');
-			if ($id !== null) {
-				$payment_method = $this->payment_methods->getByIndex($id);
-			}
-		}
+        $properties['company'] = [
+            'get' => 'getCompany',
+            'set' => 'setCompany',
+        ];
 
-		return $payment_method;
-	}
+        $properties['phone'] = [
+            'get' => 'getPhone',
+            'set' => 'setPhone',
+        ];
 
-	// }}}
-	// {{{ public function canPayOnAccount()
+        return $properties;
+    }
 
-	public function canPayOnAccount()
-	{
-		return ($this->available_credit > 0);
-	}
+    // getters
 
-	// }}}
-	// {{{ protected function init()
+    public function getCompany()
+    {
+        return $this->company;
+    }
 
-	protected function init()
-	{
-		parent::init();
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 
-		$this->registerInternalProperty('default_billing_address',
-			SwatDBClassMap::get('StoreAccountAddress'), false, false);
+    // setters
 
-		$this->registerInternalProperty('default_shipping_address',
-			SwatDBClassMap::get('StoreAccountAddress'), false, false);
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    }
 
-		$this->registerInternalProperty('default_payment_method',
-			SwatDBClassMap::get('StoreAccountPaymentMethod'), false, false);
-	}
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
 
-	// }}}
-	// {{{ protected function getProtectedPropertyList()
+    // loader methods
 
-	protected function getProtectedPropertyList()
-	{
-		$properties = parent::getProtectedPropertyList();
-
-		$properties['company'] = array(
-			'get' => 'getCompany',
-			'set' => 'setCompany'
-		);
-
-		$properties['phone'] = array(
-			'get' => 'getPhone',
-			'set' => 'setPhone'
-		);
-
-		return $properties;
-	}
-
-	// }}}
-
-	// getters
-	// {{{ public function getCompany()
-
-	public function getCompany()
-	{
-		return $this->company;
-	}
-
-	// }}}
-	// {{{ public function getPhone()
-
-	public function getPhone()
-	{
-		return $this->phone;
-	}
-
-	// }}}
-
-	// setters
-	// {{{ public function setCompany()
-
-	public function setCompany($company)
-	{
-		$this->company = $company;
-	}
-
-	// }}}
-	// {{{ public function setPhone()
-
-	public function setPhone($phone)
-	{
-		$this->phone = $phone;
-	}
-
-	// }}}
-
-	// loader methods
-	// {{{ protected function loadAddresses()
-
-	/**
-	 * Loads StoreAccountAddress sub-data-objects for this StoreAccount
-	 */
-	protected function loadAddresses()
-	{
-		$sql = sprintf('select * from AccountAddress
+    /**
+     * Loads StoreAccountAddress sub-data-objects for this StoreAccount.
+     */
+    protected function loadAddresses()
+    {
+        $sql = sprintf(
+            'select * from AccountAddress
 			where account = %s
 			order by id asc',
-			$this->db->quote($this->id, 'integer'));
+            $this->db->quote($this->id, 'integer')
+        );
 
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreAccountAddressWrapper'));
-	}
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreAccountAddressWrapper::class)
+        );
+    }
 
-	// }}}
-	// {{{ protected function loadPaymentMethods()
-
-	/**
-	 * Loads StoreAccountPaymentMethod sub-data-objects for this StoreAccount
-	 */
-	protected function loadPaymentMethods()
-	{
-		$sql = sprintf('select * from AccountPaymentMethod
+    /**
+     * Loads StoreAccountPaymentMethod sub-data-objects for this StoreAccount.
+     */
+    protected function loadPaymentMethods()
+    {
+        $sql = sprintf(
+            'select * from AccountPaymentMethod
 			where account = %s
 			order by id asc',
-			$this->db->quote($this->id, 'integer'));
+            $this->db->quote($this->id, 'integer')
+        );
 
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreAccountPaymentMethodWrapper'));
-	}
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class)
+        );
+    }
 
-	// }}}
-	// {{{ protected function loadOrders()
-
-	/**
-	 * Loads StoreOrder sub-data-objects for this StoreAccount
-	 *
-	 * This represents a set of past orders made with this account.
-	 */
-	protected function loadOrders()
-	{
-		$sql = sprintf('select * from Orders
+    /**
+     * Loads StoreOrder sub-data-objects for this StoreAccount.
+     *
+     * This represents a set of past orders made with this account.
+     */
+    protected function loadOrders()
+    {
+        $sql = sprintf(
+            'select * from Orders
 			where account = %s
 			order by id desc',
-			$this->db->quote($this->id, 'integer'));
+            $this->db->quote($this->id, 'integer')
+        );
 
-		return SwatDB::query($this->db, $sql,
-			SwatDBClassMap::get('StoreOrderWrapper'));
-	}
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreOrderWrapper::class)
+        );
+    }
 
-	// }}}
+    // saver methods
 
-	// saver methods
-	// {{{ protected function saveAddresses()
+    /**
+     * Automatically saves StoreAccontAddress sub-data-objects when this
+     * StoreAccount object is saved.
+     */
+    protected function saveAddresses()
+    {
+        foreach ($this->addresses as $address) {
+            $address->account = $this;
+        }
 
-	/**
-	 * Automatically saves StoreAccontAddress sub-data-objects when this
-	 * StoreAccount object is saved
-	 */
-	protected function saveAddresses()
-	{
-		foreach ($this->addresses as $address)
-			$address->account = $this;
+        $this->addresses->setDatabase($this->db);
+        $this->addresses->save();
+    }
 
-		$this->addresses->setDatabase($this->db);
-		$this->addresses->save();
-	}
+    /**
+     * Automatically saves StoreAccontPaymentMethod sub-data-objects when this
+     * StoreAccount object is saved.
+     */
+    protected function savePaymentMethods()
+    {
+        foreach ($this->payment_methods as $payment_method) {
+            $payment_method->account = $this;
+        }
 
-	// }}}
-	// {{{ protected function savePaymentMethods()
-
-	/**
-	 * Automatically saves StoreAccontPaymentMethod sub-data-objects when this
-	 * StoreAccount object is saved
-	 */
-	protected function savePaymentMethods()
-	{
-		foreach ($this->payment_methods as $payment_method)
-			$payment_method->account = $this;
-
-		$this->payment_methods->setDatabase($this->db);
-		$this->payment_methods->save();
-	}
-
-	// }}}
+        $this->payment_methods->setDatabase($this->db);
+        $this->payment_methods->save();
+    }
 }
-
-?>

@@ -1,26 +1,26 @@
 #quick_search_form {
-	padding: 0 8px 4px;
+  padding: 0 8px 4px;
 }
 
 #quick_search_form div.swat-form-field {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #quick_search_form .swat-form-field-contents {
-	display: inline;
+  display: inline;
 }
 
 #quick_search_form input.swat-entry {
-	vertical-align: middle;
-	width: 70px;
-	margin: 0;
+  vertical-align: middle;
+  width: 70px;
+  margin: 0;
 }
 
 #quick_search_form input.swat-button {
-	font-size: 11px;
-	margin: 0 0 0 4px;
-	vertical-align: middle;
-	text-transform: uppercase;
-	padding: 5px 8px;
+  font-size: 11px;
+  margin: 0 0 0 4px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  padding: 5px 8px;
 }

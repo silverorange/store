@@ -1,221 +1,185 @@
 <?php
 
 /**
- * A widget for basic validation of a debit or credit card
+ * A widget for basic validation of a debit or credit card.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCardNumberEntry extends SwatEntry
 {
-	// {{{ public properties
+    /**
+     * Whether or not to show a blank_value.
+     *
+     * @var bool
+     */
+    public $show_blank_value = false;
 
-	/**
-	 * Whether or not to show a blank_value
-	 *
-	 * @var boolean
-	 */
-	public $show_blank_value = false;
+    /**
+     * Selected card type as determined during the process step.
+     *
+     * @var StoreCardType
+     *
+     * @see StoreCardNumberEntry::getCardType()
+     * @see StoreCardNumberEntry::processCardType()
+     */
+    protected $card_type;
 
-	// }}}
-	// {{{ protected properties
+    /**
+     * Valid card types for this entry.
+     *
+     * @var StoreCardTypeWrapper
+     *
+     * @see StoreCardNumberEntry::setCardTypes()
+     */
+    protected $card_types;
 
-	/**
-	 * Selected card type as determined during the process step
-	 *
-	 * @var StoreCardType
-	 *
-	 * @see StoreCardNumberEntry::getCardType()
-	 * @see StoreCardNumberEntry::processCardType()
-	 */
-	protected $card_type;
+    /**
+     * Creates a new card entry widget.
+     *
+     * @param string $id a non-visible unique id for this widget
+     *
+     * @see SwatWidget::__construct()
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
+        $this->size = 17;
+    }
 
-	/**
-	 * Valid card types for this entry
-	 *
-	 * @var StoreCardTypeWrapper
-	 *
-	 * @see StoreCardNumberEntry::setCardTypes()
-	 */
-	protected $card_types;
+    public function process()
+    {
+        if ($this->isProcessed()) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function __construct()
+        parent::process();
 
-	/**
-	 * Creates a new card entry widget
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
-		$this->size = 17;
-	}
+        $data = &$this->getForm()->getFormData();
 
-	// }}}
-	// {{{ public function process()
+        if (isset($data[$this->id . '_blank_value'])
+            && $this->value == $data[$this->id . '_blank_value']) {
+            $this->value = null;
+            $this->show_blank_value = true;
+        }
 
-	public function process()
-	{
-		if ($this->isProcessed()) {
-			return;
-		}
+        if ($this->value === null) {
+            return;
+        }
 
-		parent::process();
+        // remove spaces and dashes from value
+        $this->value = str_replace(['-', ' '], '', $this->value);
 
-		$data = &$this->getForm()->getFormData();
+        if (!Validate_Finance_CreditCard::number($this->value)) {
+            $message = Store::_(
+                'The %s field is not a valid card number. Please ensure ' .
+                'it is entered correctly.'
+            );
 
-		if (isset($data[$this->id.'_blank_value'])
-			&& $this->value == $data[$this->id.'_blank_value']) {
-				$this->value = null;
-				$this->show_blank_value = true;
-		}
+            $this->addMessage(new SwatMessage($message, 'error'));
+        }
 
-		if ($this->value === null) {
-			return;
-		}
+        if (!$this->hasMessage()
+            && $this->card_types instanceof StoreCardTypeWrapper) {
+            $this->processCardType();
+        }
+    }
 
-		// remove spaces and dashes from value
-		$this->value = str_replace(array('-', ' '), '', $this->value);
+    public function display()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-		if (!Validate_Finance_CreditCard::number($this->value)) {
-			$message = Store::_(
-				'The %s field is not a valid card number. Please ensure '.
-				'it is entered correctly.'
-			);
+        parent::display();
 
-			$this->addMessage(new SwatMessage($message, 'error'));
-		}
+        // add a hidden field to track how the widget was displayed
+        if ($this->show_blank_value) {
+            $this->getForm()->addHiddenField(
+                $this->id . '_blank_value',
+                $this->getBlankValue()
+            );
+        }
+    }
 
-		if (!$this->hasMessage() &&
-			$this->card_types instanceof StoreCardTypeWrapper) {
-			$this->processCardType();
-		}
-	}
+    public function setCardTypes(StoreCardTypeWrapper $card_types)
+    {
+        $this->card_types = $card_types;
+    }
 
-	// }}}
-	// {{{ public function display()
+    /**
+     * @return StoreCardType
+     */
+    public function getCardType()
+    {
+        return $this->card_type;
+    }
 
-	public function display()
-	{
-		if (!$this->visible) {
-			return;
-		}
+    protected function processCardType()
+    {
+        $info = StoreCardType::getInfoFromCardNumber($this->value);
+        $message = null;
 
-		parent::display();
+        if ($info !== null) {
+            $found = false;
 
-		// add a hidden field to track how the widget was displayed
-		if ($this->show_blank_value) {
-			$this->getForm()->addHiddenField(
-				$this->id.'_blank_value',
-				$this->getBlankValue()
-			);
-		}
-	}
+            foreach ($this->card_types as $card_type) {
+                if ($card_type->shortname == $info->shortname) {
+                    $found = true;
+                    $this->card_type = $card_type;
+                    break;
+                }
+            }
 
-	// }}}
-	// {{{ public function setCardTypes()
+            if (!$found) {
+                $message = sprintf(
+                    'Sorry, we don’t accept %s payments.',
+                    SwatString::minimizeEntities($info->description)
+                );
+            }
+        } else {
+            $message = 'Sorry, we don’t accept your card type.';
+        }
 
-	public function setCardTypes(StoreCardTypeWrapper $card_types)
-	{
-		$this->card_types = $card_types;
-	}
+        if ($message !== null) {
+            $message = new SwatMessage(
+                sprintf(
+                    '%s %s',
+                    $message,
+                    StoreCardType::getAcceptedCardTypesMessage(
+                        $this->card_types
+                    )
+                ),
+                'error'
+            );
 
-	// }}}
-	// {{{ public function getCardType()
+            $this->addMessage($message);
+        }
+    }
 
-	/**
-	 * @return StoreCardType
-	 */
-	public function getCardType()
-	{
-		return $this->card_type;
-	}
+    protected function getBlankValue()
+    {
+        $length = 16;
 
-	// }}}
-	// {{{ protected function processCardType()
+        return str_repeat('●', $length);
+    }
 
-	protected function processCardType()
-	{
-		$info = StoreCardType::getInfoFromCardNumber($this->value);
-		$message = null;
+    protected function getInputTag()
+    {
+        $tag = parent::getInputTag();
+        $tag->autocomplete = 'off';
 
-		if ($info !== null) {
-			$found = false;
+        return $tag;
+    }
 
-			foreach ($this->card_types as $card_type) {
-				if ($card_type->shortname == $info->shortname) {
-					$found = true;
-					$this->card_type = $card_type;
-					break;
-				}
-			}
+    protected function getDisplayValue($value)
+    {
+        $value = $this->value;
 
-			if (!$found) {
-				$message = sprintf(
-					'Sorry, we don’t accept %s payments.',
-					SwatString::minimizeEntities($info->description)
-				);
-			}
-		} else {
-			$message = 'Sorry, we don’t accept your card type.';
-		}
+        if ($this->show_blank_value && $this->value === null) {
+            $value = $this->getBlankValue();
+        }
 
-		if ($message !== null) {
-			$message = new SwatMessage(
-				sprintf(
-					'%s %s',
-					$message,
-					StoreCardType::getAcceptedCardTypesMessage(
-						$this->card_types
-					)
-				),
-				'error'
-			);
-
-			$this->addMessage($message);
-		}
-	}
-
-	// }}}
-	// {{{ protected function getBlankValue()
-
-	protected function getBlankValue()
-	{
-		$length = 16;
-		$blank_value = str_repeat('●', $length);
-		return $blank_value;
-	}
-
-	// }}}
-	// {{{ protected function getInputTag()
-
-	protected function getInputTag()
-	{
-		$tag = parent::getInputTag();
-		$tag->autocomplete = 'off';
-		return $tag;
-	}
-
-	// }}}
-	// {{{ protected function getDisplayValue()
-
-	protected function getDisplayValue($value)
-	{
-		$value = $this->value;
-
-		if ($this->show_blank_value && $this->value === null) {
-			$value = $this->getBlankValue();
-		}
-
-		return $value;
-	}
-
-	// }}}
+        return $value;
+    }
 }
-
-?>

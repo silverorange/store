@@ -1,148 +1,120 @@
 <?php
 
 /**
- * Shipping type edit page of checkout
+ * Shipping type edit page of checkout.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
 {
-	// {{{ protected function getUiXml()
+    protected function getUiXml()
+    {
+        return __DIR__ . '/checkout-shipping-type.xml';
+    }
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/checkout-shipping-type.xml';
-	}
+    // process phase
 
-	// }}}
+    public function processCommon()
+    {
+        $this->saveDataToSession();
+    }
 
-	// process phase
-	// {{{ public function processCommon()
+    protected function saveDataToSession()
+    {
+        $class_name = SwatDBClassMap::get(StoreShippingType::class);
+        $shipping_type = new $class_name();
+        $shipping_type->setDatabase($this->app->db);
+        $shortname = $this->ui->getWidget('shipping_type')->value;
+        $shipping_type->loadByShortname($shortname);
 
-	public function processCommon()
-	{
-		$this->saveDataToSession();
-	}
+        $this->app->session->order->shipping_type = $shipping_type;
+    }
 
-	// }}}
-	// {{{ protected function saveDataToSession()
+    // build phase
 
-	protected function saveDataToSession()
-	{
-		$class_name = SwatDBClassMap::get('StoreShippingType');
-		$shipping_type = new $class_name();
-		$shipping_type->setDatabase($this->app->db);
-		$shortname = $this->ui->getWidget('shipping_type')->value;
-		$shipping_type->loadByShortname($shortname);
+    public function buildCommon()
+    {
+        $this->buildForm();
+    }
 
-		$this->app->session->order->shipping_type = $shipping_type;
-	}
+    protected function buildForm()
+    {
+        $this->buildShippingTypes();
 
-	// }}}
+        if (!$this->ui->getWidget('form')->isProcessed()) {
+            $this->loadDataFromSession();
+        }
+    }
 
-	// build phase
-	// {{{ public function buildCommon()
+    protected function buildShippingTypes()
+    {
+        $types = $this->getShippingTypes();
+        $type_flydown = $this->ui->getWidget('shipping_type');
 
-	public function buildCommon()
-	{
-		$this->buildForm();
-	}
+        foreach ($types as $type) {
+            $title = $this->getShippingTypeTitle($type);
+            $type_flydown->addOption(
+                new SwatOption($type->shortname, $title, 'text/xml')
+            );
+        }
+    }
 
-	// }}}
-	// {{{ protected function buildForm()
+    protected function getShippingTypeTitle(StoreShippingType $type)
+    {
+        $title = $type->title;
 
-	protected function buildForm()
-	{
-		$this->buildShippingTypes();
+        if (mb_strlen($type->note) > 0) {
+            $title .= sprintf(
+                '<br /><span class="swat-note">%s</span>',
+                $type->note
+            );
+        }
 
-		if (!$this->ui->getWidget('form')->isProcessed())
-			$this->loadDataFromSession();
-	}
+        return $title;
+    }
 
-	// }}}
-	// {{{ protected function buildShippingTypes()
+    protected function loadDataFromSession()
+    {
+        $order = $this->app->session->order;
 
-	protected function buildShippingTypes()
-	{
-		$types = $this->getShippingTypes();
-		$type_flydown = $this->ui->getWidget('shipping_type');
+        if ($order->shipping_type !== null) {
+            $this->ui->getWidget('shipping_type')->value =
+                $order->shipping_type->shortname;
+        }
+    }
 
-		foreach ($types as $type) {
-			$title = $this->getShippingTypeTitle($type);
-			$type_flydown->addOption(
-				new SwatOption($type->shortname, $title, 'text/xml'));
-		}
-	}
-
-	// }}}
-	// {{{ protected function getShippingTypeTitle()
-
-	protected function getShippingTypeTitle(StoreShippingType $type)
-	{
-		$title = $type->title;
-
-		if (mb_strlen($type->note) > 0) {
-			$title.= sprintf('<br /><span class="swat-note">%s</span>',
-				$type->note);
-		}
-
-		return $title;
-	}
-
-	// }}}
-	// {{{ protected function loadDataFromSession()
-
-	protected function loadDataFromSession()
-	{
-		$order = $this->app->session->order;
-
-		if ($order->shipping_type !== null) {
-			$this->ui->getWidget('shipping_type')->value =
-				$order->shipping_type->shortname;
-		}
-	}
-
-	// }}}
-	// {{{ protected function getShippingTypes()
-
-	/**
-	 * Gets available shipping types for new shipping methods
-	 *
-	 * @return StoreShippingTypeWrapper
-	 */
-	protected function getShippingTypes()
-	{
-		$sql = 'select ShippingType.*
+    /**
+     * Gets available shipping types for new shipping methods.
+     *
+     * @return StoreShippingTypeWrapper
+     */
+    protected function getShippingTypes()
+    {
+        $sql = 'select ShippingType.*
 			from ShippingType
 			where id in (
 				select shipping_type from ShippingRate where region = %s)
 			order by displayorder, title';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+        $sql = sprintf(
+            $sql,
+            $this->app->db->quote($this->app->getRegion()->id, 'integer')
+        );
 
-		$wrapper = SwatDBClassMap::get('StoreShippingTypeWrapper');
-		$types = SwatDB::query($this->app->db, $sql, $wrapper);
+        $wrapper = SwatDBClassMap::get(StoreShippingTypeWrapper::class);
 
-		return $types;
-	}
+        return SwatDB::query($this->app->db, $sql, $wrapper);
+    }
 
-	// }}}
+    // finalize phase
 
-	// finalize phase
-	// {{{ public function finalize()
+    public function finalize()
+    {
+        parent::finalize();
 
-	public function finalize()
-	{
-		parent::finalize();
-
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet());
-	}
-
-	// }}}
+        $this->layout->addHtmlHeadEntrySet(
+            $this->ui->getRoot()->getHtmlHeadEntrySet()
+        );
+    }
 }
-
-?>

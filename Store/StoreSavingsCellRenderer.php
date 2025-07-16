@@ -1,52 +1,44 @@
 <?php
 
 /**
- * A percentage cell renderer for savings
+ * A percentage cell renderer for savings.
  *
- * @package   Store
  * @copyright 2007-2016 silverorange
  */
 class StoreSavingsCellRenderer extends SwatPercentageCellRenderer
 {
-	// {{{ public function __construct()
+    public function __construct()
+    {
+        parent::__construct();
 
-	public function __construct()
-	{
-		parent::__construct();
+        $this->precision = 0;
+        $this->classes[] = 'store-savings-cell-renderer';
+    }
 
-		$this->precision = 0;
-		$this->classes[] = 'store-savings-cell-renderer';
-	}
+    /**
+     * Renders the contents of this cell.
+     *
+     * @see SwatCellRenderer::render()
+     */
+    public function render()
+    {
+        if (!$this->visible) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function render()
+        if ($this->value <= 0) {
+            return;
+        }
 
-	/**
-	 * Renders the contents of this cell
-	 *
-	 * @see SwatCellRenderer::render()
-	 */
-	public function render()
-	{
-		if (!$this->visible)
-			return;
+        $tag = new SwatHtmlTag('span');
+        $tag->class = $this->getCSSClassString();
 
-		if ($this->value <= 0)
-			return;
+        ob_start();
+        parent::render();
+        $value = ob_get_clean();
 
-		$tag = new SwatHtmlTag('span');
-		$tag->class = $this->getCSSClassString();
-
-		ob_start();
-		parent::render();
-		$value = ob_get_clean();
-
-		$tag->open();
-		printf('Save %s', $value);
-		$tag->close();
-	}
-
-	// }}}
+        $tag->open();
+        printf('Save %s', $value);
+        $tag->close();
+    }
 }
-
-?>

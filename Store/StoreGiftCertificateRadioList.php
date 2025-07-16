@@ -1,157 +1,128 @@
 <?php
 
 /**
- * A custom radio list that has an embedded custom option
+ * A custom radio list that has an embedded custom option.
  *
- * @package   Store
  * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreGiftCertificateRadioList extends SwatRadioList
 {
-	// {{{ public properties
+    public $custom_value = 'custom';
 
-	public $custom_value = 'custom';
+    /**
+     * Creates a new radiolist.
+     *
+     * @param string $id a non-visible unique id for this widget
+     *
+     * @see SwatWidget::__construct()
+     */
+    public function __construct($id = null)
+    {
+        parent::__construct($id);
 
-	// }}}
-	// {{{ public function __construct()
+        $this->addJavaScript(
+            'packages/store/javascript/store-gift-certificate-radio-list.js'
+        );
+    }
 
-	/**
-	 * Creates a new radiolist
-	 *
-	 * @param string $id a non-visible unique id for this widget.
-	 *
-	 * @see SwatWidget::__construct()
-	 */
-	public function __construct($id = null)
-	{
-		parent::__construct($id);
+    /**
+     * Processes this radio list.
+     *
+     * Ensures that a custom price is entered if a custom option is
+     * selected.
+     */
+    public function process()
+    {
+        parent::process();
 
-		$this->addJavaScript(
-			'packages/store/javascript/store-gift-certificate-radio-list.js');
-	}
+        if ($this->value === null) {
+            return;
+        }
 
-	// }}}
-	// {{{ public function process()
+        if ($this->value == $this->custom_value
+            && $this->getCompositeWidget('custom_price')->value === null) {
+            $message = Store::_('Please enter a value for your custom gift ' .
+                'certificate.');
 
-	/**
-	 * Processes this radio list
-	 *
-	 * Ensures that a custom price is entered if a custom option is
-	 * selected.
-	 */
-	public function process()
-	{
-		parent::process();
+            $this->addMessage(new SwatMessage($message, SwatMessage::ERROR));
+        }
+    }
 
-		if ($this->value === null)
-			return;
+    public function getPrice()
+    {
+        if ($this->value == $this->custom_value) {
+            $price = $this->getCompositeWidget('custom_price')->value;
+        } else {
+            $price = abs($this->value);
+        }
 
-		if ($this->value == $this->custom_value &&
-			$this->getCompositeWidget('custom_price')->value === null) {
-			$message = Store::_('Please enter a value for your custom gift '.
-				'certificate.');
+        return $price;
+    }
 
-			$this->addMessage(new SwatMessage($message, SwatMessage::ERROR));
-		}
-	}
+    /**
+     * Displays this radio list.
+     */
+    public function display()
+    {
+        parent::display();
+        Swat::displayInlineJavaScript($this->getInlineJavaScript());
+    }
 
-	// }}}
-	// {{{ public function getPrice()
+    public function getState()
+    {
+        $custom_price = $this->getCompositeWidget('custom_price')->getState();
 
-	public function getPrice()
-	{
-		if ($this->value == $this->custom_value) {
-			$price = $this->getCompositeWidget('custom_price')->value;
-		} else {
-			$price = abs($this->value);
-		}
+        return [
+            'value'        => $this->value,
+            'custom_price' => $custom_price,
+        ];
+    }
 
-		return $price;
-	}
+    public function setState($state)
+    {
+        $this->value = $state['value'];
+        $this->getCompositeWidget('custom_price')->setState(
+            $state['custom_price']
+        );
+    }
 
-	// }}}
-	// {{{ public function display()
+    /**
+     * Displays an option in the radio list.
+     *
+     * @param int $index
+     */
+    protected function displayOptionLabel(SwatOption $option, $index)
+    {
+        parent::displayOptionLabel($option, $index);
 
-	/**
-	 * Displays this radio list
-	 */
-	public function display()
-	{
-		parent::display();
-		Swat::displayInlineJavaScript($this->getInlineJavaScript());
-	}
+        if ($option->value == $this->custom_value) {
+            $this->getCompositeWidget('custom_price')->display();
+        }
+    }
 
-	// }}}
-	// {{{ public function getState()
+    protected function createCompositeWidgets()
+    {
+        $entry = new SwatMoneyEntry($this->id . '_custom_price');
+        $entry->minimum_value = 1;
+        $entry->maximum_value = 1000000;
 
-	public function getState()
-	{
-		$custom_price = $this->getCompositeWidget('custom_price')->getState();
-		return array(
-			'value' => $this->value,
-			'custom_price' => $custom_price,
-		);
-	}
+        $this->addCompositeWidget($entry, 'custom_price');
+    }
 
-	// }}}
-	// {{{ public function getState()
-
-	public function setState($state)
-	{
-		$this->value = $state['value'];
-		$this->getCompositeWidget('custom_price')->setState(
-			$state['custom_price']);
-	}
-
-	// }}}
-	// {{{ protected function displayOptionLabel()
-
-	/**
-	 * Displays an option in the radio list
-	 *
-	 * @param SwatOption $option
-	 * @param integer $index
-	 */
-	protected function displayOptionLabel(SwatOption $option, $index)
-	{
-		parent::displayOptionLabel($option, $index);
-
-		if ($option->value == $this->custom_value) {
-			$this->getCompositeWidget('custom_price')->display();
-		}
-	}
-
-	// }}}
-	// {{{ protected function createCompositeWidgets()
-
-	protected function createCompositeWidgets()
-	{
-		$entry = new SwatMoneyEntry($this->id.'_custom_price');
-		$entry->minimum_value = 1;
-		$entry->maximum_value = 1000000;
-
-		$this->addCompositeWidget($entry, 'custom_price');
-	}
-
-	// }}}
-	// {{{ protected function getInlineJavaScript()
-
-	/**
-	 * Gets the inline JavaScript required for this control
-	 *
-	 * @return string the inline JavaScript required for this control.
-	 */
-	protected function getInlineJavaScript()
-	{
-		$javascript = sprintf("var %s_obj = ".
-			"new StoreGiftCertificateRadioList('%s', '%s');\n",
-			$this->id, $this->id, $this->custom_value);
-
-		return $javascript;
-	}
-
-	// }}}
+    /**
+     * Gets the inline JavaScript required for this control.
+     *
+     * @return string the inline JavaScript required for this control
+     */
+    protected function getInlineJavaScript()
+    {
+        return sprintf(
+            'var %s_obj = ' .
+            "new StoreGiftCertificateRadioList('%s', '%s');\n",
+            $this->id,
+            $this->id,
+            $this->custom_value
+        );
+    }
 }
-
-?>

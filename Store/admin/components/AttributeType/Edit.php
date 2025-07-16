@@ -1,128 +1,108 @@
 <?php
 
 /**
- * Edit page for Attributes
+ * Edit page for Attributes.
  *
- * @package   Store
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAttributeTypeEdit extends AdminDBEdit
 {
-	// {{{ private properties
+    /**
+     * @var StoreAttributeType
+     */
+    private $attribute_type;
 
-	/**
-	 * @var StoreAttributeType
-	 */
-	private $attribute_type;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->initAttributeType();
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $this->ui->loadFromXML(__DIR__ . '/edit.xml');
+    }
 
-		$this->initAttributeType();
+    protected function initAttributeType()
+    {
+        $class_name = SwatDBClassMap::get(StoreAttributeType::class);
+        $this->attribute_type = new $class_name();
+        $this->attribute_type->setDatabase($this->app->db);
 
-		$this->ui->loadFromXML(__DIR__.'/edit.xml');
-	}
+        if ($this->id != null) {
+            if (!$this->attribute_type->load($this->id)) {
+                throw new AdminNotFoundException(
+                    sprintf(
+                        Store::_('Attribute Type with id ‘%s’ not found.'),
+                        $this->id
+                    )
+                );
+            }
+        }
+    }
 
-	// }}}
-	// {{{ protected function initAttributeType()
+    // process phase
 
-	protected function initAttributeType()
-	{
-		$class_name = SwatDBClassMap::get('StoreAttributeType');
-		$this->attribute_type = new $class_name();
-		$this->attribute_type->setDatabase($this->app->db);
+    protected function validate(): void
+    {
+        $shortname = $this->ui->getWidget('shortname');
 
-		if ($this->id != null) {
-			if (!$this->attribute_type->load($this->id)) {
-				throw new AdminNotFoundException(
-					sprintf(Store::_('Attribute Type with id ‘%s’ not found.'),
-						$this->id));
-			}
-		}
-	}
+        $class_name = SwatDBClassMap::get(StoreAttributeType::class);
+        $attribute_type = new $class_name();
+        $attribute_type->setDatabase($this->app->db);
 
-	// }}}
+        if ($attribute_type->loadFromShortname($shortname->value)) {
+            if ($attribute_type->id !== $this->attribute_type->id) {
+                $message = new SwatMessage(
+                    Store::_('Shortname already exists and must be unique.')
+                );
 
-	// process phase
-	// {{{ protected function validate()
+                $shortname->addMessage($message);
+            }
+        }
+    }
 
-	protected function validate(): void
-	{
-		$shortname = $this->ui->getWidget('shortname');
+    protected function saveDBData(): void
+    {
+        $this->updateAttributeType();
+        $this->attribute_type->save();
 
-		$class_name = SwatDBClassMap::get('StoreAttributeType');
-		$attribute_type = new $class_name();
-		$attribute_type->setDatabase($this->app->db);
+        $message = new SwatMessage(
+            sprintf(
+                Store::_('Attribute Type “%s” has been saved.'),
+                $this->attribute_type->shortname
+            )
+        );
 
-		if ($attribute_type->loadFromShortname($shortname->value)) {
-			if ($attribute_type->id !== $this->attribute_type->id) {
-				$message = new SwatMessage(
-					Store::_('Shortname already exists and must be unique.'));
+        $this->app->messages->add($message);
 
-				$shortname->addMessage($message);
-			}
-		}
-	}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// }}}
-	// {{{ protected function saveDBData()
+    protected function updateAttributeType()
+    {
+        $values = $this->ui->getValues([
+            'shortname',
+        ]);
 
-	protected function saveDBData(): void
-	{
-		$this->updateAttributeType();
-		$this->attribute_type->save();
+        $this->attribute_type->shortname = $values['shortname'];
+    }
 
-		$message = new SwatMessage(
-			sprintf(Store::_('Attribute Type “%s” has been saved.'),
-				$this->attribute_type->shortname));
+    // build phase
 
-		$this->app->messages->add($message);
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        $form = $this->ui->getWidget('edit_frame');
+        $form->subtitle = $this->attribute_type->shortname;
+    }
 
-	// }}}
-	// {{{ protected function updateAttributeType()
-
-	protected function updateAttributeType()
-	{
-		$values = $this->ui->getValues(array(
-			'shortname',
-		));
-
-		$this->attribute_type->shortname = $values['shortname'];
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ protected function buildInternal()
-
-	protected function buildInternal()
-	{
-		parent::buildInternal();
-
-		$form = $this->ui->getWidget('edit_frame');
-		$form->subtitle = $this->attribute_type->shortname;
-	}
-
-	// }}}
-	// {{{ protected function loadDBData()
-
-	protected function loadDBData()
-	{
-		$this->ui->setValues($this->attribute_type->getAttributes());
-	}
-
-	// }}}
+    protected function loadDBData()
+    {
+        $this->ui->setValues($this->attribute_type->getAttributes());
+    }
 }
-
-?>

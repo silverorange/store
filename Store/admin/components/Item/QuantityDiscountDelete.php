@@ -1,100 +1,98 @@
 <?php
 
 /**
- * Delete confirmation page for Quantity Discounts
+ * Delete confirmation page for Quantity Discounts.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreItemQuantityDiscountDelete extends AdminDBDelete
 {
-	// {{{ private properties
+    private $relocate_url;
 
-	private $relocate_url;
+    public function setRelocateURL($url)
+    {
+        $this->relocate_url = $url;
+    }
 
-	// }}}
-	// {{{ public function setRelocateURL()
+    // process phaes
 
-	public function setRelocateURL($url)
-	{
-		$this->relocate_url = $url;
-	}
+    protected function processDBData(): void
+    {
+        parent::processDBData();
 
-	// }}}
+        $item_list = $this->getItemList('integer');
 
-	// process phaes
-	// {{{ protected function processDBData()
+        $sql = sprintf(
+            'delete from QuantityDiscount where id in (%s)',
+            $item_list
+        );
 
-	protected function processDBData(): void
-	{
-		parent::processDBData();
+        $num = SwatDB::exec($this->app->db, $sql);
 
-		$item_list = $this->getItemList('integer');
+        $message = new SwatMessage(sprintf(
+            Store::ngettext(
+                'One quantity discount has been deleted.',
+                '%s quantity discounts have been deleted.',
+                $num
+            ),
+            SwatString::numberFormat($num)
+        ), 'notice');
 
-		$sql = sprintf('delete from QuantityDiscount where id in (%s)',
-			$item_list);
+        $this->app->messages->add($message);
 
-		$num = SwatDB::exec($this->app->db, $sql);
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-		$message = new SwatMessage(sprintf(Store::ngettext(
-			'One quantity discount has been deleted.',
-			'%s quantity discounts have been deleted.', $num),
-			SwatString::numberFormat($num)), 'notice');
+    // build phase
 
-		$this->app->messages->add($message);
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
+        $item_list = $this->getItemList('integer');
 
-	// }}}
+        $dep = new AdminListDependency();
+        $dep->setTitle(
+            Store::_('quantity discount'),
+            Store::_('quantity discounts')
+        );
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $dep->entries = AdminListDependency::queryEntries(
+            $this->app->db,
+            'QuantityDiscount',
+            'integer:id',
+            null,
+            'integer:quantity',
+            'id',
+            'id in (' . $item_list . ')',
+            AdminDependency::DELETE
+        );
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $dep->getMessage();
+        $message->content_type = 'text/xml';
 
-		$item_list = $this->getItemList('integer');
+        if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
+            $this->switchToCancelButton();
+        }
+    }
 
-		$dep = new AdminListDependency();
-		$dep->setTitle(
-			Store::_('quantity discount'), Store::_('quantity discounts'));
+    protected function buildForm()
+    {
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->action = $this->source;
 
-		$dep->entries = AdminListDependency::queryEntries($this->app->db,
-			'QuantityDiscount', 'integer:id', null, 'integer:quantity', 'id',
-			'id in ('.$item_list.')', AdminDependency::DELETE);
+        if ($form->getHiddenField(self::RELOCATE_URL_FIELD) === null) {
+            if ($this->relocate_url === null) {
+                $url = $this->getRefererURL();
+            } else {
+                $url = $this->relocate_url;
+            }
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $dep->getMessage();
-		$message->content_type = 'text/xml';
-
-		if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0)
-			$this->switchToCancelButton();
-	}
-
-	// }}}
-	// {{{ protected function buildForm()
-
-	protected function buildForm()
-	{
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->action = $this->source;
-
-		if ($form->getHiddenField(self::RELOCATE_URL_FIELD) === null) {
-			if ($this->relocate_url === null) {
-				$url = $this->getRefererURL();
-			} else {
-				$url = $this->relocate_url;
-			}
-
-			$form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
-		}
-	}
-
-	// }}}
+            $form->addHiddenField(self::RELOCATE_URL_FIELD, $url);
+        }
+    }
 }
-
-?>

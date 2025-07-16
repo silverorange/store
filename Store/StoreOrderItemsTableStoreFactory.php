@@ -1,236 +1,195 @@
 <?php
 
 /**
- * @package   Store
  * @copyright 2012-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderItemsTableStoreFactory
 {
-	// {{{ protected properties
+    /**
+     * @var StoreOrder
+     */
+    protected $order;
 
-	/**
-	 * @var StoreOrder
-	 */
-	protected $order = null;
+    /**
+     * @var string
+     */
+    protected $image_dimension = 'thumb';
 
-	/**
-	 * @var string
-	 */
-	protected $image_dimension = 'thumb';
+    /**
+     * @var array
+     */
+    protected $item_counts;
 
-	/**
-	 * @var array
-	 */
-	protected $item_counts = null;
+    /**
+     * @var bool
+     */
+    protected $include_title = true;
 
-	/**
-	 * @var boolean
-	 */
-	protected $include_title = true;
+    /**
+     * @var bool
+     */
+    protected $include_group_title = true;
 
-	/**
-	 * @var boolean
-	 */
-	protected $include_group_title = true;
+    public function __construct(StoreOrder $order)
+    {
+        $this->setOrder($order);
+    }
 
-	// }}}
-	// {{{ public function __construct()
+    public function get()
+    {
+        $store = new SwatTableStore();
 
-	public function __construct(StoreOrder $order)
-	{
-		$this->setOrder($order);
-	}
+        foreach ($this->order->items as $item) {
+            $ds = $this->getOrderItemDetailsStore($item);
+            $store->add($ds);
+        }
 
-	// }}}
-	// {{{ public function get()
+        return $store;
+    }
 
-	public function get()
-	{
-		$store = new SwatTableStore();
+    public function setImageDimension($shortname)
+    {
+        if ($shortname instanceof SiteImageDimension) {
+            $shortname = $shortname->shortname;
+        }
 
-		foreach ($this->order->items as $item) {
-			$ds = $this->getOrderItemDetailsStore($item);
-			$store->add($ds);
-		}
+        $this->image_dimension = $shortname;
+    }
 
-		return $store;
-	}
+    public function setIncludeTitle($include_title)
+    {
+        $this->include_title = (bool) $include_title;
+    }
 
-	// }}}
-	// {{{ public function setImageDimension()
+    public function setIncludeGroupTitle($include_group_title)
+    {
+        $this->include_group_title = (bool) $include_group_title;
+    }
 
-	public function setImageDimension($shortname)
-	{
-		if ($shortname instanceof SiteImageDimension) {
-			$shortname = $shortname->shortname;
-		}
+    public function setOrder(StoreOrder $order)
+    {
+        $this->order = $order;
+        $this->item_counts = null;
+    }
 
-		$this->image_dimension = $shortname;
-	}
+    protected function getOrderItemDetailsStore(StoreOrderItem $item)
+    {
+        $ds = new SwatDetailsStore($item);
 
-	// }}}
-	// {{{ public function setIncludeTitle()
+        $ds->item = $item;
+        $ds->description = $this->getOrderItemDescription($item);
+        $ds->item_count = $this->getProductItemCount($item);
 
-	public function setIncludeTitle($include_title)
-	{
-		$this->include_title = (bool)$include_title;
-	}
+        if ($item->alias_sku !== null && $item->alias_sku != '') {
+            $ds->sku .= sprintf(Store::_(' (%s)'), $item->alias_sku);
+        }
 
-	// }}}
-	// {{{ public function setIncludeGroupTitle()
+        $store_item = $item->getAvailableItem($this->order->locale->region);
+        if ($store_item instanceof StoreItem
+            && $store_item->product->primary_image !== null) {
+            $image = $store_item->product->primary_image;
+            $ds->image = $image->getUri($this->image_dimension);
+            $ds->image_width = $image->getWidth($this->image_dimension);
+            $ds->image_height = $image->getHeight($this->image_dimension);
+        } else {
+            $ds->image = null;
+            $ds->image_width = null;
+            $ds->image_height = null;
+        }
 
-	public function setIncludeGroupTitle($include_group_title)
-	{
-		$this->include_group_title = (bool)$include_group_title;
-	}
+        if ($ds->sku !== null) {
+            $ds->sku_formatted = sprintf(
+                '<span class="item-sku">%s</span> ',
+                SwatString::minimizeEntities($ds->sku)
+            );
+        } else {
+            $ds->sku_formatted = '&nbsp;&nbsp;&nbsp;&nbsp;';
+        }
 
-	// }}}
-	// {{{ public function setOrder()
+        return $ds;
+    }
 
-	public function setOrder(StoreOrder $order)
-	{
-		$this->order = $order;
-		$this->item_counts = null;
-	}
+    protected function getOrderItemDescription(StoreOrderItem $item)
+    {
+        $description = '';
 
-	// }}}
-	// {{{ protected function getOrderItemDetailsStore()
+        if ($this->include_title) {
+            $description .= $this->getOrderItemTitle($item);
+        }
 
-	protected function getOrderItemDetailsStore(StoreOrderItem $item)
-	{
-		$ds = new SwatDetailsStore($item);
+        $parts = [];
 
-		$ds->item        = $item;
-		$ds->description = $this->getOrderItemDescription($item);
-		$ds->item_count  = $this->getProductItemCount($item);
+        if ($this->include_group_title && $item->item_group_title != '') {
+            $parts[] = $item->item_group_title;
+        }
 
-		if ($item->alias_sku !== null && $item->alias_sku != '') {
-			$ds->sku.= sprintf(Store::_(' (%s)'), $item->alias_sku);
-		}
+        if ($item->description != '') {
+            $parts[] = strip_tags($item->description);
+        }
 
-		$store_item = $item->getAvailableItem($this->order->locale->region);
-		if ($store_item instanceof StoreItem &&
-			$store_item->product->primary_image !== null) {
+        $description .= '<div>' . implode(', ', $parts) . '</div>';
 
-			$image = $store_item->product->primary_image;
-			$ds->image = $image->getUri($this->image_dimension);
-			$ds->image_width = $image->getWidth($this->image_dimension);
-			$ds->image_height = $image->getHeight($this->image_dimension);
+        return $description;
+    }
 
-		} else {
-			$ds->image = null;
-			$ds->image_width = null;
-			$ds->image_height = null;
-		}
+    protected function getOrderItemTitle(StoreOrderItem $item)
+    {
+        $title = [];
 
-		if ($ds->sku !== null) {
-			$ds->sku_formatted = sprintf(
-				'<span class="item-sku">%s</span> ',
-				SwatString::minimizeEntities($ds->sku));
-		} else {
-			$ds->sku_formatted = '&nbsp;&nbsp;&nbsp;&nbsp;';
-		}
+        if ($item->sku !== null) {
+            $title[] = $item->sku;
+        }
 
-		return $ds;
-	}
+        if ($item->product_title != '') {
+            $title[] = $item->product_title;
+        }
 
-	// }}}
-	// {{{ protected function getOrderItemDescription()
+        if (count($title) > 0) {
+            $header = new SwatHtmlTag('h4');
+            $header->setContent(implode(' - ', $title));
+            $title = $header->__toString();
+        } else {
+            $title = '';
+        }
 
-	protected function getOrderItemDescription(StoreOrderItem $item)
-	{
-		$description = '';
+        return $title;
+    }
 
-		if ($this->include_title) {
-			$description.= $this->getOrderItemTitle($item);
-		}
+    protected function getProductItemCount(StoreOrderItem $item)
+    {
+        // build item count cache if it doesn't exist
+        if ($this->item_counts === null) {
+            $this->item_counts = [];
 
-		$parts = array();
+            // clone because we often call getProductItemCount inside an
+            // iteration of the order items. SwatDBDataObject doesn't support
+            // nested iteration or external iterators
+            $items = clone $this->order->items;
 
-		if ($this->include_group_title && $item->item_group_title != '') {
-			$parts[] = $item->item_group_title;
-		}
+            foreach ($items as $current_item) {
+                $id = $this->getItemIndex($current_item);
+                if (isset($this->item_counts[$id])) {
+                    $this->item_counts[$id]++;
+                } else {
+                    $this->item_counts[$id] = 1;
+                }
+            }
+        }
 
-		if ($item->description != '') {
-			$parts[] = strip_tags($item->description);
-		}
+        // return value from cache if it exists, or return 1
+        $id = $this->getItemIndex($item);
+        if (isset($this->item_counts[$id])) {
+            $count = $this->item_counts[$id];
+        } else {
+            $count = 1;
+        }
 
-		$description.= '<div>'.implode(', ', $parts).'</div>';
+        return $count;
+    }
 
-		return $description;
-	}
-
-	// }}}
-	// {{{ protected function getOrderItemTitle()
-
-	protected function getOrderItemTitle(StoreOrderItem $item)
-	{
-		$title = array();
-
-		if ($item->sku !== null) {
-			$title[] = $item->sku;
-		}
-
-		if ($item->product_title != '') {
-			$title[] = $item->product_title;
-		}
-
-		if (count($title) > 0) {
-			$header = new SwatHtmlTag('h4');
-			$header->setContent(implode(' - ', $title));
-			$title = $header->__toString();
-		} else {
-			$title = '';
-		}
-
-		return $title;
-	}
-
-	// }}}
-	// {{{ protected function getProductItemCount()
-
-	protected function getProductItemCount(StoreOrderItem $item)
-	{
-		// build item count cache if it doesn't exist
-		if ($this->item_counts === null) {
-			$this->item_counts = array();
-
-			// clone because we often call getProductItemCount inside an
-			// iteration of the order items. SwatDBDataObject doesn't support
-			// nested iteration or external iterators
-			$items = clone $this->order->items;
-
-			foreach ($items as $current_item) {
-				$id = $this->getItemIndex($current_item);
-				if (isset($this->item_counts[$id])) {
-					$this->item_counts[$id]++;
-				} else {
-					$this->item_counts[$id] = 1;
-				}
-			}
-		}
-
-		// return value from cache if it exists, or return 1
-		$id = $this->getItemIndex($item);
-		if (isset($this->item_counts[$id])) {
-			$count = $this->item_counts[$id];
-		} else {
-			$count = 1;
-		}
-
-		return $count;
-	}
-
-	// }}}
-	// {{{ protected function getItemIndex()
-
-	protected function getItemIndex(StoreOrderItem $item)
-	{
-		return $item->product;
-	}
-
-	// }}}
+    protected function getItemIndex(StoreOrderItem $item)
+    {
+        return $item->product;
+    }
 }
-
-?>

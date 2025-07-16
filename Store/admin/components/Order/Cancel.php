@@ -1,162 +1,155 @@
 <?php
 
 /**
- * Page to mark an order as cancelled
+ * Page to mark an order as cancelled.
  *
- * @package   Store
  * @copyright 2011-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderCancel extends AdminConfirmation
 {
-	// {{{ protected properties
+    protected $id;
+    protected $order;
 
-	protected $id;
-	protected $order;
+    /**
+     * If we came from an account page, this is the id of the account.
+     * Otherwise it is null.
+     *
+     * @var int
+     */
+    protected $account;
 
-	/**
-	 * If we came from an account page, this is the id of the account.
-	 * Otherwise it is null.
-	 *
-	 * @var integer
-	 */
-	protected $account;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        $this->ui->loadFromXML($this->getUiXml());
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->id = SiteApplication::initVar('id');
+        $this->account = SiteApplication::initVar('account');
 
-	protected function initInternal()
-	{
-		$this->ui->loadFromXML($this->getUiXml());
+        $this->initOrder();
+    }
 
-		$this->id = SiteApplication::initVar('id');
-		$this->account = SiteApplication::initVar('account');
+    protected function initOrder()
+    {
+        $order_class = SwatDBClassMap::get(StoreOrder::class);
+        $this->order = new $order_class();
 
-		$this->initOrder();
-	}
+        $this->order->setDatabase($this->app->db);
 
-	// }}}
-	// {{{ protected function initOrder()
+        if (!$this->order->load($this->id)) {
+            throw new AdminNotFoundException(sprintf(
+                Store::_('An order with an id of ‘%d’ does not exist.'),
+                $this->id
+            ));
+        }
 
-	protected function initOrder()
-	{
-		$order_class = SwatDBClassMap::get('StoreOrder');
-		$this->order = new $order_class();
+        $instance_id = $this->app->getInstanceId();
+        if ($instance_id !== null) {
+            $order_instance_id = ($this->order->instance === null) ?
+                null : $this->order->instance->id;
 
-		$this->order->setDatabase($this->app->db);
+            if ($order_instance_id !== $instance_id) {
+                throw new AdminNotFoundException(sprintf(Store::_(
+                    'Incorrect instance for order ‘%d’.'
+                ), $this->id));
+            }
+        }
+    }
 
-		if (!$this->order->load($this->id)) {
-			throw new AdminNotFoundException(sprintf(
-				Store::_('An order with an id of ‘%d’ does not exist.'),
-				$this->id));
-		}
+    // process phase
 
-		$instance_id = $this->app->getInstanceId();
-		if ($instance_id !== null) {
-			$order_instance_id = ($this->order->instance === null) ?
-				null : $this->order->instance->id;
+    protected function processResponse(): void
+    {
+        $form = $this->ui->getWidget('confirmation_form');
 
-			if ($order_instance_id !== $instance_id)
-				throw new AdminNotFoundException(sprintf(Store::_(
-					'Incorrect instance for order ‘%d’.'), $this->id));
-		}
-	}
+        if ($form->button->id === 'yes_button') {
+            $this->order->cancel_date = new SwatDate();
+            $this->order->save();
 
-	// }}}
+            $this->app->messages->add(new SwatMessage(sprintf(
+                Store::_('%s has been marked as canceled.'),
+                $this->order->getTitle()
+            )));
+        }
+    }
 
-	// process phase
-	// {{{ protected function processResponse()
+    // build phase
 
-	protected function processResponse(): void
-	{
-		$form = $this->ui->getWidget('confirmation_form');
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-		if ($form->button->id === 'yes_button') {
-			$this->order->cancel_date = new SwatDate();
-			$this->order->save();
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('id', $this->id);
+        $form->addHiddenField('account', $this->account);
 
-			$this->app->messages->add(new SwatMessage(sprintf(
-				Store::_('%s has been marked as canceled.'),
-				$this->order->getTitle())));
-		}
-	}
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $this->getConfirmationMessage();
+        $message->content_type = 'text/xml';
+    }
 
-	// }}}
+    protected function getConfirmationMessage()
+    {
+        $locale = SwatI18NLocale::get();
 
-	// build phase
-	// {{{ protected function buildInternal()
+        ob_start();
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $content = Store::_('Are you sure you want to cancel %s?');
+        $content = sprintf($content, $this->order->getTitle());
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('id', $this->id);
-		$form->addHiddenField('account', $this->account);
+        $confirmation_title = new SwatHtmlTag('h3');
+        $confirmation_title->setContent($content);
+        $confirmation_title->display();
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $this->getConfirmationMessage();
-		$message->content_type = 'text/xml';
-	}
+        $total = SwatString::minimizeEntities(
+            $locale->formatCurrency($this->order->total)
+        );
 
-	// }}}
-	// {{{ protected function getConfirmationMessage()
+        printf(
+            Store::_('%s, which totals %s, will be marked as cancelled.'),
+            $this->order->getTitle(),
+            $total
+        );
 
-	protected function getConfirmationMessage()
-	{
-		$locale = SwatI18NLocale::get();
+        return ob_get_clean();
+    }
 
-		ob_start();
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		$content = Store::_('Are you sure you want to cancel %s?');
-		$content = sprintf($content, $this->order->getTitle());
+        if ($this->account === null) {
+            $this->navbar->createEntry(
+                $this->order->getTitle(),
+                sprintf('Order/Details?id=%s', $this->id)
+            );
+        } else {
+            // use account navbar
+            $this->navbar->popEntry();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Customer Accounts'),
+                'Account'
+            ));
 
-		$confirmation_title = new SwatHtmlTag('h3');
-		$confirmation_title->setContent($content);
-		$confirmation_title->display();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                $this->order->account->fullname,
+                'Account/Details?id=' . $this->order->account
+            ));
 
-		$total = SwatString::minimizeEntities(
-				$locale->formatCurrency($this->order->total));
+            $this->title = $this->order->account->fullname;
 
-		printf(Store::_('%s, which totals %s, will be marked as cancelled.'),
-			$this->order->getTitle(), $total);
+            $this->navbar->createEntry(
+                $this->order->getTitle(),
+                sprintf(
+                    'Order/Details?id=%s&account=%s',
+                    $this->id,
+                    $this->account
+                )
+            );
+        }
 
-		return ob_get_clean();
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-
-		if ($this->account === null) {
-			$this->navbar->createEntry($this->order->getTitle(),
-				sprintf('Order/Details?id=%s', $this->id));
-		} else {
-			// use account navbar
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Customer Accounts'), 'Account'));
-
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				$this->order->account->fullname,
-				'Account/Details?id='.$this->order->account));
-
-			$this->title = $this->order->account->fullname;
-
-			$this->navbar->createEntry($this->order->getTitle(),
-				sprintf('Order/Details?id=%s&account=%s', $this->id,
-				$this->account));
-		}
-
-		$this->navbar->createEntry(Store::_('Cancel Order'));
-	}
-
-	// }}}
+        $this->navbar->createEntry(Store::_('Cancel Order'));
+    }
 }
-
-?>

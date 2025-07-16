@@ -1,87 +1,65 @@
 <?php
 
 /**
- * An address belonging to an order for an e-commerce web application
+ * An address belonging to an order for an e-commerce web application.
  *
  * This could represent either a billing or a shipping address.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
  * @see       StoreOrder::$billing_address, StoreOrder::$shipping_address
  */
 class StoreOrderAddress extends StoreAddress
 {
-	// {{{ protected properties
+    /**
+     * Id of the account address this order address was created from.
+     *
+     * @var int
+     */
+    protected $account_address_id;
 
-	/**
-	 * Id of the account address this order address was created from
-	 *
-	 * @var integer
-	 */
-	protected $account_address_id = null;
+    public function getAccountAddressId()
+    {
+        return $this->account_address_id;
+    }
 
-	// }}}
-	// {{{ public function getAccountAddressId()
+    public function clearAccountAddress()
+    {
+        $this->account_address_id = null;
+    }
 
-	public function getAccountAddressId()
-	{
-		return $this->account_address_id;
-	}
+    public function copyFrom(StoreAddress $address)
+    {
+        parent::copyFrom($address);
 
-	// }}}
-	// {{{ public function clearAccountAddress()
+        if ($address instanceof StoreAccountAddress) {
+            $this->account_address_id = $address->id;
+        }
+    }
 
-	public function clearAccountAddress()
-	{
-		$this->account_address_id = null;
-	}
+    public function duplicate(): static
+    {
+        $new_address = parent::duplicate();
 
-	// }}}
-	// {{{ public function copyFrom()
+        if ($this->account_address_id !== null) {
+            $new_address->account_address_id = $this->account_address_id;
+        }
 
-	public function copyFrom(StoreAddress $address)
-	{
-		parent::copyFrom($address);
+        return $new_address;
+    }
 
-		if ($address instanceof StoreAccountAddress)
-			$this->account_address_id = $address->id;
-	}
+    protected function init()
+    {
+        parent::init();
+        $this->table = 'OrderAddress';
+    }
 
-	// }}}
-	// {{{ public function duplicate()
+    protected function getSerializablePrivateProperties()
+    {
+        $properties = parent::getSerializablePrivateProperties();
+        $properties[] = 'account_address_id';
 
-	public function duplicate(): static
-	{
-		$new_address = parent::duplicate();
-
-		if ($this->account_address_id !== null)
-			$new_address->account_address_id = $this->account_address_id;
-
-		return $new_address;
-	}
-
-	// }}}
-	// {{{ protected function init()
-
-	protected function init()
-	{
-		parent::init();
-		$this->table = 'OrderAddress';
-	}
-
-	// }}}
-	// {{{ protected function getSerializablePrivateProperties()
-
-	protected function getSerializablePrivateProperties()
-	{
-		$properties = parent::getSerializablePrivateProperties();
-		$properties[] = 'account_address_id';
-
-		return $properties;
-	}
-
-	// }}}
+        return $properties;
+    }
 }
-
-?>

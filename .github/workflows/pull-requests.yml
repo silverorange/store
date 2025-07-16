@@ -1,0 +1,57 @@
+name: Pull Requests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  runner:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      # Can maybe be replaced with pnpm/action-setup@v4 in the future
+      - name: Setup pnpm/corepack
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+      - run: npm i -g --force corepack && corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup PHP with tools
+        uses: silverorange/actions-setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: gd, imagick
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install PHP dependencies
+        run: 'composer install'
+
+      - name: Run tests
+        timeout-minutes: 5
+        run: |
+          pnpm prettier
+          composer run phpcs:ci
+          composer run phpstan:ci

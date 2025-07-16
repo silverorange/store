@@ -1,284 +1,248 @@
 <?php
 
 /**
- * Manages the checkout session and progress for a web-store application
+ * Manages the checkout session and progress for a web-store application.
  *
  * Depends on the SiteAccountSessionModule and SiteDatabaseModule modules.
  *
- * @package   Store
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreCheckoutModule extends SiteApplicationModule
 {
-	// {{{ public function init()
+    public function init() {}
 
-	public function init()
-	{
-	}
+    /**
+     * Gets the module features this module depends on.
+     *
+     * The checkout module depends on the SiteAccountSessionModule and
+     * SiteDatabaseModule features.
+     *
+     * @return array an array of {@link SiteModuleDependency} objects defining
+     *               the features this module depends on
+     */
+    public function depends()
+    {
+        $depends = parent::depends();
+        $depends[] = new SiteApplicationModuleDependency(
+            'SiteAccountSessionModule'
+        );
 
-	// }}}
-	// {{{ public function depends()
+        $depends[] = new SiteApplicationModuleDependency(
+            'StoreCartModule'
+        );
 
-	/**
-	 * Gets the module features this module depends on
-	 *
-	 * The checkout module depends on the SiteAccountSessionModule and
-	 * SiteDatabaseModule features.
-	 *
-	 * @return array an array of {@link SiteModuleDependency} objects defining
-	 *                        the features this module depends on.
-	 */
-	public function depends()
-	{
-		$depends = parent::depends();
-		$depends[] = new SiteApplicationModuleDependency(
-			'SiteAccountSessionModule');
+        $depends[] = new SiteApplicationModuleDependency('SiteDatabaseModule');
 
-		$depends[] = new SiteApplicationModuleDependency(
-			'StoreCartModule');
+        return $depends;
+    }
 
-		$depends[] = new SiteApplicationModuleDependency('SiteDatabaseModule');
+    /**
+     * Ensures the data-objects required by the checkout are created.
+     *
+     * If the dataobjects are not created, the checkout progress is reset and
+     * the objects are created.
+     *
+     * The checkout session data-objects created by default are:
+     *  - 'order'   - a {@link StoreOrder} object, and
+     *  - 'account' - a {@link StoreAccount} object.
+     */
+    public function initDataObjects()
+    {
+        $session = $this->getSession();
 
-		return $depends;
-	}
+        if (!isset($session->account)) {
+            unset($session->account);
+            $account_class = SwatDBClassMap::get(StoreAccount::class);
+            $session->account = new $account_class();
+            $session->account->setDatabase($this->getDB());
+            $this->resetProgress();
+        }
 
-	// }}}
-	// {{{ public function initDataObjects()
+        if (!isset($session->order)) {
+            unset($session->order);
+            $order_class = SwatDBClassMap::get(StoreOrder::class);
+            $session->order = new $order_class();
+            $session->order->setDatabase($this->getDB());
+            $this->resetProgress();
+        }
+    }
 
-	/**
-	 * Ensures the data-objects required by the checkout are created
-	 *
-	 * If the dataobjects are not created, the checkout progress is reset and
-	 * the objects are created.
-	 *
-	 * The checkout session data-objects created by default are:
-	 *  - 'order'   - a {@link StoreOrder} object, and
-	 *  - 'account' - a {@link StoreAccount} object.
-	 */
-	public function initDataObjects()
-	{
-		$session = $this->getSession();
+    /**
+     * Sets a progress dependency as 'met'.
+     *
+     * @param string $dependency the progress dependency that is now met
+     */
+    public function setProgress($dependency)
+    {
+        $session = $this->getSession();
 
-		if (!isset($session->account)) {
-			unset($session->account);
-			$account_class = SwatDBClassMap::get('StoreAccount');
-			$session->account = new $account_class();
-			$session->account->setDatabase($this->getDB());
-			$this->resetProgress();
-		}
+        // if the progress session variable somehow got removed, recreate it
+        if (!isset($session->checkout_progress)) {
+            $session->checkout_progress = new ArrayObject();
+        }
 
-		if (!isset($session->order)) {
-			unset($session->order);
-			$order_class = SwatDBClassMap::get('StoreOrder');
-			$session->order = new $order_class();
-			$session->order->setDatabase($this->getDB());
-			$this->resetProgress();
-		}
-	}
+        // add the met dependency
+        $session->checkout_progress[] = $dependency;
+    }
 
-	// }}}
-	// {{{ public function setProgress()
+    /**
+     * Sets a progress dependency as 'unmet'.
+     *
+     * @param string $dependency the progress dependency that is now unmet
+     */
+    public function unsetProgress($dependency)
+    {
+        $session = $this->getSession();
 
-	/**
-	 * Sets a progress dependency as 'met'
-	 *
-	 * @param string $dependency the progress dependency that is now met.
-	 */
-	public function setProgress($dependency)
-	{
-		$session = $this->getSession();
+        // if the progress session variable somehow got removed, recreate it
+        if (!isset($session->checkout_progress)) {
+            $session->checkout_progress = new ArrayObject();
+        }
 
-		// if the progress session variable somehow got removed, recreate it
-		if (!isset($session->checkout_progress)) {
-			$session->checkout_progress = new ArrayObject();
-		}
+        // remove the met dependency
+        $progress_array = $session->checkout_progress->getArrayCopy();
+        $progress_array = array_diff($progress_array, [$dependency]);
+        $session->checkout_progress = new ArrayObject($progress_array);
+    }
 
-		// add the met dependency
-		$session->checkout_progress[] = $dependency;
-	}
+    /**
+     * Gets whether or not the checkout progress includes the specified
+     * dependency.
+     *
+     * This can be used to ensure the customer has entered a shipping address
+     * before proceeding to the shipping page, for example.
+     *
+     * @param string $dependency the dependency to check
+     *
+     * @return bool true if the checkout progress includes the specified
+     *              dependency, false if not
+     */
+    public function hasProgressDependency($dependency)
+    {
+        $has_dependency = false;
+        $session = $this->getSession();
 
-	// }}}
-	// {{{ public function unsetProgress()
+        if (isset($session->checkout_progress)) {
+            $has_dependency = in_array(
+                $dependency,
+                $session->checkout_progress->getArrayCopy()
+            );
+        }
 
-	/**
-	 * Sets a progress dependency as 'unmet'
-	 *
-	 * @param string $dependency the progress dependency that is now unmet.
-	 */
-	public function unsetProgress($dependency)
-	{
-		$session = $this->getSession();
+        return $has_dependency;
+    }
 
-		// if the progress session variable somehow got removed, recreate it
-		if (!isset($session->checkout_progress)) {
-			$session->checkout_progress = new ArrayObject();
-		}
+    /**
+     * Resets checkout progress.
+     *
+     * After calling this method, the customer is required to enter the
+     * checkout again from a page with no checkout dependencies.
+     *
+     * This usually means they have to begin the full checkout again.
+     */
+    public function resetProgress()
+    {
+        $session = $this->getSession();
 
-		// remove the met dependency
-		$progress_array = $session->checkout_progress->getArrayCopy();
-		$progress_array = array_diff($progress_array, array($dependency));
-		$session->checkout_progress = new ArrayObject($progress_array);
-	}
+        // ArrayObject is used because magic get method can not return by
+        // reference since PHP 5.2 and we want the array to be returned by
+        // reference from the session.
+        $session->checkout_progress = new ArrayObject();
+        $session->checkout_email = null;
+    }
 
-	// }}}
-	// {{{ public function hasProgressDependency()
+    public function buildOrder(StoreOrder $order)
+    {
+        $cart = $this->app->getModule('StoreCartModule');
+        $cart = $cart->checkout;
 
-	/**
-	 * Gets whether or not the checkout progress includes the specified
-	 * dependency
-	 *
-	 * This can be used to ensure the customer has entered a shipping address
-	 * before proceeding to the shipping page, for example.
-	 *
-	 * @param string $dependency the dependency to check.
-	 *
-	 * @return boolean true if the checkout progress includes the specified
-	 *                 dependency, false if not.
-	 */
-	public function hasProgressDependency($dependency)
-	{
-		$has_dependency = false;
-		$session = $this->getSession();
+        $this->createOrderItems($order);
 
-		if (isset($session->checkout_progress)) {
-			$has_dependency = in_array(
-				$dependency,
-				$session->checkout_progress->getArrayCopy()
-			);
-		}
+        $order->locale = $this->app->getLocale();
 
-		return $has_dependency;
-	}
+        $order->item_total = $cart->getItemTotal();
 
-	// }}}
-	// {{{ public function resetProgress()
+        $order->surcharge_total = $cart->getSurchargeTotal(
+            $order->payment_methods
+        );
 
-	/**
-	 * Resets checkout progress
-	 *
-	 * After calling this method, the customer is required to enter the
-	 * checkout again from a page with no checkout dependencies.
-	 *
-	 * This usually means they have to begin the full checkout again.
-	 */
-	public function resetProgress()
-	{
-		$session = $this->getSession();
+        $order->shipping_total = $cart->getShippingTotal(
+            $order->billing_address,
+            $order->shipping_address,
+            $order->shipping_type
+        );
 
-		// ArrayObject is used because magic get method can not return by
-		// reference since PHP 5.2 and we want the array to be returned by
-		// reference from the session.
-		$session->checkout_progress = new ArrayObject();
-		$session->checkout_email    = null;
-	}
+        $order->tax_total = $cart->getTaxTotal(
+            $order->billing_address,
+            $order->shipping_address,
+            $order->shipping_type,
+            $order->payment_methods
+        );
 
-	// }}}
-	// {{{ public function buildOrder()
+        $order->total = $cart->getTotal(
+            $order->billing_address,
+            $order->shipping_address,
+            $order->shipping_type,
+            $order->payment_methods
+        );
 
-	public function buildOrder(StoreOrder $order)
-	{
-		$cart = $this->app->getModule('StoreCartModule');
-		$cart = $cart->checkout;
+        // Reload ad from the database to esure it exists before trying to
+        // build the order. This prevents order failure when a deleted or
+        // disabled ad ends up in the session.
+        if ($this->app->hasModule('SiteAdModule')) {
+            $ad_module = $this->app->getModule('SiteAdModule');
+            $session_ad = $ad_module->getAd();
+            if ($session_ad !== null) {
+                $ad_class = SwatDBClassMap::get(SiteAd::class);
+                $ad = new $ad_class();
+                $ad->setDatabase($this->app->db);
+                if ($ad->load($session_ad->id)) {
+                    $order->ad = $ad;
+                }
+            }
+        }
 
-		$this->createOrderItems($order);
+        return $order;
+    }
 
-		$order->locale = $this->app->getLocale();
+    protected function createOrderItems($order)
+    {
+        $region = $this->app->getRegion();
 
-		$order->item_total = $cart->getItemTotal();
+        $wrapper = SwatDBClassMap::get(StoreOrderItemWrapper::class);
+        $order->items = new $wrapper();
 
-		$order->surcharge_total = $cart->getSurchargeTotal(
-			$order->payment_methods
-		);
+        foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
+            $order_item = $entry->createOrderItem();
+            $order_item->setDatabase($this->app->db);
+            $order_item->setAvailableItemCache($region, $entry->item);
+            $order_item->setItemCache($entry->item);
+            $order->items->add($order_item);
+        }
+    }
 
-		$order->shipping_total = $cart->getShippingTotal(
-			$order->billing_address,
-			$order->shipping_address,
-			$order->shipping_type
-		);
+    /**
+     * Gets the session module of this module's application.
+     *
+     * @return SiteSessionModule the session module of this module's
+     *                           application
+     */
+    protected function getSession()
+    {
+        return $this->app->getModule('SiteAccountSessionModule');
+    }
 
-		$order->tax_total = $cart->getTaxTotal(
-			$order->billing_address,
-			$order->shipping_address,
-			$order->shipping_type,
-			$order->payment_methods
-		);
+    /**
+     * Gets the database connection of this module's application's database
+     * module.
+     *
+     * @return MDB2_Driver_Common the database connection of the application
+     */
+    protected function getDB()
+    {
+        $module = $this->app->getModule('SiteDatabaseModule');
 
-		$order->total = $cart->getTotal(
-			$order->billing_address,
-			$order->shipping_address,
-			$order->shipping_type,
-			$order->payment_methods
-		);
-
-		// Reload ad from the database to esure it exists before trying to
-		// build the order. This prevents order failure when a deleted or
-		// disabled ad ends up in the session.
-		if ($this->app->hasModule('SiteAdModule')) {
-			$ad_module = $this->app->getModule('SiteAdModule');
-			$session_ad = $ad_module->getAd();
-			if ($session_ad !== null) {
-				$ad_class = SwatDBClassMap::get('SiteAd');
-				$ad = new $ad_class();
-				$ad->setDatabase($this->app->db);
-				if ($ad->load($session_ad->id)) {
-					$order->ad = $ad;
-				}
-			}
-		}
-
-		return $order;
-	}
-
-	// }}}
-	// {{{ protected function createOrderItems()
-
-	protected function createOrderItems($order)
-	{
-		$region = $this->app->getRegion();
-
-		$wrapper = SwatDBClassMap::get('StoreOrderItemWrapper');
-		$order->items = new $wrapper();
-
-		foreach ($this->app->cart->checkout->getAvailableEntries() as $entry) {
-			$order_item = $entry->createOrderItem();
-			$order_item->setDatabase($this->app->db);
-			$order_item->setAvailableItemCache($region, $entry->item);
-			$order_item->setItemCache($entry->item);
-			$order->items->add($order_item);
-		}
-	}
-
-	// }}}
-	// {{{ protected function getSession()
-
-	/**
-	 * Gets the session module of this module's application
-	 *
-	 * @return SiteSessionModule the session module of this module's
-	 *                           application.
-	 */
-	protected function getSession()
-	{
-		return $this->app->getModule('SiteAccountSessionModule');
-	}
-
-	// }}}
-	// {{{ protected function getDB()
-
-	/**
-	 * Gets the database connection of this module's application's database
-	 * module
-	 *
-	 * @return MDB2_Driver_Common the database connection of the application.
-	 */
-	protected function getDB()
-	{
-		$module = $this->app->getModule('SiteDatabaseModule');
-		return $module->getConnection();
-	}
-
-	// }}}
+        return $module->getConnection();
+    }
 }
-
-?>

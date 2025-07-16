@@ -1,66 +1,54 @@
 <?php
 
 /**
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreAccountEditPage extends SiteAccountEditPage
 {
-	// {{{ protected function getUiXml()
+    protected function getUiXml()
+    {
+        return __DIR__ . '/account-edit.xml';
+    }
 
-	protected function getUiXml()
-	{
-		return __DIR__.'/account-edit.xml';
-	}
+    private function getAdditionalFields()
+    {
+        $fields = [];
 
-	// }}}
-	// {{{ private function getAdditionalFields()
+        if ($this->ui->hasWidget('phone')) {
+            $fields[] = 'phone';
+        }
 
-	private function getAdditionalFields()
-	{
-		$fields = array();
+        if ($this->ui->hasWidget('company')) {
+            $fields[] = 'company';
+        }
 
-		if ($this->ui->hasWidget('phone'))
-			$fields[] = 'phone';
+        return $fields;
+    }
 
-		if ($this->ui->hasWidget('company'))
-			$fields[] = 'company';
+    // process phase
 
-		return $fields;
-	}
+    protected function updateAccount(SwatForm $form)
+    {
+        parent::updateAccount($form);
 
-	// }}}
+        $fields = $this->getAdditionalFields();
 
-	// process phase
-	// {{{ protected function updateAccount()
+        if (count($fields) > 0) {
+            $this->assignUiValuesToObject($this->account, $fields);
+        }
+    }
 
-	protected function updateAccount(SwatForm $form)
-	{
-		parent::updateAccount($form);
+    // build phase
 
-		$fields = $this->getAdditionalFields();
+    protected function load(SwatForm $form)
+    {
+        parent::load($form);
 
-		if (count($fields) > 0)
-			$this->assignUiValuesToObject($this->account, $fields);
-	}
+        $fields = $this->getAdditionalFields();
 
-	// }}}
-
-	// build phase
-	// {{{ protected function load()
-
-	protected function load(SwatForm $form)
-	{
-		parent::load($form);
-
-		$fields = $this->getAdditionalFields();
-
-		if (count($fields) > 0)
-			$this->assignObjectValuesToUi($this->account, $fields);
-	}
-
-	// }}}
+        if (count($fields) > 0) {
+            $this->assignObjectValuesToUi($this->account, $fields);
+        }
+    }
 }
-
-?>

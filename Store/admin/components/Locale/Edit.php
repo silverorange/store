@@ -1,109 +1,91 @@
 <?php
 
 /**
- * Edit page for Locale
+ * Edit page for Locale.
  *
- * @package   Store
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreLocaleEdit extends AdminDBEdit
 {
-	// {{{ protected properties
+    protected $locale;
 
-	protected $locale;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        parent::initInternal();
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->ui->mapClassPrefixToPath('Store', 'Store');
+        $this->ui->loadFromXML(__DIR__ . '/edit.xml');
 
-	protected function initInternal()
-	{
-		parent::initInternal();
+        $this->initLocale();
 
-		$this->ui->mapClassPrefixToPath('Store', 'Store');
-		$this->ui->loadFromXML(__DIR__.'/edit.xml');
+        $id_flydown = $this->ui->getWidget('region');
+        $id_flydown->show_blank = false;
+        $id_flydown->addOptionsByArray(SwatDB::getOptionArray(
+            $this->app->db,
+            'Region',
+            'title',
+            'id',
+            'title'
+        ));
+    }
 
-		$this->initLocale();
+    protected function initLocale()
+    {
+        $class_name = SwatDBClassMap::get(StoreLocale::class);
+        $this->locale = new $class_name();
+        $this->locale->setDatabase($this->app->db);
+    }
 
-		$id_flydown = $this->ui->getWidget('region');
-		$id_flydown->show_blank = false;
-		$id_flydown->addOptionsByArray(SwatDB::getOptionArray($this->app->db,
-			'Region', 'title', 'id', 'title'));
-	}
+    // process phase
 
-	// }}}
-	// {{{ protected function initLocale()
+    protected function validate(): void
+    {
+        $localeid = $this->ui->getWidget('id');
 
-	protected function initLocale()
-	{
-		$class_name = SwatDBClassMap::get('StoreLocale');
-		$this->locale = new $class_name();
-		$this->locale->setDatabase($this->app->db);
-	}
+        if (preg_match('/^[a-z][a-z]_[A-Z][A-Z]$/', $localeid->value) !== 1) {
+            $localeid->addMessage(
+                new SwatMessage(
+                    Store::_('Invalid locale identifier.'),
+                    'error'
+                )
+            );
+        }
+    }
 
-	// }}}
+    protected function saveDBData(): void
+    {
+        $this->updateLocale();
+        $this->locale->save();
 
-	// process phase
-	// {{{ protected function validate()
+        $message = new SwatMessage(
+            sprintf(Store::_('“%s” has been saved.'), $this->locale->id)
+        );
 
-	protected function validate(): void
-	{
-		$localeid = $this->ui->getWidget('id');
+        $this->app->messages->add($message);
 
-		if (preg_match('/^[a-z][a-z]_[A-Z][A-Z]$/', $localeid->value) !== 1) {
-			$localeid->addMessage(
-				new SwatMessage(
-					Store::_('Invalid locale identifier.'),
-					'error'
-				)
-			);
-		}
-	}
+        if (isset($this->app->memcache)) {
+            $this->app->memcache->flushNs('product');
+        }
+    }
 
-	// }}}
-	// {{{ protected function saveDBData()
+    protected function updateLocale()
+    {
+        $values = $this->ui->getValues(['id', 'region']);
 
-	protected function saveDBData(): void
-	{
-		$this->updateLocale();
-		$this->locale->save();
+        $this->locale->id = $values['id'];
+        $this->locale->region = $values['region'];
+    }
 
-		$message = new SwatMessage(
-			sprintf(Store::_('“%s” has been saved.'), $this->locale->id));
+    // build phase
 
-		$this->app->messages->add($message);
+    protected function loadDBData()
+    {
+        $message = new SwatMessage('Locales can not be edited.', 'warning');
 
-		if (isset($this->app->memcache))
-			$this->app->memcache->flushNs('product');
-	}
-
-	// }}}
-	// {{{ protected function updateLocale()
-
-	protected function updateLocale()
-	{
-		$values = $this->ui->getValues(array('id', 'region'));
-
-		$this->locale->id     = $values['id'];
-		$this->locale->region = $values['region'];
-	}
-
-	// }}}
-
-	// build phase
-	// {{{ protected function loadDBData()
-
-	protected function loadDBData()
-	{
-		$message = new SwatMessage('Locales can not be edited.', 'warning');
-
-		$this->app->messages->add($message);
-		$this->app->relocate('Locale');
-	}
-
-	// }}}
+        $this->app->messages->add($message);
+        $this->app->relocate('Locale');
+    }
 }
-
-?>

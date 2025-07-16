@@ -3,10 +3,10 @@
 /**
  * Generates Facebook conversion tracking code.
  *
- * @package    Store
  * @copyright  2015 silverorange
  * @license    http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- * @link       https://developers.facebook.com/docs/ads-for-websites/drive-conversions
+ *
+ * @see       https://developers.facebook.com/docs/ads-for-websites/drive-conversions
  * @deprecated Use SiteAnalyticsModule's Facebook Pixel support alongside
  *             StoreAnalyticsOrderTracker for better analytics. This style
  *             conversion tracking will be discontinued by Facebook before the
@@ -14,125 +14,97 @@
  */
 class StoreFacebookConversionTracker
 {
-	// {{{ protected properties
+    /**
+     * @var float
+     */
+    protected $tracked_value = 0.00;
 
-	/**
-	 * @var float
-	 */
-	protected $tracked_value = 0.00;
+    /**
+     * @var string
+     */
+    protected $tracking_id;
 
-	/**
-	 * @var string
-	 */
-	protected $tracking_id;
+    /**
+     * @var string
+     */
+    protected $tracked_value_currency = 'USD';
 
-	/**
-	 * @var string
-	 */
-	protected $tracked_value_currency = 'USD';
+    /**
+     * @var bool
+     */
+    protected $show_tracking_pixel = true;
 
-	/**
-	 * @var boolean
-	 */
-	protected $show_tracking_pixel = true;
+    public function setTrackedValue($tracked_value)
+    {
+        $this->tracked_value = $tracked_value;
+    }
 
-	// }}}
-	// {{{ public function setTrackedValue()
+    public function setTrackingId($tracking_id)
+    {
+        $this->tracking_id = $tracking_id;
+    }
 
-	public function setTrackedValue($tracked_value)
-	{
-		$this->tracked_value = $tracked_value;
-	}
+    public function setTrackedValueCurrency($tracked_value_currency)
+    {
+        $this->tracked_value_currency = $tracked_value_currency;
+    }
 
-	// }}}
-	// {{{ public function setTrackingId()
+    public function showTrackingPixel($show_tracking_pixel)
+    {
+        $this->show_tracking_pixel = (bool) $show_tracking_pixel;
+    }
 
-	public function setTrackingId($tracking_id)
-	{
-		$this->tracking_id = $tracking_id;
-	}
+    public function display()
+    {
+        if ($this->tracking_id != '') {
+            $this->displayJavascriptTracker();
 
-	// }}}
-	// {{{ public function setTrackedValueCurrency()
+            if ($this->show_tracking_pixel) {
+                $this->displayTrackingPixel();
+            }
+        }
+    }
 
-	public function setTrackedValueCurrency($tracked_value_currency)
-	{
-		$this->tracked_value_currency = $tracked_value_currency;
-	}
+    protected function displayJavascriptTracker()
+    {
+        $javascript = <<<'JS'
+            (function() {
+            	var _fbq = window._fbq || (window._fbq = []);
+            	if (!_fbq.loaded) {
+            		var fbds = document.createElement('script');
+            		fbds.async = true;
+            		fbds.src = '//connect.facebook.net/en_US/fbds.js';
+            		var s = document.getElementsByTagName('script')[0];
+            		s.parentNode.insertBefore(fbds, s);
+            		_fbq.loaded = true;
+            	}
+            })();
+            window._fbq = window._fbq || [];
+            window._fbq.push(['track', %s, {'value':%s,'currency':%s}]);
+            JS;
 
-	// }}}
-	// {{{ public function showTrackingPixel()
+        Swat::displayInlineJavaScript(
+            sprintf(
+                $javascript,
+                SwatString::quoteJavaScriptString($this->tracking_id),
+                SwatString::quoteJavaScriptString($this->tracked_value),
+                SwatString::quoteJavaScriptString($this->tracked_value_currency)
+            )
+        );
+    }
 
-	public function showTrackingPixel($show_tracking_pixel)
-	{
-		$this->show_tracking_pixel = (boolean)$show_tracking_pixel;
-	}
-
-	// }}}
-	// {{{ public function display()
-
-	public function display()
-	{
-		if ($this->tracking_id != '') {
-			$this->displayJavascriptTracker();
-
-			if ($this->show_tracking_pixel) {
-				$this->displayTrackingPixel();
-			}
-		}
-	}
-
-	// }}}
-	// {{{ protected function displayJavascriptTracker()
-
-	protected function displayJavascriptTracker()
-	{
-		$javascript = <<<'JS'
-(function() {
-	var _fbq = window._fbq || (window._fbq = []);
-	if (!_fbq.loaded) {
-		var fbds = document.createElement('script');
-		fbds.async = true;
-		fbds.src = '//connect.facebook.net/en_US/fbds.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(fbds, s);
-		_fbq.loaded = true;
-	}
-})();
-window._fbq = window._fbq || [];
-window._fbq.push(['track', %s, {'value':%s,'currency':%s}]);
-JS;
-
-		Swat::displayInlineJavaScript(
-			sprintf(
-				$javascript,
-				SwatString::quoteJavaScriptString($this->tracking_id),
-				SwatString::quoteJavaScriptString($this->tracked_value),
-				SwatString::quoteJavaScriptString($this->tracked_value_currency)
-			)
-		);
-	}
-
-	// }}}
-	// {{{ protected function displayTrackingPixel()
-
-	protected function displayTrackingPixel()
-	{
-		// @codingStandardsIgnoreStart
-		$tracking_pixel = <<<'XHTML'
-<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=%s&amp;cd[value]=%s&amp;cd[currency]=%s&amp;noscript=1" /></noscript>
-XHTML;
-		// @codingStandardsIgnoreEnd
-		printf(
-			$tracking_pixel,
-			SwatString::minimizeEntities($this->tracking_id),
-			SwatString::minimizeEntities($this->tracked_value),
-			SwatString::minimizeEntities($this->tracked_value_currency)
-		);
-
-	}
-
-	// }}}
+    protected function displayTrackingPixel()
+    {
+        // @codingStandardsIgnoreStart
+        $tracking_pixel = <<<'XHTML'
+            <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=%s&amp;cd[value]=%s&amp;cd[currency]=%s&amp;noscript=1" /></noscript>
+            XHTML;
+        // @codingStandardsIgnoreEnd
+        printf(
+            $tracking_pixel,
+            SwatString::minimizeEntities($this->tracking_id),
+            SwatString::minimizeEntities($this->tracked_value),
+            SwatString::minimizeEntities($this->tracked_value_currency)
+        );
+    }
 }
-
-?>

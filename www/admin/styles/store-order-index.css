@@ -1,46 +1,46 @@
 #order_numbers {
-	float: left;
-	margin-right: 1em;
-	position: relative;
+  float: left;
+  margin-right: 1em;
+  position: relative;
 }
 
 #customer_info {
-	float: left;
-	position: relative;
+  float: left;
+  position: relative;
 }
 
 #order_options {
-	clear: left;
+  clear: left;
 }
 
 #date_after {
-	float: left;
-	margin-right: 2em;
+  float: left;
+  margin-right: 2em;
 }
 
 .order-comments,
 .order-notes {
-	display: block;
-	padding: 4px 6px;
-	color: rgba(0,0,0,0.54);
+  display: block;
+  padding: 4px 6px;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 .order-comments {
-	background: #dcedc8;
+  background: #dcedc8;
 }
 
 .order-notes {
-	background: #fff9c4;
+  background: #fff9c4;
 }
 
 .swat-table-view .swat-table-view-spanning-column td {
-	padding: 0 0 4px;
-	border-top: 0;
+  padding: 0 0 4px;
+  border-top: 0;
 }
 
 .is-cancelled .cancelled {
-	background: #f44336;
-	color: rgba(255,255,255,0.54);
-	padding: 2px 6px;
-	border-radius: 2px;
+  background: #f44336;
+  color: rgba(255, 255, 255, 0.54);
+  padding: 2px 6px;
+  border-radius: 2px;
 }

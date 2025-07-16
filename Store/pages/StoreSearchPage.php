@@ -3,118 +3,103 @@
 /**
  * Page for displaying a search form above search results.
  *
- * @package   Store
  * @copyright 2007-2016 silverorange
  */
 class StoreSearchPage extends StoreSearchResultsPage
 {
-	// {{{ protected properties
+    /**
+     * The user-interface of the search form.
+     *
+     * @var SwatUI
+     */
+    protected $form_ui;
 
-	/**
-	 * The user-interface of the search form
-	 *
-	 * @var SwatUI
-	 */
-	protected $form_ui;
+    /**
+     * The SwatML file to load the search user-interface from.
+     *
+     * @var string
+     */
+    protected $form_ui_xml = __DIR__ . '/search-form.xml';
 
-	/**
-	 * The SwatML file to load the search user-interface from
-	 *
-	 * @var string
-	 */
-	protected $form_ui_xml = __DIR__.'/search-form.xml';
+    // init phase
 
-	// }}}
+    public function init()
+    {
+        parent::init();
 
-	// init phase
-	// {{{ public function init
+        $this->form_ui = new SwatUI();
+        $this->form_ui->loadFromXML($this->form_ui_xml);
 
-	public function init()
-	{
-		parent::init();
+        $form = $this->form_ui->getWidget('search_form');
+        $form->action = $this->source;
 
-		$this->form_ui = new SwatUI();
-		$this->form_ui->loadFromXML($this->form_ui_xml);
+        if ($this->form_ui->hasWidget('category')) {
+            $category_flydown = $this->form_ui->getWidget('category');
+            $categories = $this->getCategories();
+            foreach ($categories as $category) {
+                $category_flydown->addOption(
+                    $category->shortname,
+                    $category->title
+                );
+            }
+        }
 
-		$form = $this->form_ui->getWidget('search_form');
-		$form->action = $this->source;
+        $this->form_ui->init();
+    }
 
-		if ($this->form_ui->hasWidget('category')) {
-			$category_flydown = $this->form_ui->getWidget('category');
-			$categories = $this->getCategories();
-			foreach ($categories as $category)
-				$category_flydown->addOption($category->shortname,
-					$category->title);
-		}
-
-		$this->form_ui->init();
-	}
-
-	// }}}
-	// {{{ protected function getCategories()
-
-	protected function getCategories()
-	{
-		$sql = 'select id, title, subtitle, shortname from Category
+    protected function getCategories()
+    {
+        $sql = 'select id, title, subtitle, shortname from Category
 			where parent is null and id in
 				(select category from VisibleCategoryView
 				where region = %s or region is null)
 			order by displayorder, title';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+        $sql = sprintf(
+            $sql,
+            $this->app->db->quote($this->app->getRegion()->id, 'integer')
+        );
 
-		$categories = SwatDB::query($this->app->db, $sql,
-			'StoreCategoryWrapper');
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            'StoreCategoryWrapper'
+        );
+    }
 
-		return $categories;
-	}
+    // process phase
 
-	// }}}
+    public function process()
+    {
+        parent::process();
 
-	// process phase
-	// {{{ public function process()
+        $this->form_ui->process();
 
-	public function process()
-	{
-		parent::process();
+        /*
+         * Nothing else to do...
+         * the parent class result page is driven by the GET variables this
+         * form provided.
+         */
+    }
 
-		$this->form_ui->process();
+    // build phase
 
-		/*
-		 * Nothing else to do...
-		 * the parent class result page is driven by the GET variables this
-		 * form provided.
-		 */
-	}
+    public function build()
+    {
+        $this->layout->startCapture('content');
+        $this->form_ui->display();
+        $this->layout->endCapture();
 
-	// }}}
+        parent::build();
+    }
 
-	// build phase
-	// {{{ public function build()
+    // finalize phase
 
-	public function build()
-	{
-		$this->layout->startCapture('content');
-		$this->form_ui->display();
-		$this->layout->endCapture();
-
-		parent::build();
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-		$this->layout->addHtmlHeadEntrySet(
-			$this->form_ui->getRoot()->getHtmlHeadEntrySet());
-	}
-
-	// }}}
+    public function finalize()
+    {
+        parent::finalize();
+        $this->layout->addHtmlHeadEntrySet(
+            $this->form_ui->getRoot()->getHtmlHeadEntrySet()
+        );
+    }
 }
-
-?>

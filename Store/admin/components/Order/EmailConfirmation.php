@@ -1,210 +1,197 @@
 <?php
 
 /**
- * Page to resend the confirmation email for an order
+ * Page to resend the confirmation email for an order.
  *
- * @package   Store
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  */
 class StoreOrderEmailConfirmation extends AdminConfirmation
 {
-	// {{{ protected properties
+    protected $id;
+    protected $order;
 
-	protected $id;
-	protected $order;
+    /**
+     * If we came from an account page, this is the id of the account.
+     * Otherwise it is null.
+     *
+     * @var int
+     */
+    protected $account;
 
-	/**
-	 * If we came from an account page, this is the id of the account.
-	 * Otherwise it is null.
-	 *
-	 * @var integer
-	 */
-	protected $account;
+    // init phase
 
-	// }}}
+    protected function initInternal()
+    {
+        $this->ui->loadFromXML($this->getUiXml());
 
-	// init phase
-	// {{{ protected function initInternal()
+        $this->id = SiteApplication::initVar('id');
+        $this->account = SiteApplication::initVar('account');
 
-	protected function initInternal()
-	{
-		$this->ui->loadFromXML($this->getUiXml());
+        $this->getOrder();
+    }
 
-		$this->id = SiteApplication::initVar('id');
-		$this->account = SiteApplication::initVar('account');
+    protected function getOrder()
+    {
+        if ($this->order === null) {
+            $order_class = SwatDBClassMap::get(StoreOrder::class);
+            $this->order = new $order_class();
 
-		$this->getOrder();
-	}
+            $this->order->setDatabase($this->app->db);
 
-	// }}}
-	// {{{ protected function getOrder()
+            if (!$this->order->load($this->id)) {
+                throw new AdminNotFoundException(sprintf(
+                    Store::_('An order with an id of ‘%d’ does not exist.'),
+                    $this->id
+                ));
+            }
 
-	protected function getOrder()
-	{
-		if ($this->order === null) {
-			$order_class = SwatDBClassMap::get('StoreOrder');
-			$this->order = new $order_class();
+            $instance_id = $this->app->getInstanceId();
+            if ($instance_id !== null) {
+                $order_instance_id = ($this->order->instance === null) ?
+                    null : $this->order->instance->id;
 
-			$this->order->setDatabase($this->app->db);
+                if ($order_instance_id !== $instance_id) {
+                    throw new AdminNotFoundException(sprintf(Store::_(
+                        'Incorrect instance for order ‘%d’.'
+                    ), $this->id));
+                }
+            }
+        }
 
-			if (!$this->order->load($this->id)) {
-				throw new AdminNotFoundException(sprintf(
-					Store::_('An order with an id of ‘%d’ does not exist.'),
-					$this->id));
-			}
+        return $this->order;
+    }
 
-			$instance_id = $this->app->getInstanceId();
-			if ($instance_id !== null) {
-				$order_instance_id = ($this->order->instance === null) ?
-					null : $this->order->instance->id;
+    // process phase
 
-				if ($order_instance_id !== $instance_id)
-					throw new AdminNotFoundException(sprintf(Store::_(
-						'Incorrect instance for order ‘%d’.'), $this->id));
-			}
-		}
+    protected function processResponse(): void
+    {
+        $form = $this->ui->getWidget('confirmation_form');
 
-		return $this->order;
-	}
+        if ($form->button->id == 'yes_button') {
+            $this->sendOrderConfirmation();
 
-	// }}}
+            $cc = ($this->order->cc_email !== null) ?
+                ' and cc’d to ' . $this->order->cc_email : '';
 
-	// process phase
-	// {{{ protected function processResponse()
+            $message = new SwatMessage(
+                sprintf(
+                    Store::_(
+                        'A confirmation of %s has been emailed to %s%s.'
+                    ),
+                    $this->getOrderTitle(),
+                    $this->order->getConfirmationEmailAddress(),
+                    $cc
+                )
+            );
 
-	protected function processResponse(): void
-	{
-		$form = $this->ui->getWidget('confirmation_form');
+            $this->app->messages->add($message);
+        }
+    }
 
-		if ($form->button->id == 'yes_button') {
-			$this->sendOrderConfirmation();
+    protected function sendOrderConfirmation()
+    {
+        $this->order->sendConfirmationEmail($this->app);
+    }
 
-			$cc = ($this->order->cc_email !== null) ?
-				' and cc’d to '.$this->order->cc_email : '';
+    // build phase
 
-			$message = new SwatMessage(
-				sprintf(
-					Store::_(
-						'A confirmation of %s has been emailed to %s%s.'
-					),
-					$this->getOrderTitle(),
-					$this->order->getConfirmationEmailAddress(),
-					$cc
-				)
-			);
+    protected function buildInternal()
+    {
+        parent::buildInternal();
 
-			$this->app->messages->add($message);
-		}
-	}
+        $form = $this->ui->getWidget('confirmation_form');
+        $form->addHiddenField('id', $this->id);
 
-	// }}}
-	// {{{ protected function sendOrderConfirmation()
+        $message = $this->ui->getWidget('confirmation_message');
+        $message->content = $this->getConfirmationMessage();
+        $message->content_type = 'text/xml';
 
-	protected function sendOrderConfirmation()
-	{
-		$this->order->sendConfirmationEmail($this->app);
-	}
+        $this->ui->getWidget('yes_button')->title =
+            Store::_('Resend Confirmation');
+    }
 
-	// }}}
+    protected function getConfirmationMessage()
+    {
+        ob_start();
+        $confirmation_title = new SwatHtmlTag('h3');
 
-	// build phase
-	// {{{ protected function buildInternal()
+        $confirmation_title->setContent(
+            sprintf(
+                Store::_('Are you sure you want to resend the ' .
+                'order confirmation email for %s?'),
+                $this->getOrderTitle()
+            )
+        );
 
-	protected function buildInternal()
-	{
-		parent::buildInternal();
+        $confirmation_title->display();
 
-		$form = $this->ui->getWidget('confirmation_form');
-		$form->addHiddenField('id', $this->id);
+        $email_address = $this->order->getConfirmationEmailAddress();
 
-		$message = $this->ui->getWidget('confirmation_message');
-		$message->content = $this->getConfirmationMessage();
-		$message->content_type = 'text/xml';
+        $email_anchor = new SwatHtmlTag('a');
+        $email_anchor->href = sprintf('mailto:%s', $email_address);
+        $email_anchor->setContent($email_address);
 
-		$this->ui->getWidget('yes_button')->title =
-			Store::_('Resend Confirmation');
-	}
+        printf(
+            Store::_('A confirmation of %s will be sent to '),
+            $this->getOrderTitle()
+        );
 
-	// }}}
-	// {{{ protected function getConfirmationMessage()
+        $email_anchor->display();
 
-	protected function getConfirmationMessage()
-	{
-		ob_start();
-		$confirmation_title = new SwatHtmlTag('h3');
+        if ($this->order->cc_email !== null) {
+            $email_anchor = new SwatHtmlTag('a');
+            $email_anchor->href = sprintf('mailto:%s', $this->order->cc_email);
+            $email_anchor->setContent($this->order->cc_email);
 
-		$confirmation_title->setContent(
-			sprintf(Store::_('Are you sure you want to resend the '.
-				'order confirmation email for %s?'),
-				$this->getOrderTitle()));
+            echo Store::_(' and cc’d to ');
+            $email_anchor->display();
+        }
 
-		$confirmation_title->display();
+        echo '.';
 
-		$email_address = $this->order->getConfirmationEmailAddress();
+        return ob_get_clean();
+    }
 
-		$email_anchor = new SwatHtmlTag('a');
-		$email_anchor->href = sprintf('mailto:%s', $email_address);
-		$email_anchor->setContent($email_address);
+    protected function buildNavBar()
+    {
+        parent::buildNavBar();
 
-		printf(Store::_('A confirmation of %s will be sent to '),
-			$this->getOrderTitle());
+        if ($this->account === null) {
+            $this->navbar->createEntry(
+                $this->getOrderTitle(),
+                sprintf('Order/Details?id=%s', $this->id)
+            );
+        } else {
+            // use account navbar
+            $this->navbar->popEntry();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                Store::_('Customer Accounts'),
+                'Account'
+            ));
 
-		$email_anchor->display();
+            $this->navbar->addEntry(new SwatNavBarEntry(
+                $this->order->account->getFullname(),
+                'Account/Details?id=' . $this->order->account
+            ));
 
-		if ($this->order->cc_email !== null) {
-			$email_anchor = new SwatHtmlTag('a');
-			$email_anchor->href = sprintf('mailto:%s', $this->order->cc_email);
-			$email_anchor->setContent($this->order->cc_email);
+            $this->title = $this->order->account->fullname;
 
-			echo Store::_(' and cc’d to ');
-			$email_anchor->display();
-		}
+            $this->navbar->createEntry(
+                $this->getOrderTitle(),
+                sprintf(
+                    'Order/Details?id=%s&account=%s',
+                    $this->id,
+                    $this->account
+                )
+            );
+        }
 
-		echo '.';
+        $this->navbar->createEntry(Store::_('Resend Confirmation Email'));
+    }
 
-		return ob_get_clean();
-	}
-
-	// }}}
-	// {{{ protected function buildNavBar()
-
-	protected function buildNavBar()
-	{
-		parent::buildNavBar();
-
-		if ($this->account === null) {
-			$this->navbar->createEntry($this->getOrderTitle(),
-				sprintf('Order/Details?id=%s', $this->id));
-		} else {
-			// use account navbar
-			$this->navbar->popEntry();
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				Store::_('Customer Accounts'), 'Account'));
-
-			$this->navbar->addEntry(new SwatNavBarEntry(
-				$this->order->account->getFullname(),
-				'Account/Details?id='.$this->order->account));
-
-			$this->title = $this->order->account->fullname;
-
-			$this->navbar->createEntry($this->getOrderTitle(),
-				sprintf('Order/Details?id=%s&account=%s', $this->id,
-				$this->account));
-		}
-
-		$this->navbar->createEntry(Store::_('Resend Confirmation Email'));
-	}
-
-	// }}}
-	// {{{ protected function getOrderTitle()
-
-	protected function getOrderTitle()
-	{
-		return sprintf(Store::_('Order %s'), $this->order->id);
-	}
-
-	// }}}
+    protected function getOrderTitle()
+    {
+        return sprintf(Store::_('Order %s'), $this->order->id);
+    }
 }
-
-?>

@@ -1,63 +1,56 @@
 <?php
 
 /**
- * Page for displaying search results
+ * Page for displaying search results.
  *
- * @package   Store
  * @copyright 2007-2016 silverorange
  */
 class StoreSearchResultsPage extends SiteSearchResultsPage
 {
-	// {{{ protected properties
+    protected $result_count = [];
 
-	protected $result_count = array();
+    // init phase
 
-	// }}}
+    public function init()
+    {
+        $this->ui_xml = __DIR__ . '/search-results.xml';
+        $this->addSearchDataField('type');
+        $this->addSearchDataField('category');
+        $this->addSearchDataField('attr', true);
+        $this->addSearchDataField('price');
+        $this->addSearchDataField('collection');
+        $this->addSearchDataField('minimum_quantity_group');
 
-	// init phase
-	// {{{ public function init()
+        parent::init();
 
-	public function init()
-	{
-		$this->ui_xml = __DIR__.'/search-results.xml';
-		$this->addSearchDataField('type');
-		$this->addSearchDataField('category');
-		$this->addSearchDataField('attr', true);
-		$this->addSearchDataField('price');
-		$this->addSearchDataField('collection');
-		$this->addSearchDataField('minimum_quantity_group');
+        if ($this->hasSearchDataValue('keywords')) {
+            $keywords = $this->getSearchDataValue('keywords');
+            $this->searchItem($keywords);
+        }
+    }
 
-		parent::init();
+    /**
+     * Searches for a direct SKU match and if found, relocates directly to the
+     * coresponding product page.
+     *
+     * Only SKUs attached to items in products belonging to at least one
+     * category are automatically redirected.
+     *
+     * @param string $keywords the item SKU to search for
+     */
+    protected function searchItem($keywords)
+    {
+        if (count(explode(' ', $keywords)) > 1) {
+            return;
+        }
 
-		if ($this->hasSearchDataValue('keywords')) {
-			$keywords = $this->getSearchDataValue('keywords');
-			$this->searchItem($keywords);
-		}
-	}
+        $sku = trim(mb_strtolower($keywords));
 
-	// }}}
-	// {{{ protected function searchItem()
+        if (mb_substr($sku, 0, 1) === '#' && mb_strlen($sku) > 1) {
+            $sku = mb_substr($sku, 1);
+        }
 
-	/**
-	 * Searches for a direct SKU match and if found, relocates directly to the
-	 * coresponding product page
-	 *
-	 * Only SKUs attached to items in products belonging to at least one
-	 * category are automatically redirected.
-	 *
-	 * @param string $keywords the item SKU to search for.
-	 */
-	protected function searchItem($keywords)
-	{
-		if (count(explode(' ', $keywords)) > 1)
-			return;
-
-		$sku = trim(mb_strtolower($keywords));
-
-		if (mb_substr($sku, 0, 1) === '#' && mb_strlen($sku) > 1)
-			$sku = mb_substr($sku, 1);
-
-		$base_sql = 'select Product.id, Product.shortname,
+        $base_sql = 'select Product.id, Product.shortname,
 				ProductPrimaryCategoryView.primary_category
 			from Product
 				inner join VisibleProductCache on
@@ -67,454 +60,417 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
 			where VisibleProductCache.region = %1$s and
 				Product.id in ';
 
-		// exact match
-		$sql = $base_sql.'(select Item.product from Item where sku = %2$s
+        // exact match
+        $sql = $base_sql . '(select Item.product from Item where sku = %2$s
 					or Item.id in (select ItemAlias.item from ItemAlias
 					where ItemAlias.sku = %2$s))';
 
-		$sql = sprintf($sql,
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-				$this->app->db->quote($sku, 'text'));
+        $sql = sprintf(
+            $sql,
+            $this->app->db->quote($this->app->getRegion()->id, 'integer'),
+            $this->app->db->quote($sku, 'text')
+        );
 
-		$products = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreProductWrapper'));
+        $products = SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductWrapper::class)
+        );
 
-		if (count($products) == 1) {
-			$first_product = $products->getFirst();
-			$path = $this->app->config->store->path.$first_product->path;
-			$this->app->relocate($path);
-		}
+        if (count($products) == 1) {
+            $first_product = $products->getFirst();
+            $path = $this->app->config->store->path . $first_product->path;
+            $this->app->relocate($path);
+        }
 
-		// starts-with match
-		$sql = $base_sql.'(select Item.product from Item
+        // starts-with match
+        $sql = $base_sql . '(select Item.product from Item
 				where lower(Item.sku) like %2$s
 					or Item.id in (select ItemAlias.item from ItemAlias
 					where (lower(ItemAlias.sku) like %2$s)))';
 
-		$sql = sprintf($sql,
-			$this->app->db->quote($this->app->getRegion()->id, 'integer'),
-			$this->app->db->quote($sku.'%', 'text'));
+        $sql = sprintf(
+            $sql,
+            $this->app->db->quote($this->app->getRegion()->id, 'integer'),
+            $this->app->db->quote($sku . '%', 'text')
+        );
 
-		$products = SwatDB::query($this->app->db, $sql,
-			SwatDBClassMap::get('StoreProductWrapper'));
+        $products = SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductWrapper::class)
+        );
 
-		if (count($products) == 1) {
-			$first_product = $products->getFirst();
-			$path = $this->app->config->store->path.$first_product->path;
-			$this->app->relocate($path);
-		}
-	}
+        if (count($products) == 1) {
+            $first_product = $products->getFirst();
+            $path = $this->app->config->store->path . $first_product->path;
+            $this->app->relocate($path);
+        }
+    }
 
-	// }}}
+    // build phase
 
-	// build phase
-	// {{{ protected function buildResults()
+    protected function buildResults()
+    {
+        $fulltext_result = $this->searchFulltext();
 
-	protected function buildResults()
-	{
-		$fulltext_result = $this->searchFulltext();
+        if ($this->hasSearchDataValue('type')) {
+            $type = $this->getSearchDataValue('type');
 
-		if ($this->hasSearchDataValue('type')) {
-			$type = $this->getSearchDataValue('type');
+            if ($type === 'article') {
+                $this->buildArticles($fulltext_result);
+            } elseif ($type === 'product') {
+                $this->buildProducts($fulltext_result);
+            }
 
-			if ($type === 'article')
-				$this->buildArticles($fulltext_result);
-			elseif ($type === 'product')
-				$this->buildProducts($fulltext_result);
+            $this->ui->getWidget('product_results_frame')->title = null;
+        } elseif (count($this->getSearchDataValues()) === 1
+            && $this->hasSearchDataValue('keywords')) {
+            // keywords only
+            $this->buildArticles($fulltext_result);
+            $this->buildCategories($fulltext_result);
+            $this->buildProducts($fulltext_result);
+        } else {
+            $this->buildProducts($fulltext_result);
+            $this->ui->getWidget('product_results_frame')->title = null;
+        }
 
-			$this->ui->getWidget('product_results_frame')->title = null;
+        if ($fulltext_result !== null) {
+            $this->buildMisspellings($fulltext_result);
+            $fulltext_result->saveHistory();
+        }
 
-		} elseif (count($this->getSearchDataValues()) === 1 &&
-			$this->hasSearchDataValue('keywords')) {
+        $pager = $this->ui->getWidget('article_pager');
+        $pager->display_parts = SwatPagination::NEXT | SwatPagination::PREV;
 
-			// keywords only
-			$this->buildArticles($fulltext_result);
-			$this->buildCategories($fulltext_result);
-			$this->buildProducts($fulltext_result);
+        if (!$this->hasLeftColumnResults()) {
+            $this->ui->getWidget('right_column')->classes[] = 'full-width';
+        }
 
-		} else {
-			$this->buildProducts($fulltext_result);
-			$this->ui->getWidget('product_results_frame')->title = null;
-		}
+        return true;
+    }
 
-		if ($fulltext_result !== null) {
-			$this->buildMisspellings($fulltext_result);
-			$fulltext_result->saveHistory();
-		}
+    protected function hasLeftColumnResults()
+    {
+        foreach (['category', 'product'] as $key) {
+            if (array_key_exists($key, $this->result_count)
+                && $this->result_count[$key] > 0) {
+                return true;
+            }
+        }
 
-		$pager = $this->ui->getWidget('article_pager');
-		$pager->display_parts = SwatPagination::NEXT | SwatPagination::PREV;
+        return false;
+    }
 
-		if (!$this->hasLeftColumnResults()) {
-			$this->ui->getWidget('right_column')->classes[] = 'full-width';
-		}
+    protected function buildMessages()
+    {
+        parent::buildMessages();
 
-		return true;
-	}
+        $messages = $this->ui->getWidget('results_message');
 
-	// }}}
-	// {{{ protected function hasLeftColumnResults()
+        // display no product results message
+        if (count($this->has_results) > 1
+             && $messages->getMessageCount() == 0
+            && !in_array('product', $this->has_results)) {
+            $message = $this->getNoResultsMessage();
+            $message->primary_content = Store::_('No product results found.');
+            $messages = $this->ui->getWidget('results_message');
+            $messages->add($message);
+        }
+    }
 
-	protected function hasLeftColumnResults()
-	{
-		foreach (array('category', 'product') as $key) {
-			if (array_key_exists($key, $this->result_count) &&
-				$this->result_count[$key] > 0) {
-				return true;
-			}
-		}
+    protected function getSearchTips()
+    {
+        $tips = parent::getSearchTips();
 
-		return false;
-	}
+        $tips[] = Store::_('You can search by an item’s number');
 
-	// }}}
-	// {{{ protected function buildMessages()
+        return $tips;
+    }
 
-	protected function buildMessages()
-	{
-		parent::buildMessages();
+    /**
+     * Get a summary of the criteria that was used to perform the search.
+     *
+     * @return array an array of summary strings
+     */
+    protected function getSearchSummary()
+    {
+        $summary = [];
 
-		$messages = $this->ui->getWidget('results_message');
+        if ($this->hasSearchEngine('product')) {
+            $engine = $this->getSearchEngine('product');
+            $summary = $engine->getSearchSummary();
+        }
 
-		// display no product results message
-		if (count($this->has_results) > 1 &&
-			 $messages->getMessageCount() == 0 &&
-			!in_array('product', $this->has_results)) {
+        return $summary;
+    }
 
-			$message = $this->getNoResultsMessage();
-			$message->primary_content = Store::_('No product results found.');
-			$messages = $this->ui->getWidget('results_message');
-			$messages->add($message);
-		}
-	}
+    // build phase - articles
 
-	// }}}
-	// {{{ protected function getSearchTips()
+    protected function instantiateArticleSearchEngine()
+    {
+        $engine = new StoreArticleSearchEngine($this->app);
+        $this->setSearchEngine('article', $engine);
 
-	protected function getSearchTips()
-	{
-		$tips = parent::getSearchTips();
+        return $engine;
+    }
 
-		$tips[] = Store::_('You can search by an item’s number');
+    // build phase - categories
 
-		return $tips;
-	}
+    protected function buildCategories($fulltext_result)
+    {
+        $engine = $this->instantiateCategorySearchEngine();
+        $engine->setFulltextResult($fulltext_result);
+        $categories = $engine->search();
+        $categories->setRegion($this->app->getRegion());
 
-	// }}}
-	// {{{ protected function getSearchSummary()
+        $this->result_count['category'] = count($categories);
 
-	/**
-	 * Get a summary of the criteria that was used to perform the search
-	 *
-	 * @return array an array of summary strings.
-	 */
-	protected function getSearchSummary()
-	{
-		$summary = array();
+        if (count($categories) > 0) {
+            $this->has_results[] = 'category';
 
-		if ($this->hasSearchEngine('product')) {
-			$engine = $this->getSearchEngine('product');
-			$summary = $engine->getSearchSummary();
-		}
+            $frame = $this->ui->getWidget('category_results_frame');
+            $results = $this->ui->getWidget('category_results');
+            $frame->visible = true;
 
-		return $summary;
-	}
+            ob_start();
+            $this->displayCategories($categories);
+            $results->content = ob_get_clean();
+        }
+    }
 
-	// }}}
+    protected function instantiateCategorySearchEngine()
+    {
+        $engine = new StoreCategorySearchEngine($this->app);
+        $this->setSearchEngine('category', $engine);
 
-	// build phase - articles
-	// {{{ protected function instantiateArticleSearchEngine()
+        return $engine;
+    }
 
-	protected function instantiateArticleSearchEngine()
-	{
-		$engine = new StoreArticleSearchEngine($this->app);
-		$this->setSearchEngine('article', $engine);
+    /**
+     * Displays search results for a collection of categories.
+     *
+     * @param StoreCategoryWrapper $categories the categories to display
+     *                                         search results for
+     */
+    protected function displayCategories(StoreCategoryWrapper $categories)
+    {
+        echo '<ul class="site-search-results">';
 
-		return $engine;
-	}
+        foreach ($categories as $category) {
+            $navbar = new SwatNavBar();
+            $navbar->addEntries($category->getNavBarEntries());
+            $path = $navbar->getLastEntry()->link;
 
-	// }}}
+            echo '<li class="store-category-tile">';
+            $category->displayAsTile($path);
+            $navbar->display();
+            echo '</li>';
+        }
 
-	// build phase - categories
-	// {{{ protected function buildCategories()
+        echo '</ul>';
+    }
 
-	protected function buildCategories($fulltext_result)
-	{
-		$engine = $this->instantiateCategorySearchEngine();
-		$engine->setFulltextResult($fulltext_result);
-		$categories = $engine->search();
-		$categories->setRegion($this->app->getRegion());
+    protected function getCategory()
+    {
+        $category = null;
 
-		$this->result_count['category'] = count($categories);
-
-		if (count($categories) > 0) {
-			$this->has_results[] = 'category';
-
-			$frame = $this->ui->getWidget('category_results_frame');
-			$results = $this->ui->getWidget('category_results');
-			$frame->visible = true;
-
-			ob_start();
-			$this->displayCategories($categories);
-			$results->content = ob_get_clean();
-		}
-	}
-
-	// }}}
-	// {{{ protected function instantiateCategorySearchEngine()
-
-	protected function instantiateCategorySearchEngine()
-	{
-		$engine = new StoreCategorySearchEngine($this->app);
-		$this->setSearchEngine('category', $engine);
-
-		return $engine;
-	}
-
-	// }}}
-	// {{{ protected function displayCategories()
-
-	/**
-	 * Displays search results for a collection of categories
-	 *
-	 * @param StoreCategoryWrapper $categories the categories to display
-	 *                                          search results for.
-	 */
-	protected function displayCategories(StoreCategoryWrapper $categories)
-	{
-		echo '<ul class="site-search-results">';
-
-		foreach ($categories as $category) {
-			$navbar = new SwatNavBar();
-			$navbar->addEntries($category->getNavBarEntries());
-			$path = $navbar->getLastEntry()->link;
-
-			echo '<li class="store-category-tile">';
-			$category->displayAsTile($path);
-			$navbar->display();
-			echo '</li>';
-		}
-
-		echo '</ul>';
-	}
-
-	// }}}
-	// {{{ protected function getCategory()
-
-	protected function getCategory()
-	{
-		$category = null;
-
-		if ($this->hasSearchDataValue('category')) {
-			$sql = 'select id, shortname, title from Category
+        if ($this->hasSearchDataValue('category')) {
+            $sql = 'select id, shortname, title from Category
 				where id = findCategory(%s) and id in
 					(select category from VisibleCategoryView
 					where region = %s or region is null)';
 
-			$sql = sprintf($sql,
-				$this->app->db->quote($this->getSearchDataValue('category')),
-				$this->app->db->quote($this->app->getRegion()->id, 'integer'));
+            $sql = sprintf(
+                $sql,
+                $this->app->db->quote($this->getSearchDataValue('category')),
+                $this->app->db->quote($this->app->getRegion()->id, 'integer')
+            );
 
-			$category = SwatDB::query($this->app->db, $sql,
-				'StoreCategoryWrapper')->getFirst();
-		}
+            $category = SwatDB::query(
+                $this->app->db,
+                $sql,
+                'StoreCategoryWrapper'
+            )->getFirst();
+        }
 
-		return $category;
-	}
+        return $category;
+    }
 
-	// }}}
-	// {{{ protected function getAttributes()
+    protected function getAttributes()
+    {
+        $attributes = null;
+        $attribute_shortnames = [];
 
-	protected function getAttributes()
-	{
-		$attributes = null;
-		$attribute_shortnames = array();
+        if ($this->hasSearchDataValue('attr')) {
+            $value = $this->getSearchDataValue('attr');
+            if (is_array($value)) {
+                $attribute_shortnames = $value;
+            }
+        }
 
-		if ($this->hasSearchDataValue('attr')) {
-			$value = $this->getSearchDataValue('attr');
-			if (is_array($value))
-				$attribute_shortnames = $value;
-		}
-
-		if (count($attribute_shortnames) > 0) {
-			$sql = 'select * from Attribute
+        if (count($attribute_shortnames) > 0) {
+            $sql = 'select * from Attribute
 				where shortname in (%s)';
 
-			foreach ($attribute_shortnames as &$shortname)
-				$shortname = $this->app->db->quote($shortname);
+            foreach ($attribute_shortnames as &$shortname) {
+                $shortname = $this->app->db->quote($shortname);
+            }
 
-			$sql = sprintf($sql, implode(',', $attribute_shortnames));
+            $sql = sprintf($sql, implode(',', $attribute_shortnames));
 
-			$attributes = SwatDB::query($this->app->db, $sql,
-				SwatDBClassMap::get('StoreAttributeWrapper'));
-		}
+            $attributes = SwatDB::query(
+                $this->app->db,
+                $sql,
+                SwatDBClassMap::get(StoreAttributeWrapper::class)
+            );
+        }
 
-		return $attributes;
-	}
+        return $attributes;
+    }
 
-	// }}}
+    // build phase - products
 
-	// build phase - products
-	// {{{ protected function buildProducts()
+    protected function buildProducts($fulltext_result)
+    {
+        $pager = $this->ui->getWidget('product_pager');
+        $engine = $this->instantiateProductSearchEngine();
+        $engine->setFulltextResult($fulltext_result);
 
-	protected function buildProducts($fulltext_result)
-	{
-		$pager = $this->ui->getWidget('product_pager');
-		$engine = $this->instantiateProductSearchEngine();
-		$engine->setFulltextResult($fulltext_result);
+        if ($pager->visible) {
+            $products = $engine->search($pager->page_size, $pager->current_record);
+            $pager->total_records = $engine->getResultCount();
+            $pager->link = $this->source;
+        } else {
+            $limit = $this->getProductLimit();
+            if ($limit === null) {
+                $products = $engine->search();
+            } else {
+                $products = $engine->search($limit);
+            }
+        }
 
-		if ($pager->visible) {
-			$products = $engine->search($pager->page_size, $pager->current_record);
-			$pager->total_records = $engine->getResultCount();
-			$pager->link = $this->source;
-		} else {
-			$limit = $this->getProductLimit();
-			if ($limit === null) {
-				$products = $engine->search();
-			} else {
-				$products = $engine->search($limit);
-			}
-		}
+        $this->result_count['product'] = count($products);
 
-		$this->result_count['product'] = count($products);
+        if (count($products) > 0) {
+            $this->has_results[] = 'product';
 
-		if (count($products) > 0) {
-			$this->has_results[] = 'product';
+            $frame = $this->ui->getWidget('product_results_frame');
+            $results = $this->ui->getWidget('product_results');
+            $frame->visible = true;
 
-			$frame = $this->ui->getWidget('product_results_frame');
-			$results = $this->ui->getWidget('product_results');
-			$frame->visible = true;
+            ob_start();
+            $this->displayProducts($products);
+            $results->content = ob_get_clean();
+        }
+    }
 
-			ob_start();
-			$this->displayProducts($products);
-			$results->content = ob_get_clean();
-		}
-	}
+    protected function getProductLimit()
+    {
+        return null;
+    }
 
-	// }}}
-	// {{{ protected function getProductLimit()
+    protected function instantiateProductSearchEngine()
+    {
+        $engine = new StoreProductSearchEngine($this->app);
+        $this->setSearchEngine('product', $engine);
 
-	protected function getProductLimit()
-	{
-		return null;
-	}
+        $engine->attributes = $this->getAttributes();
+        $engine->category = $this->getCategory();
+        $engine->supress_duplicate_products = true;
+        $engine->price_range = $this->getPriceRange();
+        $engine->addOrderByField('is_available desc');
 
-	// }}}
-	// {{{ protected function instantiateProductSearchEngine()
+        if ($this->hasSearchDataValue('collection')) {
+            $engine->collection_products_only = true;
+        }
 
-	protected function instantiateProductSearchEngine()
-	{
-		$engine = new StoreProductSearchEngine($this->app);
-		$this->setSearchEngine('product', $engine);
+        if ($this->hasSearchDataValue('minimum_quantity_group')) {
+            $group = $this->getItemMinimumQuantityGroup();
+            $engine->item_minimum_quantity_group = $group;
+        }
 
-		$engine->attributes = $this->getAttributes();
-		$engine->category = $this->getCategory();
-		$engine->supress_duplicate_products = true;
-		$engine->price_range = $this->getPriceRange();
-		$engine->addOrderByField('is_available desc');
+        return $engine;
+    }
 
-		if ($this->hasSearchDataValue('collection'))
-			$engine->collection_products_only = true;
+    /**
+     * Displays search results for a collection of products.
+     *
+     * @param StoreProductWrapper $products the products to display search
+     *                                      results for
+     */
+    protected function displayProducts(StoreProductWrapper $products)
+    {
+        echo '<ul class="site-search-results">';
+        $li_tag = new SwatHtmlTag('li');
 
-		if ($this->hasSearchDataValue('minimum_quantity_group')) {
-			$group = $this->getItemMinimumQuantityGroup();
-			$engine->item_minimum_quantity_group = $group;
-		}
+        foreach ($products as $product) {
+            echo '<li class="store-product-tile">';
+            $link_href = $this->app->config->store->path . $product->path;
+            $product->displayAsTile($link_href);
+            echo '</li>';
+        }
 
-		return $engine;
-	}
+        echo '</ul>';
+    }
 
-	// }}}
-	// {{{ protected function displayProducts()
+    protected function getPriceRange()
+    {
+        $range = null;
 
-	/**
-	 * Displays search results for a collection of products
-	 *
-	 * @param StoreProductWrapper $products the products to display search
-	 *                                       results for.
-	 */
-	protected function displayProducts(StoreProductWrapper $products)
-	{
-		echo '<ul class="site-search-results">';
-		$li_tag = new SwatHtmlTag('li');
+        if ($this->hasSearchDataValue('price')) {
+            $price = $this->getSearchDataValue('price');
+            $range = new StorePriceRange($price);
 
-		foreach ($products as $product) {
-			echo '<li class="store-product-tile">';
-			$link_href = $this->app->config->store->path.$product->path;
-			$product->displayAsTile($link_href);
-			echo '</li>';
-		}
+            if ($range->normalize()) {
+                $uri = sprintf(
+                    '%s?price=%s',
+                    $this->source,
+                    $range->getShortname()
+                );
 
-		echo '</ul>';
-	}
+                $query_string = $this->getQueryString('price');
+                if ($query_string != '') {
+                    $uri .= '&' . $query_string;
+                }
 
-	// }}}
-	// {{{ protected function getPriceRange()
+                $this->app->relocate($uri);
+            }
+        }
 
-	protected function getPriceRange()
-	{
-		$range = null;
+        return $range;
+    }
 
-		if ($this->hasSearchDataValue('price')) {
-			$price = $this->getSearchDataValue('price');
-			$range = new StorePriceRange($price);
+    protected function getItemMinimumQuantityGroup()
+    {
+        static $group = null;
 
-			if ($range->normalize()) {
-				$uri = sprintf('%s?price=%s', $this->source,
-					$range->getShortname());
+        if ($group === null
+            && $this->hasSearchDataValue('minimum_quantity_group')) {
+            $class_name = SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class);
+            $g = new $class_name();
+            $g->setDatabase($this->app->db);
+            if ($g->loadByShortname(
+                $this->getSearchDataValue('minimum_quantity_group')
+            )) {
+                $group = $g;
+            }
+        }
 
-				$query_string = $this->getQueryString('price');
-				if ($query_string != '')
-					$uri.= '&'.$query_string;
+        return $group;
+    }
 
-				$this->app->relocate($uri);
-			}
-		}
+    // finalize phase
 
-		return $range;
-	}
+    public function finalize()
+    {
+        parent::finalize();
+        $this->layout->addHtmlHeadEntrySet(
+            $this->ui->getRoot()->getHtmlHeadEntrySet()
+        );
 
-	// }}}
-	// {{{ protected function getItemMinimumQuantityGroup()
-
-	protected function getItemMinimumQuantityGroup()
-	{
-		static $group = null;
-
-		if ($group === null &&
-			$this->hasSearchDataValue('minimum_quantity_group')) {
-
-			$class_name = SwatDBClassMap::get('StoreItemMinimumQuantityGroup');
-			$g = new $class_name();
-			$g->setDatabase($this->app->db);
-			if ($g->loadByShortname(
-				$this->getSearchDataValue('minimum_quantity_group'))) {
-
-				$group = $g;
-			}
-		}
-
-		return $group;
-	}
-
-	// }}}
-
-	// finalize phase
-	// {{{ public function finalize()
-
-	public function finalize()
-	{
-		parent::finalize();
-		$this->layout->addHtmlHeadEntrySet(
-			$this->ui->getRoot()->getHtmlHeadEntrySet()
-		);
-
-		$this->layout->addHtmlHeadEntry(
-			'packages/store/styles/store-search-results-page.css'
-		);
-	}
-
-	// }}}
+        $this->layout->addHtmlHeadEntry(
+            'packages/store/styles/store-search-results-page.css'
+        );
+    }
 }
-
-?>
