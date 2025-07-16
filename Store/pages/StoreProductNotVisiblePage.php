@@ -24,7 +24,7 @@ class StoreProductNotVisiblePage extends StoreNotVisiblePage
         $categories = SwatDB::query(
             $this->app->db,
             $sql,
-            'StoreProductWrapper'
+            SwatDBClassMap::get(StoreProductWrapper::class)
         );
 
         $product = $categories->getFirst();
@@ -56,7 +56,7 @@ class StoreProductNotVisiblePage extends StoreNotVisiblePage
         return SwatDB::query(
             $this->app->db,
             $sql,
-            'StoreRegionWrapper'
+            SwatDBClassMap::get(StoreRegionWrapper::class)
         );
     }
 

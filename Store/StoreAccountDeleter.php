@@ -116,9 +116,11 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
 
         $this->app->db->setLimit(self::DATA_BATCH_SIZE);
 
-        $wrapper_class = SwatDBClassMap::get(StoreAccountWrapper::class);
-
-        return SwatDB::query($this->app->db, $sql, $wrapper_class);
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreAccountWrapper::class)
+        );
     }
 
     protected function getTotal()

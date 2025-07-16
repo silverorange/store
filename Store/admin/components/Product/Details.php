@@ -1345,7 +1345,11 @@ class StoreProductDetails extends AdminIndex
             $this->app->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->app->db, $sql, 'StoreProductImageWrapper');
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductImageWrapper::class)
+        );
     }
 
     // build phase - related products

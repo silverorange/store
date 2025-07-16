@@ -102,9 +102,11 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
             $this->app->db->quote($this->app->getRegion()->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(StoreShippingTypeWrapper::class);
-
-        return SwatDB::query($this->app->db, $sql, $wrapper);
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreShippingTypeWrapper::class)
+        );
     }
 
     // finalize phase
