@@ -8,7 +8,9 @@
  */
 class StorePriceRangeEdit extends AdminDBEdit
 {
-    // @var StorePriceRange
+    /**
+     * @var StorePriceRange
+     */
     protected $price_range;
 
     // init phase

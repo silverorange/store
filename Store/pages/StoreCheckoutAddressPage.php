@@ -18,7 +18,9 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
     protected $button1;
     protected $button2;
 
-    // @var StoreGoogleAddressAutoComplete
+    /**
+     * @var StoreGoogleAddressAutoComplete
+     */
     protected $auto_complete;
 
     protected bool $show_invalid_message = true;
