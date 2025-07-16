@@ -743,8 +743,11 @@ class StoreProduct extends SwatDBDataObject
             );
         }
 
-        $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
-        $cheapest_item = SwatDB::query($this->db, $sql, $wrapper)->getFirst();
+        $cheapest_item = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreItemWrapper::class)
+        )->getFirst();
 
         if ($cheapest_item != null) {
             $cheapest_item->setRegion($this->region);
@@ -787,10 +790,11 @@ class StoreProduct extends SwatDBDataObject
             );
         }
 
-        $wrapper = SwatDBClassMap::get(StoreProductImageWrapper::class);
-        $rs = SwatDB::query($this->db, $sql, $wrapper);
-
-        return $rs->getFirst();
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductImageWrapper::class)
+        )->getFirst();
     }
 
     /**

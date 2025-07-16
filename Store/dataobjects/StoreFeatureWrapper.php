@@ -58,7 +58,7 @@ class StoreFeatureWrapper extends SwatDBRecordsetWrapper
             $all_features = SwatDB::query(
                 $app->db,
                 $sql,
-                'StoreFeatureWrapper'
+                SwatDBClassMap::get(StoreFeatureWrapper::class)
             );
 
             $expiry = 0;

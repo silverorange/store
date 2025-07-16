@@ -49,7 +49,7 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
         return SwatDB::query(
             $this->app->db,
             $sql,
-            'StoreRegionWrapper'
+            SwatDBClassMap::get(StoreRegionWrapper::class)
         );
     }
 

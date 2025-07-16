@@ -43,6 +43,10 @@ class StoreRegionIndex extends AdminIndex
             $this->getOrderByClause($view, 'title')
         );
 
-        return SwatDB::query($this->app->db, $sql, StoreRegionWrapper::class);
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreRegionWrapper::class)
+        );
     }
 }
