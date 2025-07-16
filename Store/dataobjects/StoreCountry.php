@@ -5,6 +5,12 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int                   $id
+ * @property ?string               $title
+ * @property ?bool                 $visible
+ * @property ?bool                 $has_postal_code
+ * @property StoreProvStateWrapper $prov_states
  */
 class StoreCountry extends SwatDBDataObject
 {

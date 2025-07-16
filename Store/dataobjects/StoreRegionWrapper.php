@@ -14,7 +14,11 @@ class StoreRegionWrapper extends SwatDBRecordsetWrapper
 
         $sql = sprintf($sql, $id_set);
 
-        return SwatDB::query($db, $sql, 'RegionWrapper');
+        return SwatDB::query(
+            $db,
+            $sql,
+            SwatDBClassMap::get(StoreRegionWrapper::class)
+        );
     }
 
     protected function init()

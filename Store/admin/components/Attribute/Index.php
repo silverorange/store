@@ -50,7 +50,7 @@ class StoreAttributeIndex extends AdminIndex
         $attributes = SwatDB::query(
             $this->app->db,
             $sql,
-            'StoreAttributeWrapper'
+            SwatDBClassMap::get(StoreAttributeWrapper::class)
         );
 
         $store = new SwatTableStore();

@@ -7,6 +7,8 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StorePaymentMethod
+ *
+ * @property StoreAccount $account
  */
 class StoreAccountPaymentMethod extends StorePaymentMethod
 {

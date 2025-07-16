@@ -5,6 +5,13 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int              $id
+ * @property ?string          $title
+ * @property ?int             $displayorder
+ * @property StoreProduct     $product
+ * @property StoreItemWrapper $items
+ * @property ?StoreItem       $cheapest_item
  */
 class StoreItemGroup extends SwatDBDataObject
 {
@@ -118,8 +125,12 @@ class StoreItemGroup extends SwatDBDataObject
             );
         }
 
-        $wrapper = SwatDBClassMap::get(StoreItemWrapper::class);
-        $rs = SwatDB::query($this->db, $sql, $wrapper);
+        $rs = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreItemWrapper::class)
+        );
+
         if (count($rs) > 0) {
             $cheapest_item = $rs->getFirst();
             $cheapest_item->setRegion($this->region);

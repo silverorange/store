@@ -4,6 +4,10 @@
  * An attribute type data object.
  *
  * @copyright 2008-2016 silverorange
+ *
+ * @property int                   $id
+ * @property ?string               $shortname
+ * @property StoreAttributeWrapper $attributes
  */
 class StoreAttributeType extends SwatDBDataObject
 {

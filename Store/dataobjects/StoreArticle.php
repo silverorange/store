@@ -12,6 +12,10 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreCategoryWrapper $related_categories
+ * @property StoreProductWrapper  $related_products
+ * @property SiteArticleWrapper   $sub_articles
  */
 class StoreArticle extends SiteArticle
 {
@@ -64,8 +68,11 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(SiteArticleWrapper::class);
-        $articles = SwatDB::query($this->db, $sql, $wrapper);
+        $articles = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(SiteArticleWrapper::class)
+        );
 
         foreach ($articles as $article) {
             $article->setRegion($this->region);
@@ -134,7 +141,7 @@ class StoreArticle extends SiteArticle
     // loader methods
 
     /**
-     * Loads related cateogries.
+     * Loads related categories.
      *
      * Related categories are ordered by the category table's display order.
      *
@@ -163,9 +170,11 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
-
-        return SwatDB::query($this->db, $sql, $wrapper);
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
     }
 
     /**
@@ -198,9 +207,11 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(StoreProductWrapper::class);
-
-        return SwatDB::query($this->db, $sql, $wrapper);
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductWrapper::class)
+        );
     }
 
     /**
@@ -228,8 +239,11 @@ class StoreArticle extends SiteArticle
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(SiteArticleWrapper::class);
-        $articles = SwatDB::query($this->db, $sql, $wrapper);
+        $articles = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(SiteArticleWrapper::class)
+        );
 
         foreach ($articles as $article) {
             $article->setRegion($this->region);

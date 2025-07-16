@@ -20,6 +20,18 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreCart
+ *
+ * @property int             $id
+ * @property ?string         $sessionid
+ * @property ?int            $quantity
+ * @property ?bool           $saved
+ * @property ?int            $source
+ * @property ?int            $source_category
+ * @property ?float          $custom_price
+ * @property ?SiteInstance   $instance
+ * @property StoreItem       $item
+ * @property ?StoreAccount   $account
+ * @property ?StoreItemAlias $alias
  */
 class StoreCartEntry extends SwatDBDataObject
 {

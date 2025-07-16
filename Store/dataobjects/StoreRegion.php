@@ -13,6 +13,16 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int                     $id
+ * @property ?string                 $title
+ * @property StoreCountryWrapper     $billing_countries
+ * @property StoreProvStateWrapper   $billing_prov_states
+ * @property StoreCardTypeWrapper    $card_types
+ * @property StoreLocaleWrapper      $locales
+ * @property StorePaymentTypeWrapper $payment_types
+ * @property StoreCountryWrapper     $shipping_countries
+ * @property StoreProvStateWrapper   $shipping_prov_states
  */
 class StoreRegion extends SwatDBDataObject
 {
@@ -56,7 +66,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreLocaleWrapper::class)
+        );
     }
 
     /**
@@ -125,7 +139,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCountryWrapper::class)
+        );
     }
 
     /**
@@ -146,7 +164,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCountryWrapper::class)
+        );
     }
 
     /**
@@ -167,7 +189,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
+        );
     }
 
     /**
@@ -188,6 +214,10 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
+        );
     }
 }

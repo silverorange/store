@@ -20,6 +20,11 @@
  *
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int           $id;
+ * @property ?string       $title
+ * @property ?bool         $in_season
+ * @property ?StoreCatalog $clone_of
  */
 class StoreCatalog extends SwatDBDataObject
 {
@@ -75,8 +80,11 @@ class StoreCatalog extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get(StoreCatalogWrapper::class);
-        $clones = SwatDB::query($this->db, $sql, $wrapper_class);
+        $clones = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCatalogWrapper::class)
+        );
 
         return $clones->getFirst();
     }

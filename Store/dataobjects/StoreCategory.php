@@ -21,6 +21,24 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int                  $id
+ * @property ?string              $shortname
+ * @property ?string              $title
+ * @property ?string              $html_title
+ * @property ?string              $description
+ * @property ?string              $bodytext
+ * @property ?bool                $always_visible
+ * @property ?SwatDate            $createdate
+ * @property ?int                 $displayorder
+ * @property ?string              $ppc_ad_headline
+ * @property ?string              $ppc_ad_description1
+ * @property ?string              $ppc_ad_description2
+ * @property ?StoreCategoryImage  $image
+ * @property ?StoreCategory       $parent
+ * @property string               $path
+ * @property SiteArticleWrapper   $related_articles
+ * @property StoreCategoryWrapper $sub_categories
  */
 class StoreCategory extends SwatDBDataObject
 {
@@ -403,8 +421,11 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get(StoreCategoryWrapper::class);
-        $sub_categories = SwatDB::query($this->db, $sql, $wrapper_class);
+        $sub_categories = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
         $sub_categories->setRegion($region);
 
         return $sub_categories;
@@ -450,8 +471,11 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get(StoreProductWrapper::class);
-        $products = SwatDB::query($this->db, $sql, $wrapper_class);
+        $products = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductWrapper::class)
+        );
         $products->setRegion($region);
 
         return $products;
@@ -733,8 +757,11 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
-        $categories = SwatDB::query($this->db, $sql, $wrapper);
+        $categories = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
 
         foreach ($categories as $category) {
             $category->setRegion($this->region);

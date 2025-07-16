@@ -63,7 +63,7 @@ class StoreSearchPage extends StoreSearchResultsPage
         return SwatDB::query(
             $this->app->db,
             $sql,
-            'StoreCategoryWrapper'
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
     }
 

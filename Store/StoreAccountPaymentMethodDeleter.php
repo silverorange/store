@@ -77,10 +77,11 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
 
         $this->app->db->setLimit(self::DATA_BATCH_SIZE);
 
-        $wrapper_class =
-            SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class);
-
-        return SwatDB::query($this->app->db, $sql, $wrapper_class);
+        return SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreAccountPaymentMethodWrapper::class)
+        );
     }
 
     protected function getTotal()

@@ -91,7 +91,7 @@ abstract class StorePage extends SitePathPage
         $categories = SwatDB::query(
             $this->app->db,
             $sql,
-            'StoreCategoryWrapper'
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
         );
 
         $category = $categories->getFirst();
