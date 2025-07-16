@@ -11,6 +11,19 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreAccountAddress, StoreOrderAddress
+ *
+ * @property ?int            $id
+ * @property ?bool           $po_box
+ * @property ?string         $fullname
+ * @property ?string         $company
+ * @property ?string         $line1
+ * @property ?string         $line2
+ * @property ?string         $city
+ * @property ?StoreProvState $provstate
+ * @property ?string         $provstate_other
+ * @property ?string         $postal_code
+ * @property StoreCountry    $country
+ * @property ?string         $phone
  */
 abstract class StoreAddress extends SwatDBDataObject
 {
@@ -38,7 +51,7 @@ abstract class StoreAddress extends SwatDBDataObject
     /**
      * The company of the address.
      *
-     * @var text
+     * @var string
      */
     protected $company;
 
@@ -84,7 +97,7 @@ abstract class StoreAddress extends SwatDBDataObject
     /**
      * Phone number for this address.
      *
-     * @var text
+     * @var string
      */
     protected $phone;
 

@@ -3,6 +3,11 @@
 /**
  * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int  $id
+ * @property ?int $start_price
+ * @property ?int $end_price
+ * @property bool $original_price
  */
 class StorePriceRange extends SwatDBDataObject
 {
@@ -29,10 +34,8 @@ class StorePriceRange extends SwatDBDataObject
 
     /**
      * Match the original price - don't take into account sale discount.
-     *
-     * @var bool
      */
-    public $original_price = false;
+    public bool $original_price = false;
 
     public function getShortname()
     {

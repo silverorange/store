@@ -13,6 +13,16 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int                     $id
+ * @property ?string                 $title
+ * @property StoreCountryWrapper     $billing_countries
+ * @property StoreProvStateWrapper   $billing_prov_states
+ * @property StoreCardTypeWrapper    $card_types
+ * @property StoreLocaleWrapper      $locales
+ * @property StorePaymentTypeWrapper $payment_types
+ * @property StoreCountryWrapper     $shipping_countries
+ * @property StoreProvStateWrapper   $shipping_prov_states
  */
 class StoreRegion extends SwatDBDataObject
 {

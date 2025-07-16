@@ -1,10 +1,17 @@
 <?php
 
 /**
- * A shiping rate data object.
+ * A shipping rate data object.
  *
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property int               $id
+ * @property ?float            $threshold
+ * @property ?float            $amount
+ * @property ?float            $percentage
+ * @property StoreRegion       $region
+ * @property StoreShippingType $shipping_type
  */
 class StoreShippingRate extends SwatDBDataObject
 {

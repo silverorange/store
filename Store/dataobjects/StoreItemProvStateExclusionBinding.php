@@ -4,6 +4,9 @@
  * Dataobject for item provstate exclusion bindings.
  *
  * @copyright 2012-2016 silverorange
+ *
+ * @property StoreProvState $provstate
+ * @property StoreItem      $item
  */
 class StoreItemProvStateExclusionBinding extends SwatDBDataObject
 {

@@ -15,6 +15,18 @@
  *
  * @see       StorePaymentType
  * @see       StoreCardType
+ *
+ * @property ?int             $id
+ * @property ?float           $surcharge
+ * @property ?string          $card_fullname
+ * @property ?string          $card_number_preview
+ * @property ?SwatDate        $card_expiry
+ * @property ?SwatDate        $card_inception
+ * @property ?string          $card_issue_number
+ * @property ?string          $payer_id
+ * @property ?string          $payer_email
+ * @property StorePaymentType $payment_type
+ * @property ?StoreCardType   $card_type
  */
 abstract class StorePaymentMethod extends SwatDBDataObject
 {

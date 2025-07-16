@@ -32,6 +32,26 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreItemWrapper
+ *
+ * @property int                                       $id
+ * @property ?string                                   $sku
+ * @property ?string                                   $description
+ * @property ?int                                      $displayorder
+ * @property ?int                                      $part_count
+ * @property ?string                                   $part_unit
+ * @property ?string                                   $singular_unit
+ * @property ?string                                   $plural_unit
+ * @property ?int                                      $minimum_quantity
+ * @property ?bool                                     $minimum_multiple
+ * @property StoreItemStatus                           $status
+ * @property StoreProduct                              $product
+ * @property ?StoreItemGroup                           $item_group
+ * @property ?StoreItemMinimumQuantityGroup            $minimum_quantity_group
+ * @property ?StoreSaleDiscount                        $sale_discount
+ * @property StoreItemAliasWrapper                     $item_aliases
+ * @property StoreItemProvStateExclusionBindingWrapper $prov_state_exclusion_bindings
+ * @property StoreQuantityDiscountWrapper              $quantity_discounts
+ * @property StoreItemRegionBindingWrapper             $region_bindings
  */
 class StoreItem extends SwatDBDataObject
 {
@@ -110,55 +130,42 @@ class StoreItem extends SwatDBDataObject
      */
     protected $region;
 
-    /**
-     * @var bool
-     */
-    protected $limit_by_region = true;
+    protected bool $limit_by_region = true;
 
     /**
      * Cache of enabled state of this item indexed by region id.
      *
      * This is an array of boolean values.
-     *
-     * @var array
      */
-    protected $is_enabled = [];
+    protected array $is_enabled = [];
 
     /**
      * Cache of prices indexed by region id.
      *
      * This is an array of floats.
-     *
-     * @var array
      */
-    protected $price = [];
+    protected array $price = [];
 
     /**
      * Cache of original prices indexed by region id.
      *
      * This is an array of floats.
-     *
-     * @var array
      */
-    protected $original_price = [];
+    protected array $original_price = [];
 
     /**
      * Cache of sale discount prices indexed by region id.
      *
      * This is an array of floats.
-     *
-     * @var array
      */
-    protected $sale_discount_price = [];
+    protected array $sale_discount_price = [];
 
     /**
      * Cache of availability of this item indexed by region id.
      *
      * This is an array of boolean values.
-     *
-     * @var array
      */
-    protected $is_available = [];
+    protected array $is_available = [];
 
     /**
      * The status of an item - backordered, etc.
