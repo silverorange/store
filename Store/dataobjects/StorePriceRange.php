@@ -16,23 +16,21 @@ class StorePriceRange extends SwatDBDataObject
     /**
      * Inclusive start of price range.
      *
-     * @var int
+     * @var ?int
      */
     public $start_price;
 
     /**
      * Inclusive end of price range.
      *
-     * @var int
+     * @var ?int
      */
     public $end_price;
 
     /**
      * Match the original price - don't take into account sale discount.
-     *
-     * @var bool
      */
-    public $original_price = false;
+    public bool $original_price = false;
 
     public function getShortname()
     {

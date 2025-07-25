@@ -19,14 +19,14 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
     /**
      * Shortname.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
@@ -40,21 +40,21 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
     /**
      * User visible xhtml description.
      *
-     * @var string
+     * @var ?string
      */
     public $description;
 
     /**
      * Part unit.
      *
-     * @var string
+     * @var ?string
      */
     public $part_unit;
 
     /**
      * Part unit plural.
      *
-     * @var string
+     * @var ?string
      */
     public $part_unit_plural;
 

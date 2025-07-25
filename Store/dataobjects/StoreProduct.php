@@ -28,6 +28,22 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreProductWrapper
+ *
+ * @property ?StoreCategory           $primary_category
+ * @property ?string                  $path
+ * @property ?StoreItem               $cheapest_item
+ * @property ?StoreCatalog            $catalog
+ * @property ?StoreProductImage       $primary_image
+ * @property StoreAttributeWrapper    $attributes
+ * @property StoreCategoryWrapper     $categories
+ * @property StoreProductWrapper      $collection_member_products
+ * @property StoreProductWrapper      $collection_products
+ * @property StoreCategoryWrapper     $featured_categories
+ * @property StoreProductImageWrapper $images
+ * @property StoreItemGroupWrapper    $item_groups
+ * @property StoreItemWrapper         $items
+ * @property SiteArticleWrapper       $related_articles
+ * @property StoreProductWrapper      $related_products
  */
 class StoreProduct extends SwatDBDataObject
 {
@@ -44,14 +60,14 @@ class StoreProduct extends SwatDBDataObject
      * This identifier is designed to be used in URL's and must be unique
      * within a catalog.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
@@ -61,21 +77,21 @@ class StoreProduct extends SwatDBDataObject
      * If set, the product page HTML title uses this value. Otherwise, the
      * product page uses the product title from {@link StoreProduct::$title}.
      *
-     * @var string
+     * @var ?string
      */
     public $html_title;
 
     /**
      * Keywords used by the search indexer.
      *
-     * @var string
+     * @var ?string
      */
     public $keywords;
 
     /**
      * User visible content.
      *
-     * @var string
+     * @var ?string
      */
     public $bodytext;
 
@@ -85,7 +101,7 @@ class StoreProduct extends SwatDBDataObject
      *
      * If not set, a shortened version of the product bodytext is used.
      *
-     * @var string
+     * @var ?string
      *
      * @see StoreProductPage
      */
@@ -94,7 +110,7 @@ class StoreProduct extends SwatDBDataObject
     /**
      * Create date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $createdate;
 
@@ -104,21 +120,21 @@ class StoreProduct extends SwatDBDataObject
      * This is usually the product title or a shortened version of the product
      * title.
      *
-     * @var string
+     * @var ?string
      */
     public $ppc_ad_headline;
 
     /**
      * Content used for creating pay-per-click ads.
      *
-     * @var string
+     * @var ?string
      */
     public $ppc_ad_description1;
 
     /**
      * Content used for creating pay-per-click ads.
      *
-     * @var string
+     * @var ?string
      */
     public $ppc_ad_description2;
 
@@ -136,27 +152,23 @@ class StoreProduct extends SwatDBDataObject
      * Whether or not to exclude items unavailable in the current join region
      * when loading item sub-data-objects.
      *
-     * @var bool
-     *
      * @see StoreProduct::setRegion()
      */
-    protected $limit_by_region = true;
+    protected bool $limit_by_region = true;
 
     /**
      * Cache of availability of this product indexed by region id.
      *
-     * This is an array of boolean values.
-     *
-     * @var array
+     * @var array<int, bool>
      *
      * @see StoreProduct::isAvailableInRegion()
      */
-    protected $is_available = [];
+    protected array $is_available = [];
 
     /**
      * Cache of item count.
      *
-     * @var int
+     * @var ?int
      */
     protected $item_count;
 

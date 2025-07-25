@@ -20,6 +20,8 @@
  *
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property ?StoreCatalog $clone_of
  */
 class StoreCatalog extends SwatDBDataObject
 {
@@ -33,7 +35,7 @@ class StoreCatalog extends SwatDBDataObject
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 

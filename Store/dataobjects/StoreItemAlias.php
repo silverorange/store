@@ -7,6 +7,8 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreItemAliasWrapper
+ *
+ * @property StoreItem $item
  */
 class StoreItemAlias extends SwatDBDataObject
 {
@@ -18,8 +20,6 @@ class StoreItemAlias extends SwatDBDataObject
     public $id;
 
     /**
-     * not null,.
-     *
      * @var string
      */
     public $sku;

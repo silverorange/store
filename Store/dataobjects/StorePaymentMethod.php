@@ -15,6 +15,9 @@
  *
  * @see       StorePaymentType
  * @see       StoreCardType
+ *
+ * @property StorePaymentType $payment_type
+ * @property ?StoreCardType   $card_type
  */
 abstract class StorePaymentMethod extends SwatDBDataObject
 {
@@ -28,14 +31,14 @@ abstract class StorePaymentMethod extends SwatDBDataObject
     /**
      * Optional surcharge.
      *
-     * @var float
+     * @var ?float
      */
     public $surcharge;
 
     /**
      * Full name on the card.
      *
-     * @var string
+     * @var ?string
      */
     public $card_fullname;
 
@@ -46,14 +49,14 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      * allow the customer to identify his or her cards.  Field length in the
      * database is 6, but stored length is dependent on card type.
      *
-     * @var string
+     * @var ?string
      */
     public $card_number_preview;
 
     /**
      * The expiry date of the card.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $card_expiry;
 
@@ -62,7 +65,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      *
      * This is required for some debit cards.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $card_inception;
 
@@ -74,7 +77,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      * number of '04' is different than an issue number of '4' and both numbers
      * are valid issue numbers.
      *
-     * @var string
+     * @var ?string
      */
     public $card_issue_number;
 
@@ -85,7 +88,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      * card information is not transmitted between the merchant and the
      * payment provider.
      *
-     * @var string
+     * @var ?string
      */
     public $payer_id;
 
@@ -96,7 +99,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      * card information is not transmitted between the merchant and the
      * payment provider.
      *
-     * @var string
+     * @var ?string
      */
     public $payer_email;
 
@@ -105,7 +108,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
      *
      * Note: This should NEVER be saved. Not ever.
      *
-     * @var string
+     * @var ?string
      *
      * @see StorePaymentMethod::getUnencryptedCardNumber()
      */
@@ -114,7 +117,7 @@ abstract class StorePaymentMethod extends SwatDBDataObject
     /**
      * When displaying the payment method, defines which parts to show.
      *
-     * @var array
+     * @var array<string, bool>
      *
      * @see StorePaymentMethod::showCardNumber()
      * @see StorePaymentMethod::showCardFullname()

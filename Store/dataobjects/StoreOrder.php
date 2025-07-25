@@ -3,6 +3,16 @@
 /**
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreAccount                   $account
+ * @property ?StoreOrderAddress             $billing_address
+ * @property ?StoreOrderAddress             $shipping_address
+ * @property ?StoreShippingType             $shipping_type
+ * @property StoreLocale                    $locale
+ * @property ?SiteAd                        $ad
+ * @property ?SiteInstance                  $instance
+ * @property StoreOrderItemWrapper          $items
+ * @property StoreOrderPaymentMethodWrapper $payment_methods
  */
 class StoreOrder extends SwatDBDataObject
 {
@@ -16,49 +26,49 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Snapshot of the customer's email address.
      *
-     * @var string
+     * @var ?string
      */
     public $email;
 
     /**
      * Extra email address to which the order confirmation email is CC'd.
      *
-     * @var string
+     * @var ?string
      */
     public $cc_email;
 
     /**
      * Snapshot of the customer's company name.
      *
-     * @var string
+     * @var ?string
      */
     public $company;
 
     /**
      * Snapshot of the customer's phone number.
      *
-     * @var string
+     * @var ?string
      */
     public $phone;
 
     /**
      * Comments.
      *
-     * @var string
+     * @var ?string
      */
     public $comments;
 
     /**
      * Admin Comments, visible to customer.
      *
-     * @var string
+     * @var ?string
      */
     public $admin_comments;
 
     /**
      * Admin Notes, invisible to customer.
      *
-     * @var string
+     * @var ?string
      */
     public $notes;
 
@@ -72,7 +82,7 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Cancellation date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $cancel_date;
 
@@ -100,7 +110,7 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Shipping total.
      *
-     * @var float
+     * @var ?float
      */
     public $shipping_total;
 
@@ -121,27 +131,21 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Whether or not this order is cancelled.
      *
-     * @var bool
-     *
      * @deprecated use {@link StoreOrder::$cancel_date} instead
      */
-    public $cancelled = false;
+    public bool $cancelled = false;
 
     /**
      * Whether or not this order is a failed order attempt stored only
      * for debugging and recordkeeping.
-     *
-     * @var bool
      */
-    public $failed_attempt = false;
+    public bool $failed_attempt = false;
 
     /**
      * Whether or not the comments on this order have been sent to any
      * notification system in place.
-     *
-     * @var bool
      */
-    public $comments_sent = false;
+    public bool $comments_sent = false;
 
     /**
      * The id of the {@link StoreOrderStatus} of this order.

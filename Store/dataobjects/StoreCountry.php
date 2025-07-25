@@ -5,6 +5,8 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreProvStateWrapper $prov_states
  */
 class StoreCountry extends SwatDBDataObject
 {
@@ -18,7 +20,7 @@ class StoreCountry extends SwatDBDataObject
     /**
      * User visible title of this country.
      *
-     * @var string
+     * @var ?string
      */
     protected $title;
 

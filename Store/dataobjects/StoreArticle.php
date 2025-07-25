@@ -12,6 +12,10 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreCategoryWrapper $related_categories
+ * @property StoreProductWrapper  $related_products
+ * @property SiteArticleWrapper   $sub_articles
  */
 class StoreArticle extends SiteArticle
 {
@@ -137,7 +141,7 @@ class StoreArticle extends SiteArticle
     // loader methods
 
     /**
-     * Loads related cateogries.
+     * Loads related categories.
      *
      * Related categories are ordered by the category table's display order.
      *

@@ -4,20 +4,23 @@
  * Dataobject for item region bindings.
  *
  * @copyright 2006-2016 silverorange
+ *
+ * @property StoreRegion $region
+ * @property StoreItem   $item
  */
 class StoreItemRegionBinding extends SwatDBDataObject
 {
     /**
      * Price of the item.
      *
-     * @var float
+     * @var ?float
      */
     public $price;
 
     /**
      * Optional original price of the item.
      *
-     * @var float
+     * @var ?float
      */
     public $original_price;
 
@@ -26,7 +29,7 @@ class StoreItemRegionBinding extends SwatDBDataObject
      *
      * Used when a sale discount is attached to the item.
      *
-     * @var float
+     * @var ?float
      */
     public $sale_discount_price;
 

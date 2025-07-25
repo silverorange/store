@@ -5,13 +5,15 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreShippingRateWrapper $shipping_rates
  */
 class StoreShippingType extends SwatDBDataObject
 {
     /**
      * Unique identifier of this shipping type.
      *
-     * @var string
+     * @var int
      */
     public $id;
 
@@ -20,21 +22,21 @@ class StoreShippingType extends SwatDBDataObject
      *
      * This is something like 'express' or 'ground'.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title for this shipping type.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
     /**
      * User visible note for this shipping type.
      *
-     * @var string
+     * @var ?string
      */
     public $note;
 

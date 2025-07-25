@@ -27,7 +27,7 @@ class StoreSaleDiscount extends SwatDBDataObject
     /**
      * Discount percentage.
      *
-     * @var float
+     * @var ?float
      */
     public $discount_percentage;
 
@@ -39,16 +39,16 @@ class StoreSaleDiscount extends SwatDBDataObject
     public $title;
 
     /**
-     * Start data.
+     * Start date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $start_date;
 
     /**
      * End date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $end_date;
 

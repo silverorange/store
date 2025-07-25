@@ -75,6 +75,13 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreAccountWrapper
+ *
+ * @property ?StoreAccountAddress             $default_billing_address
+ * @property ?StoreAccountAddress             $default_shipping_address
+ * @property ?StoreAccountPaymentMethod       $default_payment_method
+ * @property StoreAccountAddressWrapper       $addresses
+ * @property StoreAccountPaymentMethodWrapper $payment_methods
+ * @property StoreOrderWrapper                $orders
  */
 class StoreAccount extends SiteAccount
 {
@@ -86,14 +93,14 @@ class StoreAccount extends SiteAccount
     /**
      * Optional company name for this account.
      *
-     * @var string
+     * @var ?string
      */
     protected $company;
 
     /**
      * Phone number of this account.
      *
-     * @var string
+     * @var ?string
      */
     protected $phone;
 

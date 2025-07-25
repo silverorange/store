@@ -15,6 +15,8 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreCartEntry::createOrderItem()
+ *
+ * @property StoreOrder $ordernum
  */
 class StoreOrderItem extends SwatDBDataObject
 {
@@ -28,14 +30,14 @@ class StoreOrderItem extends SwatDBDataObject
     /**
      * Merchant's stocking keeping unit (SKU).
      *
-     * @var string
+     * @var ?string
      */
     public $sku;
 
     /**
      * Sku Alias.
      *
-     * @var string
+     * @var ?string
      */
     public $alias_sku;
 
@@ -63,7 +65,7 @@ class StoreOrderItem extends SwatDBDataObject
     /**
      * Description.
      *
-     * @var string
+     * @var ?string
      */
     public $description;
 
@@ -77,35 +79,35 @@ class StoreOrderItem extends SwatDBDataObject
     /**
      * Item identifier.
      *
-     * @var int
+     * @var ?int
      */
     public $item;
 
     /**
      * Product identifier.
      *
-     * @var int
+     * @var ?int
      */
     public $product;
 
     /**
      * Product title.
      *
-     * @var string
+     * @var ?string
      */
     public $product_title;
 
     /**
      * Title of item group if this item belonged to an item group.
      *
-     * @var string
+     * @var ?string
      */
     public $item_group_title;
 
     /**
      * Catalog id.
      *
-     * @var int
+     * @var ?int
      */
     public $catalog;
 
@@ -114,7 +116,7 @@ class StoreOrderItem extends SwatDBDataObject
      *
      * Uses StoreCartEntry::SOURCE_* constants
      *
-     * @var int
+     * @var ?int
      *
      * @see StoreCartEntry
      */
@@ -123,7 +125,7 @@ class StoreOrderItem extends SwatDBDataObject
     /**
      * Category related to  the source of this order item.
      *
-     * @var int
+     * @var ?int
      *
      * @see StoreCartEntry
      */
@@ -132,7 +134,7 @@ class StoreOrderItem extends SwatDBDataObject
     /**
      * Sale discount identifier.
      *
-     * @var int
+     * @var ?int
      */
     public $sale_discount;
 
@@ -160,19 +162,16 @@ class StoreOrderItem extends SwatDBDataObject
     /**
      * Cache of region-available StoreItem for this order item.
      *
-     * Array keys are region ids. Array values are {@link StoreItem} items
-     * or null if no items are available.
-     *
-     * @var array
+     * @var array<int, ?StoreItem>
      *
      * @see StoreOrderItem::getAvailableItem()
      */
-    protected $available_items_cache = [];
+    protected array $available_items_cache = [];
 
     /**
      * Cache of StoreItem for this order item.
      *
-     * @var StoreItem
+     * @var false|StoreItem
      */
     protected $item_cache = false;
 

@@ -32,6 +32,16 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreItemWrapper
+ *
+ * @property StoreItemStatus                           $status
+ * @property StoreProduct                              $product
+ * @property ?StoreItemGroup                           $item_group
+ * @property ?StoreItemMinimumQuantityGroup            $minimum_quantity_group
+ * @property ?StoreSaleDiscount                        $sale_discount
+ * @property StoreItemAliasWrapper                     $item_aliases
+ * @property StoreItemProvStateExclusionBindingWrapper $prov_state_exclusion_bindings
+ * @property StoreQuantityDiscountWrapper              $quantity_discounts
+ * @property StoreItemRegionBindingWrapper             $region_bindings
  */
 class StoreItem extends SwatDBDataObject
 {
@@ -45,14 +55,14 @@ class StoreItem extends SwatDBDataObject
     /**
      * Merchant's stocking keeping unit (SKU) identifier.
      *
-     * @var string
+     * @var ?string
      */
     public $sku;
 
     /**
      * User visible description.
      *
-     * @var string
+     * @var ?string
      */
     public $description;
 
@@ -73,21 +83,21 @@ class StoreItem extends SwatDBDataObject
     /**
      * A user visible unit for each part of this item.
      *
-     * @var string
+     * @var ?string
      */
     public $part_unit;
 
     /**
      * User visible singular unit.
      *
-     * @var string
+     * @var ?string
      */
     public $singular_unit;
 
     /**
      * User visible plural unit.
      *
-     * @var string
+     * @var ?string
      */
     public $plural_unit;
 
@@ -110,55 +120,42 @@ class StoreItem extends SwatDBDataObject
      */
     protected $region;
 
-    /**
-     * @var bool
-     */
-    protected $limit_by_region = true;
+    protected bool $limit_by_region = true;
 
     /**
      * Cache of enabled state of this item indexed by region id.
      *
-     * This is an array of boolean values.
-     *
-     * @var array
+     * @var array<int, bool>
      */
-    protected $is_enabled = [];
+    protected array $is_enabled = [];
 
     /**
      * Cache of prices indexed by region id.
      *
-     * This is an array of floats.
-     *
-     * @var array
+     * @var array<int, float>
      */
-    protected $price = [];
+    protected array $price = [];
 
     /**
      * Cache of original prices indexed by region id.
      *
-     * This is an array of floats.
-     *
-     * @var array
+     * @var array<int, float>
      */
-    protected $original_price = [];
+    protected array $original_price = [];
 
     /**
      * Cache of sale discount prices indexed by region id.
      *
-     * This is an array of floats.
-     *
-     * @var array
+     * @var array<int, float>
      */
-    protected $sale_discount_price = [];
+    protected array $sale_discount_price = [];
 
     /**
      * Cache of availability of this item indexed by region id.
      *
-     * This is an array of boolean values.
-     *
-     * @var array
+     * @var array<int, bool>
      */
-    protected $is_available = [];
+    protected array $is_available = [];
 
     /**
      * The status of an item - backordered, etc.

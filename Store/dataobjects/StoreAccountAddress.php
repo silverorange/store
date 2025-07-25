@@ -3,17 +3,19 @@
 /**
  * An address belonging to an account for an e-commerce web application.
  *
- * @copyright 2005-2006 silverorane
+ * @copyright 2005-2006 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreAddress
+ *
+ * @property StoreAccount $account
  */
 class StoreAccountAddress extends StoreAddress
 {
     /**
      * Creation date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     protected $createdate;
 

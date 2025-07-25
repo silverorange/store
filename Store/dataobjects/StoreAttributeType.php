@@ -4,6 +4,8 @@
  * An attribute type data object.
  *
  * @copyright 2008-2016 silverorange
+ *
+ * @property StoreAttributeWrapper $attributes
  */
 class StoreAttributeType extends SwatDBDataObject
 {
@@ -17,7 +19,7 @@ class StoreAttributeType extends SwatDBDataObject
     /**
      * Shortname.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 

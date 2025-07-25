@@ -4,19 +4,11 @@
  * A province/state data object.
  *
  * @copyright 2006-2016 silverorange
+ *
+ * @property StoreCountry $country
  */
 class StoreProvState extends SwatDBDataObject
 {
-    /**
-     * Tax message.
-     *
-     * If this province or state requires special tax procedures, this note
-     * will be displayed to customers shipping to it.
-     *
-     * @var string
-     */
-    public $tax_message;
-
     /**
      * Unique identifier of this province or state.
      *
@@ -25,9 +17,19 @@ class StoreProvState extends SwatDBDataObject
     protected $id;
 
     /**
+     * Tax message.
+     *
+     * If this province or state requires special tax procedures, this note
+     * will be displayed to customers shipping to it.
+     *
+     * @var ?string
+     */
+    public $tax_message;
+
+    /**
      * User visible title of this province or state.
      *
-     * @var string
+     * @var ?string
      */
     protected $title;
 
@@ -36,7 +38,7 @@ class StoreProvState extends SwatDBDataObject
      *
      * This is also used for displaying addresses.
      *
-     * @var string
+     * @var ?string
      */
     protected $abbreviation;
 

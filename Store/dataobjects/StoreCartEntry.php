@@ -20,6 +20,11 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreCart
+ *
+ * @property ?SiteInstance   $instance
+ * @property StoreItem       $item
+ * @property ?StoreAccount   $account
+ * @property ?StoreItemAlias $alias
  */
 class StoreCartEntry extends SwatDBDataObject
 {
@@ -48,7 +53,7 @@ class StoreCartEntry extends SwatDBDataObject
      *
      * If this cart does not belong to an account, it must belong to a session.
      *
-     * @var string
+     * @var ?string
      */
     public $sessionid;
 
@@ -75,25 +80,28 @@ class StoreCartEntry extends SwatDBDataObject
     /**
      * Where this cart entry was created.
      *
-     * @var int
+     * @var ?int
      */
     public $source;
 
     /**
      * Optional category id which was the source of this cart entry.
      *
-     * @var int
+     * @var ?int
      */
     public $source_category;
 
-    /*
+    /**
      * A custom override price for item's without a fixed price like gift
-     * certificates
+     * certificates.
      *
-     * @var float
+     * @var ?float
      */
     public $custom_price;
 
+    /**
+     * @var ?int
+     */
     private $product_max_cart_entry_id;
 
     /**

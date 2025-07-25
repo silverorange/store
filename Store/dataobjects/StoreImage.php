@@ -11,14 +11,14 @@ class StoreImage extends SiteImage
     /**
      * Whether to display with a border.
      *
-     * @var int
+     * @var bool
      */
     public $border;
 
     /**
      * For loading primary images which are 1-to-1 with products.
      *
-     * @var int
+     * @var ?int
      */
     public $product;
 

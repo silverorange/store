@@ -3,6 +3,8 @@
 /**
  * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property SiteInstance $instance
  */
 class StoreVoucher extends SwatDBDataObject
 {
@@ -16,7 +18,7 @@ class StoreVoucher extends SwatDBDataObject
     /**
      * Redemption Code.
      *
-     * @var string
+     * @var ?string
      */
     public $code;
 
@@ -28,21 +30,21 @@ class StoreVoucher extends SwatDBDataObject
      * - 'coupon', or
      * - 'merchandise-credit'
      *
-     * @var string
+     * @var ?string
      */
     public $voucher_type;
 
     /**
      * Amount.
      *
-     * @var float
+     * @var ?float
      */
     public $amount;
 
     /**
      * Used date.
      *
-     * @var SwtaDate
+     * @var ?SwatDate
      */
     public $used_date;
 
