@@ -53,15 +53,17 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
 
     protected function queryCategories()
     {
-        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
-
         $sql = 'select id, shortname
 			from Category
 			where parent is null
 				and id in (select category from VisibleCategoryView)
 			order by displayorder, title';
 
-        $categories = SwatDB::query($this->app->db, $sql, $wrapper);
+        $categories = SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
         $categories->setRegion($this->app->getRegion());
 
         return $categories;

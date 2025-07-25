@@ -131,7 +131,11 @@ abstract class StoreLocaleApplication extends StoreApplication
 			(select region from Locale where id = %s)';
 
         $sql = sprintf($sql, $this->db->quote($this->locale, 'text'));
-        $regions = SwatDB::query($this->db, $sql, 'StoreRegionWrapper');
+        $regions = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreRegionWrapper::class)
+        );
         $this->region = $regions->getFirst();
 
         if ($this->region === null) {

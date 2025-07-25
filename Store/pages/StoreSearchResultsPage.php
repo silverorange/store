@@ -290,7 +290,7 @@ class StoreSearchResultsPage extends SiteSearchResultsPage
             $category = SwatDB::query(
                 $this->app->db,
                 $sql,
-                'StoreCategoryWrapper'
+                SwatDBClassMap::get(StoreCategoryWrapper::class)
             )->getFirst();
         }
 

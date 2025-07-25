@@ -403,8 +403,11 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get(StoreCategoryWrapper::class);
-        $sub_categories = SwatDB::query($this->db, $sql, $wrapper_class);
+        $sub_categories = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
         $sub_categories->setRegion($region);
 
         return $sub_categories;
@@ -450,8 +453,11 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get(StoreProductWrapper::class);
-        $products = SwatDB::query($this->db, $sql, $wrapper_class);
+        $products = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProductWrapper::class)
+        );
         $products->setRegion($region);
 
         return $products;
@@ -733,8 +739,11 @@ class StoreCategory extends SwatDBDataObject
             $this->db->quote($this->region->id, 'integer')
         );
 
-        $wrapper = SwatDBClassMap::get(StoreCategoryWrapper::class);
-        $categories = SwatDB::query($this->db, $sql, $wrapper);
+        $categories = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCategoryWrapper::class)
+        );
 
         foreach ($categories as $category) {
             $category->setRegion($this->region);

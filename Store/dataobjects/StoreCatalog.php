@@ -75,8 +75,11 @@ class StoreCatalog extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        $wrapper_class = SwatDBClassMap::get(StoreCatalogWrapper::class);
-        $clones = SwatDB::query($this->db, $sql, $wrapper_class);
+        $clones = SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCatalogWrapper::class)
+        );
 
         return $clones->getFirst();
     }

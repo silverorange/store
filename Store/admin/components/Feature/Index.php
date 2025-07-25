@@ -129,8 +129,11 @@ class StoreFeatureIndex extends AdminIndex
             $instance_where
         );
 
-        $wrapper = SwatDBClassMap::get(StoreFeatureWrapper::class);
-        $features = SwatDB::query($this->app->db, $sql, $wrapper);
+        $features = SwatDB::query(
+            $this->app->db,
+            $sql,
+            SwatDBClassMap::get(StoreFeatureWrapper::class)
+        );
 
         $store = new SwatTableStore();
         $counts = [];

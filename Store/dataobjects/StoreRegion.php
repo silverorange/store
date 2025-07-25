@@ -56,7 +56,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreLocaleWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreLocaleWrapper::class)
+        );
     }
 
     /**
@@ -125,7 +129,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCountryWrapper::class)
+        );
     }
 
     /**
@@ -146,7 +154,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreCountryWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreCountryWrapper::class)
+        );
     }
 
     /**
@@ -167,7 +179,11 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
+        );
     }
 
     /**
@@ -188,6 +204,10 @@ class StoreRegion extends SwatDBDataObject
             $this->db->quote($this->id, 'integer')
         );
 
-        return SwatDB::query($this->db, $sql, 'StoreProvStateWrapper');
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreProvStateWrapper::class)
+        );
     }
 }

@@ -866,9 +866,11 @@ class StoreItem extends SwatDBDataObject
         $sql = 'select * from ItemRegionBinding where item = %s';
         $sql = sprintf($sql, $this->db->quote($this->id, 'integer'));
 
-        $wrapper = SwatDBClassMap::get(StoreItemRegionBindingWrapper::class);
-
-        return SwatDB::query($this->db, $sql, $wrapper);
+        return SwatDB::query(
+            $this->db,
+            $sql,
+            SwatDBClassMap::get(StoreItemRegionBindingWrapper::class)
+        );
     }
 
     protected function loadItemAliases()

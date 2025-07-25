@@ -123,7 +123,7 @@ class StoreSearchPanelServer extends SiteXMLRPCServer
             $category = SwatDB::query(
                 $this->app->db,
                 $sql,
-                'StoreCategoryWrapper'
+                SwatDBClassMap::get(StoreCategoryWrapper::class)
             )->getFirst();
         }
 
