@@ -24,12 +24,6 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- *
- * @property int     $id
- * @property ?string $shortname
- * @property ?string $title
- * @property ?string $note
- * @property ?int    $displayorder
  */
 class StoreCardType extends SwatDBDataObject
 {
@@ -45,14 +39,14 @@ class StoreCardType extends SwatDBDataObject
      *
      * This is something like 'VS', 'MC' or 'DS'.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title for this card type.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
@@ -62,7 +56,7 @@ class StoreCardType extends SwatDBDataObject
      * The note field should be used to inform customers of additional
      * requirements or conditions on this card type.
      *
-     * @var string
+     * @var ?string
      */
     public $note;
 

@@ -3,11 +3,6 @@
 /**
  * @copyright 2007-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- *
- * @property int  $id
- * @property ?int $start_price
- * @property ?int $end_price
- * @property bool $original_price
  */
 class StorePriceRange extends SwatDBDataObject
 {
@@ -21,14 +16,14 @@ class StorePriceRange extends SwatDBDataObject
     /**
      * Inclusive start of price range.
      *
-     * @var int
+     * @var ?int
      */
     public $start_price;
 
     /**
      * Inclusive end of price range.
      *
-     * @var int
+     * @var ?int
      */
     public $end_price;
 

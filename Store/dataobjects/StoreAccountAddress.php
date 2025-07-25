@@ -9,14 +9,13 @@
  * @see       StoreAddress
  *
  * @property StoreAccount $account
- * @property ?SwatDate    $createdate
  */
 class StoreAccountAddress extends StoreAddress
 {
     /**
      * Creation date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     protected $createdate;
 

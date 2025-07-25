@@ -18,14 +18,6 @@
  *
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- *
- * @property int     $id
- * @property ?string $shortname
- * @property ?string $title
- * @property ?string $note
- * @property ?int    $displayorder
- * @property ?float  $surcharge
- * @property ?int    $priority
  */
 class StorePaymentType extends SwatDBDataObject
 {
@@ -37,18 +29,18 @@ class StorePaymentType extends SwatDBDataObject
     public $id;
 
     /**
-     * Non-visible string indentifier.
+     * Non-visible string identifier.
      *
      * This is something like 'cod', 'card', 'paypal'.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title for this payment type.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
@@ -59,7 +51,7 @@ class StorePaymentType extends SwatDBDataObject
      * requirements or conditions on this payment method type. For example, it
      * could contain special shipping information for COD payments.
      *
-     * @var string
+     * @var ?string
      */
     public $note;
 
@@ -73,7 +65,7 @@ class StorePaymentType extends SwatDBDataObject
     /**
      * Additional charge applied when using this payment type.
      *
-     * @var float
+     * @var ?float
      */
     public $surcharge;
 

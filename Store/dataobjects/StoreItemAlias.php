@@ -8,9 +8,7 @@
  *
  * @see       StoreItemAliasWrapper
  *
- * @property int       $id
  * @property StoreItem $item
- * @property ?string   $sku
  */
 class StoreItemAlias extends SwatDBDataObject
 {
@@ -22,8 +20,6 @@ class StoreItemAlias extends SwatDBDataObject
     public $id;
 
     /**
-     * not null,.
-     *
      * @var string
      */
     public $sku;

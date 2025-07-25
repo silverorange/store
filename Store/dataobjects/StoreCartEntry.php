@@ -21,13 +21,6 @@
  *
  * @see       StoreCart
  *
- * @property int             $id
- * @property ?string         $sessionid
- * @property ?int            $quantity
- * @property ?bool           $saved
- * @property ?int            $source
- * @property ?int            $source_category
- * @property ?float          $custom_price
  * @property ?SiteInstance   $instance
  * @property StoreItem       $item
  * @property ?StoreAccount   $account
@@ -60,7 +53,7 @@ class StoreCartEntry extends SwatDBDataObject
      *
      * If this cart does not belong to an account, it must belong to a session.
      *
-     * @var string
+     * @var ?string
      */
     public $sessionid;
 
@@ -87,25 +80,28 @@ class StoreCartEntry extends SwatDBDataObject
     /**
      * Where this cart entry was created.
      *
-     * @var int
+     * @var ?int
      */
     public $source;
 
     /**
      * Optional category id which was the source of this cart entry.
      *
-     * @var int
+     * @var ?int
      */
     public $source_category;
 
-    /*
+    /**
      * A custom override price for item's without a fixed price like gift
-     * certificates
+     * certificates.
      *
-     * @var float
+     * @var ?float
      */
     public $custom_price;
 
+    /**
+     * @var ?int
+     */
     private $product_max_cart_entry_id;
 
     /**

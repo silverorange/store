@@ -6,14 +6,6 @@
  *
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
- *
- * @property int     $id
- * @property ?string $shortname
- * @property ?string $title
- * @property ?int    $minimum_quantity
- * @property ?string $description
- * @property ?string $part_unit
- * @property ?string $part_unit_plural
  */
 class StoreItemMinimumQuantityGroup extends SwatDBDataObject
 {
@@ -27,14 +19,14 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
     /**
      * Shortname.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
@@ -48,21 +40,21 @@ class StoreItemMinimumQuantityGroup extends SwatDBDataObject
     /**
      * User visible xhtml description.
      *
-     * @var string
+     * @var ?string
      */
     public $description;
 
     /**
      * Part unit.
      *
-     * @var string
+     * @var ?string
      */
     public $part_unit;
 
     /**
      * Part unit plural.
      *
-     * @var string
+     * @var ?string
      */
     public $part_unit_plural;
 

@@ -12,11 +12,6 @@
  * @see       StoreCardType
  * @see       StoreVoucher
  *
- * @property ?float                               $amount
- * @property bool                                 $adjustable
- * @property ?int                                 $displayorder
- * @property ?string                              $voucher_code
- * @property ?int                                 $voucher_type
  * @property StoreOrder                           $ordernum
  * @property StorePaymentMethodTransactionWrapper $transactions
  */
@@ -25,7 +20,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
     /**
      * Optional amount to charge to this payment method.
      *
-     * @var float
+     * @var ?float
      */
     public $amount;
 
@@ -47,7 +42,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      *
      * Used for gift certificatess, merchandise credits and coupons.
      *
-     * @var string
+     * @var ?string
      */
     public $voucher_code;
 
@@ -56,7 +51,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      *
      * Used for gift certificatess, merchandise credits and coupons.
      *
-     * @var int
+     * @var ?int
      */
     public $voucher_type;
 
@@ -64,7 +59,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      * Id of the account payment method this order payment method was created
      * from.
      *
-     * @var int
+     * @var ?int
      */
     protected $account_payment_method_id;
 
@@ -73,7 +68,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      *
      * Note: This should NEVER be saved. Not ever.
      *
-     * @var string
+     * @var ?string
      *
      * @see StoreOrderPaymentMethod::getUnencryptedCardVerificationValue()
      */
@@ -83,7 +78,7 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      * The max amount this payment method can be adjusted to if it is
      * adjustable.
      *
-     * @var float
+     * @var ?float
      */
     protected $max_amount;
 
@@ -91,12 +86,12 @@ class StoreOrderPaymentMethod extends StorePaymentMethod
      * Tag used to identify this payment method before it is saved and has a
      * database id.
      *
-     * @var string
+     * @var ?string
      */
     protected $tag;
 
     /**
-     * @var string
+     * @var ?string
      *
      * @see StoreOrderPaymentMethod::setPayPalToken()
      * @see StoreOrderPaymentMethod::getPayPalToken()

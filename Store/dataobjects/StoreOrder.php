@@ -4,25 +4,6 @@
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int                            $id
- * @property ?string                        $email
- * @property ?string                        $cc_email
- * @property ?string                        $company
- * @property ?string                        $phone
- * @property ?string                        $comments
- * @property ?string                        $admin_comments
- * @property ?string                        $notes
- * @property SwatDate                       $createdate
- * @property ?SwatDate                      $cancel_date
- * @property ?float                         $total
- * @property ?float                         $item_total
- * @property ?float                         $surcharge_total
- * @property ?float                         $shipping_total
- * @property ?float                         $tax_total
- * @property ?float                         $voucher_total
- * @property bool                           $failed_attempt
- * @property bool                           $comments_sent
- * @property StoreOrderStatus               $stat
  * @property StoreAccount                   $account
  * @property ?StoreOrderAddress             $billing_address
  * @property ?StoreOrderAddress             $shipping_address
@@ -45,49 +26,49 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Snapshot of the customer's email address.
      *
-     * @var string
+     * @var ?string
      */
     public $email;
 
     /**
      * Extra email address to which the order confirmation email is CC'd.
      *
-     * @var string
+     * @var ?string
      */
     public $cc_email;
 
     /**
      * Snapshot of the customer's company name.
      *
-     * @var string
+     * @var ?string
      */
     public $company;
 
     /**
      * Snapshot of the customer's phone number.
      *
-     * @var string
+     * @var ?string
      */
     public $phone;
 
     /**
      * Comments.
      *
-     * @var string
+     * @var ?string
      */
     public $comments;
 
     /**
      * Admin Comments, visible to customer.
      *
-     * @var string
+     * @var ?string
      */
     public $admin_comments;
 
     /**
      * Admin Notes, invisible to customer.
      *
-     * @var string
+     * @var ?string
      */
     public $notes;
 
@@ -101,7 +82,7 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Cancellation date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $cancel_date;
 
@@ -129,7 +110,7 @@ class StoreOrder extends SwatDBDataObject
     /**
      * Shipping total.
      *
-     * @var float
+     * @var ?float
      */
     public $shipping_total;
 

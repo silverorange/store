@@ -13,8 +13,6 @@
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int                                       $id
- * @property ?int                                      $quantity
  * @property StoreItem                                 $item
  * @property StoreQuantityDiscountRegionBindingWrapper $region_bindings
  */
@@ -44,7 +42,7 @@ class StoreQuantityDiscount extends SwatDBDataObject
     /**
      * Cache of price of item to use at this quantity indexed by region id.
      *
-     * This is an array of floats.
+     * @var array<int, float>
      */
     protected array $price = [];
 

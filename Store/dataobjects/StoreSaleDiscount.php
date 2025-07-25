@@ -7,13 +7,6 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @see       StoreItem
- *
- * @property int       $id
- * @property ?string   $shortname
- * @property ?float    $discount_percentage
- * @property ?string   $title
- * @property ?SwatDate $start_date
- * @property ?SwatDate $end_date
  */
 class StoreSaleDiscount extends SwatDBDataObject
 {
@@ -34,7 +27,7 @@ class StoreSaleDiscount extends SwatDBDataObject
     /**
      * Discount percentage.
      *
-     * @var float
+     * @var ?float
      */
     public $discount_percentage;
 
@@ -46,16 +39,16 @@ class StoreSaleDiscount extends SwatDBDataObject
     public $title;
 
     /**
-     * Start data.
+     * Start date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $start_date;
 
     /**
      * End date.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $end_date;
 

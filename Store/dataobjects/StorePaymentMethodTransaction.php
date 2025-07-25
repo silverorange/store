@@ -12,10 +12,6 @@
  * @see       StorePaymentProvider
  * @see       StoreOrderPaymentMethod
  *
- * @property int                     $id
- * @property ?string                 $transaction_id
- * @property ?SwatDate               $createdate
- * @property ?int                    $transaction_type
  * @property StoreOrderPaymentMethod $payment_method
  */
 class StorePaymentMethodTransaction extends SwatDBDataObject
@@ -37,7 +33,7 @@ class StorePaymentMethodTransaction extends SwatDBDataObject
     /**
      * The date this transaction was created on.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $createdate;
 

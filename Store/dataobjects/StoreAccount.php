@@ -76,9 +76,6 @@
  *
  * @see       StoreAccountWrapper
  *
- * @property ?float                           $available_credit
- * @property ?string                          $company
- * @property ?string                          $phone
  * @property ?StoreAccountAddress             $default_billing_address
  * @property ?StoreAccountAddress             $default_shipping_address
  * @property ?StoreAccountPaymentMethod       $default_payment_method
@@ -96,14 +93,14 @@ class StoreAccount extends SiteAccount
     /**
      * Optional company name for this account.
      *
-     * @var string
+     * @var ?string
      */
     protected $company;
 
     /**
      * Phone number of this account.
      *
-     * @var string
+     * @var ?string
      */
     protected $phone;
 

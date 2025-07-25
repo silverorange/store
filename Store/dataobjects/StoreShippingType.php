@@ -6,11 +6,6 @@
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int                      $id
- * @property ?string                  $shortname
- * @property ?string                  $title
- * @property ?string                  $note
- * @property ?int                     $displayorder
  * @property StoreShippingRateWrapper $shipping_rates
  */
 class StoreShippingType extends SwatDBDataObject
@@ -27,21 +22,21 @@ class StoreShippingType extends SwatDBDataObject
      *
      * This is something like 'express' or 'ground'.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title for this shipping type.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
     /**
      * User visible note for this shipping type.
      *
-     * @var string
+     * @var ?string
      */
     public $note;
 

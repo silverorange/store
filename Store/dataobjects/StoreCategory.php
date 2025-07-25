@@ -22,18 +22,6 @@
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int                  $id
- * @property ?string              $shortname
- * @property ?string              $title
- * @property ?string              $html_title
- * @property ?string              $description
- * @property ?string              $bodytext
- * @property ?bool                $always_visible
- * @property ?SwatDate            $createdate
- * @property ?int                 $displayorder
- * @property ?string              $ppc_ad_headline
- * @property ?string              $ppc_ad_description1
- * @property ?string              $ppc_ad_description2
  * @property ?StoreCategoryImage  $image
  * @property ?StoreCategory       $parent
  * @property string               $path
@@ -64,14 +52,14 @@ class StoreCategory extends SwatDBDataObject
      *
      * This identifier is designed to be used in URL's.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 
@@ -82,7 +70,7 @@ class StoreCategory extends SwatDBDataObject
      * category page uses the category title from
      * {@link StoreCategory::$title}.
      *
-     * @var string
+     * @var ?string
      */
     public $html_title;
 
@@ -92,7 +80,7 @@ class StoreCategory extends SwatDBDataObject
      * This text is intended to be displayed on the parent page of this
      * category.
      *
-     * @var string
+     * @var ?string
      */
     public $description;
 
@@ -102,7 +90,7 @@ class StoreCategory extends SwatDBDataObject
      * This text is intended to be displayed on a page dedicated to this
      * category.
      *
-     * @var string
+     * @var ?string
      */
     public $bodytext;
 
@@ -118,7 +106,7 @@ class StoreCategory extends SwatDBDataObject
     /**
      * The date this category was created.
      *
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $createdate;
 
@@ -135,21 +123,21 @@ class StoreCategory extends SwatDBDataObject
      * This is usually the category title or a shortened version of the
      * category title.
      *
-     * @var string
+     * @var ?string
      */
     public $ppc_ad_headline;
 
     /**
      * Content used for creating pay-per-click ads.
      *
-     * @var string
+     * @var ?string
      */
     public $ppc_ad_description1;
 
     /**
      * Content used for creating pay-per-click ads.
      *
-     * @var string
+     * @var ?string
      */
     public $ppc_ad_description2;
 
@@ -166,27 +154,21 @@ class StoreCategory extends SwatDBDataObject
     /**
      * Cache of product counts for this category indexed by region id.
      *
-     * This is an array of integers.
-     *
-     * @var array
+     * @var array<int, int>
      */
     protected $product_count = [];
 
     /**
      * Cache of available product counts for this category indexed by region id.
      *
-     * This is an array of integers.
-     *
-     * @var array
+     * @var array<int, int>
      */
     protected $available_product_count = [];
 
     /**
      * Cache of item counts for this category indexed by region id.
      *
-     * This is an array of integers.
-     *
-     * @var array
+     * @var array<int, int>
      */
     protected $item_count = [];
 

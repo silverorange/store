@@ -12,18 +12,8 @@
  *
  * @see       StoreAccountAddress, StoreOrderAddress
  *
- * @property ?int            $id
- * @property ?bool           $po_box
- * @property ?string         $fullname
- * @property ?string         $company
- * @property ?string         $line1
- * @property ?string         $line2
- * @property ?string         $city
  * @property ?StoreProvState $provstate
- * @property ?string         $provstate_other
- * @property ?string         $postal_code
  * @property StoreCountry    $country
- * @property ?string         $phone
  */
 abstract class StoreAddress extends SwatDBDataObject
 {
@@ -44,14 +34,14 @@ abstract class StoreAddress extends SwatDBDataObject
     /**
      * The full name of the address holder.
      *
-     * @var string
+     * @var ?string
      */
     protected $fullname;
 
     /**
      * The company of the address.
      *
-     * @var string
+     * @var ?string
      */
     protected $company;
 
@@ -60,7 +50,7 @@ abstract class StoreAddress extends SwatDBDataObject
      *
      * This usually corresponds to the street name and number.
      *
-     * @var string
+     * @var ?string
      */
     protected $line1;
 
@@ -69,35 +59,35 @@ abstract class StoreAddress extends SwatDBDataObject
      *
      * This usually corresponds to a suite or apartment number.
      *
-     * @var string
+     * @var ?string
      */
     protected $line2;
 
     /**
      * The city of this address.
      *
-     * @var string
+     * @var ?string
      */
     protected $city;
 
     /**
      * Alternative free-form field for provstate of this address.
      *
-     * @var string
+     * @var ?string
      */
     protected $provstate_other;
 
     /**
      * The ZIP Code or postal code of this address.
      *
-     * @var string
+     * @var ?string
      */
     protected $postal_code;
 
     /**
      * Phone number for this address.
      *
-     * @var string
+     * @var ?string
      */
     protected $phone;
 

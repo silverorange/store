@@ -3,10 +3,6 @@
 /**
  * @copyright 2008-2016 silverorange
  *
- * @property int                $id
- * @property ?string            $shortname
- * @property ?string            $title
- * @property ?int               $displayorder
  * @property StoreAttributeType $attribute_type
  */
 class StoreAttribute extends SwatDBDataObject
@@ -21,14 +17,14 @@ class StoreAttribute extends SwatDBDataObject
     /**
      * Internal name.
      *
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 

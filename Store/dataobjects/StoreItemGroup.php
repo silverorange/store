@@ -6,9 +6,6 @@
  * @copyright 2006-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int              $id
- * @property ?string          $title
- * @property ?int             $displayorder
  * @property StoreProduct     $product
  * @property StoreItemWrapper $items
  * @property ?StoreItem       $cheapest_item
@@ -25,7 +22,7 @@ class StoreItemGroup extends SwatDBDataObject
     /**
      * User visible title.
      *
-     * @var string
+     * @var ?string
      */
     public $title;
 

@@ -33,16 +33,6 @@
  *
  * @see       StoreItemWrapper
  *
- * @property int                                       $id
- * @property ?string                                   $sku
- * @property ?string                                   $description
- * @property ?int                                      $displayorder
- * @property ?int                                      $part_count
- * @property ?string                                   $part_unit
- * @property ?string                                   $singular_unit
- * @property ?string                                   $plural_unit
- * @property ?int                                      $minimum_quantity
- * @property ?bool                                     $minimum_multiple
  * @property StoreItemStatus                           $status
  * @property StoreProduct                              $product
  * @property ?StoreItemGroup                           $item_group
@@ -65,14 +55,14 @@ class StoreItem extends SwatDBDataObject
     /**
      * Merchant's stocking keeping unit (SKU) identifier.
      *
-     * @var string
+     * @var ?string
      */
     public $sku;
 
     /**
      * User visible description.
      *
-     * @var string
+     * @var ?string
      */
     public $description;
 
@@ -93,21 +83,21 @@ class StoreItem extends SwatDBDataObject
     /**
      * A user visible unit for each part of this item.
      *
-     * @var string
+     * @var ?string
      */
     public $part_unit;
 
     /**
      * User visible singular unit.
      *
-     * @var string
+     * @var ?string
      */
     public $singular_unit;
 
     /**
      * User visible plural unit.
      *
-     * @var string
+     * @var ?string
      */
     public $plural_unit;
 
@@ -135,35 +125,35 @@ class StoreItem extends SwatDBDataObject
     /**
      * Cache of enabled state of this item indexed by region id.
      *
-     * This is an array of boolean values.
+     * @var array<int, bool>
      */
     protected array $is_enabled = [];
 
     /**
      * Cache of prices indexed by region id.
      *
-     * This is an array of floats.
+     * @var array<int, float>
      */
     protected array $price = [];
 
     /**
      * Cache of original prices indexed by region id.
      *
-     * This is an array of floats.
+     * @var array<int, float>
      */
     protected array $original_price = [];
 
     /**
      * Cache of sale discount prices indexed by region id.
      *
-     * This is an array of floats.
+     * @var array<int, float>
      */
     protected array $sale_discount_price = [];
 
     /**
      * Cache of availability of this item indexed by region id.
      *
-     * This is an array of boolean values.
+     * @var array<int, bool>
      */
     protected array $is_available = [];
 

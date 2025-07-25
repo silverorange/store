@@ -4,16 +4,6 @@
  * @copyright 2010-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int           $id
- * @property ?string       $shortname
- * @property ?string       $title
- * @property ?string       $description
- * @property ?string       $link
- * @property ?SwatDate     $start_date
- * @property ?SwatDate     $end_date
- * @property ?bool         $enabled
- * @property ?int          $display_slot
- * @property ?int          $priority
  * @property ?StoreRegion  $region
  * @property ?SiteInstance $instance
  */
@@ -25,52 +15,46 @@ class StoreFeature extends SwatDBDataObject
     public $id;
 
     /**
-     * @var string
+     * @var ?string
      */
     public $shortname;
 
     /**
-     * @var string
+     * @var ?string
      */
     public $title;
 
     /**
-     * @var string
+     * @var ?string
      */
     public $description;
 
     /**
-     * @var string
+     * @var ?string
      */
     public $link;
 
     /**
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $start_date;
 
     /**
-     * @var SwatDate
+     * @var ?SwatDate
      */
     public $end_date;
 
     /**
-     * not null default true,.
-     *
      * @var bool
      */
     public $enabled;
 
     /**
-     * not null,.
-     *
      * @var int
      */
     public $display_slot;
 
     /**
-     * not null,.
-     *
      * @var int
      */
     public $priority;

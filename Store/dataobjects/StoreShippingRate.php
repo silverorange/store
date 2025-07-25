@@ -6,10 +6,6 @@
  * @copyright 2008-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
- * @property int               $id
- * @property ?float            $threshold
- * @property ?float            $amount
- * @property ?float            $percentage
  * @property StoreRegion       $region
  * @property StoreShippingType $shipping_type
  */
@@ -25,21 +21,21 @@ class StoreShippingRate extends SwatDBDataObject
     /**
      * Threshold.
      *
-     * @var float
+     * @var ?float
      */
     public $threshold;
 
     /**
      * Amount in dollars.
      *
-     * @var float
+     * @var ?float
      */
     public $amount;
 
     /**
      * Percentage.
      *
-     * @var float
+     * @var ?float
      */
     public $percentage;
 
