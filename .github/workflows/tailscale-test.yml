@@ -1,0 +1,23 @@
+name: Tailscale Test
+
+on:
+  push:
+    branches: [tailscale]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+  - uses: actions/checkout@v4
+
+  - name: Setup Tailscale
+    uses: tailscale/github-action@v3
+    with:
+      oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+      oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+      tags: tag:silverorange-gh-actions
+      use-cache: 'true'
+      version: latest
+
+  - name: Test
+    run: "sleep 10 && composer install"
