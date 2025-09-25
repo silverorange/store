@@ -18,11 +18,14 @@ class StoreItemsView extends SwatControl
      */
     protected $product;
 
+    /**
+     * The page source for this view's form action.
+     */
+    protected ?string $source = null;
+
     protected $default_quantity;
 
     protected $has_description = false;
-
-    protected string $source;
 
     /**
      * @var bool
