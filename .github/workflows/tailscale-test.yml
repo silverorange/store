@@ -8,17 +8,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-  steps:
-  - uses: actions/checkout@v4
+    steps:
+    - uses: actions/checkout@v4
 
-  - name: Setup Tailscale
-    uses: tailscale/github-action@v3
-    with:
-      oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-      oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-      tags: tag:silverorange-gh-actions
-      use-cache: 'true'
-      version: latest
+    - name: Setup Tailscale
+      uses: tailscale/github-action@v3
+      with:
+        oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+        tags: tag:silverorange-gh-actions
+        use-cache: 'true'
+        version: latest
 
-  - name: Test
-    run: "sleep 10 && composer install"
+    - name: Test
+      run: "sleep 10 && composer install"
