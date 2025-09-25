@@ -13,6 +13,15 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+          tags: tag:silverorange-gh-actions
+          use-cache: 'true'
+          version: latest
+
       # Can maybe be replaced with pnpm/action-setup@v4 in the future
       - name: Setup pnpm/corepack
         uses: actions/setup-node@v4
