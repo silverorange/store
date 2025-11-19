@@ -5,6 +5,18 @@
  *
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property SiteDatabaseModule       $database
+ * @property SiteAccountSessionModule $session
+ * @property SiteCookieModule         $cookie
+ * @property StoreCartModule          $cart
+ * @property StoreCheckoutModule      $checkout
+ * @property SiteMessagesModule       $messages
+ * @property SiteConfigModule         $config
+ * @property SiteAdModule             $ads
+ * @property SiteAnalyticsModule      $analytics
+ * @property SiteTimerModule          $timer
+ * @property SiteCryptModule          $crypt
  */
 abstract class StoreApplication extends SiteWebApplication
 {
