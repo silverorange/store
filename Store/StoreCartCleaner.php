@@ -12,9 +12,15 @@
  *
  * @copyright 2005-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreCommandLineConfigModule $config
+ * @property SiteDatabaseModule           $database
+ * @property SiteSessionModule            $session
  */
 class StoreCartCleaner extends SiteCommandLineApplication
 {
+    public MDB2_Driver_Common $db;
+
     public function init()
     {
         $this->initModules();

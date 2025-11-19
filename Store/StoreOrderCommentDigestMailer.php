@@ -4,13 +4,16 @@
  * Sends out a digest email of new order comments.
  *
  * @copyright 2012-2016 silverorange
+ *
+ * @property StoreCommandLineConfigModule $config
+ * @property SiteDatabaseModule           $database
  */
 class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
 {
     /**
      * A convenience reference to the database object.
      *
-     * @var MDB2_Driver
+     * @var MDB2_Driver_Common
      */
     public $db;
 
