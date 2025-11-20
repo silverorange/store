@@ -1131,8 +1131,8 @@ class StoreProductDetails extends AdminIndex
 
         $first_group = $groups->getFirst();
         if (
-            $first_group === null ||
-            (count($groups) === 1 && $first_group->item_group === 0)
+            $first_group === null
+            || (count($groups) === 1 && $first_group->item_group === 0)
         ) {
             $num_groups = 0;
         } elseif ($first_group->item_group === 0) {

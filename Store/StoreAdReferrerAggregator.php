@@ -5,13 +5,16 @@
  *
  * @copyright 2009-2016 silverorange
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
+ *
+ * @property StoreCommandLineConfigModule $config
+ * @property SiteDatabaseModule           $database
  */
 class StoreAdReferrerAggregator extends SiteCommandLineApplication
 {
     /**
      * A convenience reference to the database object.
      *
-     * @var MDB2_Driver
+     * @var MDB2_Driver_Common
      */
     public $db;
 

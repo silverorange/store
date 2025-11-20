@@ -7,9 +7,14 @@
  * @license   http://www.gnu.org/copyleft/lesser.html LGPL License 2.1
  *
  * @todo      Figure out when setPath() is used, it may be a dead code path.
+ *
+ * @property StoreCommandLineConfigModule $config
+ * @property SiteDatabaseModule           $database
  */
 abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
 {
+    public MDB2_Driver_Common $db;
+
     private $path = '';
     private $upload = true;
     private $display = false;
