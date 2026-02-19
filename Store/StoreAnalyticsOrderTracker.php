@@ -42,22 +42,6 @@ class StoreAnalyticsOrderTracker
         return [$command];
     }
 
-    public function getBingUETCommands()
-    {
-        $command = [
-            'ec' => 'conversion',
-            'ea' => 'purchase',
-            'gv' => $this->getOrderTotal(),
-        ];
-
-        $event_label = $this->getBingUETEventLabel();
-        if ($event_label != '') {
-            $command['el'] = $event_label;
-        }
-
-        return [$command];
-    }
-
     public function getTwitterPixelCommands()
     {
         return [
