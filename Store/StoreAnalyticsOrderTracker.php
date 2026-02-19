@@ -28,26 +28,6 @@ class StoreAnalyticsOrderTracker
         $this->affiliation = $affiliation;
     }
 
-    public function getGoogleAnalyticsCommands()
-    {
-        $commands = [$this->getGoogleAnalyticsOrderCommand()];
-        foreach ($this->order->items as $item) {
-            $commands[] = $this->getGoogleAnalyticsOrderItemCommand($item);
-        }
-
-        $commands[] = '_trackTrans';
-
-        return $commands;
-    }
-
-    public function getGoogleAnalytics4Commands(): array
-    {
-        return [
-            $this->getGoogleAnalytics4PurchaseCommand(),
-            $this->getGoogleAnalytics4ShippingCommand(),
-        ];
-    }
-
     public function getFacebookPixelCommands()
     {
         $command = [
