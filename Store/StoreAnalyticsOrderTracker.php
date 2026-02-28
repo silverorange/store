@@ -11,17 +11,11 @@
  */
 class StoreAnalyticsOrderTracker
 {
-    /**
-     * @var StoreOrder
-     */
-    protected $order;
-
-    protected $affiliation;
-
-    public function __construct(StoreOrder $order, $affiliation = null)
-    {
-        $this->order = $order;
-        $this->affiliation = $affiliation;
+    public function __construct(
+        protected StoreOrder $order,
+        protected ?string $promotion_code = null,
+        protected ?string $affiliation = null,
+    ) {
     }
 
     // Google
@@ -52,7 +46,8 @@ class StoreAnalyticsOrderTracker
 
     protected function getGoogleTagManagerPurchaseCommand(): array
     {
-        return [
+
+        $data = [
             'event'        => 'purchase',
             'ecommerce' => [
                 'transaction_id' => strval($this->order->id),
@@ -61,6 +56,12 @@ class StoreAnalyticsOrderTracker
                 'items'          => $this->getGoogleTagManagerItemsParameter(),
             ],
         ];
+
+        if($this->promotion_code !== null) {
+            $data['ecommerce']['coupon'] = $this->promotion_code;
+        }
+
+        return $data;
     }
 
     protected function getGoogleTagManagerShippingCommand(): array
