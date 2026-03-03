@@ -28,6 +28,15 @@ class StoreAnalyticsOrderTracker
         ];
     }
 
+    /**
+     * @return list<array{
+     *     item_id: string,
+     *     item_name: string,
+     *     item_category: string,
+     *     affiliation: string,
+     *     price: float,
+     * }>
+     */
     protected function getGoogleTagManagerItemsParameter(): array
     {
         $items = [];
@@ -44,6 +53,24 @@ class StoreAnalyticsOrderTracker
         return $items;
     }
 
+    /**
+     * @return array{
+     *     event: 'purchase',
+     *     ecommerce: array{
+     *         transaction_id: string,
+     *         value: float,
+     *         currency: 'USD',
+     *         items: list<array{
+     *             item_id: string,
+     *             item_name: string,
+     *             item_category: string,
+     *             affiliation: string,
+     *             price: float,
+     *         }>,
+     *         coupon?: string,
+     *     },
+     * }
+     */
     protected function getGoogleTagManagerPurchaseCommand(): array
     {
 
@@ -64,6 +91,15 @@ class StoreAnalyticsOrderTracker
         return $data;
     }
 
+    /**
+     * @return array{
+     *     event: 'add_shipping_info',
+     *     ecommerce: array{
+     *         currency: 'USD',
+     *         value: float,
+     *     },
+     * }
+     */
     protected function getGoogleTagManagerShippingCommand(): array
     {
         return [
