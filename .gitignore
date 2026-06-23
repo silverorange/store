@@ -19,4 +19,6 @@ composer.lock
 yarn.lock
 
 # overrides for local tooling
-/phpstan.neon
+phpstan.neon
+phpstan-baseline.neon
+phpunit.xml
