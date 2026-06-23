@@ -160,15 +160,15 @@ class StoreCartProcessor extends SwatObject
                 }
             } else {
                 if ($saved == 1 && $total_items == 1) {
-                    $title = Store::_('You have saved this product for later.' .
-                        ' %sView cart%s.');
+                    $title = Store::_('You have saved this product for later.'
+                        . ' %sView cart%s.');
                 } else {
                     $title = sprintf(
                         Store::ngettext(
-                            'You have one item from this page ' .
-                                'saved for later. %%sView cart%%s.',
-                            'You have %s items from this page ' .
-                                'saved for later. %%sView cart%%s.',
+                            'You have one item from this page '
+                                . 'saved for later. %%sView cart%%s.',
+                            'You have %s items from this page '
+                                . 'saved for later. %%sView cart%%s.',
                             $saved
                         ),
                         $locale->formatNumber($saved)

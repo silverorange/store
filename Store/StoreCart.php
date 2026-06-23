@@ -171,8 +171,8 @@ abstract class StoreCart extends SwatObject
                         } else {
                             // rollback to original entry
                             $this->entries[$key] = $backup_entry;
-                            $this->entries_by_id[$backup_entry->id] =
-                                $backup_entry;
+                            $this->entries_by_id[$backup_entry->id]
+                                = $backup_entry;
                         }
 
                         // we don't need this anymore
@@ -415,8 +415,8 @@ abstract class StoreCart extends SwatObject
                     } else {
                         // rollback to original entry
                         $this->entries[$key] = $backup_entry;
-                        $this->entries_by_id[$backup_entry->id] =
-                            $backup_entry;
+                        $this->entries_by_id[$backup_entry->id]
+                            = $backup_entry;
                     }
                 }
             }
@@ -642,8 +642,8 @@ abstract class StoreCart extends SwatObject
     protected function setCachedValue($name, $value)
     {
         if (isset($this->totals[$name])) {
-            throw new StoreException('Overwriting cached cart value ' .
-                "'{$name}'.");
+            throw new StoreException('Overwriting cached cart value '
+                . "'{$name}'.");
         }
 
         $this->totals[$name] = $value;

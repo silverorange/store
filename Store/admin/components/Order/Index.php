@@ -118,8 +118,8 @@ class StoreOrderIndex extends AdminSearch
     {
         // make it possible to link to page with only orders having comments
         if (isset($_GET['has_comments'])) {
-            $this->ui->getWidget('search_comments')->value =
-                (mb_strtolower($_GET['has_comments']) == 'yes')
+            $this->ui->getWidget('search_comments')->value
+                = (mb_strtolower($_GET['has_comments']) == 'yes')
                     ? true
                     : false;
         }
@@ -141,15 +141,15 @@ class StoreOrderIndex extends AdminSearch
 
         if ($view->hasColumn('instance')
             && $this->ui->hasWidget('search_instance')) {
-            $view->getColumn('instance')->visible =
-                ($this->ui->getWidget('search_instance')->value === null)
+            $view->getColumn('instance')->visible
+                = ($this->ui->getWidget('search_instance')->value === null)
                 && $this->ui->getWidget('search_instance')->parent->visible;
         }
 
         if ($view->hasColumn('region')
             && $this->ui->hasWidget('search_region')) {
-            $view->getColumn('region')->visible =
-                ($this->ui->getWidget('search_region')->value === null)
+            $view->getColumn('region')->visible
+                = ($this->ui->getWidget('search_region')->value === null)
                 && $this->ui->getWidget('search_region')->parent->visible;
         }
     }
@@ -220,8 +220,8 @@ class StoreOrderIndex extends AdminSearch
         // date range gt
         if ($this->ui->getWidget('search_createdate_gt')->value !== null) {
             // clone so the date displayed will stay the same
-            $date_gt =
-                clone $this->ui->getWidget('search_createdate_gt')->value;
+            $date_gt
+                = clone $this->ui->getWidget('search_createdate_gt')->value;
 
             $date_gt->setTZ($this->app->default_time_zone);
             $date_gt->toUTC();
@@ -236,8 +236,8 @@ class StoreOrderIndex extends AdminSearch
         // date range lt
         if ($this->ui->getWidget('search_createdate_lt')->value !== null) {
             // clone so the date displayed will stay the same
-            $date_lt =
-                clone $this->ui->getWidget('search_createdate_lt')->value;
+            $date_lt
+                = clone $this->ui->getWidget('search_createdate_lt')->value;
 
             $date_lt->setTZ($this->app->default_time_zone);
             $date_lt->toUTC();
@@ -366,8 +366,8 @@ class StoreOrderIndex extends AdminSearch
         );
 
         if (count($orders) > 0) {
-            $this->ui->getWidget('results_message')->content =
-                $pager->getResultsMessage('result', 'results');
+            $this->ui->getWidget('results_message')->content
+                = $pager->getResultsMessage('result', 'results');
         }
 
         $class_name = SwatDBClassMap::get(StoreOrder::class);

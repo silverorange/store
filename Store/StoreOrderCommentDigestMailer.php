@@ -204,8 +204,8 @@ class StoreOrderCommentDigestMailer extends SiteCommandLineApplication
         $p_tag->setContent(
             sprintf(
                 Store::_(
-                    '<a href="%1$sadmin/Order/Details?id=%2$s">' .
-                    'Order %2$s</a><br />%3$s (%4$s)<br />%5$s'
+                    '<a href="%1$sadmin/Order/Details?id=%2$s">'
+                    . 'Order %2$s</a><br />%3$s (%4$s)<br />%5$s'
                 ),
                 $this->config->uri->absolute_base,
                 $order->id,

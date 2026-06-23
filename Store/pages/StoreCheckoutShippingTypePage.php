@@ -79,8 +79,8 @@ class StoreCheckoutShippingTypePage extends StoreCheckoutEditPage
         $order = $this->app->session->order;
 
         if ($order->shipping_type !== null) {
-            $this->ui->getWidget('shipping_type')->value =
-                $order->shipping_type->shortname;
+            $this->ui->getWidget('shipping_type')->value
+                = $order->shipping_type->shortname;
         }
     }
 

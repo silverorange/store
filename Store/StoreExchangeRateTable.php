@@ -116,8 +116,8 @@ class StoreExchangeRateTable
         }
 
         if ($filename === null) {
-            throw new StoreException('The currency conversion requested is ' .
-                'not supported.');
+            throw new StoreException('The currency conversion requested is '
+                . 'not supported.');
         }
 
         return sprintf(

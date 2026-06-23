@@ -26,8 +26,8 @@ class StoreArticleActionsProcessor extends SiteArticleActionsProcessor
 
         switch ($actions->selected->id) {
             case 'accessibility_action':
-                $processor =
-                    $actions->selected->widget->getChild('article_region_action');
+                $processor
+                    = $actions->selected->widget->getChild('article_region_action');
 
                 $processor->setItems($view->checked_items);
                 $processor->processAction();

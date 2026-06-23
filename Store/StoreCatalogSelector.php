@@ -28,8 +28,8 @@ class StoreCatalogSelector extends SwatFlydown
     {
         $this->show_blank = false;
 
-        $this->value =
-            self::constructValue($this->scope, $this->catalog, $this->region);
+        $this->value
+            = self::constructValue($this->scope, $this->catalog, $this->region);
 
         parent::display();
     }

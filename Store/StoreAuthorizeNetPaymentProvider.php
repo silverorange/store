@@ -86,8 +86,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         foreach ($required_parameters as $parameter) {
             if (!isset($parameters[$parameter])) {
-                throw new StoreException('"' . $parameter . '" is required in the ' .
-                    'Authorize.net payment provider parameters.');
+                throw new StoreException('"' . $parameter . '" is required in the '
+                    . 'Authorize.net payment provider parameters.');
             }
         }
 
@@ -97,8 +97,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         $valid_modes = ['live', 'sandbox'];
         if (!in_array($parameters['mode'], $valid_modes)) {
-            throw new StoreException('Mode "' . $mode . '" is not valid for ' .
-                'the Authorize.net payment provider.');
+            throw new StoreException('Mode "' . $mode . '" is not valid for '
+                . 'the Authorize.net payment provider.');
         }
 
         $this->login_id = $parameters['login_id'];
@@ -109,8 +109,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
             $this->invoice_number_prefix = $parameters['invoice_number_prefix'];
         }
 
-        $this->order_description_prefix =
-            (isset($parameters['order_description_prefix']))
+        $this->order_description_prefix
+            = (isset($parameters['order_description_prefix']))
             ? $parameters['order_description_prefix']
             : Store::_('Order');
     }
@@ -157,8 +157,8 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
         $transaction->transaction_type = StorePaymentRequest::TYPE_PAY;
         $transaction->createdate = new SwatDate();
         $transaction->createdate->toUTC();
-        $transaction->transaction_id =
-            $response->getTransactionResponse()->getTransId();
+        $transaction->transaction_id
+            = $response->getTransactionResponse()->getTransId();
 
         return $transaction;
     }

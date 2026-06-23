@@ -89,8 +89,8 @@ class StoreCatalogDetails extends AdminPage
         }
 
         // setup status renderer
-        $status_renderer =
-            $component_details->getField('status')->getRendererByPosition();
+        $status_renderer
+            = $component_details->getField('status')->getRendererByPosition();
 
         $status_renderer->db = $this->app->db;
         $status_renderer->regions = SwatDB::getOptionArray(

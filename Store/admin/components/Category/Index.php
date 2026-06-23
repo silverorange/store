@@ -41,8 +41,8 @@ class StoreCategoryIndex extends AdminIndex
         );
 
         $flydown->addOptionsByArray($options);
-        $this->ui->getWidget('item_minimum_quantity_group')->visible =
-            (count($options) > 0);
+        $this->ui->getWidget('item_minimum_quantity_group')->visible
+            = (count($options) > 0);
 
         $flydown = $this->ui->getWidget(
             'categories_item_minimum_quantity_group_flydown'
@@ -51,8 +51,8 @@ class StoreCategoryIndex extends AdminIndex
         $flydown->addOptionsByArray($options);
         $this->ui->getWidget(
             'categories_item_minimum_quantity_group'
-        )->visible =
-                (count($options) > 0);
+        )->visible
+                = (count($options) > 0);
     }
 
     protected function getUiXml()
@@ -205,8 +205,8 @@ class StoreCategoryIndex extends AdminIndex
                     break;
                 }
 
-                if ($this->ui->getWidget('category_attributes_queue')->value ===
-                    true) {
+                if ($this->ui->getWidget('category_attributes_queue')->value
+                    === true) {
                     $this->app->replacePage('Product/QueueAttributes');
                     $this->app->getPage()->setCategory($this->id);
                     $this->app->getPage()->setItems($product_array);
@@ -479,12 +479,12 @@ class StoreCategoryIndex extends AdminIndex
 				where price is not null
 					and %s item in (select id from Item where product in (%s))';
 
-                $region_sql = ($region > 0) ?
-                    sprintf('region = %s and', $this->app->db->quote(
+                $region_sql = ($region > 0)
+                    ? sprintf('region = %s and', $this->app->db->quote(
                         $region,
                         'integer'
-                    )) :
-                    '';
+                    ))
+                    : '';
 
                 SwatDB::exec($this->app->db, sprintf(
                     $sql,
@@ -523,12 +523,12 @@ class StoreCategoryIndex extends AdminIndex
                 $sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (select id from Item where product in (%s))';
 
-                $region_sql = ($region > 0) ?
-                    sprintf('region = %s and', $this->app->db->quote(
+                $region_sql = ($region > 0)
+                    ? sprintf('region = %s and', $this->app->db->quote(
                         $region,
                         'integer'
-                    )) :
-                    '';
+                    ))
+                    : '';
 
                 SwatDB::exec($this->app->db, sprintf(
                     $sql,
@@ -560,8 +560,8 @@ class StoreCategoryIndex extends AdminIndex
                     break;
                 }
 
-                if ($this->ui->getWidget('product_attributes_queue')->value ===
-                    true) {
+                if ($this->ui->getWidget('product_attributes_queue')->value
+                    === true) {
                     $this->app->replacePage('Product/QueueAttributes');
                     $this->app->getPage()->setCategory($this->id);
                     $this->app->getPage()->setItems($view->getSelection());
@@ -992,10 +992,10 @@ class StoreCategoryIndex extends AdminIndex
 
         $message = new SwatMessage(sprintf(
             Store::ngettext(
-                'An item miniumum quantity sale group has been applied ' .
-                    'to one item.',
-                'An item miniumum quantity sale group has been applied to ' .
-                    '%s items.',
+                'An item miniumum quantity sale group has been applied '
+                    . 'to one item.',
+                'An item miniumum quantity sale group has been applied to '
+                    . '%s items.',
                 $num
             ),
             SwatString::numberFormat($num)
@@ -1037,10 +1037,10 @@ class StoreCategoryIndex extends AdminIndex
 
             $message = new SwatMessage(sprintf(
                 Store::ngettext(
-                    'A item miniumum quantity sale group has been ' .
-                        'removed from one item.',
-                    'A item miniumum quantity sale group has been ' .
-                        'removed from %s items.',
+                    'A item miniumum quantity sale group has been '
+                        . 'removed from one item.',
+                    'A item miniumum quantity sale group has been '
+                        . 'removed from %s items.',
                     $num
                 ),
                 SwatString::numberFormat($num)
@@ -1050,8 +1050,8 @@ class StoreCategoryIndex extends AdminIndex
             $flush_memcache = true;
         } else {
             $this->app->messages->add(new SwatMessage(Store::_(
-                'None of the items selected had a item miniumum ' .
-                'quantity sale group.'
+                'None of the items selected had a item miniumum '
+                . 'quantity sale group.'
             )));
         }
 
@@ -1078,8 +1078,8 @@ class StoreCategoryIndex extends AdminIndex
         } else {
             $categories_frame->classes[] = 'sub-categories';
 
-            $this->ui->getWidget('create_category')->title =
-                Store::_('New Sub-Category');
+            $this->ui->getWidget('create_category')->title
+                = Store::_('New Sub-Category');
 
             $category_count = $this->getCategoryCount();
             $product_count = $this->getProductCount();
@@ -1091,8 +1091,8 @@ class StoreCategoryIndex extends AdminIndex
             $products_frame = $this->ui->getWidget('products_frame');
             $products_frame->visible = true;
 
-            $this->ui->getWidget('products_change_order')->visible =
-                ($product_count > 1);
+            $this->ui->getWidget('products_change_order')->visible
+                = ($product_count > 1);
 
             $this->ui->getWidget('products_toolbar')->setToolLinkValues(
                 $this->id
@@ -1109,8 +1109,8 @@ class StoreCategoryIndex extends AdminIndex
                 $this->ui->getWidget('add_featured_product')->value = $this->id;
             }
 
-            $this->ui->getWidget('category_change_order')->visible =
-                ($category_count > 1);
+            $this->ui->getWidget('category_change_order')->visible
+                = ($category_count > 1);
 
             $this->ui->getWidget('related_articles_frame')->visible = true;
             $this->ui->getWidget('related_articles_toolbar')->setToolLinkValues(
@@ -1516,8 +1516,8 @@ class StoreCategoryIndex extends AdminIndex
 
         // set product count and visibility for categories
         foreach ($model as $row) {
-            $row->product_count = (isset($product_count[$row->id])) ?
-                $product_count[$row->id] : 0;
+            $row->product_count = (isset($product_count[$row->id]))
+                ? $product_count[$row->id] : 0;
 
             $row->currently_visible = (isset($visible_categories[$row->id]));
         }
@@ -1620,8 +1620,8 @@ class StoreCategoryIndex extends AdminIndex
             $image->alt = sprintf(Store::_('Image of %s'), $category->title);
 
             $this->ui->getWidget('image_delete')->visible = true;
-            $this->ui->getWidget('image_edit')->title =
-                Store::_('Replace Image');
+            $this->ui->getWidget('image_edit')->title
+                = Store::_('Replace Image');
         }
     }
 

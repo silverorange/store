@@ -73,8 +73,8 @@ class StoreProductDelete extends AdminDBDelete
                 if ($this->category_id === null) {
                     $this->app->relocate('Product');
                 } else {
-                    $this->app->relocate('Category/Index?id=' .
-                            $this->category_id);
+                    $this->app->relocate('Category/Index?id='
+                            . $this->category_id);
                 }
             }
         } else {

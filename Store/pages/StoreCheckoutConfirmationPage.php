@@ -42,8 +42,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                 'text/xml'
             );
 
-            $this->layout->cart_lightbox->override_content =
-                $div_tag->__toString();
+            $this->layout->cart_lightbox->override_content
+                = $div_tag->__toString();
         }
     }
 
@@ -174,9 +174,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
                 $message->secondary_content = sprintf(
                     Store::_(
-                        'Billing address is missing required fields. Please ' .
-                        '%sselect a different billing address or enter a new ' .
-                        'billing address%s.'
+                        'Billing address is missing required fields. Please '
+                        . '%sselect a different billing address or enter a new '
+                        . 'billing address%s.'
                     ),
                     '<a href="' . $this->getCheckoutEditLink(
                         'confirmation/billingaddress'
@@ -216,8 +216,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
             $message->secondary_content = sprintf(
                 Store::_(
-                    'Orders can not be billed to %s. Please select a different ' .
-                    'billing address or enter a new billing address.'
+                    'Orders can not be billed to %s. Please select a different '
+                    . 'billing address or enter a new billing address.'
                 ),
                 $address->country->title
             );
@@ -256,8 +256,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $message = new SwatMessage(Store::_('Billing Address'), 'error');
             $message->secondary_content = sprintf(
                 Store::_(
-                    'Orders can not be billed to %s. Please select a different ' .
-                    'billing address or enter a new billing address.'
+                    'Orders can not be billed to %s. Please select a different '
+                    . 'billing address or enter a new billing address.'
                 ),
                 $address->provstate->title
             );
@@ -301,8 +301,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $message = new SwatMessage(Store::_('Billing Address'), 'error');
         $message->secondary_content = sprintf(
             Store::_(
-                'A billing address is required. Please %s before ' .
-                'you place your order.'
+                'A billing address is required. Please %s before '
+                . 'you place your order.'
             ),
             $a_tag
         );
@@ -346,9 +346,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
                 $message->secondary_content = sprintf(
                     Store::_(
-                        'Shipping address is missing required fields. Please ' .
-                        '%sselect a different shipping address or enter a new ' .
-                        'shipping address%s.'
+                        'Shipping address is missing required fields. Please '
+                        . '%sselect a different shipping address or enter a new '
+                        . 'shipping address%s.'
                     ),
                     '<a href="' . $this->getCheckoutEditLink(
                         'confirmation/shippingaddress'
@@ -388,8 +388,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $message = new SwatMessage(Store::_('Shipping Address'), 'error');
             $message->secondary_content = sprintf(
                 Store::_(
-                    'Orders can not be shipped to %s. Please select a different ' .
-                    'shipping address or enter a new shipping address.'
+                    'Orders can not be shipped to %s. Please select a different '
+                    . 'shipping address or enter a new shipping address.'
                 ),
                 $address->country->title
             );
@@ -428,8 +428,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $message = new SwatMessage(Store::_('Shipping Address'), 'error');
             $message->secondary_content = sprintf(
                 Store::_(
-                    'Orders can not be shipped to %s. Please select a different ' .
-                    'shipping address or enter a new shipping address.'
+                    'Orders can not be shipped to %s. Please select a different '
+                    . 'shipping address or enter a new shipping address.'
                 ),
                 $address->provstate->title
             );
@@ -474,9 +474,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                     $message->content_type = 'text/xml';
                     $message->secondary_content = sprintf(
                         Store::_(
-                            'Item %s “%s” can not be shipped to %s. ' .
-                            'Please %sselect a different shipping address%s ' .
-                            'or %sremove this item%s from your order.'
+                            'Item %s “%s” can not be shipped to %s. '
+                            . 'Please %sselect a different shipping address%s '
+                            . 'or %sremove this item%s from your order.'
                         ),
                         SwatString::minimizeEntities($binding->item->sku),
                         SwatString::minimizeEntities(
@@ -536,8 +536,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         $message = new SwatMessage(Store::_('Shipping Address'), 'error');
         $message->secondary_content = sprintf(
             Store::_(
-                'A shipping address is required. Please %s before ' .
-                'you place your order.'
+                'A shipping address is required. Please %s before '
+                . 'you place your order.'
             ),
             $a_tag
         );
@@ -600,9 +600,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
     {
         $message = new SwatMessage(Store::_('Payment'), 'error');
         $message->secondary_content = Store::_(
-            'The payments on this order do not cover the order total. ' .
-            'Please edit an existing payment or add another ' .
-            'payment method.'
+            'The payments on this order do not cover the order total. '
+            . 'Please edit an existing payment or add another '
+            . 'payment method.'
         );
 
         return $message;
@@ -741,8 +741,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             && $this->app->session->save_account_payment_method) {
             foreach ($order->payment_methods as $payment_method) {
                 if ($payment_method->isSaveableWithAccount()) {
-                    $payment_method =
-                        $this->addPaymentMethodToAccount($payment_method);
+                    $payment_method
+                        = $this->addPaymentMethodToAccount($payment_method);
 
                     $account->setDefaultPaymentMethod($payment_method);
                 }
@@ -963,10 +963,10 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                 $message = $this->getPrototypeErrorMessage($message_id);
                 $message->secondary_content = sprintf(
                     Store::_(
-                        'Your account has not been created, your order has ' .
-                        '%snot%s been placed, and you have %snot%s been billed. ' .
-                        'The error has been recorded and we will attempt to ' .
-                        'fix it as quickly as possible.'
+                        'Your account has not been created, your order has '
+                        . '%snot%s been placed, and you have %snot%s been billed. '
+                        . 'The error has been recorded and we will attempt to '
+                        . 'fix it as quickly as possible.'
                     ),
                     '<em>',
                     '</em>',
@@ -978,12 +978,12 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
             case 'address-mismatch':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sBilling address does not correspond with card ' .
-                            'number.%s Your order has %snot%s been placed. ' .
-                            'Please edit your %sbilling address%s and try again.'
+                            '%sBilling address does not correspond with card '
+                            . 'number.%s Your order has %snot%s been placed. '
+                            . 'Please edit your %sbilling address%s and try again.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -993,20 +993,20 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/billingaddress'
                         ) . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
             case 'card-not-valid':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sCard number is not valid.%s Your order has ' .
-                            '%snot%s been placed. Please %suse a different card%s ' .
-                            'to continue.'
+                            '%sCard number is not valid.%s Your order has '
+                            . '%snot%s been placed. Please %suse a different card%s '
+                            . 'to continue.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1016,19 +1016,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/paymentmethod'
                         ) . '">',
                         '</a>'
-                    ) .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
             case 'card-error':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sCard was not accepted.%s Your order has %snot%s ' .
-                            'been placed. Please %suse a different card%s to ' .
-                            'continue.'
+                            '%sCard was not accepted.%s Your order has %snot%s '
+                            . 'been placed. Please %suse a different card%s to '
+                            . 'continue.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1038,19 +1038,19 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/paymentmethod'
                         ) . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
             case 'card-expired':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sCard is expired.%s Your order has %snot%s been ' .
-                            'placed. Please %suse a different card%s to continue.'
+                            '%sCard is expired.%s Your order has %snot%s been '
+                            . 'placed. Please %suse a different card%s to continue.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1060,21 +1060,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/paymentmethod'
                         ) . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
             case 'card-type':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sCard type does not correspond with card ' .
-                            'number.%s Your order has %snot%s been placed. ' .
-                            'Please edit your %spayment information%s and try ' .
-                            'again.'
+                            '%sCard type does not correspond with card '
+                            . 'number.%s Your order has %snot%s been placed. '
+                            . 'Please edit your %spayment information%s and try '
+                            . 'again.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1084,21 +1084,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/paymentmethod'
                         ) . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
             case 'card-verification-value':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sCard security code does not match card ' .
-                            'number.%s Your order has %snot%s been placed. ' .
-                            'Please %scorrect your card security code%s to ' .
-                            'continue.'
+                            '%sCard security code does not match card '
+                            . 'number.%s Your order has %snot%s been placed. '
+                            . 'Please %scorrect your card security code%s to '
+                            . 'continue.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1108,9 +1108,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/paymentmethod'
                         ) . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
@@ -1118,9 +1118,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                 $message = $this->getPrototypeErrorMessage($message_id);
                 $message->secondary_content = sprintf(
                     Store::_(
-                        'Your order has %snot%s been placed and you have %snot%s ' .
-                        'been billed. The error has been recorded and and we will ' .
-                        'attempt to fix it as quickly as possible.'
+                        'Your order has %snot%s been placed and you have %snot%s '
+                        . 'been billed. The error has been recorded and and we will '
+                        . 'attempt to fix it as quickly as possible.'
                     ),
                     '<em>',
                     '</em>',
@@ -1132,32 +1132,32 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
 
             case 'payment-error':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    sprintf(
-                        Store::_('%sYour payment details are correct, but we were ' .
-                        'unable to process your payment.%s Your order has %snot%s ' .
-                        'been placed. Please %scontact us%s to complete your ' .
-                        'order.'),
+                $message->secondary_content
+                    = sprintf(
+                        Store::_('%sYour payment details are correct, but we were '
+                        . 'unable to process your payment.%s Your order has %snot%s '
+                        . 'been placed. Please %scontact us%s to complete your '
+                        . 'order.'),
                         '<strong>',
                         '</strong>',
                         '<em>',
                         '</em>',
                         '<a href="' . $this->getContactSource() . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds();
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds();
 
                 break;
 
             case 'postal-code-mismatch':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sBilling postal code / ZIP code does not correspond ' .
-                            'with card number.%s Your order has %snot%s been ' .
-                            'placed. Please edit your %sbilling address%s and try ' .
-                            'again.'
+                            '%sBilling postal code / ZIP code does not correspond '
+                            . 'with card number.%s Your order has %snot%s been '
+                            . 'placed. Please edit your %sbilling address%s and try '
+                            . 'again.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1167,21 +1167,21 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                             'confirmation/billingaddress'
                         ) . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p><p>' . $this->getErrorMessageContactUs() . '</p>';
 
                 break;
 
             case 'total':
                 $message = $this->getPrototypeErrorMessage($message_id);
-                $message->secondary_content =
-                    '<p>' . sprintf(
+                $message->secondary_content
+                    = '<p>' . sprintf(
                         Store::_(
-                            '%sYour order total is too large to process.%s ' .
-                            'Your order has %snot%s been placed. Please remove ' .
-                            'some items from %syour cart%s or %scontact us%s to ' .
-                            'continue.'
+                            '%sYour order total is too large to process.%s '
+                            . 'Your order has %snot%s been placed. Please remove '
+                            . 'some items from %syour cart%s or %scontact us%s to '
+                            . 'continue.'
                         ),
                         '<strong>',
                         '</strong>',
@@ -1193,9 +1193,9 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
                         '</a>',
                         '<a href="' . $this->getContactSource() . '">',
                         '</a>'
-                    ) .
-                    ' ' . $this->getErrorMessageNoFunds() .
-                    '</p>';
+                    )
+                    . ' ' . $this->getErrorMessageNoFunds()
+                    . '</p>';
 
                 break;
         }
@@ -1242,8 +1242,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
     {
         return sprintf(
             Store::_(
-                'If you are still unable to complete your order after ' .
-                'confirming your payment information, please %scontact us%s.'
+                'If you are still unable to complete your order after '
+                . 'confirming your payment information, please %scontact us%s.'
             ),
             '<a href="' . $this->getContactSource() . '">',
             '</a>'
@@ -1491,14 +1491,14 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
             $partial_payment_total = 0;
             $done = false;
             foreach ($payment_methods as $payment_method) {
-                $payment_total =
-                    $partial_payment_total + $payment_method->amount;
+                $payment_total
+                    = $partial_payment_total + $payment_method->amount;
 
                 if ($done) {
                     $payment_method->amount = 0;
                 } elseif ($payment_total > $order->total) {
-                    $payment_method->amount =
-                        $order->total - $partial_payment_total;
+                    $payment_method->amount
+                        = $order->total - $partial_payment_total;
 
                     $done = true;
                 }
@@ -1533,8 +1533,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         }
 
         if ($result == 0) {
-            $result = $method2->payment_type->priority -
-                $method1->payment_type->priority;
+            $result = $method2->payment_type->priority
+                - $method1->payment_type->priority;
         }
 
         if ($result == 0) {
@@ -1574,8 +1574,8 @@ class StoreCheckoutConfirmationPage extends StoreCheckoutPage
         echo '</td><td></td></tr>';
 
         if ($balance > 0) {
-            echo '<tr class="payment-remaining swat-error">' .
-                '<th>Remaining Balance:</th><td class="payment-amount">';
+            echo '<tr class="payment-remaining swat-error">'
+                . '<th>Remaining Balance:</th><td class="payment-amount">';
 
             echo $locale->formatCurrency($balance);
             echo '</td><td></td></tr>';

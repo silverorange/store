@@ -176,8 +176,8 @@ class StoreCartLightbox extends SwatControl
             $this->app->cart->checkout->getAvailableEntries()
         );
 
-        $saved_entries = (isset($this->app->cart->saved)) ?
-            count($this->app->cart->saved->getEntries()) : 0;
+        $saved_entries = (isset($this->app->cart->saved))
+            ? count($this->app->cart->saved->getEntries()) : 0;
 
         $javascript .= sprintf(
             "var cart_lightbox = %s.getInstance(%s, %s);\n",
@@ -235,8 +235,8 @@ class StoreCartLightbox extends SwatControl
             echo $this->override_content;
         } elseif (count($cart->checkout->getAvailableEntries()) === 0
             && (!isset($cart->saved) || $cart->saved->isEmpty())) {
-            echo '<div class="empty-content">' .
-                $this->empty_content . '</div>';
+            echo '<div class="empty-content">'
+                . $this->empty_content . '</div>';
         } else {
             if ($this->processor !== null) {
                 $added = count($this->processor->getEntriesAdded());
@@ -334,22 +334,22 @@ class StoreCartLightbox extends SwatControl
             $view->model = new SwatTableStore();
             $view->no_records_message = null;
             if ($view->hasRow('lightbox_subtotal')) {
-                $view->getRow('lightbox_subtotal')->value =
-                    $this->app->cart->checkout->getSubtotal();
+                $view->getRow('lightbox_subtotal')->value
+                    = $this->app->cart->checkout->getSubtotal();
             }
 
             if ($view->hasRow('lightbox_shipping')) {
                 $class_name = SwatDBClassMap::get(StoreOrderAddress::class);
-                $view->getRow('lightbox_shipping')->value =
-                    $this->app->cart->checkout->getShippingTotal(
+                $view->getRow('lightbox_shipping')->value
+                    = $this->app->cart->checkout->getShippingTotal(
                         new $class_name(),
                         new $class_name()
                     );
             }
         }
 
-        $this->ui->getWidget('lightbox_cart_title')->content =
-            $this->getCartTitle();
+        $this->ui->getWidget('lightbox_cart_title')->content
+            = $this->getCartTitle();
     }
 
     protected function getCartMessages()

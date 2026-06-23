@@ -69,8 +69,8 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
         if (!$this->account->load($account_id)) {
             throw new AdminNotFoundException(sprintf(
-                'Address cannot be ' .
-                "edited because an account with id '%s' does not exist.",
+                'Address cannot be '
+                . "edited because an account with id '%s' does not exist.",
                 $account_id
             ));
         }
@@ -89,8 +89,8 @@ class StoreAccountAddressEdit extends AdminDBEdit
         $billing_id = $account->getInternalValue('default_billing_address');
         if ($billing_id !== null && $this->id !== null
             && $this->id === $billing_id) {
-            $billing_field =
-                $this->ui->getWidget('default_billing_address')->parent;
+            $billing_field
+                = $this->ui->getWidget('default_billing_address')->parent;
 
             $billing_field->sensitive = false;
             $billing_field->note = Store::_(
@@ -103,8 +103,8 @@ class StoreAccountAddressEdit extends AdminDBEdit
         $shipping_id = $account->getInternalValue('default_shipping_address');
         if ($shipping_id !== null && $this->id !== null
             && $this->id === $shipping_id) {
-            $shipping_field =
-                $this->ui->getWidget('default_shipping_address')->parent;
+            $shipping_field
+                = $this->ui->getWidget('default_shipping_address')->parent;
 
             $shipping_field->sensitive = false;
             $shipping_field->note = Store::_(
@@ -143,8 +143,8 @@ class StoreAccountAddressEdit extends AdminDBEdit
                     $this->app->db->quote($provstate->value)
                 );
 
-                $provstate_abbreviation =
-                    SwatDB::queryOne($this->app->db, $sql);
+                $provstate_abbreviation
+                    = SwatDB::queryOne($this->app->db, $sql);
 
                 $postal_code->country = $country->id;
                 $postal_code->provstate = $provstate_abbreviation;
@@ -290,13 +290,13 @@ class StoreAccountAddressEdit extends AdminDBEdit
 
             if ($count == 0) {
                 if ($country_title === null) {
-                    $message_content = Store::_('The selected %s is ' .
-                        'not a province or state of the selected country.');
+                    $message_content = Store::_('The selected %s is '
+                        . 'not a province or state of the selected country.');
                 } else {
                     $message_content = sprintf(
-                        Store::_('The selected ' .
-                        '%%s is not a province or state of the selected ' .
-                        'country %s%s%s.'),
+                        Store::_('The selected '
+                        . '%%s is not a province or state of the selected '
+                        . 'country %s%s%s.'),
                         '<strong>',
                         $country_title,
                         '</strong>'

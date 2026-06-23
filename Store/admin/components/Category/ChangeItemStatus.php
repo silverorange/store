@@ -105,8 +105,8 @@ class StoreCategoryChangeItemStatus extends AdminDBConfirmation
                 '</h3>'
             );
 
-            $this->ui->getWidget('yes_button')->title =
-                Store::ngettext(
+            $this->ui->getWidget('yes_button')->title
+                = Store::ngettext(
                     'Change Item Status',
                     'Change Item Statuses',
                     $count

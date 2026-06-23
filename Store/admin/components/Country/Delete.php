@@ -66,8 +66,8 @@ class StoreCountryDelete extends AdminDBDelete
             Store::_('order addresses')
         );
 
-        $orders_billing_dependency->summaries =
-            AdminSummaryDependency::querySummaries(
+        $orders_billing_dependency->summaries
+            = AdminSummaryDependency::querySummaries(
                 $this->app->db,
                 'OrderAddress',
                 'integer:id',
@@ -85,8 +85,8 @@ class StoreCountryDelete extends AdminDBDelete
             Store::_('account addresses')
         );
 
-        $addresses_dependency->summaries =
-            AdminSummaryDependency::querySummaries(
+        $addresses_dependency->summaries
+            = AdminSummaryDependency::querySummaries(
                 $this->app->db,
                 'AccountAddress',
                 'integer:id',
@@ -103,8 +103,8 @@ class StoreCountryDelete extends AdminDBDelete
             Store::_('provinces or states')
         );
 
-        $provstates_dependency->entries =
-            AdminListDependency::queryEntries(
+        $provstates_dependency->entries
+            = AdminListDependency::queryEntries(
                 $this->app->db,
                 'ProvState',
                 'integer:id',

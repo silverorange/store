@@ -19,9 +19,9 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
         $suggestions = [];
 
         $suggestions['contact'] = Store::_(
-            'If you followed a link from our site or elsewhere, please ' .
-            'contact us and let us know where you came from so we can do ' .
-            'our best to fix it.'
+            'If you followed a link from our site or elsewhere, please '
+            . 'contact us and let us know where you came from so we can do '
+            . 'our best to fix it.'
         );
 
         $suggestions['typo'] = Store::_(
@@ -29,9 +29,9 @@ class StoreExceptionPage extends SiteXhtmlExceptionPage
         );
 
         $suggestions['search'] = Store::_(
-            'If you are looking for a product or product information, try ' .
-            'browsing the product listing to the left or using the search box ' .
-            'on the top right.'
+            'If you are looking for a product or product information, try '
+            . 'browsing the product listing to the left or using the search box '
+            . 'on the top right.'
         );
 
         return $suggestions;

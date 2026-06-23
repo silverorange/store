@@ -33,8 +33,8 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
             $this->ui->getWidget('password')->required = false;
 
             $this->ui->getWidget('password_field')->note = Store::_(
-                'Leave the password field blank to leave the password ' .
-                'unchanged. '
+                'Leave the password field blank to leave the password '
+                . 'unchanged. '
             ) . $this->ui->getWidget('password_field')->note;
         }
     }
@@ -133,8 +133,8 @@ class StoreCheckoutBasicInfoPage extends StoreCheckoutEditPage
         $account->setDatabase($this->app->db);
         $found = $account->loadWithEmail($email, $this->app->getInstance());
 
-        $account_id = ($this->app->session->isLoggedIn()) ?
-            $this->app->session->account->id : null;
+        $account_id = ($this->app->session->isLoggedIn())
+            ? $this->app->session->account->id : null;
 
         if ($found && $account_id !== $account->id) {
             return false;

@@ -29,8 +29,8 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
         $this->last_header = end($headers);
 
         foreach ($headers as $header) {
-            $suffix_with_delimiter = ($header === $this->last_header) ?
-                false : true;
+            $suffix_with_delimiter = ($header === $this->last_header)
+                ? false : true;
 
             $this->printField($header, $suffix_with_delimiter);
         }
@@ -58,8 +58,8 @@ abstract class StoreBingShoppingGenerator extends StoreProductFileGenerator
     {
         foreach ($this->getHeaders() as $header) {
             $value = null;
-            $suffix_with_delimiter = ($header === $this->last_header) ?
-                false : true;
+            $suffix_with_delimiter = ($header === $this->last_header)
+                ? false : true;
 
             switch ($header) {
                 case 'MPID':

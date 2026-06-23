@@ -75,8 +75,8 @@ class StoreTotalConfirmationButtonRow extends StoreTotalRow
             $this->button->classes[] = 'compact-button';
             $this->button->tab_index = $this->button_tab_index;
             $this->button->visible = $this->button_visible;
-            $this->button->confirmation_message =
-                $this->button_confirmation_message;
+            $this->button->confirmation_message
+                = $this->button_confirmation_message;
 
             $this->button->display();
 

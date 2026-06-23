@@ -43,9 +43,9 @@ class StoreSalesByRegionTaxationStartDate
 
         $message->secondary_content = sprintf(
             Store::_(
-                'It includes all sales from %s onwards. Any sales prior to ' .
-                'the date fall outside the tax laws this report is used for ' .
-                'and are explicitly excluded.'
+                'It includes all sales from %s onwards. Any sales prior to '
+                . 'the date fall outside the tax laws this report is used for '
+                . 'and are explicitly excluded.'
             ),
             $start_date->formatLikeIntl(SwatDate::DF_DATE)
         );

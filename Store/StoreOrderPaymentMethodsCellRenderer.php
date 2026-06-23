@@ -13,8 +13,8 @@ class StoreOrderPaymentMethodsCellRenderer extends SwatCellRenderer
         parent::__construct();
 
         $this->addStyleSheet(
-            'packages/store/styles/' .
-            'store-order-payment-methods-cell-renderer.css'
+            'packages/store/styles/'
+            . 'store-order-payment-methods-cell-renderer.css'
         );
     }
 

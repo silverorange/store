@@ -311,8 +311,8 @@ class StoreProvStateEntry extends SwatInputControl
             if (!$found) {
                 $message_content = sprintf(
                     Store::_(
-                        'The selected %%s is not a province or state ' .
-                        'of %s%s%s.'
+                        'The selected %%s is not a province or state '
+                        . 'of %s%s%s.'
                     ),
                     '<strong>',
                     SwatString::minimizeEntities(

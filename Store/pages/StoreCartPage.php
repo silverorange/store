@@ -83,11 +83,11 @@ class StoreCartPage extends SitePage
         if (isset($this->layout->cart_lightbox)) {
             $div_tag = new SwatHtmlTag('div');
             $div_tag->class = 'empty-message';
-            $div_tag->setContent(Store::_('You can view and edit your ' .
-                'shopping cart using the form below.'));
+            $div_tag->setContent(Store::_('You can view and edit your '
+                . 'shopping cart using the form below.'));
 
-            $this->layout->cart_lightbox->override_content =
-                $div_tag->__toString();
+            $this->layout->cart_lightbox->override_content
+                = $div_tag->__toString();
         }
     }
 
@@ -140,8 +140,8 @@ class StoreCartPage extends SitePage
                     SwatMessage::ERROR
                 );
 
-                $message->secondary_content = Store::_('Please address the ' .
-                    'fields highlighted below and re-submit the form.');
+                $message->secondary_content = Store::_('Please address the '
+                    . 'fields highlighted below and re-submit the form.');
 
                 $this->ui->getWidget('message_display')->add($message);
             } else {
@@ -234,8 +234,8 @@ class StoreCartPage extends SitePage
 
             if (!$this->app->session->isLoggedIn()) {
                 $moved_message->secondary_content = sprintf(Store::_(
-                    'Items will not be saved unless you %screate an account ' .
-                    'or sign in%s.'
+                    'Items will not be saved unless you %screate an account '
+                    . 'or sign in%s.'
                 ), '<a href="account">', '</a>');
             }
 
@@ -272,8 +272,8 @@ class StoreCartPage extends SitePage
     protected function getContinueButtons()
     {
         $buttons = [];
-        $continue_button_ids =
-            ['header_checkout_button', 'footer_checkout_button'];
+        $continue_button_ids
+            = ['header_checkout_button', 'footer_checkout_button'];
 
         foreach ($continue_button_ids as $id) {
             if ($this->ui->hasWidget($id)) {
@@ -513,8 +513,8 @@ class StoreCartPage extends SitePage
 
             if (!$this->app->session->isLoggedIn()) {
                 $moved_message->secondary_content = sprintf(Store::_(
-                    'Items will not be saved unless you %screate an account ' .
-                    'or sign in%s.'
+                    'Items will not be saved unless you %screate an account '
+                    . 'or sign in%s.'
                 ), '<a href="account">', '</a>');
             }
 
@@ -707,8 +707,8 @@ class StoreCartPage extends SitePage
                     SwatMessage::ERROR
                 );
 
-                $message->secondary_content = Store::_('Please address the ' .
-                    'fields highlighted below and re-submit the form.');
+                $message->secondary_content = Store::_('Please address the '
+                    . 'fields highlighted below and re-submit the form.');
 
                 $this->ui->getWidget('message_display')->add($message);
             } else {
@@ -945,13 +945,13 @@ class StoreCartPage extends SitePage
                     $groups[$group] = new stdClass();
                     $groups[$group]->entries = [];
                     $groups[$group]->quantiy = 0;
-                    $groups[$group]->group =
-                        $entry->item->minimum_quantity_group;
+                    $groups[$group]->group
+                        = $entry->item->minimum_quantity_group;
                 }
 
                 $groups[$group]->entries[] = $entry;
-                $groups[$group]->quantity +=
-                    $entry->quantity * $entry->item->part_count;
+                $groups[$group]->quantity
+                    += $entry->quantity * $entry->item->part_count;
             }
         }
 
@@ -990,8 +990,8 @@ class StoreCartPage extends SitePage
         $locale = SwatI18NLocale::get();
 
         $title = sprintf(
-            Store::_('You must purchase a minimum of %s %s ' .
-            'in order to check out.'),
+            Store::_('You must purchase a minimum of %s %s '
+            . 'in order to check out.'),
             $locale->formatNumber($group->minimum_quantity),
             $group->getSearchLink()
         );
@@ -1111,8 +1111,8 @@ class StoreCartPage extends SitePage
 
         $empty_message->content_type = 'text/xml';
         $empty_message->secondary_content = Store::_(
-            'You can add items to your cart by browsing our ' .
-            '<a href="store">store</a>.'
+            'You can add items to your cart by browsing our '
+            . '<a href="store">store</a>.'
         );
 
         return $empty_message;
@@ -1135,12 +1135,12 @@ class StoreCartPage extends SitePage
             }
         }
 
-        $available_view->getRow('subtotal')->value =
-            $this->app->cart->checkout->getSubtotal();
+        $available_view->getRow('subtotal')->value
+            = $this->app->cart->checkout->getSubtotal();
 
         $class_name = SwatDBClassMap::get(StoreOrderAddress::class);
-        $available_view->getRow('shipping')->value =
-            $this->app->cart->checkout->getShippingTotal(
+        $available_view->getRow('shipping')->value
+            = $this->app->cart->checkout->getShippingTotal(
                 new $class_name(),
                 new $class_name()
             );
@@ -1190,12 +1190,12 @@ class StoreCartPage extends SitePage
             );
 
             $text = Store::ngettext(
-                'The item below is in your cart but is not ' .
-                'currently available for purchasing and will not be included ' .
-                'in your order.',
-                'The items below are in your cart but are not ' .
-                'currently available for purchasing and will not be included ' .
-                'in your order.',
+                'The item below is in your cart but is not '
+                . 'currently available for purchasing and will not be included '
+                . 'in your order.',
+                'The items below are in your cart but are not '
+                . 'currently available for purchasing and will not be included '
+                . 'in your order.',
                 $count
             );
 
@@ -1237,22 +1237,22 @@ class StoreCartPage extends SitePage
         $count = count($saved_view->model);
         if ($count > 0) {
             if ($count > 1) {
-                $this->ui->getWidget('saved_cart_move_all_field')->visible =
-                    true;
+                $this->ui->getWidget('saved_cart_move_all_field')->visible
+                    = true;
             }
 
             $this->ui->getWidget('saved_cart_form')->visible = true;
-            $this->ui->getWidget('saved_cart_frame')->title =
-                Store::_('Saved Items');
+            $this->ui->getWidget('saved_cart_frame')->title
+                = Store::_('Saved Items');
 
             if (!$this->app->session->isLoggedIn()) {
-                $message_display =
-                    $this->ui->getWidget('saved_cart_message_display');
+                $message_display
+                    = $this->ui->getWidget('saved_cart_message_display');
 
                 $warning_message = new SwatMessage(
                     sprintf(Store::_(
-                        'Items will not be saved unless you %screate an account ' .
-                        'or sign in%s.'
+                        'Items will not be saved unless you %screate an account '
+                        . 'or sign in%s.'
                     ), '<a href="account">', '</a>'),
                     SwatMessage::WARNING
                 );
@@ -1269,13 +1269,13 @@ class StoreCartPage extends SitePage
             $message->content_type = 'text/xml';
 
             $text = Store::ngettext(
-                'The item below is saved for later and will not be included ' .
-                'in your order. You may move the item to your cart ' .
-                'by clicking the “Move to Cart” button.',
-                'The items below are saved for later and will not be included ' .
-                'in your order. You may move any of the items to your ' .
-                'cart by clicking the “Move to Cart” button next to ' .
-                'the item.',
+                'The item below is saved for later and will not be included '
+                . 'in your order. You may move the item to your cart '
+                . 'by clicking the “Move to Cart” button.',
+                'The items below are saved for later and will not be included '
+                . 'in your order. You may move any of the items to your '
+                . 'cart by clicking the “Move to Cart” button next to '
+                . 'the item.',
                 $count
             );
 
@@ -1400,8 +1400,8 @@ class StoreCartPage extends SitePage
         if ($entry->item->product->primary_category === null) {
             $ds->product_link = null;
         } else {
-            $ds->product_link = $this->app->config->store->path .
-                $entry->item->product->path;
+            $ds->product_link = $this->app->config->store->path
+                . $entry->item->product->path;
         }
 
         $status = $entry->item->getStatus();
@@ -1457,8 +1457,8 @@ class StoreCartPage extends SitePage
         if ($entry->item->product->primary_category === null) {
             $ds->product_link = null;
         } else {
-            $ds->product_link = $this->app->config->store->path .
-                $entry->item->product->path;
+            $ds->product_link = $this->app->config->store->path
+                . $entry->item->product->path;
         }
 
         if ($entry->alias === null) {
@@ -1477,8 +1477,8 @@ class StoreCartPage extends SitePage
     {
         $description = [];
         foreach ($entry->item->getDescriptionArray() as $element) {
-            $description[] =
-                '<div>' . SwatString::minimizeEntities($element) . '</div>';
+            $description[]
+                = '<div>' . SwatString::minimizeEntities($element) . '</div>';
         }
 
         $sale_note = $entry->item->getSaleDiscountNote();

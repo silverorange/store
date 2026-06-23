@@ -168,8 +168,8 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
 
         if ($this->value > 0 && $this->show_savings) {
             $savings_renderer = new StoreSavingsCellRenderer();
-            $savings_renderer->value =
-                round(1 - ($this->value / $this->original_value), 2);
+            $savings_renderer->value
+                = round(1 - ($this->value / $this->original_value), 2);
 
             $span = new SwatHtmlTag('span');
             $span->open();
@@ -210,8 +210,8 @@ class StoreItemPriceCellRenderer extends StorePriceCellRenderer
         echo ' ';
 
         $savings_renderer = new StoreSavingsCellRenderer();
-        $savings_renderer->value =
-            round(1 - ($value / $quantity_discount->item->getPrice()), 2);
+        $savings_renderer->value
+            = round(1 - ($value / $quantity_discount->item->getPrice()), 2);
         $savings_renderer->render();
 
         $div->close();

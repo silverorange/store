@@ -159,15 +159,15 @@ class StoreItemsView extends SwatControl
                 $ds = $this->getItemDetailsStore($item);
                 $ds->tab_index = $tab_index++;
 
-                $ds->sku = ($last_sku === $item->sku) ?
-                    '' : $item->sku;
+                $ds->sku = ($last_sku === $item->sku)
+                    ? '' : $item->sku;
 
                 $last_sku = $item->sku;
                 $store->add($ds);
 
                 if ($ds->is_available && $view->hasRow('add_button')) {
-                    $view->getRow('add_button')->title =
-                        Store::_('Add to Cart');
+                    $view->getRow('add_button')->title
+                        = Store::_('Add to Cart');
                 }
             }
         }
@@ -214,13 +214,13 @@ class StoreItemsView extends SwatControl
         $description = [];
 
         if (isset($parts['description'])) {
-            $description[] =
-                SwatString::minimizeEntities($parts['description']);
+            $description[]
+                = SwatString::minimizeEntities($parts['description']);
         }
 
         if (isset($parts['part_count'])) {
-            $description[] =
-                SwatString::minimizeEntities($parts['part_count']);
+            $description[]
+                = SwatString::minimizeEntities($parts['part_count']);
         }
 
         return implode(' - ', $description);

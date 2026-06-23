@@ -62,8 +62,8 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
         if ($order->email != '') {
             printf(
                 Store::_(
-                    'An email has been sent to %s containing ' .
-                    'the following detailed order receipt.'
+                    'An email has been sent to %s containing '
+                    . 'the following detailed order receipt.'
                 ),
                 SwatString::minimizeEntities($order->email)
             );
@@ -93,8 +93,8 @@ class StoreCheckoutThankYouPage extends StoreCheckoutFinalPage
             } else {
                 // log an exception (but don't exit), so that we know ad
                 // conversion tracking isn't working correctly.
-                $e = new SiteException('Ad conversion tracking not working ' .
-                    'as footer content block not found.');
+                $e = new SiteException('Ad conversion tracking not working '
+                    . 'as footer content block not found.');
 
                 $e->process(false);
             }

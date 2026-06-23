@@ -282,8 +282,8 @@ class StoreCartEntry extends SwatDBDataObject
         $product2 = $entry->item->product;
 
         if ($product1->id != $product2->id) {
-            return ($this->getProductMaxCartEntryId() <
-                $entry->getProductMaxCartEntryId()) ? 1 : -1;
+            return ($this->getProductMaxCartEntryId()
+                < $entry->getProductMaxCartEntryId()) ? 1 : -1;
         }
         if ($item1->displayorder != $item2->displayorder) {
             return ($item1->displayorder < $item2->displayorder) ? -1 : 1;
@@ -418,8 +418,8 @@ class StoreCartEntry extends SwatDBDataObject
         $description = [];
 
         foreach ($this->item->getDescriptionArray() as $element) {
-            $description[] = '<div>' . SwatString::minimizeEntities($element) .
-                '</div>';
+            $description[] = '<div>' . SwatString::minimizeEntities($element)
+                . '</div>';
         }
 
         return implode("\n", $description);

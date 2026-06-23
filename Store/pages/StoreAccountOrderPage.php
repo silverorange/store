@@ -232,8 +232,8 @@ class StoreAccountOrderPage extends SiteUiPage
 
         $createdate_column = $details_view->getField('createdate');
         $createdate_renderer = $createdate_column->getFirstRenderer();
-        $createdate_renderer->display_time_zone =
-            $this->app->default_time_zone;
+        $createdate_renderer->display_time_zone
+            = $this->app->default_time_zone;
 
         if ($this->orderIsBlank()) {
             $details_view->getField('email')->visible = false;
@@ -267,8 +267,8 @@ class StoreAccountOrderPage extends SiteUiPage
         $items_view->getRow('shipping')->value = $this->order->shipping_total;
 
         if ($this->order->surcharge_total > 0) {
-            $items_view->getRow('surcharge')->value =
-                $this->order->surcharge_total;
+            $items_view->getRow('surcharge')->value
+                = $this->order->surcharge_total;
         }
 
         if ($this->order->tax_total > 0) {
@@ -369,8 +369,8 @@ class StoreAccountOrderPage extends SiteUiPage
 
         foreach ($item_paths as $row) {
             if ($row->path !== null) {
-                $paths[$row->id] = $this->app->config->store->path .
-                    $row->path . '/' . $row->shortname;
+                $paths[$row->id] = $this->app->config->store->path
+                    . $row->path . '/' . $row->shortname;
             }
         }
 

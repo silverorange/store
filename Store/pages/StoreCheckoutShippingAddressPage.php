@@ -213,9 +213,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         )) {
             $field = $this->ui->getWidget('shipping_address_list_field');
             $field->addMessage(new SwatMessage(sprintf(
-                Store::_('Orders can ' .
-                'not be shipped to %s. Please select a different shipping ' .
-                'address or enter a new shipping address.'),
+                Store::_('Orders can '
+                . 'not be shipped to %s. Please select a different shipping '
+                . 'address or enter a new shipping address.'),
                 $address->country->title
             )));
         }
@@ -246,9 +246,9 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
                 new SwatMessage(
                     sprintf(
                         Store::_(
-                            'Orders can not be shipped to %s. Please select ' .
-                            'a different shipping address or enter a new ' .
-                            'shipping address.'
+                            'Orders can not be shipped to %s. Please select '
+                            . 'a different shipping address or enter a new '
+                            . 'shipping address.'
                         ),
                         $address->provstate->title
                     )
@@ -268,33 +268,33 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         $address = new $class_name();
 
         if ($address_list->value === null || $address_list->value === 'new') {
-            $address->fullname =
-                $this->ui->getWidget('shipping_address_fullname')->value;
+            $address->fullname
+                = $this->ui->getWidget('shipping_address_fullname')->value;
 
-            $address->company =
-                $this->ui->getWidget('shipping_address_company')->value;
+            $address->company
+                = $this->ui->getWidget('shipping_address_company')->value;
 
-            $address->line1 =
-                $this->ui->getWidget('shipping_address_line1')->value;
+            $address->line1
+                = $this->ui->getWidget('shipping_address_line1')->value;
 
-            $address->line2 =
-                $this->ui->getWidget('shipping_address_line2')->value;
+            $address->line2
+                = $this->ui->getWidget('shipping_address_line2')->value;
 
-            $address->city =
-                $this->ui->getWidget('shipping_address_city')->value;
+            $address->city
+                = $this->ui->getWidget('shipping_address_city')->value;
 
             $provstate = $this->ui->getWidget('shipping_address_provstate');
             $address->provstate = $provstate->provstate_id;
             $address->provstate_other = $provstate->provstate_other;
 
-            $address->postal_code =
-                $this->ui->getWidget('shipping_address_postalcode')->value;
+            $address->postal_code
+                = $this->ui->getWidget('shipping_address_postalcode')->value;
 
-            $address->country =
-                $this->ui->getWidget('shipping_address_country')->value;
+            $address->country
+                = $this->ui->getWidget('shipping_address_country')->value;
 
-            $address->phone =
-                $this->ui->getWidget('shipping_address_phone')->value;
+            $address->phone
+                = $this->ui->getWidget('shipping_address_phone')->value;
         } elseif ($address_list->value === 'billing') {
             $address = $this->app->session->order->billing_address;
         } else {
@@ -308,14 +308,14 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
                 && $other_address->getAccountAddressId() == $address_id) {
                 $address = $other_address;
             } else {
-                $account_address =
-                    $this->app->session->account->addresses->getByIndex(
+                $account_address
+                    = $this->app->session->account->addresses->getByIndex(
                         $address_id
                     );
 
                 if (!$account_address instanceof StoreAccountAddress) {
-                    throw new StoreException('Account address not found. ' .
-                        "Address with id ‘{$address_id}’ not found.");
+                    throw new StoreException('Account address not found. '
+                        . "Address with id ‘{$address_id}’ not found.");
                 }
 
                 $address->copyFrom($account_address);
@@ -353,52 +353,52 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         if (!$order->shipping_address instanceof StoreOrderAddress) {
             $default_address = $this->getDefaultShippingAddress();
             if ($default_address instanceof StoreAddress) {
-                $this->ui->getWidget('shipping_address_list')->value =
-                    $default_address->id;
+                $this->ui->getWidget('shipping_address_list')->value
+                    = $default_address->id;
             }
         } else {
             if ($order->shipping_address->getAccountAddressId() === null
                 && $order->shipping_address !== $order->billing_address) {
-                $this->ui->getWidget('shipping_address_fullname')->value =
-                    $order->shipping_address->fullname;
+                $this->ui->getWidget('shipping_address_fullname')->value
+                    = $order->shipping_address->fullname;
 
-                $this->ui->getWidget('shipping_address_company')->value =
-                    $order->shipping_address->company;
+                $this->ui->getWidget('shipping_address_company')->value
+                    = $order->shipping_address->company;
 
-                $this->ui->getWidget('shipping_address_line1')->value =
-                    $order->shipping_address->line1;
+                $this->ui->getWidget('shipping_address_line1')->value
+                    = $order->shipping_address->line1;
 
-                $this->ui->getWidget('shipping_address_line2')->value =
-                    $order->shipping_address->line2;
+                $this->ui->getWidget('shipping_address_line2')->value
+                    = $order->shipping_address->line2;
 
-                $this->ui->getWidget('shipping_address_city')->value =
-                    $order->shipping_address->city;
+                $this->ui->getWidget('shipping_address_city')->value
+                    = $order->shipping_address->city;
 
                 $provstate = $this->ui->getWidget('shipping_address_provstate');
-                $provstate->provstate_id =
-                    $order->shipping_address->getInternalValue('provstate');
+                $provstate->provstate_id
+                    = $order->shipping_address->getInternalValue('provstate');
 
-                $provstate->provstate_other =
-                    $order->shipping_address->provstate_other;
+                $provstate->provstate_other
+                    = $order->shipping_address->provstate_other;
 
-                $this->ui->getWidget('shipping_address_postalcode')->value =
-                    $order->shipping_address->postal_code;
+                $this->ui->getWidget('shipping_address_postalcode')->value
+                    = $order->shipping_address->postal_code;
 
-                $this->ui->getWidget('shipping_address_country')->value =
-                    $order->shipping_address->getInternalValue('country');
+                $this->ui->getWidget('shipping_address_country')->value
+                    = $order->shipping_address->getInternalValue('country');
 
-                $this->ui->getWidget('shipping_address_phone')->value =
-                    $order->shipping_address->phone;
+                $this->ui->getWidget('shipping_address_phone')->value
+                    = $order->shipping_address->phone;
 
                 $this->ui->getWidget('shipping_address_list')->value = 'new';
             } else {
                 // compare references since these are not saved yet
                 if ($order->billing_address === $order->shipping_address) {
-                    $this->ui->getWidget('shipping_address_list')->value =
-                        'billing';
+                    $this->ui->getWidget('shipping_address_list')->value
+                        = 'billing';
                 } else {
-                    $this->ui->getWidget('shipping_address_list')->value =
-                        $order->shipping_address->getAccountAddressId();
+                    $this->ui->getWidget('shipping_address_list')->value
+                        = $order->shipping_address->getAccountAddressId();
                 }
             }
         }
@@ -409,14 +409,14 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
         $address = null;
 
         if ($this->app->session->isLoggedIn()) {
-            $default_address =
-                $this->app->session->account->getDefaultShippingAddress();
+            $default_address
+                = $this->app->session->account->getDefaultShippingAddress();
 
             if ($default_address !== null) {
                 // only default to addresses that actually appear in the list
                 $address_list = $this->ui->getWidget('shipping_address_list');
-                $options =
-                    $address_list->getOptionsByValue($default_address->id);
+                $options
+                    = $address_list->getOptionsByValue($default_address->id);
 
                 if (count($options) > 0) {
                     $address = $default_address;
@@ -480,11 +480,11 @@ class StoreCheckoutShippingAddressPage extends StoreCheckoutAddressPage
 
     protected function getAccountAddresses()
     {
-        $shipping_country_ids =
-            $this->app->getRegion()->shipping_countries->getIndexes();
+        $shipping_country_ids
+            = $this->app->getRegion()->shipping_countries->getIndexes();
 
-        $shipping_provstate_ids =
-            $this->app->getRegion()->shipping_provstates->getIndexes();
+        $shipping_provstate_ids
+            = $this->app->getRegion()->shipping_provstates->getIndexes();
 
         // efficiently load country and provstate on account addresses
         $addresses = $this->app->session->account->addresses;

@@ -63,13 +63,13 @@ class StoreCatalogIndex extends AdminIndex
          * This dynamic SQL is needed to make the table orderable by the
          * enabled columns.
          */
-        $regions_join_base =
-            'left outer join CatalogRegionBinding as CatalogRegionBinding_%1$s
+        $regions_join_base
+            = 'left outer join CatalogRegionBinding as CatalogRegionBinding_%1$s
 				on CatalogRegionBinding_%1$s.Catalog = Catalog.id
 					and CatalogRegionBinding_%1$s.region = %2$s';
 
-        $regions_select_base =
-            'CatalogRegionBinding_%s.catalog is not null as enabled_%s';
+        $regions_select_base
+            = 'CatalogRegionBinding_%s.catalog is not null as enabled_%s';
 
         $regions_join = '';
         $regions_select = '';

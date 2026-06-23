@@ -21,8 +21,8 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
 
         $total = $this->getTotal();
         if ($total == 0) {
-            $this->app->debug(Store::_('No expired orders found. ' .
-                'No private data removed.') . "\n");
+            $this->app->debug(Store::_('No expired orders found. '
+                . 'No private data removed.') . "\n");
         } else {
             $this->app->debug(
                 sprintf(
@@ -56,8 +56,8 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
                     $count = count($orders);
                 }
             } else {
-                $this->app->debug('=> ' .
-                    Store::_('not cleaning because dry-run is on') . "\n");
+                $this->app->debug('=> '
+                    . Store::_('not cleaning because dry-run is on') . "\n");
             }
 
             $this->app->debug(
@@ -94,8 +94,8 @@ class StoreOrderDeleter extends SitePrivateDataDeleter
         $order->billing_address->line1 = '';
         $order->billing_address->line2 = null;
         $order->billing_address->city = '';
-        $order->billing_address->postal_code =
-            $this->cleanPostalCode($order->billing_address);
+        $order->billing_address->postal_code
+            = $this->cleanPostalCode($order->billing_address);
 
         if ($order->shipping_address instanceof StoreOrderAddress) {
             $order->shipping_address->fullname = '';

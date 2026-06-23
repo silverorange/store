@@ -187,13 +187,13 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
     protected function setupTableData(SwatTableView $view, StoreOrder $order)
     {
         if ($view->hasColumn('price')) {
-            $view->getColumn('price')->getFirstRenderer()->locale =
-                $order->locale->id;
+            $view->getColumn('price')->getFirstRenderer()->locale
+                = $order->locale->id;
         }
 
         if ($view->hasColumn('total')) {
-            $view->getColumn('total')->getFirstRenderer()->locale =
-                $order->locale->id;
+            $view->getColumn('total')->getFirstRenderer()->locale
+                = $order->locale->id;
         }
 
         if ($view->hasRow('shipping')) {
@@ -283,8 +283,8 @@ abstract class StoreOrderConfirmationMailMessage extends SiteMultipartMailMessag
 
         if ($this->order->shipping_address instanceof StoreOrderAddress) {
             echo 'Shipping Address:', self::LINE_BREAK;
-            if ($this->order->billing_address->id ==
-                $this->order->shipping_address->id) {
+            if ($this->order->billing_address->id
+                == $this->order->shipping_address->id) {
                 echo '<ship to billing address>';
             } else {
                 $this->order->shipping_address->displayCondensedAsText();

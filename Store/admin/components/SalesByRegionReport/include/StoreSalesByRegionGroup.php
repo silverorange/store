@@ -56,8 +56,8 @@ class StoreSalesByRegionGroup extends SwatTableViewGroup
             );
 
             if ($second) {
-                $td_tag->colspan = $this->view->getXhtmlColspan() -
-                    $visible_renderer_count + 1;
+                $td_tag->colspan = $this->view->getXhtmlColspan()
+                    - $visible_renderer_count + 1;
 
                 $second = false;
             }

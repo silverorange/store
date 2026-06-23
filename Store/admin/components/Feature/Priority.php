@@ -65,8 +65,8 @@ class StoreFeaturePriority extends AdminDBOrder
             $where_clause
         ));
 
-        $sql = 'select sum(priority) from Feature where ' .
-            $where_clause;
+        $sql = 'select sum(priority) from Feature where '
+            . $where_clause;
 
         $sum = SwatDB::queryOne($this->app->db, $sql, 'integer');
         $options_list = $this->ui->getWidget('options');

@@ -112,8 +112,8 @@ class StoreAccount extends SiteAccount
             $actual_address = $this->addresses->getByIndex($address->getId());
             if ($actual_address === null) {
                 throw new SwatObjectNotFoundException(
-                    'Address does not belong to this account and cannot be ' .
-                    'set as the default address.'
+                    'Address does not belong to this account and cannot be '
+                    . 'set as the default address.'
                 );
             }
         }
@@ -146,8 +146,8 @@ class StoreAccount extends SiteAccount
             $actual_address = $this->addresses->getByIndex($address->getId());
             if ($actual_address === null) {
                 throw new SwatObjectNotFoundException(
-                    'Address does not belong to this account and cannot be ' .
-                    'set as the default address.'
+                    'Address does not belong to this account and cannot be '
+                    . 'set as the default address.'
                 );
             }
         }
@@ -184,8 +184,8 @@ class StoreAccount extends SiteAccount
 
             if ($actual_payment_method === null) {
                 throw new SwatObjectNotFoundException(
-                    'Payment method does not belong to this account and ' .
-                    'cannot be set as the default payment method.'
+                    'Payment method does not belong to this account and '
+                    . 'cannot be set as the default payment method.'
                 );
             }
         }

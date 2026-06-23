@@ -123,8 +123,8 @@ class StoreCheckoutFirstPage extends StoreCheckoutAggregateStepPage
         $payment_method_container = $ui->getWidget('payment_method_container');
 
         if ($ui->hasWidget('shipping_type_container')) {
-            $shipping_type_container =
-                $ui->getWidget('shipping_type_container');
+            $shipping_type_container
+                = $ui->getWidget('shipping_type_container');
         } else {
             $shipping_type_container = null;
         }

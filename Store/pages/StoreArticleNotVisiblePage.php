@@ -22,8 +22,8 @@ class StoreArticleNotVisiblePage extends StoreNotVisiblePage
 
     protected function buildInternal()
     {
-        $this->layout->data->title =
-            SwatString::minimizeEntities((string) $this->article->title);
+        $this->layout->data->title
+            = SwatString::minimizeEntities((string) $this->article->title);
 
         $this->ui->getWidget('content')->content = sprintf(
             Store::_(

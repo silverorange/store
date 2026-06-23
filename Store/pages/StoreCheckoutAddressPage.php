@@ -138,15 +138,15 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
             $message->primary_content = Store::_('Is this your address?');
 
             $message->secondary_content = '<p>' . Store::_(
-                'To ensure effective delivery, we have compared your address ' .
-                'to our postal address database for formatting and style. ' .
-                'Please review the recommendations below:'
+                'To ensure effective delivery, we have compared your address '
+                . 'to our postal address database for formatting and style. '
+                . 'Please review the recommendations below:'
             ) . '</p>';
 
             $this->button1->title = Store::_('Yes, this is my address');
             $this->button1->classes[] = 'address-verification-yes';
-            $this->button2->title =
-                Store::_('No, use my address as entered below');
+            $this->button2->title
+                = Store::_('No, use my address as entered below');
 
             $this->button2->classes[] = 'address-verification-no';
 
@@ -159,19 +159,19 @@ abstract class StoreCheckoutAddressPage extends StoreCheckoutEditPage
             $message->secondary_content .= ob_get_clean();
         } else {
             $message->primary_content = Store::_('Address not found');
-            $this->button2->title =
-                Store::_('Yes, use my address as entered below');
+            $this->button2->title
+                = Store::_('Yes, use my address as entered below');
 
             $message->secondary_content = '<p>' . Store::_(
-                'To ensure effective delivery, we have compared your address ' .
-                'to our postal address database for formatting and style. ' .
-                'The address you entered was not found.'
+                'To ensure effective delivery, we have compared your address '
+                . 'to our postal address database for formatting and style. '
+                . 'The address you entered was not found.'
             ) . '</p>';
 
             $message->secondary_content .= Store::_(
                 'Please confirm the address below is correct.'
-            ) .
-                '<br />';
+            )
+                . '<br />';
 
             ob_start();
             $this->button2->display();

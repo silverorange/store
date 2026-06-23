@@ -161,8 +161,8 @@ abstract class StorePaymentRequest
     {
         if (!in_array($mode, $this->getAvailableModes())) {
             throw new StoreException(sprintf(
-                "Invalid mode '%s' for payment " .
-                "request. Valid modes are: '%s'.",
+                "Invalid mode '%s' for payment "
+                . "request. Valid modes are: '%s'.",
                 $mode,
                 implode("', '", $this->getAvailableModes())
             ));
@@ -172,13 +172,13 @@ abstract class StorePaymentRequest
             $available_types = $this->getAvailableTypes();
             $available_type_strings = [];
             foreach ($available_types as $available_type) {
-                $available_type_strings[] =
-                    self::getTypeString($available_type);
+                $available_type_strings[]
+                    = self::getTypeString($available_type);
             }
 
             throw new StoreException(sprintf(
-                'Invalid request type: %s. ' .
-                'Valid types are: %s.',
+                'Invalid request type: %s. '
+                . 'Valid types are: %s.',
                 self::getTypeString($type),
                 implode(', ', $available_type_strings)
             ));

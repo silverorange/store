@@ -24,8 +24,8 @@ class StoreCategoryTitleCellRenderer extends AdminTreeTitleLinkCellRenderer
         } elseif (!$this->currently_visible && !$this->always_visible) {
             $this->text = SwatString::minimizeEntities($this->text);
             $this->content_type = 'text/xml';
-            $this->text .= ' <span>&lt;' . Store::_('no available products') .
-                '&gt;</span>';
+            $this->text .= ' <span>&lt;' . Store::_('no available products')
+                . '&gt;</span>';
         } else {
             $this->content_type = 'text/plain';
         }

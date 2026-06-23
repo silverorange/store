@@ -36,11 +36,11 @@ class StoreCheckoutAddressVerificationStepPage extends StoreCheckoutAggregateSte
     {
         parent::buildInternal();
 
-        $billing_container =
-            $this->ui->getWidget('billing_address_verification_container');
+        $billing_container
+            = $this->ui->getWidget('billing_address_verification_container');
 
-        $shipping_container =
-            $this->ui->getWidget('shipping_address_verification_container');
+        $shipping_container
+            = $this->ui->getWidget('shipping_address_verification_container');
 
         if (!$billing_container->visible && !$shipping_container->visible) {
             $this->relocate();

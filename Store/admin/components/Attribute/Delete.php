@@ -61,8 +61,8 @@ class StoreAttributeDelete extends AdminDBDelete
             Store::_('products')
         );
 
-        $attribute_dependency->summaries =
-            AdminSummaryDependency::querySummaries(
+        $attribute_dependency->summaries
+            = AdminSummaryDependency::querySummaries(
                 $this->app->db,
                 'ProductAttributeBinding',
                 'integer:product',

@@ -77,12 +77,12 @@ abstract class StoreCheckoutCart extends StoreCart
                 if (!isset($groups[$group])) {
                     $groups[$group] = new stdClass();
                     $groups[$group]->quantiy = 0;
-                    $groups[$group]->group =
-                        $entry->item->minimum_quantity_group;
+                    $groups[$group]->group
+                        = $entry->item->minimum_quantity_group;
                 }
 
-                $groups[$group]->quantity +=
-                    ($entry->quantity * $entry->item->part_count);
+                $groups[$group]->quantity
+                    += ($entry->quantity * $entry->item->part_count);
             }
         }
 
@@ -174,9 +174,9 @@ abstract class StoreCheckoutCart extends StoreCart
                 $message = new SwatMessage(Store::_('Minimum Quantity'));
                 $message->secondary_content = sprintf(
                     Store::_(
-                        '“%s” item #%s is only available in a minimum quantity ' .
-                        'of %s. The quantity in your cart has been increased ' .
-                        'to %s.'
+                        '“%s” item #%s is only available in a minimum quantity '
+                        . 'of %s. The quantity in your cart has been increased '
+                        . 'to %s.'
                     ),
                     $entry->item->product->title,
                     $entry->item->sku,
@@ -188,18 +188,18 @@ abstract class StoreCheckoutCart extends StoreCart
             }
 
             if ($entry->item->minimum_multiple) {
-                $remainder = $entry->getQuantity() %
-                    $entry->item->minimum_quantity;
+                $remainder = $entry->getQuantity()
+                    % $entry->item->minimum_quantity;
 
                 if ($remainder !== 0) {
-                    $entry->setQuantity($entry->getQuantity() +
-                        $entry->item->minimum_quantity - $remainder);
+                    $entry->setQuantity($entry->getQuantity()
+                        + $entry->item->minimum_quantity - $remainder);
 
                     $message = new SwatMessage(Store::_('Required Quantity'));
                     $message->secondary_content = sprintf(
                         Store::_(
-                            '“%s” item #%s is only available in multiples of %s. ' .
-                            'The quantity in your cart has been increased to %s.'
+                            '“%s” item #%s is only available in multiples of %s. '
+                            . 'The quantity in your cart has been increased to %s.'
                         ),
                         $entry->item->product->title,
                         $entry->item->sku,

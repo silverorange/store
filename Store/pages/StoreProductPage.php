@@ -55,8 +55,8 @@ class StoreProductPage extends StorePage
 
     public function isVisibleInRegion(StoreRegion $region)
     {
-        $key = 'StoreProductPage.isVisibleInRegion.' . $region->id .
-            '.' . $this->product_id;
+        $key = 'StoreProductPage.isVisibleInRegion.' . $region->id
+            . '.' . $this->product_id;
 
         $product = $this->app->getCacheValue($key, 'product');
         if ($product !== false) {
@@ -147,11 +147,11 @@ class StoreProductPage extends StorePage
             $this->items_view->process();
 
             if ($this->items_view->hasMessage()) {
-                $message = new SwatMessage(Store::_('There is a problem with ' .
-                    'one or more of the items you requested.'), 'error');
+                $message = new SwatMessage(Store::_('There is a problem with '
+                    . 'one or more of the items you requested.'), 'error');
 
-                $message->secondary_content = Store::_('Please address the ' .
-                    'fields highlighted below and re-submit the form.');
+                $message->secondary_content = Store::_('Please address the '
+                    . 'fields highlighted below and re-submit the form.');
 
                 $this->message_display->add($message);
             } else {
@@ -202,12 +202,12 @@ class StoreProductPage extends StorePage
 
     protected function buildProduct()
     {
-        $this->layout->data->title =
-            SwatString::minimizeEntities($this->product->title);
+        $this->layout->data->title
+            = SwatString::minimizeEntities($this->product->title);
 
         if ($this->product->html_title != '') {
-            $this->layout->data->html_title =
-                SwatString::minimizeEntities($this->product->html_title);
+            $this->layout->data->html_title
+                = SwatString::minimizeEntities($this->product->html_title);
         }
 
         $this->buildMetaDescription();
@@ -423,8 +423,8 @@ class StoreProductPage extends StorePage
         }
 
         $path_entry = $this->getPath()->getLast();
-        $category_id = ($path_entry instanceof SitePathEntry) ?
-            $path_entry->id : 'null';
+        $category_id = ($path_entry instanceof SitePathEntry)
+            ? $path_entry->id : 'null';
 
         $javascript .= sprintf(
             'var product_page = new %s(%d, [%s], %d, %d);',
@@ -437,8 +437,8 @@ class StoreProductPage extends StorePage
 
         $lightbox = $this->getCartLightboxJavaScriptClass();
         if ($lightbox !== null) {
-            $saved = (isset($this->app->cart->saved)) ?
-                count($this->app->cart->saved->getEntries()) : 0;
+            $saved = (isset($this->app->cart->saved))
+                ? count($this->app->cart->saved->getEntries()) : 0;
 
             $available = count(
                 $this->app->cart->checkout->getAvailableEntries()

@@ -134,8 +134,8 @@ class StoreAdDetails extends SiteAdDetails
         if ($this->regions === null) {
             $sql = 'select id, title from Region order by Region.id';
 
-            $this->regions =
-                SwatDB::query(
+            $this->regions
+                = SwatDB::query(
                     $this->app->db,
                     $sql,
                     SwatDBClassMap::get(StoreRegionWrapper::class)

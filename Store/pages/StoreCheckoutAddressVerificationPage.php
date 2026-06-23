@@ -122,8 +122,8 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
             printf(
                 SwatString::minimizeEntities(
                     Store::_(
-                        'Or, %sreturn to the previous step%s to ' .
-                        'change your address.'
+                        'Or, %sreturn to the previous step%s to '
+                        . 'change your address.'
                     )
                 ),
                 sprintf(
@@ -148,9 +148,9 @@ abstract class StoreCheckoutAddressVerificationPage extends StoreCheckoutEditPag
             printf(
                 SwatString::minimizeEntities(
                     Store::_(
-                        'If there is a mistake, %splease return to the ' .
-                        'previous step%s to change the address, otherwise ' .
-                        'continue to the next step.'
+                        'If there is a mistake, %splease return to the '
+                        . 'previous step%s to change the address, otherwise '
+                        . 'continue to the next step.'
                     )
                 ),
                 sprintf(

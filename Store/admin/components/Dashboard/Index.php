@@ -52,8 +52,8 @@ class StoreDashboardIndex extends AdminIndex
             ), SwatMessage::WARNING);
 
             $message->content_type = 'text/xml';
-            $message->secondary_content =
-                $this->getSuspiciousAccountLink($account_count);
+            $message->secondary_content
+                = $this->getSuspiciousAccountLink($account_count);
 
             $this->ui->getWidget('message_display')->add(
                 $message,
@@ -92,8 +92,8 @@ class StoreDashboardIndex extends AdminIndex
             $this->ui->getWidget('order_stats_frame')->visible = false;
         }
 
-        $this->ui->getWidget('new_content_frame')->visible =
-            $this->isNewContentFrameVisible();
+        $this->ui->getWidget('new_content_frame')->visible
+            = $this->isNewContentFrameVisible();
     }
 
     protected function isNewContentFrameVisible()
@@ -144,8 +144,8 @@ class StoreDashboardIndex extends AdminIndex
             $ds->rating = $content['rating'];
 
             if ($content['icon'] !== null) {
-                $ds->content = '<span class="' . $content['icon'] . '"></span>' .
-                    $ds->content;
+                $ds->content = '<span class="' . $content['icon'] . '"></span>'
+                    . $ds->content;
             }
 
             $store->add($ds);

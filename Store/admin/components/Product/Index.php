@@ -72,13 +72,13 @@ class StoreProductIndex extends AdminSearch
         $flydown->addOptionsByArray($options);
         $search_flydown->addOptionsByArray($options);
 
-        $this->ui->getWidget('item_minimum_quantity_group')->visible =
-            (count($options) > 0);
+        $this->ui->getWidget('item_minimum_quantity_group')->visible
+            = (count($options) > 0);
 
         $this->ui->getWidget(
             'search_item_minimum_quantity_group_field'
-        )->visible =
-            (count($options) > 0);
+        )->visible
+            = (count($options) > 0);
     }
 
     /**
@@ -128,13 +128,13 @@ class StoreProductIndex extends AdminSearch
             $replicators[$type->id] = ucfirst($type->shortname);
         }
 
-        $attributes_field =
-            $this->ui->getWidget('attributes_form_field');
+        $attributes_field
+            = $this->ui->getWidget('attributes_form_field');
 
         $attributes_field->replicators = $replicators;
 
-        $attributes_field =
-            $this->ui->getWidget('remove_attributes_form_field');
+        $attributes_field
+            = $this->ui->getWidget('remove_attributes_form_field');
 
         $attributes_field->replicators = $replicators;
     }
@@ -237,8 +237,8 @@ class StoreProductIndex extends AdminSearch
                     break;
                 }
 
-                if ($this->ui->getWidget('remove_attributes_queue')->value ===
-                    true) {
+                if ($this->ui->getWidget('remove_attributes_queue')->value
+                    === true) {
                     $this->app->replacePage('Product/QueueAttributes');
                     $this->app->getPage()->setItems($view->getSelection());
                     $this->app->getPage()->setAttributes($attributes);
@@ -253,8 +253,8 @@ class StoreProductIndex extends AdminSearch
                 break;
 
             case 'add_sale_discount':
-                $sale_discount =
-                    $this->ui->getWidget('sale_discount_flydown')->value;
+                $sale_discount
+                    = $this->ui->getWidget('sale_discount_flydown')->value;
 
                 if ($sale_discount === null) {
                     break;
@@ -409,8 +409,8 @@ class StoreProductIndex extends AdminSearch
 
                     $flush_memcache = true;
                 } else {
-                    $message = new SwatMessage(Store::_('None of the items ' .
-                        'selected had a minimum quantity sale group.'));
+                    $message = new SwatMessage(Store::_('None of the items '
+                        . 'selected had a minimum quantity sale group.'));
                 }
 
                 $this->app->messages->add($message);
@@ -562,8 +562,8 @@ class StoreProductIndex extends AdminSearch
 
         $this->ui->getWidget('toolbar')->visible = true;
 
-        $this->ui->getWidget('search_items_disclosure')->open =
-            ($this->ui->getWidget('search_items')->value != '');
+        $this->ui->getWidget('search_items_disclosure')->open
+            = ($this->ui->getWidget('search_items')->value != '');
 
         $category_flydown = $this->ui->getWidget('search_category');
 
@@ -626,8 +626,8 @@ class StoreProductIndex extends AdminSearch
         $this->setProductVisibility($rs);
 
         if (count($rs) > 0) {
-            $this->ui->getWidget('results_message')->content =
-                $pager->getResultsMessage('result', 'results');
+            $this->ui->getWidget('results_message')->content
+                = $pager->getResultsMessage('result', 'results');
         }
 
         return $rs;

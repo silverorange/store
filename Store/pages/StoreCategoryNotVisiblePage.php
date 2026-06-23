@@ -29,8 +29,8 @@ class StoreCategoryNotVisiblePage extends StoreNotVisiblePage
 
         $category = $categories->getFirst();
 
-        $this->layout->data->title =
-            SwatString::minimizeEntities((string) $category->title);
+        $this->layout->data->title
+            = SwatString::minimizeEntities((string) $category->title);
 
         $this->ui->getWidget('content')->content = sprintf(
             Store::_(

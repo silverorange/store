@@ -72,14 +72,14 @@ class StoreItemGroupDelete extends AdminDBDelete
 
         $dep->entries = $this->getDependencyEntries();
 
-        $message_content = '<p>' . Store::_('Items in removed groups will ' .
-            '%snot%s be deleted. Items in removed groups will still be ' .
-            'available for sale and will appear ungrouped on the website.') .
-            '</p>';
+        $message_content = '<p>' . Store::_('Items in removed groups will '
+            . '%snot%s be deleted. Items in removed groups will still be '
+            . 'available for sale and will appear ungrouped on the website.')
+            . '</p>';
 
         $message = $this->ui->getWidget('confirmation_message');
-        $message->content = $dep->getMessage() .
-            sprintf(
+        $message->content = $dep->getMessage()
+            . sprintf(
                 $message_content,
                 '<em>',
                 '</em>'

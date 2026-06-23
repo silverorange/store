@@ -71,8 +71,8 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
             && $this->ui->getWidget('percentage')->value == null) {
             $message = new SwatMessage(
                 sprintf(
-                    Store::_('Either an ' .
-                    '%3$%1$s%4$s or a %3$s%2$s%4$s is required.'),
+                    Store::_('Either an '
+                    . '%3$%1$s%4$s or a %3$s%2$s%4$s is required.'),
                     $this->ui->getWidget('amount')->parent->title,
                     $this->ui->getWidget('percentage')->parent->title,
                     '<strong>',
@@ -131,8 +131,8 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
         parent::buildNavBar();
 
         $final_entry = $this->navbar->popEntry();
-        $parent_id = ($this->parent !== null) ? $this->parent :
-            $this->shipping_rate->getInternalValue('shipping_type');
+        $parent_id = ($this->parent !== null) ? $this->parent
+            : $this->shipping_rate->getInternalValue('shipping_type');
 
         $this->navbar->addEntry(new SwatNavBarEntry(
             Store::_('Shipping Type Details'),
@@ -145,8 +145,8 @@ class StoreShippingTypeRateEdit extends AdminDBEdit
     protected function loadDBData()
     {
         $this->ui->setValues($this->shipping_rate->getAttributes());
-        $this->ui->getWidget('region')->value =
-            $this->shipping_rate->getInternalValue('region');
+        $this->ui->getWidget('region')->value
+            = $this->shipping_rate->getInternalValue('region');
 
         $this->setZeros();
     }

@@ -236,9 +236,9 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
         $message = new SwatMessage('', 'notification');
         $message->secondary_content = '<p>' . Store::_(
-            'To ensure effective delivery, we have compared your address to ' .
-            'our postal address database for formatting and style. Please ' .
-            'review the recommendations below:'
+            'To ensure effective delivery, we have compared your address to '
+            . 'our postal address database for formatting and style. Please '
+            . 'review the recommendations below:'
         ) . '</p>';
 
         if ($valid) {
@@ -391,8 +391,8 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
 
         $form = $this->ui->getWidget('edit_form');
         if (!$this->isNew($form)) {
-            $this->ui->getWidget('submit_button')->title =
-                Store::_('Update Address');
+            $this->ui->getWidget('submit_button')->title
+                = Store::_('Update Address');
         } elseif (!$form->isProcessed()) {
             $this->setDefaultValues($this->app->session->account);
         }
@@ -449,8 +449,8 @@ class StoreAccountAddressEditPage extends SiteDBEditPage
         );
 
         $provstate = $this->ui->getWidget('provstate');
-        $provstate->provstate_id =
-            $this->address->getInternalValue('provstate');
+        $provstate->provstate_id
+            = $this->address->getInternalValue('provstate');
 
         $provstate->provstate_other = $this->address->provstate_other;
     }

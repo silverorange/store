@@ -228,8 +228,8 @@ class StoreProductQueueAttributes extends AdminDBConfirmation
         printf(
             $message,
             implode(', ', $this->getAttributeTitles()),
-            ($this->action == 'add') ? Store::_('added to') :
-                Store::_('removed from')
+            ($this->action == 'add') ? Store::_('added to')
+                : Store::_('removed from')
         );
 
         echo '<ul>';

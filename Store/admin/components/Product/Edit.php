@@ -282,8 +282,8 @@ class StoreProductEdit extends AdminDBEdit
         if ($button->hasBeenClicked()) {
             // manage skus
             $this->app->relocate(
-                $this->app->getBaseHref() . 'Product/Details?id=' .
-                    $this->product->id
+                $this->app->getBaseHref() . 'Product/Details?id='
+                    . $this->product->id
             );
         } else {
             parent::relocate();
@@ -330,8 +330,8 @@ class StoreProductEdit extends AdminDBEdit
             );
 
             $message->secondary_content = Store::_(
-                'It may be possible to purchase this product on the front-' .
-                'end, but browsing to this product will not be possible.'
+                'It may be possible to purchase this product on the front-'
+                . 'end, but browsing to this product will not be possible.'
             );
 
             $this->ui->getWidget('edit_warnings')->add(
@@ -515,8 +515,8 @@ class StoreProductEdit extends AdminDBEdit
         $this->ui->setValues($this->product->getAttributes());
 
         // make sure that the catalog defaults correctly
-        $this->ui->getWidget('catalog')->value =
-            $this->product->getInternalValue('catalog');
+        $this->ui->getWidget('catalog')->value
+            = $this->product->getInternalValue('catalog');
 
         $this->loadAttributes();
     }
@@ -535,8 +535,8 @@ class StoreProductEdit extends AdminDBEdit
         $attribute_array = [];
 
         foreach ($attributes_field->replicators as $id => $title) {
-            $attributes_field->getWidget('attributes', $id)->values =
-                $attribute_values;
+            $attributes_field->getWidget('attributes', $id)->values
+                = $attribute_values;
         }
     }
 

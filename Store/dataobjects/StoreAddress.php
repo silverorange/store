@@ -848,8 +848,8 @@ abstract class StoreAddress extends SwatDBDataObject
             $equal = false;
         }
 
-        if (trim(mb_strtoupper($this->getCompany())) !=
-            trim(mb_strtoupper($address->getCompany()))) {
+        if (trim(mb_strtoupper($this->getCompany()))
+            != trim(mb_strtoupper($address->getCompany()))) {
             $equal = false;
         }
 
@@ -862,8 +862,8 @@ abstract class StoreAddress extends SwatDBDataObject
             $equal = false;
         }
 
-        if (trim(mb_strtoupper($this->getLine2())) !=
-            trim(mb_strtoupper($address->getLine2()))) {
+        if (trim(mb_strtoupper($this->getLine2()))
+            != trim(mb_strtoupper($address->getLine2()))) {
             $equal = false;
         }
 
@@ -871,8 +871,8 @@ abstract class StoreAddress extends SwatDBDataObject
             $equal = false;
         }
 
-        if (mb_strtoupper($this->getProvStateOther()) !=
-            mb_strtoupper($address->getProvStateOther())) {
+        if (mb_strtoupper($this->getProvStateOther())
+            != mb_strtoupper($address->getProvStateOther())) {
             $equal = false;
         }
 
@@ -881,8 +881,8 @@ abstract class StoreAddress extends SwatDBDataObject
         }
 
         if ($this->country->id === 'US') {
-            if (mb_substr($this->getPostalCode(), 0, 5) !=
-                mb_substr($address->getPostalCode(), 0, 5)) {
+            if (mb_substr($this->getPostalCode(), 0, 5)
+                != mb_substr($address->getPostalCode(), 0, 5)) {
                 $equal = false;
             }
         } else {
@@ -1491,11 +1491,11 @@ abstract class StoreAddress extends SwatDBDataObject
                 $this->setCity($result->VerifyAddressUSAResult->City);
                 $this->setCompany($result->VerifyAddressUSAResult->Firm);
                 $this->setPostalCode($result->VerifyAddressUSAResult->ZipPlus4);
-                $this->po_box =
-                    ($result->VerifyAddressUSAResult->RecordType === 'P');
+                $this->po_box
+                    = ($result->VerifyAddressUSAResult->RecordType === 'P');
 
-                if ($this->provstate->abbreviation !==
-                    $result->VerifyAddressUSAResult->State) {
+                if ($this->provstate->abbreviation
+                    !== $result->VerifyAddressUSAResult->State) {
                     $class = SwatDBClassMap::get(StoreProvState::class);
                     $provstate = new $class();
                     $provstate->setDatabase($app->db);

@@ -58,8 +58,8 @@ class StoreArticle extends SiteArticle
 			order by displayorder, title';
 
         if ($this->region === null) {
-            throw new StoreException('Region not set on article dataobject; ' .
-                'call the setRegion() method.');
+            throw new StoreException('Region not set on article dataobject; '
+                . 'call the setRegion() method.');
         }
 
         $sql = sprintf(
@@ -160,8 +160,8 @@ class StoreArticle extends SiteArticle
 			order by Category.displayorder asc';
 
         if ($this->region === null) {
-            throw new StoreException('Region not set on article dataobject; ' .
-                'call the setRegion() method.');
+            throw new StoreException('Region not set on article dataobject; '
+                . 'call the setRegion() method.');
         }
 
         $sql = sprintf(
@@ -197,8 +197,8 @@ class StoreArticle extends SiteArticle
 			order by Product.title';
 
         if ($this->region === null) {
-            throw new StoreException('Region not set on article dataobject; ' .
-                'call the setRegion() method.');
+            throw new StoreException('Region not set on article dataobject; '
+                . 'call the setRegion() method.');
         }
 
         $sql = sprintf(
@@ -229,8 +229,8 @@ class StoreArticle extends SiteArticle
 			order by displayorder, title';
 
         if ($this->region === null) {
-            throw new StoreException('Region not set on article dataobject; ' .
-                'call the setRegion() method.');
+            throw new StoreException('Region not set on article dataobject; '
+                . 'call the setRegion() method.');
         }
 
         $sql = sprintf(

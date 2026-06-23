@@ -40,8 +40,8 @@ class StoreProvStateEdit extends AdminDBEdit
         if ($this->id !== null) {
             if (!$this->prov_state->load($this->id)) {
                 throw new AdminNotFoundException(
-                    sprintf(Admin::_('Province/State with an id "%s"' .
-                        ' not found'), $this->id)
+                    sprintf(Admin::_('Province/State with an id "%s"'
+                        . ' not found'), $this->id)
                 );
             }
         }

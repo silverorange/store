@@ -39,8 +39,8 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
         $image_path = 'packages/store/images/';
 
         $complete_img_tag = new SwatHtmlTag('img');
-        $complete_img_tag->src =
-            $image_path . 'store-order-status-cell-renderer-complete.png';
+        $complete_img_tag->src
+            = $image_path . 'store-order-status-cell-renderer-complete.png';
 
         $complete_img_tag->alt = Store::_('complete');
         $complete_img_tag->title = $title;
@@ -48,8 +48,8 @@ class StoreOrderStatusCellRenderer extends SwatCellRenderer
         $complete_img_tag->height = 10;
 
         $incomplete_img_tag = new SwatHtmlTag('img');
-        $incomplete_img_tag->src =
-            $image_path . 'store-order-status-cell-renderer-incomplete.png';
+        $incomplete_img_tag->src
+            = $image_path . 'store-order-status-cell-renderer-incomplete.png';
 
         $incomplete_img_tag->alt = Store::_('incomplete');
         $incomplete_img_tag->title = $title;

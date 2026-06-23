@@ -116,8 +116,8 @@ class StoreCardType extends SwatDBDataObject
         $this->checkDB();
 
         if ($this->id === null) {
-            throw new StoreException('Card type must have an id set ' .
-                'before region availability can be determined.');
+            throw new StoreException('Card type must have an id set '
+                . 'before region availability can be determined.');
         }
 
         $sql = sprintf(
@@ -356,9 +356,9 @@ class StoreCardType extends SwatDBDataObject
 
         // expand the number if it is too small
         if (mb_strlen($number) < $format_len) {
-            $number = ($zero_fill) ?
-                str_pad($number, $format_len, '0', STR_PAD_LEFT) :
-                str_pad($number, $format_len, '*', STR_PAD_LEFT);
+            $number = ($zero_fill)
+                ? str_pad($number, $format_len, '0', STR_PAD_LEFT)
+                : str_pad($number, $format_len, '*', STR_PAD_LEFT);
         }
 
         // format number (from right to left)

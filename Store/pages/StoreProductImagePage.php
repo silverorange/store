@@ -213,8 +213,8 @@ class StoreProductImagePage extends StorePage
         $this->back_link->title = Store::_('Back to Product Page');
 
         if (property_exists($this->layout, 'navbar')) {
-            $this->back_link->link =
-                $this->layout->navbar->getEntryByPosition(-1)->link;
+            $this->back_link->link
+                = $this->layout->navbar->getEntryByPosition(-1)->link;
         } else {
             $uri = explode('/', $this->app->getUri());
             array_pop($uri);
@@ -257,8 +257,8 @@ class StoreProductImagePage extends StorePage
                     $download_link = new SwatToolLink();
                     $download_link->link = $this->image->getURI('huge');
                     $download_link->id = 'huge_link';
-                    $download_link->title =
-                        Store::_('Download High Resolution Image');
+                    $download_link->title
+                        = Store::_('Download High Resolution Image');
 
                     $download_link->display();
                 }

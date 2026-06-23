@@ -84,8 +84,8 @@ class StoreCountryEdit extends AdminDBEdit
 
             if ($count > 0) {
                 $message = new SwatMessage(
-                    Store::_('<strong>Country Code</strong> already exists. ' .
-                    'Country code must be unique for each country.'),
+                    Store::_('<strong>Country Code</strong> already exists. '
+                    . 'Country code must be unique for each country.'),
                     'error'
                 );
 

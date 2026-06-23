@@ -92,8 +92,8 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
         ));
 
         $contents = $generator->generate();
-        if (file_put_contents($filename_with_path, $contents, LOCK_EX) ===
-            false) {
+        if (file_put_contents($filename_with_path, $contents, LOCK_EX)
+            === false) {
             $this->terminate(sprintf(Store::_(
                 'Error writing file: %s',
                 $filename_with_path
@@ -124,8 +124,8 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
             $ftp_connection = ftp_connect($server);
 
             if ($ftp_connection === false) {
-                throw new SwatException('Unable to connect to FTP server: ' .
-                    $server);
+                throw new SwatException('Unable to connect to FTP server: '
+                    . $server);
             }
 
             $login_result = ftp_login(

@@ -40,8 +40,8 @@ class StorePaymentTypeIndex extends AdminIndex
 
             case 'enable':
                 $region = $this->ui->getWidget('enable_region')->value;
-                $region_list = ($region > 0) ?
-                    [$region] : array_flip($this->regions);
+                $region_list = ($region > 0)
+                    ? [$region] : array_flip($this->regions);
 
                 $insert_sql = sprintf(
                     'insert into PaymentTypeRegionBinding
@@ -79,8 +79,8 @@ class StorePaymentTypeIndex extends AdminIndex
             case 'disable':
                 $region = $this->ui->getWidget('disable_region')->value;
 
-                $region_where_clause = ($region > 0) ?
-                    sprintf(
+                $region_where_clause = ($region > 0)
+                    ? sprintf(
                         'region = %s and',
                         $this->app->db->quote($region, 'integer')
                     ) : '';
@@ -143,8 +143,8 @@ class StorePaymentTypeIndex extends AdminIndex
         $rs = SwatDB::query($this->app->db, $sql);
 
         $view = $this->ui->getWidget('index_view');
-        $view->getColumn('status')->getRendererByPosition()->db =
-            $this->app->db;
+        $view->getColumn('status')->getRendererByPosition()->db
+            = $this->app->db;
 
         return $rs;
     }

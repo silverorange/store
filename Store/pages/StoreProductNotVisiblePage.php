@@ -29,8 +29,8 @@ class StoreProductNotVisiblePage extends StoreNotVisiblePage
 
         $product = $categories->getFirst();
 
-        $this->layout->data->title =
-            SwatString::minimizeEntities((string) $product->title);
+        $this->layout->data->title
+            = SwatString::minimizeEntities((string) $product->title);
 
         $this->ui->getWidget('content')->content = sprintf(
             Store::_(

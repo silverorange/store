@@ -24,8 +24,8 @@ class StorePaymentMethodView extends SwatControl
 
     public function init()
     {
-        $this->remove_button =
-            new SwatConfirmationButton($this->id);
+        $this->remove_button
+            = new SwatConfirmationButton($this->id);
 
         $this->remove_button->parent = $this;
     }
