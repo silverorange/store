@@ -111,8 +111,8 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
         if (count($invalid_rows) > 0) {
             $message_text .= sprintf(
                 '<p><strong>%s</strong></p><ul>',
-                Store::_('There are no products attached to the following ' .
-                'categories:')
+                Store::_('There are no products attached to the following '
+                . 'categories:')
             );
 
             foreach ($invalid_rows as $row) {
@@ -129,9 +129,9 @@ class StoreCategoryRemoveProducts extends AdminDBConfirmation
         $note = $this->ui->getWidget('note');
         $note->visible = true;
         $note->content_type = 'text/xml';
-        $note->content = Store::_('Removed products <em>will not be ' .
-            'deleted</em>. Removed products will only be removed from the ' .
-            'categories above.');
+        $note->content = Store::_('Removed products <em>will not be '
+            . 'deleted</em>. Removed products will only be removed from the '
+            . 'categories above.');
 
         $form = $this->ui->getWidget('confirmation_form');
         $form->addHiddenField('category', $this->category_id);

@@ -56,8 +56,8 @@ class StoreAttributeIndex extends AdminIndex
         $store = new SwatTableStore();
         foreach ($attributes as $attribute) {
             $ds = new SwatDetailsStore($attribute);
-            $ds->order_sensitive =
-                (count($attribute->attribute_type->attributes) > 0);
+            $ds->order_sensitive
+                = (count($attribute->attribute_type->attributes) > 0);
 
             $store->add($ds);
         }

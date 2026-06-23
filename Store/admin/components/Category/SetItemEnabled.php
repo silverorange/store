@@ -90,8 +90,8 @@ class StoreCategorySetItemEnabled extends AdminDBConfirmation
         } else {
             $message_text = $this->getEnabledText('confirmation', $count);
 
-            $this->ui->getWidget('yes_button')->title =
-                $this->getEnabledText('button', $count);
+            $this->ui->getWidget('yes_button')->title
+                = $this->getEnabledText('button', $count);
         }
 
         $message = $this->ui->getWidget('confirmation_message');

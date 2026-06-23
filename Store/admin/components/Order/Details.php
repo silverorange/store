@@ -56,8 +56,8 @@ abstract class StoreOrderDetails extends AdminPage
 
             $instance_id = $this->app->getInstanceId();
             if ($instance_id !== null) {
-                $order_instance_id = ($this->order->instance === null) ?
-                    null : $this->order->instance->id;
+                $order_instance_id = ($this->order->instance === null)
+                    ? null : $this->order->instance->id;
 
                 if ($order_instance_id !== $instance_id) {
                     throw new AdminNotFoundException(sprintf(Store::_(

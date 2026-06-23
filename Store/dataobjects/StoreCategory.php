@@ -222,8 +222,8 @@ class StoreCategory extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -280,8 +280,8 @@ class StoreCategory extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -338,8 +338,8 @@ class StoreCategory extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -381,8 +381,8 @@ class StoreCategory extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                'Region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                'Region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -421,8 +421,8 @@ class StoreCategory extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                'Region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                'Region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -476,8 +476,8 @@ class StoreCategory extends SwatDBDataObject
             $path = 'store';
             foreach ($this->queryNavBar() as $row) {
                 $path .= '/' . $row->shortname;
-                $this->navbar_entries[] =
-                    new SwatNavBarEntry($row->title, $path);
+                $this->navbar_entries[]
+                    = new SwatNavBarEntry($row->title, $path);
             }
         }
 
@@ -497,8 +497,8 @@ class StoreCategory extends SwatDBDataObject
 
             foreach ($this->queryNavBar() as $row) {
                 $link = sprintf('Category/Index?id=%s', $row->id);
-                $this->admin_navbar_entries[] =
-                    new SwatNavBarEntry($row->title, $link);
+                $this->admin_navbar_entries[]
+                    = new SwatNavBarEntry($row->title, $link);
             }
         }
 
@@ -608,8 +608,8 @@ class StoreCategory extends SwatDBDataObject
             }
 
             if (isset($row['available_product_count'])) {
-                $this->available_product_count[$row['region_id']] =
-                    $row['available_product_count'];
+                $this->available_product_count[$row['region_id']]
+                    = $row['available_product_count'];
             }
         }
     }
@@ -685,8 +685,8 @@ class StoreCategory extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -729,8 +729,8 @@ class StoreCategory extends SwatDBDataObject
 			) order by displayorder, title';
 
         if ($this->region === null) {
-            throw new StoreException('Region not set on the category ' .
-                'dataobject; call the setRegion() method.');
+            throw new StoreException('Region not set on the category '
+                . 'dataobject; call the setRegion() method.');
         }
 
         $sql = sprintf(

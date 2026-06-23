@@ -97,8 +97,8 @@ class StoreProductImageOrder extends AdminDBOrder
 
         // use ImageDimension so width of change-order always fits
         if ($dimension !== null) {
-            $this->ui->getWidget('order')->width =
-                ($dimension->max_width + 24) . 'px';
+            $this->ui->getWidget('order')->width
+                = ($dimension->max_width + 24) . 'px';
         } else {
             $this->ui->getWidget('order')->width = '105px';
         }

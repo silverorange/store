@@ -69,13 +69,13 @@ class StoreProvStateFlydown extends SwatFlydown
             );
 
             if ($country_title === null) {
-                $message_content = Store::_('The selected %s is ' .
-                    'not a province or state of the selected country.');
+                $message_content = Store::_('The selected %s is '
+                    . 'not a province or state of the selected country.');
             } else {
                 $message_content = sprintf(
-                    Store::_('The selected ' .
-                    '%%s is not a province or state of the selected ' .
-                    'country %s%s%s.'),
+                    Store::_('The selected '
+                    . '%%s is not a province or state of the selected '
+                    . 'country %s%s%s.'),
                     '<strong>',
                     $country_title,
                     '</strong>'

@@ -200,33 +200,33 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         $address = new $class_name();
 
         if ($address_list->value === null || $address_list->value === 'new') {
-            $address->fullname =
-                $this->ui->getWidget('billing_address_fullname')->value;
+            $address->fullname
+                = $this->ui->getWidget('billing_address_fullname')->value;
 
-            $address->company =
-                $this->ui->getWidget('billing_address_company')->value;
+            $address->company
+                = $this->ui->getWidget('billing_address_company')->value;
 
-            $address->line1 =
-                $this->ui->getWidget('billing_address_line1')->value;
+            $address->line1
+                = $this->ui->getWidget('billing_address_line1')->value;
 
-            $address->line2 =
-                $this->ui->getWidget('billing_address_line2')->value;
+            $address->line2
+                = $this->ui->getWidget('billing_address_line2')->value;
 
-            $address->city =
-                $this->ui->getWidget('billing_address_city')->value;
+            $address->city
+                = $this->ui->getWidget('billing_address_city')->value;
 
             $provstate = $this->ui->getWidget('billing_address_provstate');
             $address->provstate = $provstate->provstate_id;
             $address->provstate_other = $provstate->provstate_other;
 
-            $address->postal_code =
-                $this->ui->getWidget('billing_address_postalcode')->value;
+            $address->postal_code
+                = $this->ui->getWidget('billing_address_postalcode')->value;
 
-            $address->country =
-                $this->ui->getWidget('billing_address_country')->value;
+            $address->country
+                = $this->ui->getWidget('billing_address_country')->value;
 
-            $address->phone =
-                $this->ui->getWidget('billing_address_phone')->value;
+            $address->phone
+                = $this->ui->getWidget('billing_address_phone')->value;
         } else {
             $address_id = intval($address_list->value);
 
@@ -237,14 +237,14 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
                 && $other_address->getAccountAddressId() == $address_id) {
                 $address = $other_address;
             } else {
-                $account_address =
-                    $this->app->session->account->addresses->getByIndex(
+                $account_address
+                    = $this->app->session->account->addresses->getByIndex(
                         $address_id
                     );
 
                 if (!$account_address instanceof StoreAccountAddress) {
-                    throw new StoreException('Account address not found. ' .
-                        "Address with id ‘{$address_id}’ not found.");
+                    throw new StoreException('Account address not found. '
+                        . "Address with id ‘{$address_id}’ not found.");
                 }
 
                 $address->copyFrom($account_address);
@@ -281,56 +281,56 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
         if ($order->billing_address === null) {
             if ($this->app->session->isLoggedIn()) {
-                $this->ui->getWidget('billing_address_fullname')->value =
-                    $this->app->session->account->fullname;
+                $this->ui->getWidget('billing_address_fullname')->value
+                    = $this->app->session->account->fullname;
 
-                $this->ui->getWidget('billing_address_phone')->value =
-                    $this->app->session->account->phone;
+                $this->ui->getWidget('billing_address_phone')->value
+                    = $this->app->session->account->phone;
 
-                $this->ui->getWidget('billing_address_company')->value =
-                    $this->app->session->account->company;
+                $this->ui->getWidget('billing_address_company')->value
+                    = $this->app->session->account->company;
 
                 $default_address = $this->getDefaultBillingAddress();
                 if ($default_address !== null) {
-                    $this->ui->getWidget('billing_address_list')->value =
-                        $default_address->id;
+                    $this->ui->getWidget('billing_address_list')->value
+                        = $default_address->id;
                 }
             }
         } else {
             if ($order->billing_address->getAccountAddressId() === null) {
-                $this->ui->getWidget('billing_address_fullname')->value =
-                    $order->billing_address->fullname;
+                $this->ui->getWidget('billing_address_fullname')->value
+                    = $order->billing_address->fullname;
 
-                $this->ui->getWidget('billing_address_company')->value =
-                    $order->billing_address->company;
+                $this->ui->getWidget('billing_address_company')->value
+                    = $order->billing_address->company;
 
-                $this->ui->getWidget('billing_address_line1')->value =
-                    $order->billing_address->line1;
+                $this->ui->getWidget('billing_address_line1')->value
+                    = $order->billing_address->line1;
 
-                $this->ui->getWidget('billing_address_line2')->value =
-                    $order->billing_address->line2;
+                $this->ui->getWidget('billing_address_line2')->value
+                    = $order->billing_address->line2;
 
-                $this->ui->getWidget('billing_address_city')->value =
-                    $order->billing_address->city;
+                $this->ui->getWidget('billing_address_city')->value
+                    = $order->billing_address->city;
 
                 $provstate = $this->ui->getWidget('billing_address_provstate');
-                $provstate->provstate_id =
-                    $order->billing_address->getInternalValue('provstate');
+                $provstate->provstate_id
+                    = $order->billing_address->getInternalValue('provstate');
 
-                $provstate->provstate_other =
-                    $order->billing_address->provstate_other;
+                $provstate->provstate_other
+                    = $order->billing_address->provstate_other;
 
-                $this->ui->getWidget('billing_address_postalcode')->value =
-                    $order->billing_address->postal_code;
+                $this->ui->getWidget('billing_address_postalcode')->value
+                    = $order->billing_address->postal_code;
 
-                $this->ui->getWidget('billing_address_country')->value =
-                    $order->billing_address->getInternalValue('country');
+                $this->ui->getWidget('billing_address_country')->value
+                    = $order->billing_address->getInternalValue('country');
 
-                $this->ui->getWidget('billing_address_phone')->value =
-                    $order->billing_address->phone;
+                $this->ui->getWidget('billing_address_phone')->value
+                    = $order->billing_address->phone;
             } else {
-                $this->ui->getWidget('billing_address_list')->value =
-                    $order->billing_address->getAccountAddressId();
+                $this->ui->getWidget('billing_address_list')->value
+                    = $order->billing_address->getAccountAddressId();
             }
         }
     }
@@ -340,14 +340,14 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
         $address = null;
 
         if ($this->app->session->isLoggedIn()) {
-            $default_address =
-                $this->app->session->account->getDefaultBillingAddress();
+            $default_address
+                = $this->app->session->account->getDefaultBillingAddress();
 
             if ($default_address !== null) {
                 // only default to addresses that actually appear in the list
                 $address_list = $this->ui->getWidget('billing_address_list');
-                $options =
-                    $address_list->getOptionsByValue($default_address->id);
+                $options
+                    = $address_list->getOptionsByValue($default_address->id);
 
                 if (count($options) > 0) {
                     $address = $default_address;
@@ -361,11 +361,11 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
     protected function buildList()
     {
         $address_list = $this->ui->getWidget('billing_address_list');
-        $address_list_container =
-            $this->ui->getWidget('billing_address_list_container');
+        $address_list_container
+            = $this->ui->getWidget('billing_address_list_container');
 
-        $content_block =
-            $this->ui->getWidget('account_billing_address_region_message');
+        $content_block
+            = $this->ui->getWidget('account_billing_address_region_message');
 
         if ($this->app->session->isLoggedIn()) {
             $this->buildAccountBillingAddresses($address_list);
@@ -409,11 +409,11 @@ class StoreCheckoutBillingAddressPage extends StoreCheckoutAddressPage
 
     protected function getAccountAddresses()
     {
-        $billing_country_ids =
-            $this->app->getRegion()->billing_countries->getIndexes();
+        $billing_country_ids
+            = $this->app->getRegion()->billing_countries->getIndexes();
 
-        $billing_provstate_ids =
-            $this->app->getRegion()->billing_provstates->getIndexes();
+        $billing_provstate_ids
+            = $this->app->getRegion()->billing_provstates->getIndexes();
 
         // efficiently load country and provstate on account addresses
         $addresses = $this->app->session->account->addresses;

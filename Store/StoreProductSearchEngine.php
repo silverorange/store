@@ -313,16 +313,16 @@ class StoreProductSearchEngine extends SiteSearchEngine
         ];
 
         if ($this->category === null) {
-            $terms['primary_category'] =
-                'ProductPrimaryCategoryView.primary_category';
+            $terms['primary_category']
+                = 'ProductPrimaryCategoryView.primary_category';
 
-            $terms['path'] =
-                'getCategoryPath(ProductPrimaryCategoryView.primary_category)';
+            $terms['path']
+                = 'getCategoryPath(ProductPrimaryCategoryView.primary_category)';
         } else {
             $terms['primary_category'] = 'CategoryProductBinding.category';
 
-            $terms['path'] =
-                'getCategoryPath(CategoryProductBinding.category)';
+            $terms['path']
+                = 'getCategoryPath(CategoryProductBinding.category)';
         }
 
         return $terms;
@@ -348,8 +348,8 @@ class StoreProductSearchEngine extends SiteSearchEngine
         );
 
         if ($this->fulltext_result !== null) {
-            $clause .= ' ' .
-                $this->fulltext_result->getJoinClause('Product.id', 'product');
+            $clause .= ' '
+                . $this->fulltext_result->getJoinClause('Product.id', 'product');
         }
 
         if ($this->sku !== null) {

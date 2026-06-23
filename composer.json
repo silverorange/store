@@ -39,15 +39,6 @@
       "email": "steven@silverorange.com"
     }
   ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://composer.silverorange.com",
-      "only": [
-        "silverorange/*"
-      ]
-    }
-  ],
   "require": {
     "php": ">=8.2",
     "ext-imagick": "*",
@@ -60,8 +51,9 @@
     "silverorange/yui": "^1.0.11"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "3.64.0",
-    "phpstan/phpstan": "^1.12"
+    "friendsofphp/php-cs-fixer": "3.88.2",
+    "phpstan/phpstan": "^2.2",
+    "rector/rector": "^2.4"
   },
   "suggest": {
     "authorizenet/authorizenet": "Payments with Authorize.net.",
@@ -72,10 +64,12 @@
   "scripts": {
     "phpcs": "./vendor/bin/php-cs-fixer check -v",
     "phpcs:ci": "./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --no-interaction --show-progress=none --diff --using-cache=no -vvv",
-    "phpcs:write": "./vendor/bin/php-cs-fixer fix -v",
+    "phpcs:fix": "./vendor/bin/php-cs-fixer fix -v",
     "phpstan": "./vendor/bin/phpstan analyze",
     "phpstan:ci": "./vendor/bin/phpstan analyze -vvv --no-progress --memory-limit 2G",
-    "phpstan:baseline": "./vendor/bin/phpstan analyze --generate-baseline"
+    "phpstan:baseline": "./vendor/bin/phpstan analyze --generate-baseline",
+    "rector": "./vendor/bin/rector --dry-run",
+    "rector:fix": "./vendor/bin/rector"
   },
   "autoload": {
     "classmap": [

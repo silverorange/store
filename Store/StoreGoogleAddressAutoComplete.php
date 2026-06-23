@@ -35,8 +35,8 @@ class StoreGoogleAddressAutoComplete extends SwatControl
             $script = new SwatHtmlTag('script');
             $script->type = 'text/javascript';
             $script->src = sprintf(
-                'https://maps.googleapis.com/maps/api/js' .
-                '?key=%s&libraries=places',
+                'https://maps.googleapis.com/maps/api/js'
+                . '?key=%s&libraries=places',
                 urlencode($address_config->api_key)
             );
 
@@ -46,8 +46,8 @@ class StoreGoogleAddressAutoComplete extends SwatControl
             Swat::displayInlineJavaScript($this->getInlineJavaScript());
 
             $this->addJavascript(
-                'packages/store/javascript/' .
-                'store-google-address-auto-complete.js'
+                'packages/store/javascript/'
+                . 'store-google-address-auto-complete.js'
             );
         }
     }

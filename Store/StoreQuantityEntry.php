@@ -48,18 +48,18 @@ class StoreQuantityEntry extends SwatIntegerEntry
 
         switch ($id) {
             case 'integer':
-                $message->primary_content =
-                    Store::_('The %s field must be a whole number.');
+                $message->primary_content
+                    = Store::_('The %s field must be a whole number.');
 
                 break;
 
             case 'below-minimum':
                 if ($this->minimum_value === 0) {
-                    $message->primary_content =
-                        Store::_('The %%s field must be at least 1.');
+                    $message->primary_content
+                        = Store::_('The %%s field must be at least 1.');
                 } else {
-                    $message->primary_content =
-                        Store::_('The %%s field must be at least %s.');
+                    $message->primary_content
+                        = Store::_('The %%s field must be at least %s.');
                 }
 
                 break;

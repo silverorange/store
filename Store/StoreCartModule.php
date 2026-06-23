@@ -217,15 +217,15 @@ class StoreCartModule extends SiteApplicationModule
     public function addCart(StoreCart $cart, $id)
     {
         if (isset($this->carts[$id])) {
-            throw new StoreException("A cart with the id '{$id}' already " .
-                'exists in this module.');
+            throw new StoreException("A cart with the id '{$id}' already "
+                . 'exists in this module.');
         }
 
         $properties = get_object_vars($this);
         if (array_key_exists($id, $properties)) {
-            throw new SiteException("Invalid cart identifier '{$id}'. " .
-                'Cart identifiers must not be the same as any of the ' .
-                'property names of this cart module.');
+            throw new SiteException("Invalid cart identifier '{$id}'. "
+                . 'Cart identifiers must not be the same as any of the '
+                . 'property names of this cart module.');
         }
 
         $this->carts[$id] = $cart;
@@ -518,10 +518,10 @@ class StoreCartModule extends SiteApplicationModule
                 } else {
                     $title = sprintf(
                         Store::ngettext(
-                            'You have one item from this page ' .
-                                'saved for later. %%sView cart%%s.',
-                            'You have %s items from this page ' .
-                                'saved for later. %%sView cart%%s.',
+                            'You have one item from this page '
+                                . 'saved for later. %%sView cart%%s.',
+                            'You have %s items from this page '
+                                . 'saved for later. %%sView cart%%s.',
                             $saved
                         ),
                         $locale->formatNumber($saved)
@@ -575,9 +575,9 @@ class StoreCartModule extends SiteApplicationModule
             return $this->carts[$name];
         }
 
-        throw new SiteException('Cart module does not have a property with ' .
-            "the name '{$name}', and no cart with the identifier '{$name}' " .
-            'is loaded.');
+        throw new SiteException('Cart module does not have a property with '
+            . "the name '{$name}', and no cart with the identifier '{$name}' "
+            . 'is loaded.');
     }
 
     /**
@@ -662,8 +662,8 @@ class StoreCartModule extends SiteApplicationModule
         $item_ids = $entries->getInternalValues('item');
         $class = SwatDBClassMap::get(StoreItemWrapper::class);
 
-        $quoted_item_ids =
-            $this->app->db->datatype->implodeArray($item_ids, 'integer');
+        $quoted_item_ids
+            = $this->app->db->datatype->implodeArray($item_ids, 'integer');
 
         return call_user_func(
             [$class, 'loadSetFromDBWithRegion'],

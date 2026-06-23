@@ -76,8 +76,8 @@ for ($i = 0; $i < count($tokens); $i++) {
                 $output .= $text;
                 if ($text === '_' || $text === 'ngettext' || $text === 'gettext') {
                     if ($in_gettext) {
-                        echo 'error: gettext marker detected inside gettext ' .
-                            "marker\n";
+                        echo 'error: gettext marker detected inside gettext '
+                            . "marker\n";
 
                         exit(1);
                     }

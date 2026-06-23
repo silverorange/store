@@ -29,10 +29,10 @@ class StoreCheckoutPaymentFailedPage extends StoreCheckoutFinalPage
         $paragraph_tag->setContent(
             sprintf(
                 Store::_(
-                    'Everything appears to be in order but we were unable to ' .
-                    'process your payment. No funds were removed from your card. ' .
-                    '%sContact us%s to complete your order. %sYour order reference ' .
-                    'number is %s%s.'
+                    'Everything appears to be in order but we were unable to '
+                    . 'process your payment. No funds were removed from your card. '
+                    . '%sContact us%s to complete your order. %sYour order reference '
+                    . 'number is %s%s.'
                 ),
                 '<a href="' . $this->getContactSource() . '">',
                 '</a>',

@@ -77,8 +77,8 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         foreach ($required_parameters as $parameter) {
             if (!isset($parameters[$parameter])) {
                 throw new StoreException(
-                    '"' . $parameter . '" is required in the Braintree payment ' .
-                    'provider parameters.'
+                    '"' . $parameter . '" is required in the Braintree payment '
+                    . 'provider parameters.'
                 );
             }
         }
@@ -90,8 +90,8 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         $valid_environments = ['production', 'sandbox'];
         if (!in_array($parameters['environment'], $valid_environments)) {
             throw new StoreException(
-                'Environment "' . $environment . '" is not valid for the ' .
-                'Braintree payment provider.'
+                'Environment "' . $environment . '" is not valid for the '
+                . 'Braintree payment provider.'
             );
         }
 

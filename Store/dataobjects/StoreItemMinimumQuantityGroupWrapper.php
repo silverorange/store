@@ -12,8 +12,8 @@ class StoreItemMinimumQuantityGroupWrapper extends SwatDBRecordsetWrapper
     protected function init()
     {
         parent::init();
-        $this->row_wrapper_class =
-            SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class);
+        $this->row_wrapper_class
+            = SwatDBClassMap::get(StoreItemMinimumQuantityGroup::class);
 
         $this->index_field = 'id';
     }

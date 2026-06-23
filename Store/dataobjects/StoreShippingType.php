@@ -100,8 +100,8 @@ class StoreShippingType extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 
@@ -186,8 +186,8 @@ class StoreShippingType extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 

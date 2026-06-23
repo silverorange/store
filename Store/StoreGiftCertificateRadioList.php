@@ -42,8 +42,8 @@ class StoreGiftCertificateRadioList extends SwatRadioList
 
         if ($this->value == $this->custom_value
             && $this->getCompositeWidget('custom_price')->value === null) {
-            $message = Store::_('Please enter a value for your custom gift ' .
-                'certificate.');
+            $message = Store::_('Please enter a value for your custom gift '
+                . 'certificate.');
 
             $this->addMessage(new SwatMessage($message, SwatMessage::ERROR));
         }
@@ -118,8 +118,8 @@ class StoreGiftCertificateRadioList extends SwatRadioList
     protected function getInlineJavaScript()
     {
         return sprintf(
-            'var %s_obj = ' .
-            "new StoreGiftCertificateRadioList('%s', '%s');\n",
+            'var %s_obj = '
+            . "new StoreGiftCertificateRadioList('%s', '%s');\n",
             $this->id,
             $this->id,
             $this->custom_value

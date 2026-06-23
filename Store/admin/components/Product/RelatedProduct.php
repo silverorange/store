@@ -106,8 +106,8 @@ class StoreProductRelatedProduct extends AdminSearch
             if ($this->category_id === null) {
                 $this->app->relocate('Product/Details?id=' . $this->product_id);
             } else {
-                $this->app->relocate('Product/Details?id=' . $this->product_id .
-                        '&category=' . $this->category_id);
+                $this->app->relocate('Product/Details?id=' . $this->product_id
+                        . '&category=' . $this->category_id);
             }
         }
 

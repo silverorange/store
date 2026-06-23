@@ -65,8 +65,8 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         $header = $this->ui->getWidget('header');
         if ($header instanceof SwatContentBlock) {
             $header->content_type = 'text/xml';
-            $header->content =
-                SwatString::toXHTML($order->getReceiptHeaderXml());
+            $header->content
+                = SwatString::toXHTML($order->getReceiptHeaderXml());
         }
     }
 
@@ -108,8 +108,8 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
             $items_view->getRow('subtotal')->value = $order->getSubtotal();
 
             if ($order->surcharge_total > 0) {
-                $items_view->getRow('surcharge')->value =
-                    $order->surcharge_total;
+                $items_view->getRow('surcharge')->value
+                    = $order->surcharge_total;
             }
 
             $items_view->getRow('total')->value = $order->total;
@@ -179,11 +179,11 @@ abstract class StoreCheckoutFinalPage extends StoreCheckoutPage
         $paragraph_tag->setContent(
             sprintf(
                 Store::_(
-                    'By logging in with your account (%s) the next time you ' .
-                    'visit, you can edit your information, view previously ' .
-                    'placed orders, re-order items from your previous ' .
-                    'orders, and checkout faster without having to re-enter ' .
-                    'all of your information.'
+                    'By logging in with your account (%s) the next time you '
+                    . 'visit, you can edit your information, view previously '
+                    . 'placed orders, re-order items from your previous '
+                    . 'orders, and checkout faster without having to re-enter '
+                    . 'all of your information.'
                 ),
                 $this->app->session->account->email
             )

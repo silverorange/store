@@ -64,9 +64,9 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
         if ($locale !== null) {
             $old_locale = setlocale(LC_ALL, 0);
             if (setlocale(LC_ALL, $locale) === false) {
-                throw new SwatException(sprintf('Locale %s passed to the ' .
-                    'moneyFormat() method is not valid for this operating ' .
-                    'system.', $locale));
+                throw new SwatException(sprintf('Locale %s passed to the '
+                    . 'moneyFormat() method is not valid for this operating '
+                    . 'system.', $locale));
             }
         }
 
@@ -82,8 +82,8 @@ class StoreYeOldePriceCellRenderer extends StoreItemPriceCellRenderer
         if ($character_set !== 'UTF-8') {
             $decimal_point = iconv($character_set, 'UTF-8', $decimal_point);
             if ($decimal_point === false) {
-                throw new SwatException(sprintf('Could not convert %s output ' .
-                    'to UTF-8', $character_set));
+                throw new SwatException(sprintf('Could not convert %s output '
+                    . 'to UTF-8', $character_set));
             }
         }
 

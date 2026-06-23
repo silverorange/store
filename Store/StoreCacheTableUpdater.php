@@ -50,8 +50,8 @@ class StoreCacheTableUpdater extends SiteCommandLineApplication
                     $row->shortname
                 ));
 
-                $update_function =
-                    $this->getCacheTableUpdateFunction($row->shortname);
+                $update_function
+                    = $this->getCacheTableUpdateFunction($row->shortname);
 
                 $sql = sprintf('select * from %s()', $update_function);
                 SwatDB::exec($this->db, $sql);

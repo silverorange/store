@@ -72,21 +72,21 @@ class StoreArticleIndex extends SiteArticleIndex
                     $this->app->db->quote($this->article->id, 'integer')
                 );
 
-                $visible_in_region =
-                    (SwatDB::queryOne($this->app->db, $sql) !== null);
+                $visible_in_region
+                    = (SwatDB::queryOne($this->app->db, $sql) !== null);
 
                 $tool_link = clone $prototype_tool_link;
                 $tool_link->id .= '_' . $region->id;
 
                 if ($region_count > 1) {
-                    $tool_link->value = $locale->getURLLocale() .
-                        $this->article->path;
+                    $tool_link->value = $locale->getURLLocale()
+                        . $this->article->path;
 
                     $tool_link->title .= sprintf(' (%s)', $region->title);
                 }
 
-                $tool_link->sensitive =
-                    ($visible_in_region && $this->article->enabled);
+                $tool_link->sensitive
+                    = ($visible_in_region && $this->article->enabled);
 
                 $toolbar->packEnd($tool_link);
             }

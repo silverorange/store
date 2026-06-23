@@ -187,8 +187,8 @@ class StorePageFactory extends SitePageFactory
     protected function getProductInfo($source)
     {
         if (isset($this->app->memcache)) {
-            $key = 'StorePageFactory.getProductInfo' . $source . '.' .
-                $this->app->getRegion()->id;
+            $key = 'StorePageFactory.getProductInfo' . $source . '.'
+                . $this->app->getRegion()->id;
 
             $data = $this->app->memcache->getNs('product', $key);
             if (is_array($data)) {

@@ -28,8 +28,8 @@ class StoreCategorySearchEngine extends SiteSearchEngine
         );
 
         if ($this->fulltext_result !== null) {
-            $clause .= ' ' .
-                $this->fulltext_result->getJoinClause('Category.id', 'category');
+            $clause .= ' '
+                . $this->fulltext_result->getJoinClause('Category.id', 'category');
         }
 
         return $clause;
@@ -40,8 +40,8 @@ class StoreCategorySearchEngine extends SiteSearchEngine
         if ($this->fulltext_result === null) {
             $clause = sprintf('order by Category.title');
         } else {
-            $clause =
-                $this->fulltext_result->getOrderByClause('Category.title');
+            $clause
+                = $this->fulltext_result->getOrderByClause('Category.title');
         }
 
         return $clause;

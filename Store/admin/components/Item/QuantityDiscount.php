@@ -31,8 +31,8 @@ class StoreItemQuantityDiscount extends AdminIndex
         $this->id = SiteApplication::initVar('id');
 
         if ($this->id === null) {
-            throw new AdminNoAccessException(Store::_('An item ID is required ' .
-                'for the quantity discounts page.'));
+            throw new AdminNoAccessException(Store::_('An item ID is required '
+                . 'for the quantity discounts page.'));
         }
 
         $this->category_id = SiteApplication::initVar('category');
@@ -41,8 +41,8 @@ class StoreItemQuantityDiscount extends AdminIndex
         $view = $this->ui->getWidget('index_view');
 
         $item_row = $this->getItemRow();
-        $quantity =
-            $view->getColumn('quantity')->getInputCell()->getPrototypeWidget();
+        $quantity
+            = $view->getColumn('quantity')->getInputCell()->getPrototypeWidget();
 
         $quantity->minimum_value = $item_row->quantity;
 
@@ -55,8 +55,8 @@ class StoreItemQuantityDiscount extends AdminIndex
         if ($this->item === null) {
             $regions = $this->queryRegions();
 
-            $regions_join_base =
-                'left outer join ItemRegionBinding as ItemRegionBinding_%s
+            $regions_join_base
+                = 'left outer join ItemRegionBinding as ItemRegionBinding_%s
 					on ItemRegionBinding_%s.item = Item.id
 						and ItemRegionBinding_%s.region = %s';
 
@@ -229,8 +229,8 @@ class StoreItemQuantityDiscount extends AdminIndex
      */
     private function relocate()
     {
-        $done_button =
-            $this->ui->getWidget('index_actions')->getDoneButton();
+        $done_button
+            = $this->ui->getWidget('index_actions')->getDoneButton();
 
         if ($done_button->hasBeenClicked()) {
             $this->app->relocate($this->getProductDetailsUrl());
@@ -243,8 +243,8 @@ class StoreItemQuantityDiscount extends AdminIndex
         if ($this->category_id === null) {
             $url = 'Product/Details?id=' . $item_row->product;
         } else {
-            $url = 'Product/Details?id=' . $item_row->product . '&category=' .
-                $this->category_id;
+            $url = 'Product/Details?id=' . $item_row->product . '&category='
+                . $this->category_id;
         }
 
         return $url;
@@ -341,9 +341,9 @@ class StoreItemQuantityDiscount extends AdminIndex
         }
 
         if ($has_invalid_row) {
-            $message = new SwatMessage(Store::_('There was a problem adding ' .
-                'the quantity discount(s). Please review the highlighted ' .
-                'fields for errors and try again.'), 'error');
+            $message = new SwatMessage(Store::_('There was a problem adding '
+                . 'the quantity discount(s). Please review the highlighted '
+                . 'fields for errors and try again.'), 'error');
 
             $this->app->messages->add($message);
         } else {
@@ -379,10 +379,10 @@ class StoreItemQuantityDiscount extends AdminIndex
 
             $unique = (SwatDB::queryOne($this->app->db, $sql) == 0);
             if (!$unique) {
-                $quantity->addMessage(new SwatMessage(Store::_('%s must be ' .
-                    'unique for each item. If you want to update the prices ' .
-                    'for a quantity discount, first delete the old quantity ' .
-                    'discount.')));
+                $quantity->addMessage(new SwatMessage(Store::_('%s must be '
+                    . 'unique for each item. If you want to update the prices '
+                    . 'for a quantity discount, first delete the old quantity '
+                    . 'discount.')));
 
                 $valid = false;
             }
@@ -440,15 +440,15 @@ class StoreItemQuantityDiscount extends AdminIndex
     {
         $regions = $this->queryRegions();
 
-        $regions_join_base =
-            'left outer join QuantityDiscountRegionBinding as
+        $regions_join_base
+            = 'left outer join QuantityDiscountRegionBinding as
 					QuantityDiscountRegionBinding_%s
 				on QuantityDiscountRegionBinding_%s.quantity_discount =
 					QuantityDiscount.id
 					and QuantityDiscountRegionBinding_%s.region = %s';
 
-        $regions_select_base =
-            'QuantityDiscountRegionBinding_%s.price as price_%s';
+        $regions_select_base
+            = 'QuantityDiscountRegionBinding_%s.price as price_%s';
 
         $regions_join = '';
         $regions_select = '';

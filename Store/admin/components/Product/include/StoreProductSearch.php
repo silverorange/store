@@ -233,8 +233,8 @@ class StoreProductSearch
 
         if ($item_minimum_quantity_group !== null) {
             $where .= sprintf(
-                ' and Product.id in (select product from Item ' .
-                'where minimum_quantity_group = %s)',
+                ' and Product.id in (select product from Item '
+                . 'where minimum_quantity_group = %s)',
                 $this->db->quote($item_minimum_quantity_group)
             );
         }
@@ -249,8 +249,8 @@ class StoreProductSearch
 
         if ($item_status !== null) {
             $where .= sprintf(
-                ' and Product.id in (select product from Item ' .
-                'where status = %s)',
+                ' and Product.id in (select product from Item '
+                . 'where status = %s)',
                 $this->db->quote($item_status)
             );
         }

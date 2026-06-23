@@ -70,8 +70,8 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         }
 
         $this->initTaxationStartDate();
-        if ($this->start_date->getYear() <
-            $this->taxation_start_date->getDate()->getYear()) {
+        if ($this->start_date->getYear()
+            < $this->taxation_start_date->getDate()->getYear()) {
             throw new AdminNotFoundException(
                 sprintf(
                     'Unable to load report for a year prior to “%s”',
@@ -121,11 +121,11 @@ class StoreSalesByRegionReportDetails extends AdminIndex
         $view->getColumn('shipping')->visible = $this->show_shipping;
         $view->getColumn('tax')->visible = $this->show_tax;
 
-        $view->getGroup('country')->getRenderer('shipping_total')->visible =
-            $this->show_shipping;
+        $view->getGroup('country')->getRenderer('shipping_total')->visible
+            = $this->show_shipping;
 
-        $view->getGroup('country')->getRenderer('tax_total')->visible =
-            $this->show_shipping;
+        $view->getGroup('country')->getRenderer('tax_total')->visible
+            = $this->show_shipping;
     }
 
     protected function getTableModel(SwatView $view): ?SwatTableModel

@@ -36,8 +36,8 @@ class StoreImage extends SiteImage
     {
         $img_tag = parent::getImgTag($shortname, $prefix);
 
-        $img_tag->class = $this->border ?
-            'store-border-on' : 'store-border-off';
+        $img_tag->class = $this->border
+            ? 'store-border-on' : 'store-border-off';
 
         return $img_tag;
     }

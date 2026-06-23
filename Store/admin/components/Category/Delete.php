@@ -30,8 +30,8 @@ class StoreCategoryDelete extends AdminDBDelete
         $categories = $this->getCategories();
 
         if ($this->single_delete) {
-            $this->relocate_id =
-                $categories->getFirst()->getInternalValue('parent');
+            $this->relocate_id
+                = $categories->getFirst()->getInternalValue('parent');
         }
 
         $num = 0;
@@ -134,9 +134,9 @@ class StoreCategoryDelete extends AdminDBDelete
         $note = $this->ui->getWidget('note');
         $note->visible = true;
         $note->content_type = 'text/xml';
-        $note->content = Store::_('Products contained in deleted categories ' .
-            'will <em>not</em> be deleted. A product will not be shown on the ' .
-            'website if all of the categories it belonged to are deleted.');
+        $note->content = Store::_('Products contained in deleted categories '
+            . 'will <em>not</em> be deleted. A product will not be shown on the '
+            . 'website if all of the categories it belonged to are deleted.');
 
         if ($dep->getStatusLevelCount(AdminDependency::DELETE) == 0) {
             $this->switchToCancelButton();

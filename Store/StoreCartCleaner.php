@@ -33,15 +33,15 @@ class StoreCartCleaner extends SiteCommandLineApplication
         $this->parseCommandLineArguments();
 
         if (mb_strpos($this->session->getSavePath(), ';') !== false) {
-            $this->terminate(Store::_('Cannot automatically clean cart ' .
-                'entries when using multiple levels of session files. See ' .
-                "session.save_path documentation.\n"));
+            $this->terminate(Store::_('Cannot automatically clean cart '
+                . 'entries when using multiple levels of session files. See '
+                . "session.save_path documentation.\n"));
         }
 
         if (ini_get('session.save_handler') !== 'files') {
-            $this->terminate(Store::_('Cannot automatically clean cart ' .
-                'entries when not using the files session backend. See ' .
-                "session.save_handler documentation.\n"));
+            $this->terminate(Store::_('Cannot automatically clean cart '
+                . 'entries when not using the files session backend. See '
+                . "session.save_handler documentation.\n"));
         }
 
         $this->debug(Store::_("Finding expired sessions:\n"));
@@ -61,8 +61,8 @@ class StoreCartCleaner extends SiteCommandLineApplication
             count($expired_sessions)
         ));
 
-        $expired_sessions_sql =
-            $this->db->datatype->implodeArray($expired_sessions, 'text');
+        $expired_sessions_sql
+            = $this->db->datatype->implodeArray($expired_sessions, 'text');
 
         $sql = sprintf(
             'select count(id) from CartEntry

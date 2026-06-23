@@ -77,8 +77,8 @@ class StoreAccountDetails extends SiteAccountDetails
 
     protected function setTimeZone()
     {
-        $date_column =
-            $this->ui->getWidget('orders_view')->getColumn('createdate');
+        $date_column
+            = $this->ui->getWidget('orders_view')->getColumn('createdate');
 
         $date_renderer = $date_column->getRendererByPosition();
         $date_renderer->display_time_zone = $this->app->default_time_zone;

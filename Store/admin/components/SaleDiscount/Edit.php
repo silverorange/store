@@ -127,8 +127,8 @@ class StoreSaleDiscountEdit extends AdminDBEdit
         $this->sale_discount->shortname = $values['shortname'];
         $this->sale_discount->start_date = $values['start_date'];
         $this->sale_discount->end_date = $values['end_date'];
-        $this->sale_discount->discount_percentage =
-            $values['discount_percentage'];
+        $this->sale_discount->discount_percentage
+            = $values['discount_percentage'];
     }
 
     // build phase

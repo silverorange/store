@@ -98,8 +98,8 @@ class StoreFeatureIndex extends AdminIndex
         $view = $this->ui->getWidget('index_view');
 
         if ($view->hasGroup('instance')) {
-            $view->getGroup('instance')->visible =
-                $this->app->isMultipleInstanceAdmin();
+            $view->getGroup('instance')->visible
+                = $this->app->isMultipleInstanceAdmin();
         }
 
         if ($view->hasColumn('region')) {
@@ -112,9 +112,9 @@ class StoreFeatureIndex extends AdminIndex
 
     protected function getTableModel(SwatView $view): ?SwatTableModel
     {
-        $instance_where = ($this->app->getInstanceId() === null) ?
-            '1 = 1' :
-            sprintf(
+        $instance_where = ($this->app->getInstanceId() === null)
+            ? '1 = 1'
+            : sprintf(
                 'instance = %s',
                 $this->app->db->quote($this->app->getInstanceId(), 'integer')
             );
@@ -163,8 +163,8 @@ class StoreFeatureIndex extends AdminIndex
         }
 
         foreach ($store as $ds) {
-            $ds->priority_sensitive =
-                ($counts[$ds->instance_id][$ds->display_slot] > 1);
+            $ds->priority_sensitive
+                = ($counts[$ds->instance_id][$ds->display_slot] > 1);
         }
 
         return $store;

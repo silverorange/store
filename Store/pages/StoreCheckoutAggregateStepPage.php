@@ -132,11 +132,11 @@ abstract class StoreCheckoutAggregateStepPage extends StoreCheckoutStepPage
 
         if ($form->isProcessed()) {
             if ($form->hasMessage()) {
-                $message = new SwatMessage(Store::_('There is a problem with ' .
-                    'the information submitted.'), SwatMessage::ERROR);
+                $message = new SwatMessage(Store::_('There is a problem with '
+                    . 'the information submitted.'), SwatMessage::ERROR);
 
-                $message->secondary_content = Store::_('Please address the ' .
-                    'fields highlighted below and re-submit the form.');
+                $message->secondary_content = Store::_('Please address the '
+                    . 'fields highlighted below and re-submit the form.');
 
                 $this->ui->getWidget('message_display')->add($message);
             } else {

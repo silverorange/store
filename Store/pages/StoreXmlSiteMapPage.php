@@ -35,13 +35,13 @@ class StoreXmlSiteMapPage extends SiteXmlSiteMapPage
                 $category_path = $path . '/' . $category->shortname;
             }
 
-            $this->displayPath($this->app->config->store->path .
-                $category_path, null, 'weekly');
+            $this->displayPath($this->app->config->store->path
+                . $category_path, null, 'weekly');
 
             $products = $category->getVisibleProducts();
             foreach ($products as $product) {
-                $this->displayPath($this->app->config->store->path .
-                    $product->path, null, 'weekly');
+                $this->displayPath($this->app->config->store->path
+                    . $product->path, null, 'weekly');
             }
 
             $sub_categories = $category->getVisibleSubCategories();

@@ -46,11 +46,11 @@ class StoreSaleDiscountIndex extends AdminIndex
         parent::buildInternal();
 
         // set the default time zone
-        $start_column =
-            $this->ui->getWidget('index_view')->getColumn('start_date');
+        $start_column
+            = $this->ui->getWidget('index_view')->getColumn('start_date');
 
-        $end_column =
-            $this->ui->getWidget('index_view')->getColumn('end_date');
+        $end_column
+            = $this->ui->getWidget('index_view')->getColumn('end_date');
 
         $start_renderer = $start_column->getRendererByPosition();
         $start_renderer->display_time_zone = $this->app->default_time_zone;

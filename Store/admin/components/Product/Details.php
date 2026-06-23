@@ -77,8 +77,8 @@ class StoreProductDetails extends AdminIndex
             );
 
             $flydown->addOptionsByArray($options);
-            $this->ui->getWidget('minimum_quantity_group')->visible =
-                (count($options) > 0);
+            $this->ui->getWidget('minimum_quantity_group')->visible
+                = (count($options) > 0);
         }
     }
 
@@ -185,8 +185,8 @@ class StoreProductDetails extends AdminIndex
                 $sql = 'update ItemRegionBinding set enabled = %s
 				where price is not null and %s item in (%s)';
 
-                $region_sql = ($region > 0) ?
-                    sprintf('region = %s and', $this->app->db->quote(
+                $region_sql = ($region > 0)
+                    ? sprintf('region = %s and', $this->app->db->quote(
                         $region,
                         'integer'
                     )) : '';
@@ -221,8 +221,8 @@ class StoreProductDetails extends AdminIndex
                 $sql = 'update ItemRegionBinding set enabled = %s
 				where %s item in (%s)';
 
-                $region_sql = ($region > 0) ?
-                    sprintf('region = %s and', $this->app->db->quote(
+                $region_sql = ($region > 0)
+                    ? sprintf('region = %s and', $this->app->db->quote(
                         $region,
                         'integer'
                     )) : '';
@@ -252,8 +252,8 @@ class StoreProductDetails extends AdminIndex
                 break;
 
             case 'sale_discount':
-                $sale_discount =
-                    $this->ui->getWidget('sale_discount_flydown')->value;
+                $sale_discount
+                    = $this->ui->getWidget('sale_discount_flydown')->value;
 
                 if ($sale_discount === null) {
                     break;
@@ -329,8 +329,8 @@ class StoreProductDetails extends AdminIndex
                 break;
 
             case 'minimum_quantity_group':
-                $minimum_quantity_group =
-                    $this->ui->getWidget('minimum_quantity_group_flydown')->value;
+                $minimum_quantity_group
+                    = $this->ui->getWidget('minimum_quantity_group_flydown')->value;
 
                 if ($minimum_quantity_group === null) {
                     break;
@@ -347,10 +347,10 @@ class StoreProductDetails extends AdminIndex
 
                 $message = new SwatMessage(sprintf(
                     Store::ngettext(
-                        'A minimum quantity sale group has been ' .
-                            'applied to one item.',
-                        'A minimum quantity sale group has been ' .
-                            'applied to %s items.',
+                        'A minimum quantity sale group has been '
+                            . 'applied to one item.',
+                        'A minimum quantity sale group has been '
+                            . 'applied to %s items.',
                         $count
                     ),
                     SwatString::numberFormat($count)
@@ -382,10 +382,10 @@ class StoreProductDetails extends AdminIndex
 
                     $message = new SwatMessage(sprintf(
                         Store::ngettext(
-                            'A minimum quantity sale group has been ' .
-                                'removed from one item.',
-                            'A minimum quantity sale group has been ' .
-                                'removed from %s items.',
+                            'A minimum quantity sale group has been '
+                                . 'removed from one item.',
+                            'A minimum quantity sale group has been '
+                                . 'removed from %s items.',
                             $count
                         ),
                         SwatString::numberFormat($count)
@@ -394,8 +394,8 @@ class StoreProductDetails extends AdminIndex
                     $this->app->messages->add($message);
                 } else {
                     $this->app->messages->add(new SwatMessage(Store::_(
-                        'None of the items selected had a minimum ' .
-                        'quantity sale group.'
+                        'None of the items selected had a minimum '
+                        . 'quantity sale group.'
                     )));
                 }
 
@@ -422,8 +422,8 @@ class StoreProductDetails extends AdminIndex
                 $this->id
             )) {
                 $sku_widget->addMessage(new SwatMessage(
-                    Store::_('%s must be unique amongst all catalogs unless ' .
-                    'catalogs are clones of each other.')
+                    Store::_('%s must be unique amongst all catalogs unless '
+                    . 'catalogs are clones of each other.')
                 ));
 
                 $validate = false;
@@ -562,8 +562,8 @@ class StoreProductDetails extends AdminIndex
 
                 $this->app->messages->add($message);
             } elseif (count($new_skus) > 1) {
-                $sku_list = '<ul><li>' . implode('</li><li>', $new_skus) .
-                    '</li></ul>';
+                $sku_list = '<ul><li>' . implode('</li><li>', $new_skus)
+                    . '</li></ul>';
 
                 $message = new SwatMessage(
                     Store::_('The following items have been added:')
@@ -575,8 +575,8 @@ class StoreProductDetails extends AdminIndex
             }
         } else {
             $message = new SwatMessage(
-                Store::_('There was a problem adding ' .
-                'the item(s). Please check the highlighted fields below.'),
+                Store::_('There was a problem adding '
+                . 'the item(s). Please check the highlighted fields below.'),
                 'error'
             );
 
@@ -894,21 +894,21 @@ class StoreProductDetails extends AdminIndex
                     $this->app->db->quote($product->id, 'integer')
                 );
 
-                $visible_in_region =
-                    (SwatDB::queryOne($this->app->db, $sql) !== null);
+                $visible_in_region
+                    = (SwatDB::queryOne($this->app->db, $sql) !== null);
 
                 $tool_link = clone $prototype_tool_link;
                 $tool_link->id .= '_' . $region->id;
 
                 if ($region_count > 1) {
-                    $tool_link->value = $locale->getURLLocale() .
-                        $this->app->config->store->path .
-                        $product->path;
+                    $tool_link->value = $locale->getURLLocale()
+                        . $this->app->config->store->path
+                        . $product->path;
 
                     $tool_link->title .= sprintf(' (%s)', $region->title);
                 } else {
-                    $tool_link->value = $this->app->config->store->path .
-                        $product->path;
+                    $tool_link->value = $this->app->config->store->path
+                        . $product->path;
                 }
 
                 // since we check the VisibleProductView for this, this will
@@ -943,8 +943,8 @@ class StoreProductDetails extends AdminIndex
             if ($view->getFirstRowByClass('SwatTableViewInputRow') !== null) {
                 $column = $view->getColumn('status');
                 $input_status = $column->getInputCell()->getPrototypeWidget();
-                $input_status->content =
-                    StoreItemStatusList::status('available')->title;
+                $input_status->content
+                    = StoreItemStatusList::status('available')->title;
             }
 
             $this->buildStatusList();
@@ -996,11 +996,11 @@ class StoreProductDetails extends AdminIndex
             $ds->description = $this->getItemDescription($item);
             $ds->status = $item->getStatus();
 
-            $ds->item_group_title = ($item->item_group === null) ?
-                Store::_('[Ungrouped]') : $item->item_group->title;
+            $ds->item_group_title = ($item->item_group === null)
+                ? Store::_('[Ungrouped]') : $item->item_group->title;
 
-            $ds->item_group_id = ($item->item_group === null) ?
-                0 : $item->item_group->id;
+            $ds->item_group_id = ($item->item_group === null)
+                ? 0 : $item->item_group->id;
 
             $enabled = false;
 
@@ -1022,12 +1022,12 @@ class StoreProductDetails extends AdminIndex
                 $ds->{$original_price_field_name} = $item->getPrice($region);
                 $ds->{$enabled_field_name} = $item->isEnabled($region);
 
-                $ds->{$savings_field_name} = $ds->{$original_price_field_name} > 0 ?
-                    1 - round($ds->{$price_field_name} / $ds->{$original_price_field_name}, 2) :
-                    null;
+                $ds->{$savings_field_name} = $ds->{$original_price_field_name} > 0
+                    ? 1 - round($ds->{$price_field_name} / $ds->{$original_price_field_name}, 2)
+                    : null;
 
-                $ds->{$is_on_sale_field_name} =
-                    $ds->{$price_field_name} != $ds->{$original_price_field_name};
+                $ds->{$is_on_sale_field_name}
+                    = $ds->{$price_field_name} != $ds->{$original_price_field_name};
 
                 $enabled = $enabled || $ds->{$enabled_field_name};
             }
@@ -1048,8 +1048,8 @@ class StoreProductDetails extends AdminIndex
          */
         $regions = $this->queryRegions();
 
-        $regions_join_base =
-            'left outer join ItemRegionBinding as ItemRegionBinding_%1$s
+        $regions_join_base
+            = 'left outer join ItemRegionBinding as ItemRegionBinding_%1$s
 				on ItemRegionBinding_%1$s.item = Item.id
 					and ItemRegionBinding_%1$s.region = %2$s';
 

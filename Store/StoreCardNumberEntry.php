@@ -72,8 +72,8 @@ class StoreCardNumberEntry extends SwatEntry
 
         if (!Validate_Finance_CreditCard::number($this->value)) {
             $message = Store::_(
-                'The %s field is not a valid card number. Please ensure ' .
-                'it is entered correctly.'
+                'The %s field is not a valid card number. Please ensure '
+                . 'it is entered correctly.'
             );
 
             $this->addMessage(new SwatMessage($message, 'error'));

@@ -60,8 +60,8 @@ class StoreCatalogSwitcher extends SwatControl
 
                         $selector->region = null;
                         $selector->catalog = null;
-                        $selector->scope =
-                            StoreCatalogSelector::ALL_ENABLED_CATALOGS;
+                        $selector->scope
+                            = StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
                         unset($_SESSION['catalog']);
                     }
@@ -79,8 +79,8 @@ class StoreCatalogSwitcher extends SwatControl
 
                         $selector->region = null;
                         $selector->catalog = null;
-                        $selector->scope =
-                            StoreCatalogSelector::ALL_ENABLED_CATALOGS;
+                        $selector->scope
+                            = StoreCatalogSelector::ALL_ENABLED_CATALOGS;
 
                         unset($_SESSION['catalog']);
                     }
@@ -98,8 +98,8 @@ class StoreCatalogSwitcher extends SwatControl
         parent::process();
 
         if ($this->getCompositeWidget('button')->hasBeenClicked()) {
-            $_SESSION['catalog'] =
-                $this->getCompositeWidget('selector')->getState();
+            $_SESSION['catalog']
+                = $this->getCompositeWidget('selector')->getState();
         }
     }
 

@@ -48,8 +48,8 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
             $instance_id = $this->app->getInstanceId();
             if ($instance_id !== null) {
-                $order_instance_id = ($this->order->instance === null) ?
-                    null : $this->order->instance->id;
+                $order_instance_id = ($this->order->instance === null)
+                    ? null : $this->order->instance->id;
 
                 if ($order_instance_id !== $instance_id) {
                     throw new AdminNotFoundException(sprintf(Store::_(
@@ -71,8 +71,8 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         if ($form->button->id == 'yes_button') {
             $this->sendOrderConfirmation();
 
-            $cc = ($this->order->cc_email !== null) ?
-                ' and cc’d to ' . $this->order->cc_email : '';
+            $cc = ($this->order->cc_email !== null)
+                ? ' and cc’d to ' . $this->order->cc_email : '';
 
             $message = new SwatMessage(
                 sprintf(
@@ -107,8 +107,8 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
         $message->content = $this->getConfirmationMessage();
         $message->content_type = 'text/xml';
 
-        $this->ui->getWidget('yes_button')->title =
-            Store::_('Resend Confirmation');
+        $this->ui->getWidget('yes_button')->title
+            = Store::_('Resend Confirmation');
     }
 
     protected function getConfirmationMessage()
@@ -118,8 +118,8 @@ class StoreOrderEmailConfirmation extends AdminConfirmation
 
         $confirmation_title->setContent(
             sprintf(
-                Store::_('Are you sure you want to resend the ' .
-                'order confirmation email for %s?'),
+                Store::_('Are you sure you want to resend the '
+                . 'order confirmation email for %s?'),
                 $this->getOrderTitle()
             )
         );

@@ -33,11 +33,11 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
         if (isset($this->layout->cart_lightbox)) {
             $div_tag = new SwatHtmlTag('div');
             $div_tag->class = 'empty-message';
-            $div_tag->setContent(Store::_('You can view and edit your ' .
-                'shopping cart using the form below.'));
+            $div_tag->setContent(Store::_('You can view and edit your '
+                . 'shopping cart using the form below.'));
 
-            $this->layout->cart_lightbox->override_content =
-                $div_tag->__toString();
+            $this->layout->cart_lightbox->override_content
+                = $div_tag->__toString();
         }
     }
 
@@ -57,11 +57,11 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
 
         if ($form->isProcessed()) {
             if ($form->hasMessage()) {
-                $message = new SwatMessage(Store::_('There is a problem with ' .
-                    'the information submitted.'), SwatMessage::ERROR);
+                $message = new SwatMessage(Store::_('There is a problem with '
+                    . 'the information submitted.'), SwatMessage::ERROR);
 
-                $message->secondary_content = Store::_('Please address the ' .
-                    'fields highlighted below and re-submit the form.');
+                $message->secondary_content = Store::_('Please address the '
+                    . 'fields highlighted below and re-submit the form.');
 
                 $this->ui->getWidget('message_display')->add($message);
             } else {
@@ -107,8 +107,8 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
     protected function getContinueButtons()
     {
         $buttons = [];
-        $continue_button_ids =
-            ['header_continue_button', 'footer_continue_button'];
+        $continue_button_ids
+            = ['header_continue_button', 'footer_continue_button'];
 
         foreach ($continue_button_ids as $id) {
             if ($this->ui->hasWidget($id)) {
@@ -394,8 +394,8 @@ class StoreCheckoutCartPage extends StoreCheckoutPage
     {
         $description = [];
         foreach ($entry->item->getDescriptionArray() as $element) {
-            $description[] = '<div>' . SwatString::minimizeEntities($element) .
-                '</div>';
+            $description[] = '<div>' . SwatString::minimizeEntities($element)
+                . '</div>';
         }
 
         return implode("\n", $description);

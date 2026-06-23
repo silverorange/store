@@ -90,8 +90,8 @@ class StoreQuantityDiscount extends SwatDBDataObject
         // A region is required.
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 

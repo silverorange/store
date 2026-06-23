@@ -90,8 +90,8 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
             $payment_method->payment_type = $this->initPaymentType();
         } else {
             // edit existing payment method
-            $payment_method =
-                $this->app->session->account->payment_methods->getByIndex(
+            $payment_method
+                = $this->app->session->account->payment_methods->getByIndex(
                     $this->id
                 );
 
@@ -151,11 +151,11 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         $type = $this->getCardType();
 
         if ($type !== null) {
-            $this->ui->getWidget('card_inception')->required =
-                $type->hasInceptionDate();
+            $this->ui->getWidget('card_inception')->required
+                = $type->hasInceptionDate();
 
-            $this->ui->getWidget('card_issue_number')->required =
-                $type->hasIssueNumber();
+            $this->ui->getWidget('card_issue_number')->required
+                = $type->hasIssueNumber();
         }
     }
 
@@ -169,8 +169,8 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 
         // this can't be in assignUiValuesToObject because we don't convert
         // expiry date to UTC and assignUiValuesToObject automagically converts.
-        $this->payment_method->card_expiry =
-            $this->ui->getWidget('card_expiry')->value;
+        $this->payment_method->card_expiry
+            = $this->ui->getWidget('card_expiry')->value;
 
         if ($this->isNew($form)) {
             $this->payment_method->card_type = $this->getCardType();
@@ -210,8 +210,8 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
 
         if ($this->payment_method->payment_type->isCard()
             && $this->payment_method->card_type === null) {
-            throw new StoreException('Payment method must have ' .
-                'a card_type when isCard() is true.');
+            throw new StoreException('Payment method must have '
+                . 'a card_type when isCard() is true.');
         }
 
         if ($this->isNew($form)) {
@@ -294,8 +294,8 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
                 Store::_('Edit a Payment Method')
             );
 
-            $this->ui->getWidget('submit_button')->title =
-                Store::_('Update Payment Method');
+            $this->ui->getWidget('submit_button')->title
+                = Store::_('Update Payment Method');
         }
     }
 
@@ -337,11 +337,11 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         // this can't be in assignObjectValuesToUi because we don't convert
         // expiry date to UTC, and assignObjectValuesToUi automagically
         // converts.
-        $this->ui->getWidget('card_expiry')->value =
-            $this->payment_method->card_expiry;
+        $this->ui->getWidget('card_expiry')->value
+            = $this->payment_method->card_expiry;
 
-        $this->ui->getWidget('card_number_preview')->content =
-            StoreCardType::formatCardNumber(
+        $this->ui->getWidget('card_number_preview')->content
+            = StoreCardType::formatCardNumber(
                 $this->payment_method->card_number_preview,
                 $this->payment_method->card_type->getMaskedFormat()
             );
@@ -349,8 +349,8 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         $expiry = $this->ui->getWidget('card_expiry');
         if (!$expiry->isValid()) {
             $content = sprintf(
-                Store::_('The expiry date that was entered ' .
-                '(%s) is in the past. Please enter an updated date.'),
+                Store::_('The expiry date that was entered '
+                . '(%s) is in the past. Please enter an updated date.'),
                 $expiry->value->formatLikeIntl(SwatDate::DF_CC_MY)
             );
 
@@ -388,8 +388,8 @@ class StoreAccountPaymentMethodEditPage extends SiteDBEditPage
         }
 
         return sprintf(
-            'var %s_obj = ' .
-            "new StoreAccountPaymentMethodPage('%s', [%s], [%s]);",
+            'var %s_obj = '
+            . "new StoreAccountPaymentMethodPage('%s', [%s], [%s]);",
             $id,
             $id,
             implode(', ', $inception_date_ids),

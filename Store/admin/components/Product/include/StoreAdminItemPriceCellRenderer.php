@@ -14,8 +14,8 @@ class StoreAdminItemPriceCellRenderer extends StoreItemPriceCellRenderer
         parent::__construct($id);
 
         $this->addStyleSheet(
-            'packages/store/admin/styles/' .
-            'store-admin-item-price-cell-renderer.css'
+            'packages/store/admin/styles/'
+            . 'store-admin-item-price-cell-renderer.css'
         );
     }
 

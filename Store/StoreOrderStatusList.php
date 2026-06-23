@@ -109,17 +109,17 @@ class StoreOrderStatusList extends StoreStatusList
 
             $status_class = SwatDBClassMap::get(StoreOrderStatus::class);
 
-            $initilized_status =
-                new $status_class(1, 'initialized', Store::_('Initialized'));
+            $initilized_status
+                = new $status_class(1, 'initialized', Store::_('Initialized'));
 
-            $authorized_status =
-                new $status_class(2, 'authorized', Store::_('Authorized'));
+            $authorized_status
+                = new $status_class(2, 'authorized', Store::_('Authorized'));
 
-            $billed_status =
-                new $status_class(3, 'billed', Store::_('Billed'));
+            $billed_status
+                = new $status_class(3, 'billed', Store::_('Billed'));
 
-            $shipped_status =
-                new $status_class(4, 'shipped', Store::_('Shipped'));
+            $shipped_status
+                = new $status_class(4, 'shipped', Store::_('Shipped'));
 
             self::$defined_statuses[] = $initilized_status;
             self::$defined_statuses[] = $authorized_status;

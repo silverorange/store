@@ -19,8 +19,8 @@ class StoreArticleRegionAction extends SwatControl
     {
         $this->region_flydown = new SwatFlydown($this->id . '_region');
         $this->region_flydown->parent = $this;
-        $this->accessibility_selector =
-            new SwatRadioList($this->id . '_accessible');
+        $this->accessibility_selector
+            = new SwatRadioList($this->id . '_accessible');
 
         $this->accessibility_selector->parent = $this;
 
@@ -85,8 +85,8 @@ class StoreArticleRegionAction extends SwatControl
 
         $id_list = implode(',', $items);
 
-        $where = ($region == 0) ?
-            '1 = 1' : 'region = ' . $this->db->quote($region, 'integer');
+        $where = ($region == 0)
+            ? '1 = 1' : 'region = ' . $this->db->quote($region, 'integer');
 
         SwatDB::exec($this->db, sprintf(
             'delete from ArticleRegionBinding where %s and article in (%s)',
@@ -94,8 +94,8 @@ class StoreArticleRegionAction extends SwatControl
             $id_list
         ));
 
-        $regions = ($region == 0) ?
-            array_keys($this->regions) : [$region];
+        $regions = ($region == 0)
+            ? array_keys($this->regions) : [$region];
 
         if ($accessible) {
             foreach ($this->items as $item) {

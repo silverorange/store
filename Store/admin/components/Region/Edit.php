@@ -29,13 +29,13 @@ class StoreRegionEdit extends AdminDBEdit
             'title'
         );
 
-        $region_billing_country_list =
-            $this->ui->getWidget('region_billing_country');
+        $region_billing_country_list
+            = $this->ui->getWidget('region_billing_country');
 
         $region_billing_country_list->addOptionsByArray($countries);
 
-        $region_shipping_country_list =
-            $this->ui->getWidget('region_shipping_country');
+        $region_shipping_country_list
+            = $this->ui->getWidget('region_shipping_country');
 
         $region_shipping_country_list->addOptionsByArray($countries);
 
@@ -68,8 +68,8 @@ class StoreRegionEdit extends AdminDBEdit
         $this->region->title = $values['title'];
         $this->region->save();
 
-        $region_billing_country_list =
-            $this->ui->getWidget('region_billing_country');
+        $region_billing_country_list
+            = $this->ui->getWidget('region_billing_country');
 
         SwatDB::updateBinding(
             $this->app->db,
@@ -82,8 +82,8 @@ class StoreRegionEdit extends AdminDBEdit
             'text:id'
         );
 
-        $region_shipping_country_list =
-            $this->ui->getWidget('region_shipping_country');
+        $region_shipping_country_list
+            = $this->ui->getWidget('region_shipping_country');
 
         SwatDB::updateBinding(
             $this->app->db,
@@ -113,8 +113,8 @@ class StoreRegionEdit extends AdminDBEdit
     {
         $this->ui->setValues($this->region->getAttributes());
 
-        $region_billing_country_list =
-            $this->ui->getWidget('region_billing_country');
+        $region_billing_country_list
+            = $this->ui->getWidget('region_billing_country');
 
         $region_billing_country_list->values = SwatDB::queryColumn(
             $this->app->db,
@@ -124,8 +124,8 @@ class StoreRegionEdit extends AdminDBEdit
             $this->id
         );
 
-        $region_shipping_country_list =
-            $this->ui->getWidget('region_shipping_country');
+        $region_shipping_country_list
+            = $this->ui->getWidget('region_shipping_country');
 
         $region_shipping_country_list->values = SwatDB::queryColumn(
             $this->app->db,

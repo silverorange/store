@@ -33,8 +33,8 @@ class StorePriceRangeEdit extends AdminDBEdit
         if ($this->id !== null) {
             if (!$this->price_range->load($this->id)) {
                 throw new AdminNotFoundException(
-                    sprintf(Admin::_('Price range with an id "%s"' .
-                        ' not found'), $this->id)
+                    sprintf(Admin::_('Price range with an id "%s"'
+                        . ' not found'), $this->id)
                 );
             }
         }
@@ -88,11 +88,11 @@ class StorePriceRangeEdit extends AdminDBEdit
             'original_price',
         ]);
 
-        $this->price_range->start_price = ($values['start_price'] === null) ?
-            null : floor($values['start_price']);
+        $this->price_range->start_price = ($values['start_price'] === null)
+            ? null : floor($values['start_price']);
 
-        $this->price_range->end_price = ($values['end_price'] === null) ?
-            null : floor($values['end_price']);
+        $this->price_range->end_price = ($values['end_price'] === null)
+            ? null : floor($values['end_price']);
 
         $this->price_range->original_price = $values['original_price'];
     }

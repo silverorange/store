@@ -100,8 +100,8 @@ class StoreSalesByRegionReportIndex extends AdminIndex
             $ds->shipping_total = 0;
             $ds->tax_total = 0;
 
-            $title_pattern = $this->taxation_start_date->
-                getTitlePatternFromDate($start_date);
+            $title_pattern = $this->taxation_start_date
+                ->getTitlePatternFromDate($start_date);
 
             $ds->title = sprintf(
                 $title_pattern,

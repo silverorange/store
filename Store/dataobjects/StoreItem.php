@@ -205,8 +205,8 @@ class StoreItem extends SwatDBDataObject
     public function isAvailableInRegion(?StoreRegion $region = null)
     {
         if ($this->id === null) {
-            throw new StoreException('Item must have an id set before region ' .
-                'availability can be determined.');
+            throw new StoreException('Item must have an id set before region '
+                . 'availability can be determined.');
         }
 
         if ($region === null) {
@@ -214,13 +214,13 @@ class StoreItem extends SwatDBDataObject
         }
 
         if ($region === null) {
-            throw new SwatException('Region must be specified or region must ' .
-                'be set on this item before availability is known.');
+            throw new SwatException('Region must be specified or region must '
+                . 'be set on this item before availability is known.');
         }
 
         if ($region->id === null) {
-            throw new StoreException('Region have an id set before ' .
-                'availability can be determined for this item.');
+            throw new StoreException('Region have an id set before '
+                . 'availability can be determined for this item.');
         }
 
         // if this item has an is_available value set for the given region use
@@ -232,8 +232,8 @@ class StoreItem extends SwatDBDataObject
             $this->checkDB();
 
             if ($this->id === null) {
-                throw new StoreException('Item must have an id set before ' .
-                    'availability can be determined for this region.');
+                throw new StoreException('Item must have an id set before '
+                    . 'availability can be determined for this region.');
             }
 
             $sql = 'select count(item) from AvailableItemView
@@ -491,8 +491,8 @@ class StoreItem extends SwatDBDataObject
         $check_if_description_matches_title = true
     ) {
         return ($check_if_description_matches_title
-            && $this->description == $this->product->title) ?
-                null : $this->description;
+            && $this->description == $this->product->title)
+                ? null : $this->description;
     }
 
     /**
@@ -511,8 +511,8 @@ class StoreItem extends SwatDBDataObject
     ) {
         $description = [];
 
-        $item_description =
-            $this->getDescription($check_if_description_matches_title);
+        $item_description
+            = $this->getDescription($check_if_description_matches_title);
 
         if (mb_strlen($item_description) > 0) {
             $description['description'] = $item_description;
@@ -741,8 +741,8 @@ class StoreItem extends SwatDBDataObject
             }
 
             if (array_key_exists('original_price', $row)) {
-                $this->original_price[$row['region_id']] =
-                    $row['original_price'];
+                $this->original_price[$row['region_id']]
+                    = $row['original_price'];
             }
 
             if (array_key_exists('enabled', $row)) {
@@ -828,8 +828,8 @@ class StoreItem extends SwatDBDataObject
         // A region is required.
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 

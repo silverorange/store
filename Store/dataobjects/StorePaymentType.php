@@ -137,8 +137,8 @@ class StorePaymentType extends SwatDBDataObject
         $this->checkDB();
 
         if ($this->id === null) {
-            throw new StoreException('Payment type must have an id set ' .
-                'before region availability can be determined.');
+            throw new StoreException('Payment type must have an id set '
+                . 'before region availability can be determined.');
         }
 
         $sql = sprintf(

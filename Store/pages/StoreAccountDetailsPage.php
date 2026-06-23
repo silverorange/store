@@ -68,8 +68,8 @@ class StoreAccountDetailsPage extends SiteUiPage
             if ($payment_type->isAvailableInRegion($this->app->getRegion())) {
                 $view_id = 'payment_method' . $payment_method->id;
                 $view = new StorePaymentMethodView($view_id);
-                $view->paymentMethodConfirmText =
-                    $this->getPaymentMethodText('confirm');
+                $view->paymentMethodConfirmText
+                    = $this->getPaymentMethodText('confirm');
 
                 $view->classes[] = 'compact-button';
                 $view->payment_method = $payment_method;
@@ -82,8 +82,8 @@ class StoreAccountDetailsPage extends SiteUiPage
     {
         switch ($text) {
             case 'confirm':
-                return Store::_('Are you sure you want to remove the following ' .
-                'payment method?');
+                return Store::_('Are you sure you want to remove the following '
+                . 'payment method?');
 
             case 'removed':
                 return Store::_('One payment method has been removed.');

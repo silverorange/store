@@ -104,8 +104,8 @@ class StoreCatalogClone extends AdminDBEdit
 
         $component_details->data = $row;
 
-        $status_renderer =
-            $component_details->getField('status')->getRendererByPosition();
+        $status_renderer
+            = $component_details->getField('status')->getRendererByPosition();
 
         $status_renderer->db = $this->app->db;
         $status_renderer->regions = SwatDB::getOptionArray(

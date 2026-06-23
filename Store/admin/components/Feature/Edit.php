@@ -45,8 +45,8 @@ class StoreFeatureEdit extends AdminDBEdit
             );
 
             $this->ui->getWidget('instance')->addOptionsByArray($instances);
-            $this->ui->getWidget('instance_field')->visible =
-                (count($instances) != 0);
+            $this->ui->getWidget('instance_field')->visible
+                = (count($instances) != 0);
         }
     }
 
@@ -85,10 +85,10 @@ class StoreFeatureEdit extends AdminDBEdit
             && SwatDate::compare($start_date, $end_date) > 0
         ) {
             $message = new SwatMessage(
-                'The dates entered are not a valid set of dates. ' .
-                'The date entered in the <strong>Start Date</strong> ' .
-                'field must occur before the date entered in the ' .
-                '<strong>End Date</strong> field.',
+                'The dates entered are not a valid set of dates. '
+                . 'The date entered in the <strong>Start Date</strong> '
+                . 'field must occur before the date entered in the '
+                . '<strong>End Date</strong> field.',
                 'error'
             );
 
@@ -179,8 +179,8 @@ class StoreFeatureEdit extends AdminDBEdit
         $note = sprintf(
             '%s%s',
             $abbreviations['st'],
-            array_key_exists('dt', $abbreviations) ?
-                '/' . $abbreviations['dt'] : ''
+            array_key_exists('dt', $abbreviations)
+                ? '/' . $abbreviations['dt'] : ''
         );
 
         $this->ui->getWidget('start_date_field')->note = $note;

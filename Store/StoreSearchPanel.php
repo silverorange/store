@@ -298,8 +298,8 @@ class StoreSearchPanel extends SwatObject
             return true;
         }
 
-        return $this->init_search_state[$name] ==
-                $this->process_search_state[$name];
+        return $this->init_search_state[$name]
+                == $this->process_search_state[$name];
     }
 
     protected function getForm()

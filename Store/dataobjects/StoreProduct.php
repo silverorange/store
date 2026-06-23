@@ -278,13 +278,13 @@ class StoreProduct extends SwatDBDataObject
         }
 
         if ($region === null) {
-            throw new SwatException('Region must be specified or region must ' .
-                'be set on this product before availability is known.');
+            throw new SwatException('Region must be specified or region must '
+                . 'be set on this product before availability is known.');
         }
 
         if ($region->id === null) {
-            throw new StoreException('Region have an id set before ' .
-                'availability can be determined for this product.');
+            throw new StoreException('Region have an id set before '
+                . 'availability can be determined for this product.');
         }
 
         $available = '';
@@ -295,8 +295,8 @@ class StoreProduct extends SwatDBDataObject
             $this->checkDB();
 
             if ($this->id === null) {
-                throw new StoreException('Product must have an id set before ' .
-                    'availability can be determined for this region.');
+                throw new StoreException('Product must have an id set before '
+                    . 'availability can be determined for this region.');
             }
 
             $sql = sprintf(
@@ -638,8 +638,8 @@ class StoreProduct extends SwatDBDataObject
 
         if ($region === null) {
             throw new StoreException(
-                '$region must be specified unless setRegion() is called ' .
-                'beforehand.'
+                '$region must be specified unless setRegion() is called '
+                . 'beforehand.'
             );
         }
 

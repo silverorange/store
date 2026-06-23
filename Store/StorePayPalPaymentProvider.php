@@ -17,12 +17,12 @@
  */
 class StorePayPalPaymentProvider extends StorePaymentProvider
 {
-    public const EXPRESS_CHECKOUT_URL_LIVE =
-        'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
+    public const EXPRESS_CHECKOUT_URL_LIVE
+        = 'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
 
     // @codingStandardsIgnoreStart
-    public const EXPRESS_CHECKOUT_URL_SANDBOX =
-        'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
+    public const EXPRESS_CHECKOUT_URL_SANDBOX
+        = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=%s&useraction=%s';
     // @codingStandardsIgnoreEnd
 
     /**
@@ -86,8 +86,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         foreach ($required_parameters as $parameter) {
             if (!isset($parameters[$parameter])) {
-                throw new StoreException('"' . $parameter . '" is required in the ' .
-                    'PayPal payment provider parameters.');
+                throw new StoreException('"' . $parameter . '" is required in the '
+                    . 'PayPal payment provider parameters.');
             }
         }
 
@@ -113,8 +113,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         $valid_modes = ['live', 'sandbox'];
         if (!in_array($parameters['mode'], $valid_modes)) {
-            throw new StoreException('Mode "' . $parameters['mode'] . '" is not valid for ' .
-                'the PayPal payment provider.');
+            throw new StoreException('Mode "' . $parameters['mode'] . '" is not valid for '
+                . 'the PayPal payment provider.');
         }
 
         $options['mode'] = $parameters['mode'];
@@ -157,8 +157,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         } catch (Payment_PayPal_SOAP_ErrorException $e) {
             // ignore warnings
             foreach ($e as $error) {
-                if ($error->getSeverity() !==
-                    Payment_PayPal_SOAP::ERROR_WARNING) {
+                if ($error->getSeverity()
+                    !== Payment_PayPal_SOAP::ERROR_WARNING) {
                     throw $e;
                 }
             }
@@ -167,8 +167,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         if (!isset($response->TransactionID)) {
             $exception = new StorePaymentException(sprintf(
-                'The following PayPal response does not contain a ' .
-                "TransactionID:\n%s",
+                'The following PayPal response does not contain a '
+                . "TransactionID:\n%s",
                 print_r($response, true)
             ));
 
@@ -222,8 +222,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         } catch (Payment_PayPal_SOAP_ErrorException $e) {
             // ignore warnings
             foreach ($e as $error) {
-                if ($error->getSeverity() !==
-                    Payment_PayPal_SOAP::ERROR_WARNING) {
+                if ($error->getSeverity()
+                    !== Payment_PayPal_SOAP::ERROR_WARNING) {
                     throw $e;
                 }
             }
@@ -266,8 +266,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         $required_parameters = ['ReturnURL', 'CancelURL'];
         foreach ($required_parameters as $name) {
             if (!array_key_exists($name, $details)) {
-                throw new StoreException('Required setExpressCheckout() ' .
-                    '$details parameter "' . $name . '" is missing.');
+                throw new StoreException('Required setExpressCheckout() '
+                    . '$details parameter "' . $name . '" is missing.');
             }
         }
 
@@ -278,8 +278,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         $required_parameters = ['OrderTotal'];
         foreach ($required_parameters as $name) {
             if (!array_key_exists($name, $payment_details)) {
-                throw new StoreException('Required setExpressCheckout() ' .
-                    '$payment_details parameter"' . $name . '" is missing.');
+                throw new StoreException('Required setExpressCheckout() '
+                    . '$payment_details parameter"' . $name . '" is missing.');
             }
         }
 
@@ -291,8 +291,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         } catch (Payment_PayPal_SOAP_ErrorException $e) {
             // ignore warnings
             foreach ($e as $error) {
-                if ($error->getSeverity() !==
-                    Payment_PayPal_SOAP::ERROR_WARNING) {
+                if ($error->getSeverity()
+                    !== Payment_PayPal_SOAP::ERROR_WARNING) {
                     throw $e;
                 }
             }
@@ -311,8 +311,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             if (isset($parameters['Token'])) {
                 $token = $parameters['Token'];
             } else {
-                throw new StoreException('No token returned in ' .
-                    'SetExpressCheckout call.');
+                throw new StoreException('No token returned in '
+                    . 'SetExpressCheckout call.');
             }
         }
 
@@ -388,8 +388,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         } catch (Payment_PayPal_SOAP_ErrorException $e) {
             // ignore warnings
             foreach ($e as $error) {
-                if ($error->getSeverity() !==
-                    Payment_PayPal_SOAP::ERROR_WARNING) {
+                if ($error->getSeverity()
+                    !== Payment_PayPal_SOAP::ERROR_WARNING) {
                     throw $e;
                 }
             }
@@ -521,8 +521,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         } catch (Payment_PayPal_SOAP_ErrorException $e) {
             // ignore warnings
             foreach ($e as $error) {
-                if ($error->getSeverity() !==
-                    Payment_PayPal_SOAP::ERROR_WARNING) {
+                if ($error->getSeverity()
+                    !== Payment_PayPal_SOAP::ERROR_WARNING) {
                     throw $e;
                 }
             }
@@ -580,8 +580,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         } catch (Payment_PayPal_SOAP_ErrorException $e) {
             // ignore warnings
             foreach ($e as $error) {
-                if ($error->getSeverity() !==
-                    Payment_PayPal_SOAP::ERROR_WARNING) {
+                if ($error->getSeverity()
+                    !== Payment_PayPal_SOAP::ERROR_WARNING) {
                     throw $e;
                 }
             }
@@ -850,8 +850,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
     ) {
         $details = [];
 
-        $details['OrderTotal'] =
-            $this->getCurrencyValue($order->total, $this->currency);
+        $details['OrderTotal']
+            = $this->getCurrencyValue($order->total, $this->currency);
 
         $description = $order->getDescription();
         $description = $this->formatString($description, 127);
@@ -859,17 +859,17 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             $details['OrderDescription'] = $description;
         }
 
-        $details['ItemTotal'] =
-            $this->getCurrencyValue($order->item_total, $this->currency);
+        $details['ItemTotal']
+            = $this->getCurrencyValue($order->item_total, $this->currency);
 
-        $details['ShippingTotal'] =
-            $this->getCurrencyValue($order->shipping_total, $this->currency);
+        $details['ShippingTotal']
+            = $this->getCurrencyValue($order->shipping_total, $this->currency);
 
-        $details['HandlingTotal'] =
-            $this->getCurrencyValue($order->surcharge_total, $this->currency);
+        $details['HandlingTotal']
+            = $this->getCurrencyValue($order->surcharge_total, $this->currency);
 
-        $details['TaxTotal'] =
-            $this->getCurrencyValue($order->tax_total, $this->currency);
+        $details['TaxTotal']
+            = $this->getCurrencyValue($order->tax_total, $this->currency);
 
         if ($order->id !== null) {
             $details['InvoiceID'] = $order->id;
@@ -947,8 +947,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
     {
         if (isset($parameters['PaymentDetails']['OrderTotal'])
             && !is_array($parameters['PaymentDetails']['OrderTotal'])) {
-            $parameters['PaymentDetails']['OrderTotal'] =
-                $this->getCurrencyValue(
+            $parameters['PaymentDetails']['OrderTotal']
+                = $this->getCurrencyValue(
                     $parameters['PaymentDetails']['OrderTotal'],
                     $this->currency
                 );
@@ -956,8 +956,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
 
         if (isset($parameters['PaymentDetails']['ShipToAddress'])
             && $parameters['PaymentDetails']['ShipToAddress'] instanceof StoreOrderAddress) {
-            $parameters['PaymentDetails']['ShipToAddress'] =
-                $this->getAddress(
+            $parameters['PaymentDetails']['ShipToAddress']
+                = $this->getAddress(
                     $parameters['PaymentDetails']['ShipToAddress']
                 );
         }
@@ -1184,8 +1184,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         $details['PayerName'] = $this->getPersonName($payment_method);
 
         if ($order->billing_address instanceof StoreAddress) {
-            $details['PayerCountry'] =
-                $order->billing_address->getInternalValue('country');
+            $details['PayerCountry']
+                = $order->billing_address->getInternalValue('country');
 
             $details['Address'] = $this->getPayerInfoAddress($order);
         }
@@ -1324,8 +1324,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
             $details['PaymentDetailsItem'] = $items;
         }
 
-        $details['RecurringPaymentsProfileDetails'] =
-            $this->getRecurringPaymentsProfileDetails(
+        $details['RecurringPaymentsProfileDetails']
+            = $this->getRecurringPaymentsProfileDetails(
                 $order,
                 $profile_id,
                 $start_date
@@ -1361,8 +1361,8 @@ class StorePayPalPaymentProvider extends StorePaymentProvider
         );
 
         if ($order->shipping_address instanceof StoreAddress) {
-            $details['SubscriberShippingAddress'] =
-                $this->getShipToAddress($order);
+            $details['SubscriberShippingAddress']
+                = $this->getShipToAddress($order);
         }
 
         $details['BillingStartDate'] = $start_date->getISO8601();

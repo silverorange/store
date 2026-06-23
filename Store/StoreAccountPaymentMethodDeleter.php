@@ -24,8 +24,8 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
 
         $total = $this->getTotal();
         if ($total == 0) {
-            $this->app->debug(Store::_('No expired credit cards found. ' .
-                'No private data removed.') . "\n");
+            $this->app->debug(Store::_('No expired credit cards found. '
+                . 'No private data removed.') . "\n");
         } else {
             $this->app->debug(sprintf(
                 Store::_('Found %s expired credit cards for deletion:') . "\n\n",
@@ -59,12 +59,12 @@ class StoreAccountPaymentMethodDeleter extends SitePrivateDataDeleter
                     $count = count($payment_methods);
                 }
             } else {
-                $this->app->debug('=> ' .
-                    Store::_('not deleting because dry-run is on') . "\n");
+                $this->app->debug('=> '
+                    . Store::_('not deleting because dry-run is on') . "\n");
             }
 
-            $this->app->debug("\n" .
-                Store::_('Finished deleting expired credit cards.') . "\n");
+            $this->app->debug("\n"
+                . Store::_('Finished deleting expired credit cards.') . "\n");
         }
     }
 

@@ -24,8 +24,8 @@ class StoreCheckoutShippingAddressVerificationPage extends StoreCheckoutAddressV
     {
         parent::initCommon();
 
-        if ($this->app->session->order->shipping_address !==
-            $this->app->session->order->billing_address) {
+        if ($this->app->session->order->shipping_address
+            !== $this->app->session->order->billing_address) {
             $this->address = $this->app->session->order->shipping_address;
         }
     }

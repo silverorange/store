@@ -134,8 +134,8 @@ class StoreCategoryRelatedArticles extends AdminSearch
         $this->ui->getWidget('results_frame')->visible = true;
 
         if (count($rs) > 0) {
-            $this->ui->getWidget('results_message')->content =
-                $pager->getResultsMessage(
+            $this->ui->getWidget('results_message')->content
+                = $pager->getResultsMessage(
                     Store::_('result'),
                     Store::_('results')
                 );

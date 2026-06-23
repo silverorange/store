@@ -47,8 +47,8 @@ class StoreCatalogStatusCellRenderer extends SwatCellRenderer
         if (count($regions) > 0) {
             $region_titles = [];
             foreach ($regions as $region) {
-                $region_titles[] =
-                    SwatString::minimizeEntities($region->title);
+                $region_titles[]
+                    = SwatString::minimizeEntities($region->title);
             }
 
             echo SwatString::toList($region_titles);

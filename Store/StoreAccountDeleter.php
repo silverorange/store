@@ -21,8 +21,8 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
 
         $total = $this->getTotal();
         if ($total == 0) {
-            $this->app->debug(Store::_('No inactive accounts found. ' .
-                'No private data removed.') . "\n");
+            $this->app->debug(Store::_('No inactive accounts found. '
+                . 'No private data removed.') . "\n");
         } else {
             $this->app->debug(sprintf(
                 Store::_('Found %s inactive accounts for cleaning:') . "\n\n",
@@ -56,12 +56,12 @@ class StoreAccountDeleter extends SitePrivateDataDeleter
                     $count = count($accounts);
                 }
             } else {
-                $this->app->debug('=> ' .
-                    Store::_('not cleaning because dry-run is on') . "\n");
+                $this->app->debug('=> '
+                    . Store::_('not cleaning because dry-run is on') . "\n");
             }
 
-            $this->app->debug("\n" .
-                Store::_('Finished cleaning inactive accounts.') . "\n");
+            $this->app->debug("\n"
+                . Store::_('Finished cleaning inactive accounts.') . "\n");
         }
     }
 

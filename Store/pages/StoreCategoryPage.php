@@ -13,8 +13,8 @@ class StoreCategoryPage extends StorePage
 
     public function isVisibleInRegion(StoreRegion $region)
     {
-        $key = 'StoreCategoryPage.isVisibleInRegion.' . $region->id .
-            '.' . $this->path;
+        $key = 'StoreCategoryPage.isVisibleInRegion.' . $region->id
+            . '.' . $this->path;
 
         $category = $this->app->getCacheValue($key, 'product');
         if ($category !== false) {
@@ -79,21 +79,21 @@ class StoreCategoryPage extends StorePage
 
         $this->buildTitle();
 
-        $this->layout->data->description =
-            SwatString::minimizeEntities($this->category->description);
+        $this->layout->data->description
+            = SwatString::minimizeEntities($this->category->description);
 
         $this->layout->startCapture('content');
         $this->buildBodytext();
         $this->layout->endCapture();
 
         if ($this->category->description === null) {
-            $this->layout->data->meta_description =
-                SwatString::minimizeEntities(SwatString::stripXHTMLTags(
+            $this->layout->data->meta_description
+                = SwatString::minimizeEntities(SwatString::stripXHTMLTags(
                     SwatString::condense($this->category->bodytext, 400)
                 ));
         } else {
-            $this->layout->data->meta_description =
-                SwatString::minimizeEntities($this->category->description);
+            $this->layout->data->meta_description
+                = SwatString::minimizeEntities($this->category->description);
         }
 
         $image = $this->category->image;
@@ -115,12 +115,12 @@ class StoreCategoryPage extends StorePage
 
     protected function buildTitle()
     {
-        $this->layout->data->title =
-            SwatString::minimizeEntities($this->category->title);
+        $this->layout->data->title
+            = SwatString::minimizeEntities($this->category->title);
 
         if ($this->category->html_title != '') {
-            $this->layout->data->html_title =
-                SwatString::minimizeEntities($this->category->html_title);
+            $this->layout->data->html_title
+                = SwatString::minimizeEntities($this->category->html_title);
         }
     }
 

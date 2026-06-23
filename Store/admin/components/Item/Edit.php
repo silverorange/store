@@ -58,8 +58,8 @@ class StoreItemEdit extends AdminDBEdit
 
         $sale_discount_flydown = $this->ui->getWidget('sale_discount');
         $sale_discount_flydown->addOptionsByArray($sale_discounts);
-        $this->ui->getWidget('sale_discount_field')->visible =
-            (count($sale_discounts) > 0);
+        $this->ui->getWidget('sale_discount_field')->visible
+            = (count($sale_discounts) > 0);
 
         $group_flydown = $this->ui->getWidget('minimum_quantity_group');
         $options = SwatDB::getOptionArray(
@@ -71,8 +71,8 @@ class StoreItemEdit extends AdminDBEdit
         );
 
         $group_flydown->addOptionsByArray($options);
-        $this->ui->getWidget('minimum_quantity_group_field')->visible =
-            (count($options) > 0);
+        $this->ui->getWidget('minimum_quantity_group_field')->visible
+            = (count($options) > 0);
 
         $regions = SwatDB::getOptionArray(
             $this->app->db,
@@ -236,8 +236,8 @@ class StoreItemEdit extends AdminDBEdit
 
         // validate main sku
         $sku = $this->ui->getWidget('sku');
-        $valid =
-            ($this->item->sku !== null) ? [$this->item->sku] : [];
+        $valid
+            = ($this->item->sku !== null) ? [$this->item->sku] : [];
 
         if (!StoreItem::validateSku(
             $this->app->db,
@@ -247,8 +247,8 @@ class StoreItemEdit extends AdminDBEdit
             $valid
         )) {
             $sku->addMessage(new SwatMessage(
-                Store::_('%s must be unique amongst all catalogs unless ' .
-                'catalogs are clones of each other.')
+                Store::_('%s must be unique amongst all catalogs unless '
+                . 'catalogs are clones of each other.')
             ));
         }
 
@@ -324,11 +324,11 @@ class StoreItemEdit extends AdminDBEdit
         foreach ($this->item->region_bindings as $binding) {
             $old_values[$binding->region->id]['enabled'] = $binding->enabled;
             $old_values[$binding->region->id]['price'] = $binding->price;
-            $old_values[$binding->region->id]['original_price'] =
-                $binding->original_price;
+            $old_values[$binding->region->id]['original_price']
+                = $binding->original_price;
 
-            $old_values[$binding->region->id]['sale_discount_price'] =
-                $binding->sale_discount_price;
+            $old_values[$binding->region->id]['sale_discount_price']
+                = $binding->sale_discount_price;
         }
 
         return $old_values;
@@ -383,16 +383,16 @@ class StoreItemEdit extends AdminDBEdit
             if ($this->isWidgetVisible($original_price)) {
                 $region_binding->original_price = $original_price->value;
             } elseif (isset($old_values[$region_id])) {
-                $region_binding->original_price =
-                    $old_values[$region_id]['original_price'];
+                $region_binding->original_price
+                    = $old_values[$region_id]['original_price'];
             }
 
             if ($this->isWidgetVisible($sale_discount_price)) {
-                $region_binding->sale_discount_price =
-                    $sale_discount_price->value;
+                $region_binding->sale_discount_price
+                    = $sale_discount_price->value;
             } elseif (isset($old_values[$region_id])) {
-                $region_binding->sale_discount_price =
-                    $old_values[$region_id]['sale_discount_price'];
+                $region_binding->sale_discount_price
+                    = $old_values[$region_id]['sale_discount_price'];
             }
         }
 
@@ -526,13 +526,13 @@ class StoreItemEdit extends AdminDBEdit
         $this->ui->getWidget('status')->value = $this->item->getStatus()->id;
 
         if ($this->item->sale_discount !== null) {
-            $this->ui->getWidget('sale_discount')->value =
-                $this->item->sale_discount->id;
+            $this->ui->getWidget('sale_discount')->value
+                = $this->item->sale_discount->id;
         }
 
         if ($this->item->minimum_quantity_group !== null) {
-            $this->ui->getWidget('minimum_quantity_group')->value =
-                $this->item->minimum_quantity_group->id;
+            $this->ui->getWidget('minimum_quantity_group')->value
+                = $this->item->minimum_quantity_group->id;
         }
 
         $this->loadRegionBindings();
