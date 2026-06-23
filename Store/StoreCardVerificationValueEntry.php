@@ -101,8 +101,8 @@ class StoreCardVerificationValueEntry extends SwatEntry
             $message = new SwatMessage(
                 Store::_(
                     'The %s field must be a number.',
-                    'error'
-                )
+                ),
+                'error'
             );
         }
 

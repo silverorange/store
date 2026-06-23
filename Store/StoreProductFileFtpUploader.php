@@ -92,12 +92,11 @@ abstract class StoreProductFileFtpUploader extends SiteCommandLineApplication
         ));
 
         $contents = $generator->generate();
-        if (file_put_contents($filename_with_path, $contents, LOCK_EX)
-            === false) {
-            $this->terminate(sprintf(Store::_(
-                'Error writing file: %s',
+        if (file_put_contents($filename_with_path, $contents, LOCK_EX) === false) {
+            $this->terminate(sprintf(
+                Store::_('Error writing file: %s'),
                 $filename_with_path
-            )) . "\n\n");
+            ) . "\n\n");
         }
 
         $this->debug(Store::_('done') . "\n\n");
