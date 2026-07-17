@@ -90,7 +90,7 @@ class StoreBraintreePaymentProvider extends StorePaymentProvider
         $valid_environments = ['production', 'sandbox'];
         if (!in_array($parameters['environment'], $valid_environments)) {
             throw new StoreException(
-                'Environment "' . $environment . '" is not valid for the '
+                'Environment "' . $parameters['environment'] . '" is not valid for the '
                 . 'Braintree payment provider.'
             );
         }
