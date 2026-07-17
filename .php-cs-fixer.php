@@ -5,13 +5,14 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 $finder = (new Finder())
-    ->in(__DIR__);
+    ->in(__DIR__)
+    ->append([__FILE__]);
 
 return (new Config())
-    ->setParallelConfig(ParallelConfigFactory::detect(null, null, 2**18-1))
+    ->setParallelConfig(ParallelConfigFactory::detect(null, null, 2 ** 18 - 1))
     ->setRules([
         '@PhpCsFixer'      => true,
-        '@PHP8x2Migration'  => true,
+        '@PHP8x2Migration' => true,
         'indentation_type' => true,
 
         // Overrides for (opinionated) @PhpCsFixer and @Symfony rules:
@@ -21,6 +22,9 @@ return (new Config())
 
         // Subset of statements that should be proceeded with blank line
         'blank_line_before_statement' => ['statements' => ['case', 'continue', 'declare', 'default', 'return', 'throw', 'try', 'yield', 'yield_from']],
+
+        // Allow class list for multiple extends/implements to span multiple lines
+        'class_definition' => ['multi_line_extends_each_single_line' => true],
 
         // Enforce space around concatenation operator
         'concat_space' => ['spacing' => 'one'],
