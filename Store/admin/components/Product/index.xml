@@ -1,116 +1,131 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatFrame" id="results_frame">
-		<property name="visible" type="boolean">false</property>
-		<property name="title" translatable="yes">Products</property>
-		<widget class="SwatContentBlock" id="results_message" />
-		<widget class="SwatForm" id="index_form">
-			<widget class="StoreProductTableView" id="index_view">
-				<object class="SwatTableViewCheckboxColumn" id="checkbox">
-					<object class="SwatCheckboxCellRenderer" id="items">
-						<property name="value" type="data">id</property>
-					</object>
-				</object>
-				<object class="AdminTableViewOrderableColumn" id="title">
-					<property name="title" translatable="yes">Title</property>
-					<object class="StoreProductTitleCellRenderer">
-						<property name="text" type="data">title</property>
-						<property name="link">Product/Details?id=%s</property>
-						<property name="link_value[]" type="data">id</property>
-						<property name="item_count" type="data">item_count</property>
-						<property name="stock_id">product</property>
-					</object>
-				</object>
-				<object class="SwatTableViewColumn" id="catalog">
-					<property name="title" translatable="yes">Catalog</property>
-					<object class="SwatTextCellRenderer">
-						<property name="text" type="data">catalog_title</property>
-					</object>
-				</object>
-				<object class="SwatTableViewColumn">
-					<property name="title" translatable="yes">Items</property>
-					<object class="StoreProductStatusCellRenderer">
-						<property name="count_available" type="data">count_available</property>
-						<property name="count_available_instock" type="data">count_available_instock</property>
-						<property name="count_available_outofstock" type="data">count_available_outofstock</property>
-						<property name="count_unavailable" type="data">count_unavailable</property>
-						<property name="count_unavailable_instock" type="data">count_unavailable_instock</property>
-						<property name="count_unavailable_outofstock" type="data">count_unavailable_outofstock</property>
-					</object>
-				</object>
-			</widget>
-			<widget class="AdminPagination" id="pager">
-				<property name="link">Product</property>
-				<property name="page_size" type="integer">50</property>
-			</widget>
-			<widget class="SwatActions" id="index_actions">
-				<widget class="SwatActionItem" id="delete">
-					<property name="title" translatable="yes">delete…</property>
-				</widget>
-				<widget class="SwatActionItem" id="add_attributes">
-					<property name="title" translatable="yes">add product attributes…</property>
-					<widget class="SwatContainer">
-						<widget class="SwatFormField">
-							<property name="title" translatable="yes">Queue Product Attribute Addition…</property>
-							<property name="note" translatable="yes">Select to have product attributes applied on a future date.</property>
-							<widget class="SwatCheckbox" id="attributes_queue">
-								<property name="value" type="boolean">false</property>
-							</widget>
-						</widget>
-						<widget class="SwatGroupingFormField">
-							<property name="title">Attributes</property>
-							<widget class="SwatReplicableFormField" id="attributes_form_field">
-								<widget class="SwatCheckboxList" id="attributes" />
-							</widget>
-						</widget>
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="remove_attributes_action">
-					<property name="title" translatable="yes">remove product attributes…</property>
-					<widget class="SwatContainer">
-						<widget class="SwatFormField">
-							<property name="title" translatable="yes">Queue Product Attribute Removal…</property>
-							<property name="note" translatable="yes">Select to have product attributes removed on a future date.</property>
-							<widget class="SwatCheckbox" id="remove_attributes_queue">
-								<property name="value" type="boolean">false</property>
-							</widget>
-						</widget>
-						<widget class="SwatGroupingFormField">
-							<property name="title">Attributes</property>
-							<widget class="SwatReplicableFormField" id="remove_attributes_form_field">
-								<widget class="SwatCheckboxList" id="remove_attributes" />
-							</widget>
-						</widget>
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="add_sale_discount">
-					<property name="title" translatable="yes">add sale discount…</property>
-					<widget class="SwatFormField">
-						<property name="note" translatable="yes">The sale will apply to all items of the product. To apply to individual items, use the item editor.</property>
-						<widget class="SwatFlydown" id="sale_discount_flydown" />
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="remove_sale_discount">
-					<property name="title" translatable="yes">remove sale discount</property>
-					<widget class="SwatContentBlock">
-						<property name="content" translatable="yes">This will remove any sale discounts for items belonging to the checked products.</property>
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="item_minimum_quantity_group">
-					<property name="title" translatable="yes">add to minimum quantity sale group</property>
-					<widget class="SwatFormField">
-						<property name="note" translatable="yes">This will apply to all items belonging to the checked products. To apply to individual items, use the item editor.</property>
-						<widget class="SwatFlydown" id="item_minimum_quantity_group_flydown" />
-					</widget>
-				</widget>
-				<widget class="SwatActionItem" id="remove_item_minimum_quantity_group">
-					<property name="title" translatable="yes">remove from minimum quantity sale group</property>
-					<widget class="SwatContentBlock">
-						<property name="content" translatable="yes">This will remove any items belonging to the checked products from a minimum quantity sale group.</property>
-					</widget>
-				</widget>
-			</widget>
-		</widget>
-	</widget>
+    <widget class="SwatFrame" id="results_frame">
+        <property name="visible" type="boolean">false</property>
+        <property name="title" translatable="yes">Products</property>
+        <widget class="SwatContentBlock" id="results_message" />
+        <widget class="SwatForm" id="index_form">
+            <widget class="StoreProductTableView" id="index_view">
+                <object class="SwatTableViewCheckboxColumn" id="checkbox">
+                    <object class="SwatCheckboxCellRenderer" id="items">
+                        <property name="value" type="data">id</property>
+                    </object>
+                </object>
+                <object class="AdminTableViewOrderableColumn" id="title">
+                    <property name="title" translatable="yes">Title</property>
+                    <object class="StoreProductTitleCellRenderer">
+                        <property name="text" type="data">title</property>
+                        <property name="link">Product/Details?id=%s</property>
+                        <property name="link_value[]" type="data">id</property>
+                        <property name="item_count" type="data">item_count</property>
+                        <property name="stock_id">product</property>
+                    </object>
+                </object>
+                <object class="SwatTableViewColumn" id="catalog">
+                    <property name="title" translatable="yes">Catalog</property>
+                    <object class="SwatTextCellRenderer">
+                        <property name="text" type="data">catalog_title</property>
+                    </object>
+                </object>
+                <object class="SwatTableViewColumn">
+                    <property name="title" translatable="yes">Items</property>
+                    <object class="StoreProductStatusCellRenderer">
+                        <property name="count_available" type="data">count_available</property>
+                        <property name="count_available_instock" type="data">count_available_instock</property>
+                        <property name="count_available_outofstock" type="data">count_available_outofstock</property>
+                        <property name="count_unavailable" type="data">count_unavailable</property>
+                        <property name="count_unavailable_instock" type="data">count_unavailable_instock</property>
+                        <property name="count_unavailable_outofstock" type="data">count_unavailable_outofstock</property>
+                    </object>
+                </object>
+            </widget>
+            <widget class="AdminPagination" id="pager">
+                <property name="link">Product</property>
+                <property name="page_size" type="integer">50</property>
+            </widget>
+            <widget class="SwatActions" id="index_actions">
+                <widget class="SwatActionItem" id="delete">
+                    <property name="title" translatable="yes">delete…</property>
+                </widget>
+                <widget class="SwatActionItem" id="add_attributes">
+                    <property name="title" translatable="yes">add product attributes…</property>
+                    <widget class="SwatContainer">
+                        <widget class="SwatFormField">
+                            <property name="title" translatable="yes">Queue Product Attribute Addition…</property>
+                            <property name="note" translatable="yes">
+                                Select to have product attributes applied on a future date.
+                            </property>
+                            <widget class="SwatCheckbox" id="attributes_queue">
+                                <property name="value" type="boolean">false</property>
+                            </widget>
+                        </widget>
+                        <widget class="SwatGroupingFormField">
+                            <property name="title">Attributes</property>
+                            <widget class="SwatReplicableFormField" id="attributes_form_field">
+                                <widget class="SwatCheckboxList" id="attributes" />
+                            </widget>
+                        </widget>
+                    </widget>
+                </widget>
+                <widget class="SwatActionItem" id="remove_attributes_action">
+                    <property name="title" translatable="yes">remove product attributes…</property>
+                    <widget class="SwatContainer">
+                        <widget class="SwatFormField">
+                            <property name="title" translatable="yes">Queue Product Attribute Removal…</property>
+                            <property name="note" translatable="yes">
+                                Select to have product attributes removed on a future date.
+                            </property>
+                            <widget class="SwatCheckbox" id="remove_attributes_queue">
+                                <property name="value" type="boolean">false</property>
+                            </widget>
+                        </widget>
+                        <widget class="SwatGroupingFormField">
+                            <property name="title">Attributes</property>
+                            <widget class="SwatReplicableFormField" id="remove_attributes_form_field">
+                                <widget class="SwatCheckboxList" id="remove_attributes" />
+                            </widget>
+                        </widget>
+                    </widget>
+                </widget>
+                <widget class="SwatActionItem" id="add_sale_discount">
+                    <property name="title" translatable="yes">add sale discount…</property>
+                    <widget class="SwatFormField">
+                        <property name="note" translatable="yes">
+                            The sale will apply to all items of the product. To apply to individual items, use the item
+                            editor.
+                        </property>
+                        <widget class="SwatFlydown" id="sale_discount_flydown" />
+                    </widget>
+                </widget>
+                <widget class="SwatActionItem" id="remove_sale_discount">
+                    <property name="title" translatable="yes">remove sale discount</property>
+                    <widget class="SwatContentBlock">
+                        <property name="content" translatable="yes">
+                            This will remove any sale discounts for items belonging to the checked products.
+                        </property>
+                    </widget>
+                </widget>
+                <widget class="SwatActionItem" id="item_minimum_quantity_group">
+                    <property name="title" translatable="yes">add to minimum quantity sale group</property>
+                    <widget class="SwatFormField">
+                        <property name="note" translatable="yes">
+                            This will apply to all items belonging to the checked products. To apply to individual
+                            items, use the item editor.
+                        </property>
+                        <widget class="SwatFlydown" id="item_minimum_quantity_group_flydown" />
+                    </widget>
+                </widget>
+                <widget class="SwatActionItem" id="remove_item_minimum_quantity_group">
+                    <property name="title" translatable="yes">remove from minimum quantity sale group</property>
+                    <widget class="SwatContentBlock">
+                        <property name="content" translatable="yes">
+                            This will remove any items belonging to the checked products from a minimum quantity sale
+                            group.
+                        </property>
+                    </widget>
+                </widget>
+            </widget>
+        </widget>
+    </widget>
 </swatml>

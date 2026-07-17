@@ -1,63 +1,63 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatFrame" id="search_frame">
-		<property name="title" translatable="yes">Search Products</property>
-		<widget class="SwatToolbar" id="toolbar">
-			<property name="visible" type="boolean">false</property>
-			<widget class="SwatToolLink">
-				<property name="title">Add Product</property>
-				<property name="link">Product/Edit</property>
-				<property name="stock_id">create</property>
-			</widget>
-		</widget>
-		<widget class="SwatForm" id="search_form">
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Keywords</property>
-				<widget class="SwatEntry" id="search_keywords" />
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Item SKU</property>
-				<widget class="AdminSearchOperatorFlydown" id="search_item_op" />
-				<widget class="SwatEntry" id="search_item">
-					<property name="size" type="integer">10</property>
-				</widget>
-				<widget class="SwatDisclosure" id="search_items_disclosure">
-					<property name="title" translatable="yes">search for multiple skus</property>
-					<widget class="SwatFormField">
-						<property name="note" translatable="yes">separate skus with a comma or space</property>
-						<widget class="SwatTextarea" id="search_items">
-							<property name="rows" type="integer">2</property>
-						</widget>
-					</widget>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Category</property>
-				<widget class="SwatTreeFlydown" id="search_category" />
-			</widget>
-			<widget class="SwatFormField" id="catalog_field">
-				<property name="title" translatable="yes">Catalog</property>
-				<widget class="StoreCatalogSelector" id="catalog_selector" />
-			</widget>
-			<widget class="SwatFormField" id="search_status_field">
-				<property name="title" translatable="yes">Item Status</property>
-				<widget class="SwatFlydown" id="search_item_status" />
-			</widget>
-			<widget class="SwatFormField" id="sale_discount_field">
-				<property name="title" translatable="yes">Sale Discount</property>
-				<widget class="SwatFlydown" id="search_sale_discount" />
-			</widget>
-			<widget class="SwatFormField" id="search_item_minimum_quantity_group_field">
-				<property name="title" translatable="yes">Minimum Quantity Sale Group</property>
-				<widget class="SwatFlydown" id="search_item_minimum_quantity_group" />
-			</widget>
-			<widget class="SwatFooterFormField">
-				<widget class="SwatButton" id="submit_button">
-					<property name="title" translatable="yes">Search</property>
-				</widget>
-			</widget>
-		</widget>
-	</widget>
+    <widget class="SwatMessageDisplay" id="message_display" />
+    <widget class="SwatFrame" id="search_frame">
+        <property name="title" translatable="yes">Search Products</property>
+        <widget class="SwatToolbar" id="toolbar">
+            <property name="visible" type="boolean">false</property>
+            <widget class="SwatToolLink">
+                <property name="title">Add Product</property>
+                <property name="link">Product/Edit</property>
+                <property name="stock_id">create</property>
+            </widget>
+        </widget>
+        <widget class="SwatForm" id="search_form">
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Keywords</property>
+                <widget class="SwatEntry" id="search_keywords" />
+            </widget>
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Item SKU</property>
+                <widget class="AdminSearchOperatorFlydown" id="search_item_op" />
+                <widget class="SwatEntry" id="search_item">
+                    <property name="size" type="integer">10</property>
+                </widget>
+                <widget class="SwatDisclosure" id="search_items_disclosure">
+                    <property name="title" translatable="yes">search for multiple skus</property>
+                    <widget class="SwatFormField">
+                        <property name="note" translatable="yes">separate skus with a comma or space</property>
+                        <widget class="SwatTextarea" id="search_items">
+                            <property name="rows" type="integer">2</property>
+                        </widget>
+                    </widget>
+                </widget>
+            </widget>
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Category</property>
+                <widget class="SwatTreeFlydown" id="search_category" />
+            </widget>
+            <widget class="SwatFormField" id="catalog_field">
+                <property name="title" translatable="yes">Catalog</property>
+                <widget class="StoreCatalogSelector" id="catalog_selector" />
+            </widget>
+            <widget class="SwatFormField" id="search_status_field">
+                <property name="title" translatable="yes">Item Status</property>
+                <widget class="SwatFlydown" id="search_item_status" />
+            </widget>
+            <widget class="SwatFormField" id="sale_discount_field">
+                <property name="title" translatable="yes">Sale Discount</property>
+                <widget class="SwatFlydown" id="search_sale_discount" />
+            </widget>
+            <widget class="SwatFormField" id="search_item_minimum_quantity_group_field">
+                <property name="title" translatable="yes">Minimum Quantity Sale Group</property>
+                <widget class="SwatFlydown" id="search_item_minimum_quantity_group" />
+            </widget>
+            <widget class="SwatFooterFormField">
+                <widget class="SwatButton" id="submit_button">
+                    <property name="title" translatable="yes">Search</property>
+                </widget>
+            </widget>
+        </widget>
+    </widget>
 </swatml>

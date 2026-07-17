@@ -1,64 +1,71 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatFrame" id="edit_frame">
-		<property name="title" translatable="yes">Product</property>
-		<widget class="SwatMessageDisplay" id="edit_warnings" />
-		<widget class="SwatForm" id="edit_form">
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Title</property>
-				<widget class="SwatEntry" id="title">
-					<property name="required" type="boolean">true</property>
-					<property name="maxlength" type="integer">255</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="shortname_field">
-				<property name="title" translatable="yes">Short Name</property>
-				<widget class="SwatEntry" id="shortname">
-					<property name="required" type="boolean">true</property>
-					<property name="maxlength" type="integer">255</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Search Keywords</property>
-				<property name="note" translatable="yes">This field will be used by the search indexer but not shown on the site.</property>
-				<widget class="SwatEntry" id="keywords">
-					<property name="maxlength" type="integer">255</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Body Text</property>
-				<widget class="SwatXHTMLTextarea" id="bodytext">
-					<property name="allow_ignore_validation_errors" type="boolean">true</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Meta-Description</property>
-				<property name="note" translatable="yes">Optional content displayed in the meta-description for this product’s product page. If not set, a condensed version of the body text is used.</property>
-				<widget class="SwatTextarea" id="meta_description">
-					<property name="rows" type="integer">5</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField">
-				<property name="title" translatable="yes">Catalog</property>
-				<widget class="SwatFlydown" id="catalog">
-					<property name="required" type="boolean">true</property>
-				</widget>
-			</widget>
-			<widget class="SwatGroupingFormField" id="attributes_grouping_field">
-				<property name="title">Attributes</property>
-				<widget class="SwatReplicableFormField" id="attributes_form_field">
-					<widget class="SwatCheckboxList" id="attributes" />
-				</widget>
-			</widget>
-			<widget class="SwatFooterFormField">
-				<widget class="SwatButton" id="submit_button" />
-				<widget class="SwatButton" id="submit_continue_button">
-					<property name="title" translatable="yes">Create &amp; Manage Items</property>
-					<property name="visible" type="boolean">false</property>
-				</widget>
-			</widget>
-		</widget>
-	</widget>
+    <widget class="SwatMessageDisplay" id="message_display" />
+    <widget class="SwatFrame" id="edit_frame">
+        <property name="title" translatable="yes">Product</property>
+        <widget class="SwatMessageDisplay" id="edit_warnings" />
+        <widget class="SwatForm" id="edit_form">
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Title</property>
+                <widget class="SwatEntry" id="title">
+                    <property name="required" type="boolean">true</property>
+                    <property name="maxlength" type="integer">255</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="shortname_field">
+                <property name="title" translatable="yes">Short Name</property>
+                <widget class="SwatEntry" id="shortname">
+                    <property name="required" type="boolean">true</property>
+                    <property name="maxlength" type="integer">255</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Search Keywords</property>
+                <property name="note" translatable="yes">
+                    This field will be used by the search indexer but not shown on the site.
+                </property>
+                <widget class="SwatEntry" id="keywords">
+                    <property name="maxlength" type="integer">255</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Body Text</property>
+                <widget class="SwatXHTMLTextarea" id="bodytext">
+                    <property name="allow_ignore_validation_errors" type="boolean">true</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Meta-Description</property>
+                <property name="note" translatable="yes">
+                    Optional content displayed in the meta-description for this product’s product page. If not set, a
+                    condensed version of the body text is used.
+                </property>
+                <widget class="SwatTextarea" id="meta_description">
+                    <property name="rows" type="integer">5</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField">
+                <property name="title" translatable="yes">Catalog</property>
+                <widget class="SwatFlydown" id="catalog">
+                    <property name="required" type="boolean">true</property>
+                </widget>
+            </widget>
+            <widget class="SwatGroupingFormField" id="attributes_grouping_field">
+                <property name="title">Attributes</property>
+                <widget class="SwatReplicableFormField" id="attributes_form_field">
+                    <widget class="SwatCheckboxList" id="attributes" />
+                </widget>
+            </widget>
+            <widget class="SwatFooterFormField">
+                <widget class="SwatButton" id="submit_button" />
+                <widget class="SwatButton" id="submit_continue_button">
+                    <property name="title" translatable="yes">
+                        Create &amp; Manage Items
+                    </property>
+                    <property name="visible" type="boolean">false</property>
+                </widget>
+            </widget>
+        </widget>
+    </widget>
 </swatml>

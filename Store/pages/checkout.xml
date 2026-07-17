@@ -1,8 +1,8 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="StoreCheckoutProgress" id="checkout_progress" />
-	<widget class="SwatForm" id="form">
-		<widget class="SwatMessageDisplay" id="message_display" />
-	</widget>
+    <widget class="StoreCheckoutProgress" id="checkout_progress" />
+    <widget class="SwatForm" id="form">
+        <widget class="SwatMessageDisplay" id="message_display" />
+    </widget>
 </swatml>

@@ -1,29 +1,33 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatContentBlock">
-		<property name="content"><![CDATA[
+    <widget class="SwatContentBlock">
+        <property
+            name="content"
+        ><![CDATA[
 			<h3>Address Verification</h3>
 			<p>To ensure effective delivery, we have compared your address to 
 			our postal address database for formatting and style. Please 
 			review the recommendations below:</p>
 		]]></property>
-		<property name="content_type">text/xml</property>
-	</widget>
-	<widget class="SwatFieldset" id="billing_address_verification_container">
-		<property name="title">Billing Address</property>
-	</widget>
-	<widget class="SwatFieldset" id="shipping_address_verification_container">
-		<property name="title">Shipping Address</property>
-	</widget>
-	<widget class="SwatFooterFormField" id="checkout_footer">
-		<property name="note"><![CDATA[
+        <property name="content_type">text/xml</property>
+    </widget>
+    <widget class="SwatFieldset" id="billing_address_verification_container">
+        <property name="title">Billing Address</property>
+    </widget>
+    <widget class="SwatFieldset" id="shipping_address_verification_container">
+        <property name="title">Shipping Address</property>
+    </widget>
+    <widget class="SwatFooterFormField" id="checkout_footer">
+        <property
+            name="note"
+        ><![CDATA[
 		<p>You will have a chance to review your order on the next step before
 		purchasing.</p>
 		]]></property>
-		<property name="note_content_type">text/xml</property>
-		<widget class="SwatButton" id="submit_button">
-			<property name="title">Next Step</property>
-		</widget>
-	</widget>
+        <property name="note_content_type">text/xml</property>
+        <widget class="SwatButton" id="submit_button">
+            <property name="title">Next Step</property>
+        </widget>
+    </widget>
 </swatml>
