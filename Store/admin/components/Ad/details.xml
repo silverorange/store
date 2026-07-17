@@ -41,9 +41,9 @@
         <widget class="SwatFieldset">
             <property name="title" translatable="yes">Top HTTP Referers</property>
             <widget class="SwatTableView" id="http_referers_view">
-                <property name="no_records_message">
-                    &lt;none&gt;
-                </property>
+                <!-- prettier-ignore-start -->
+                <property name="no_records_message">&lt;none&gt;</property>
+                <!-- prettier-ignore-end -->
                 <object class="SwatTableViewColumn">
                     <property name="title">URI</property>
                     <object class="SwatTextCellRenderer">

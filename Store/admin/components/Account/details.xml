@@ -63,7 +63,9 @@
                         <object class="AdminTitleLinkCellRenderer">
                             <property name="text">%s</property>
                             <property name="value" type="data">id</property>
+                            <!-- prettier-ignore-start -->
                             <property name="link">Order/Details?id=%s&amp;account=%s</property>
+                            <!-- prettier-ignore-end -->
                             <property name="link_value[]" type="data">id</property>
                             <property name="link_value[]" type="data">account_id</property>
                         </object>

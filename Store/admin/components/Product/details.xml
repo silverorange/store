@@ -136,7 +136,9 @@
                         </object>
                         <object class="AdminGroupLinkCellRenderer" id="order">
                             <property name="text" translatable="yes">change item order</property>
+                            <!-- prettier-ignore-start -->
                             <property name="link">Item/Order?item_group=%s&amp;product=%s</property>
+                            <!-- prettier-ignore-end -->
                             <property name="link_value[]" type="data">item_group_id</property>
                             <property name="link_value[]" type="data">product.id</property>
                         </object>

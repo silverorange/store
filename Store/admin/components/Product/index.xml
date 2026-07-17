@@ -31,12 +31,14 @@
                 <object class="SwatTableViewColumn">
                     <property name="title" translatable="yes">Items</property>
                     <object class="StoreProductStatusCellRenderer">
+                        <!-- prettier-ignore-start -->
                         <property name="count_available" type="data">count_available</property>
                         <property name="count_available_instock" type="data">count_available_instock</property>
                         <property name="count_available_outofstock" type="data">count_available_outofstock</property>
                         <property name="count_unavailable" type="data">count_unavailable</property>
                         <property name="count_unavailable_instock" type="data">count_unavailable_instock</property>
                         <property name="count_unavailable_outofstock" type="data">count_unavailable_outofstock</property>
+                        <!-- prettier-ignore-end -->
                     </object>
                 </object>
             </widget>

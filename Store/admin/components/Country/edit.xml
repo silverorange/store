@@ -7,7 +7,10 @@
         <widget class="SwatForm" id="edit_form">
             <widget class="SwatFormField" id="id_field">
                 <property name="title" translatable="yes">Country Code</property>
-                <property name="note" translatable="yes"><![CDATA[
+                <property
+                    name="note"
+                    translatable="yes"
+                ><![CDATA[
                     This is the <a href="http://userpage.chemie.fu-berlin.de/diverse/doc/ISO_3166.html" target="_blank">ISO-3611</a> two-letter country code for this country.
                 ]]></property>
                 <property name="note_content_type">text/xml</property>

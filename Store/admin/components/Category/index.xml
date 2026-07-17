@@ -270,7 +270,9 @@
                         <property name="title" translatable="yes">Title</property>
                         <object class="StoreProductTitleCellRenderer">
                             <property name="text" type="data">title</property>
+                            <!-- prettier-ignore-start -->
                             <property name="link">Product/Details?id=%s&amp;category=%s</property>
+                            <!-- prettier-ignore-end -->
                             <property name="link_value[]" type="data">id</property>
                             <property name="link_value[]" type="data">category_id</property>
                             <property name="item_count" type="data">item_count</property>
@@ -280,12 +282,14 @@
                     <object class="SwatTableViewColumn">
                         <property name="title" translatable="yes">Items</property>
                         <object class="StoreProductStatusCellRenderer">
+                            <!-- prettier-ignore-start -->
                             <property name="count_available" type="data">count_available</property>
                             <property name="count_available_instock" type="data">count_available_instock</property>
                             <property name="count_available_outofstock" type="data">count_available_outofstock</property>
                             <property name="count_unavailable" type="data">count_unavailable</property>
                             <property name="count_unavailable_instock" type="data">count_unavailable_instock</property>
                             <property name="count_unavailable_outofstock" type="data">count_unavailable_outofstock</property>
+                            <!-- prettier-ignore-end -->
                         </object>
                     </object>
                     <object class="SwatTableViewColumn">
