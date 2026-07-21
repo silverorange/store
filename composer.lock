@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f160bcea0900e895880053ab6193af0",
+    "content-hash": "030da3b77a26f47c378107a5dbdfd285",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1839,28 +1839,29 @@
         },
         {
             "name": "silverorange/admin",
-            "version": "7.0.4",
+            "version": "7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silverorange/admin.git",
-                "reference": "7798bf650cce712192bbcfca02810daabe441060"
+                "reference": "dd6d6c68733f0a7dec9643880de121b0e88edeef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silverorange/admin/zipball/7798bf650cce712192bbcfca02810daabe441060",
-                "reference": "7798bf650cce712192bbcfca02810daabe441060",
+                "url": "https://api.github.com/repos/silverorange/admin/zipball/dd6d6c68733f0a7dec9643880de121b0e88edeef",
+                "reference": "dd6d6c68733f0a7dec9643880de121b0e88edeef",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=8.2.0",
-                "silverorange/site": "^15.3.2 || ^16.0.0",
-                "silverorange/swat": "^7.9.2"
+                "silverorange/site": "^15.3.2 || ^16.1.0",
+                "silverorange/swat": "^7.10.0"
             },
             "require-dev": {
                 "bacon/bacon-qr-code": "^3.0",
-                "friendsofphp/php-cs-fixer": "3.64.0",
-                "phpstan/phpstan": "^1.12",
+                "friendsofphp/php-cs-fixer": "3.88.2",
+                "phpstan/phpstan": "^2.2",
+                "rector/rector": "^2.5",
                 "robthree/twofactorauth": "^3.0"
             },
             "suggest": {
@@ -1912,9 +1913,9 @@
             ],
             "support": {
                 "issues": "https://github.com/silverorange/admin/issues",
-                "source": "https://github.com/silverorange/admin/tree/7.0.4"
+                "source": "https://github.com/silverorange/admin/tree/7.1.0"
             },
-            "time": "2026-03-17T19:50:28+00:00"
+            "time": "2026-07-21T18:40:12+00:00"
         },
         {
             "name": "silverorange/concentrate",

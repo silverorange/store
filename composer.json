@@ -44,7 +44,7 @@
     "ext-imagick": "*",
     "pear/text_password": "^1.1.1",
     "pear/validate_finance_creditcard": ">=0.5.2",
-    "silverorange/admin": "^7.0.3",
+    "silverorange/admin": "^7.1.0",
     "silverorange/site": "^15.3.2 || ^16.1.0",
     "silverorange/swat": "^7.10.0",
     "silverorange/xml_rpc_ajax": "^3.2.0",
