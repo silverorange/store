@@ -1,14 +1,13 @@
 {
   "name": "silverorange/store",
   "description": "Framework for e-commerce sites.",
+  "license": "LGPL-2.1",
   "type": "library",
   "keywords": [
     "e-commerce",
     "product",
     "catalog"
   ],
-  "homepage": "https://github.com/silverorange/store",
-  "license": "LGPL-2.1",
   "authors": [
     {
       "name": "Charles Waddell",
@@ -39,16 +38,17 @@
       "email": "steven@silverorange.com"
     }
   ],
+  "homepage": "https://github.com/silverorange/store",
   "require": {
     "php": ">=8.2",
     "ext-imagick": "*",
     "pear/text_password": "^1.1.1",
     "pear/validate_finance_creditcard": ">=0.5.2",
-    "silverorange/admin": "^7.0.3",
-    "silverorange/site": "^15.3.2 || ^16.0.0",
-    "silverorange/swat": "^7.9.2",
-    "silverorange/xml_rpc_ajax": "^3.1.0",
-    "silverorange/yui": "^1.0.11"
+    "silverorange/admin": "^7.1.0",
+    "silverorange/site": "^15.3.2 || ^16.1.0",
+    "silverorange/swat": "^7.10.0",
+    "silverorange/xml_rpc_ajax": "^3.2.0",
+    "silverorange/yui": "^1.0.13"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "3.88.2",
@@ -61,25 +61,25 @@
     "pear/payment_paypal_soap": "Payments with PayPal.",
     "silverorange/deliverance": "Email mailing list support."
   },
-  "scripts": {
-    "phpcs": "./vendor/bin/php-cs-fixer check -v",
-    "phpcs:ci": "./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --no-interaction --show-progress=none --diff --using-cache=no -vvv",
-    "phpcs:fix": "./vendor/bin/php-cs-fixer fix -v",
-    "phpstan": "./vendor/bin/phpstan analyze",
-    "phpstan:ci": "./vendor/bin/phpstan analyze -vvv --no-progress --memory-limit 2G",
-    "phpstan:baseline": "./vendor/bin/phpstan analyze --generate-baseline",
-    "rector": "./vendor/bin/rector --dry-run",
-    "rector:fix": "./vendor/bin/rector"
-  },
   "autoload": {
     "classmap": [
       "Store/"
     ]
   },
   "config": {
-    "sort-packages": true,
     "allow-plugins": {
       "php-http/discovery": true
-    }
+    },
+    "sort-packages": true
+  },
+  "scripts": {
+    "phpcs": "./vendor/bin/php-cs-fixer check -v",
+    "phpcs:ci": "./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --no-interaction --show-progress=none --diff --using-cache=no -vvv",
+    "phpcs:fix": "./vendor/bin/php-cs-fixer fix -v",
+    "phpstan": "./vendor/bin/phpstan analyze",
+    "phpstan:baseline": "./vendor/bin/phpstan analyze --generate-baseline",
+    "phpstan:ci": "./vendor/bin/phpstan analyze -vvv --no-progress --memory-limit 2G",
+    "rector": "./vendor/bin/rector --dry-run",
+    "rector:fix": "./vendor/bin/rector"
   }
 }

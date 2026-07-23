@@ -97,7 +97,7 @@ class StoreAuthorizeNetPaymentProvider extends StorePaymentProvider
 
         $valid_modes = ['live', 'sandbox'];
         if (!in_array($parameters['mode'], $valid_modes)) {
-            throw new StoreException('Mode "' . $mode . '" is not valid for '
+            throw new StoreException('Mode "' . $parameters['mode'] . '" is not valid for '
                 . 'the Authorize.net payment provider.');
         }
 

@@ -1,22 +1,22 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-vendor/
-node_modules/
+/vendor/
+/node_modules/
 
 # misc
 .DS_Store
 .env
-.idea/
-.php-cs-fixer.cache
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+/.idea/
+pnpm-debug.log*
+pnpm-error.log*
 *.swp
 
-# dependency lock file
-composer.lock
-yarn.lock
+# testing/tooling output
+.php-cs-fixer.cache
+.phpunit.cache
+.phpunit.result.cache
+/build/
 
 # overrides for local tooling
 phpstan.neon

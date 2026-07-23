@@ -1,10 +1,9 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatContentBlock" id="shipping_verification_message" />
-	<widget class="SwatRadioList" id="shipping_verification_list">
-		<property name="classes[]">address-verification-list clearfix</property>
-	</widget>
-	<widget class="SwatContentBlock" id="shipping_verification_message_bottom" />
+    <widget class="SwatContentBlock" id="shipping_verification_message" />
+    <widget class="SwatRadioList" id="shipping_verification_list">
+        <property name="classes[]">address-verification-list clearfix</property>
+    </widget>
+    <widget class="SwatContentBlock" id="shipping_verification_message_bottom" />
 </swatml>
-

@@ -1,12 +1,12 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatFrame" id="frame">
-		<widget class="SwatContainer" id="container" />
-		<widget class="SwatFooterFormField" id="footer_field">
-			<widget class="SwatButton" id="update_button">
-				<property name="title" translatable="yes">Update</property>
-			</widget>
-		</widget>
-	</widget>
+    <widget class="SwatFrame" id="frame">
+        <widget class="SwatContainer" id="container" />
+        <widget class="SwatFooterFormField" id="footer_field">
+            <widget class="SwatButton" id="update_button">
+                <property name="title" translatable="yes">Update</property>
+            </widget>
+        </widget>
+    </widget>
 </swatml>

@@ -682,7 +682,7 @@ class StoreProductDetails extends AdminIndex
         return null;
     }
 
-    protected function buildCategoryToolBarLinks(SwatToolBar $toolbar)
+    protected function buildCategoryToolBarLinks(SwatToolbar $toolbar)
     {
         if ($this->category_id === null) {
             $toolbar->setToolLinkValues($this->id);

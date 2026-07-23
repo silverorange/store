@@ -1,18 +1,18 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatMessageDisplay" id="message_display" />
-	<widget class="SwatFrame" id="index_frame">
-		<property name="title" translatable="yes">Sales Report</property>
-		<widget class="SwatForm" id="index_form">
-			<widget class="SwatTableView" id="index_view">
-				<object class="SwatTableViewColumn" id="date">
-					<property name="title" translatable="yes">Day</property>
-					<object class="SwatTextCellRenderer">
-						<property name="text" type="data">day</property>
-					</object>
-				</object>
-			</widget>
-		</widget>
-	</widget>
+    <widget class="SwatMessageDisplay" id="message_display" />
+    <widget class="SwatFrame" id="index_frame">
+        <property name="title" translatable="yes">Sales Report</property>
+        <widget class="SwatForm" id="index_form">
+            <widget class="SwatTableView" id="index_view">
+                <object class="SwatTableViewColumn" id="date">
+                    <property name="title" translatable="yes">Day</property>
+                    <object class="SwatTextCellRenderer">
+                        <property name="text" type="data">day</property>
+                    </object>
+                </object>
+            </widget>
+        </widget>
+    </widget>
 </swatml>

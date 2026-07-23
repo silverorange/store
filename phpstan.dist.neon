@@ -4,11 +4,23 @@ parameters:
   paths:
     - po
     - Store
-  editorUrl: '%%file%%:%%line%%'
-  editorUrlTitle: '%%file%%:%%line%%'
+  editorUrl: '%%relfile%%:%%line%%'
+  editorUrlTitle: '%%relfile%%:%%line%%'
   errorFormat: table
+# Checks from higher levels that we want to include here
+# Level 2
+  checkClassCaseSensitivity: true
+  checkPhpDocMissingReturn: true
+#  checkThisOnly: false
+# Level 3
+  checkPhpDocMethodSignatures: true
+# Level 5
+#  checkFunctionArgumentTypes: true
 
-  # @todo fix these
+  # @todo this should eventually be fixed
+  # many are just because the suggested packages aren't installed,
+  # and some relate to swat/admin typing issues ... but several are
+  # issues with this pacakge.
   ignoreErrors:
     -
       message: '#^Access to constant PRODUCTION on an unknown class net\\authorize\\api\\constants\\ANetEnvironment\.$#'
@@ -97,12 +109,6 @@ parameters:
     -
       message: '#^Instantiated class net\\authorize\\api\\controller\\CreateTransactionController not found\.$#'
       identifier: class.notFound
-      count: 1
-      path: Store/StoreAuthorizeNetPaymentProvider.php
-
-    -
-      message: '#^Undefined variable\: \$mode$#'
-      identifier: variable.undefined
       count: 1
       path: Store/StoreAuthorizeNetPaymentProvider.php
 
@@ -223,12 +229,6 @@ parameters:
     -
       message: '#^Parameter \$response of method StoreBraintreePaymentProvider\:\:generateExceptionFromResponse\(\) has invalid type Braintree\\Base\.$#'
       identifier: class.notFound
-      count: 1
-      path: Store/StoreBraintreePaymentProvider.php
-
-    -
-      message: '#^Undefined variable\: \$environment$#'
-      identifier: variable.undefined
       count: 1
       path: Store/StoreBraintreePaymentProvider.php
 

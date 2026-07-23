@@ -648,7 +648,7 @@ class StoreCheckoutPaymentMethodPage extends StoreCheckoutEditPage
                 $method_id
             );
 
-            if ($cvv instanceof StoreCardverificationValueEntry) {
+            if ($cvv instanceof StoreCardVerificationValueEntry) {
                 $this->updatePaymentMethodCardVerificationValue(
                     $cvv,
                     $order_payment_method

@@ -1,101 +1,108 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" standalone="no" ?>
 <!DOCTYPE swatml SYSTEM "http://swat.silverorange.com/swatml1.dtd">
 <swatml>
-	<widget class="SwatDisplayableContainer" id="payment_method_form">
-		<widget class="SwatFormField" id="payment_option_field">
-			<property name="display_messages" type="boolean">false</property>
-			<widget class="SwatRadioNoteBook" id="payment_option">
-				<property name="required" type="boolean">true</property>
-				<widget class="SwatReplicableNoteBookChild" id="account_payment_methods_replicator">
-					<widget class="SwatNoteBookPage" id="account_fields_container">
-						<widget class="SwatFormField" id="account_card_verification_value_field">
-							<property name="visible" type="boolean">false</property>
-							<property name="title" translatable="yes">Card Security Code</property>
-							<property name="classes[]">card-verification-value-field</property>
-							<widget class="StoreCardVerificationValueEntry" id="account_card_verification_value">
-								<property name="required" type="boolean">true</property>
-								<property name="maxlength" type="integer">4</property>
-								<property name="size" type="integer">4</property>
-							</widget>
-						</widget>
-					</widget>
-				</widget>
-			</widget>
-		</widget>
-		<widget class="SwatDisplayableContainer" id="card_fields_container">
-			<property name="visible" type="boolean">false</property>
-			<widget class="SwatFormField" id="card_type_field">
-				<property name="title" translatable="yes">Card Type</property>
-				<widget class="SwatFlydown" id="card_type">
-					<property name="required" type="boolean">true</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_number_field">
-				<property name="title" translatable="yes">Card Number</property>
-				<widget class="StoreCardNumberEntry" id="card_number">
-					<property name="required" type="boolean">true</property>
-					<property name="maxlength" type="integer">50</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_expiry_field">
-				<property name="title" translatable="yes">Expiration Date</property>
-				<widget class="StoreCardExpiryEntry" id="card_expiry">
-					<property name="required" type="boolean">true</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_inception_field">
-				<property name="title" translatable="yes">Inception Date</property>
-				<property name="note" translatable="yes">Required for debit cards.</property>
-				<widget class="StoreCardInceptionEntry" id="card_inception" />
-			</widget>
-			<widget class="SwatFormField" id="card_verification_value_field">
-				<property name="title" translatable="yes">Card Security Code</property>
-				<widget class="StoreCardVerificationValueEntry" id="card_verification_value">
-					<property name="required" type="boolean">true</property>
-					<property name="maxlength" type="integer">4</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_issue_number_field">
-				<property name="title" translatable="yes">Card Issue Number</property>
-				<property name="note" translatable="yes">Required for debit cards.</property>
-				<widget class="SwatEntry" id="card_issue_number">
-					<property name="maxlength" type="integer">2</property>
-					<property name="size" type="integer">4</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="card_fullname_field">
-				<property name="title" translatable="yes">Name on Card</property>
-				<widget class="SwatEntry" id="card_fullname">
-					<property name="required" type="boolean">true</property>
-					<property name="maxlength" type="integer">255</property>
-					<property name="size" type="integer">35</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="payment_amount_field">
-				<property name="title" translatable="yes">Amount to Pay</property>
-				<property name="note" translatable="yes">Amount to pay using this payment method when splitting the total across multiple payment methods.</property>
-				<widget class="SwatMoneyEntry" id="payment_amount">
-					<property name="minimum_value" type="integer">0</property>
-					<property name="required" type="boolean">true</property>
-				</widget>
-			</widget>
-			<widget class="SwatFormField" id="save_account_payment_method_field">
-				<property name="title" translatable="yes">If creating an account than save my credit card information with my account for future web orders.</property>
-				<widget class="SwatCheckbox" id="save_account_payment_method">
-					<property name="value" type="boolean">true</property>
-				</widget>
-			</widget>
-		</widget>
-		<widget class="SwatContentBlock" id="payment_method_note">
-			<property name="content" translatable="yes"><![CDATA[<p class="small-print">As you have opted to checkout as a guest, your debit or credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
-			<property name="content_type">text/xml</property>
-		</widget>
-	</widget>
-	<widget class="SwatFieldset" id="current_payments">
-		<property name="title">Current Payments</property>
-		<property name="visible" type="boolean">false</property>
-		<widget class="SwatContentBlock" id="current_payment_methods">
-			<property name="content_type">text/xml</property>
-		</widget>
-	</widget>
+    <widget class="SwatDisplayableContainer" id="payment_method_form">
+        <widget class="SwatFormField" id="payment_option_field">
+            <property name="display_messages" type="boolean">false</property>
+            <widget class="SwatRadioNoteBook" id="payment_option">
+                <property name="required" type="boolean">true</property>
+                <widget class="SwatReplicableNoteBookChild" id="account_payment_methods_replicator">
+                    <widget class="SwatNoteBookPage" id="account_fields_container">
+                        <widget class="SwatFormField" id="account_card_verification_value_field">
+                            <property name="visible" type="boolean">false</property>
+                            <property name="title" translatable="yes">Card Security Code</property>
+                            <property name="classes[]">card-verification-value-field</property>
+                            <widget class="StoreCardVerificationValueEntry" id="account_card_verification_value">
+                                <property name="required" type="boolean">true</property>
+                                <property name="maxlength" type="integer">4</property>
+                                <property name="size" type="integer">4</property>
+                            </widget>
+                        </widget>
+                    </widget>
+                </widget>
+            </widget>
+        </widget>
+        <widget class="SwatDisplayableContainer" id="card_fields_container">
+            <property name="visible" type="boolean">false</property>
+            <widget class="SwatFormField" id="card_type_field">
+                <property name="title" translatable="yes">Card Type</property>
+                <widget class="SwatFlydown" id="card_type">
+                    <property name="required" type="boolean">true</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="card_number_field">
+                <property name="title" translatable="yes">Card Number</property>
+                <widget class="StoreCardNumberEntry" id="card_number">
+                    <property name="required" type="boolean">true</property>
+                    <property name="maxlength" type="integer">50</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="card_expiry_field">
+                <property name="title" translatable="yes">Expiration Date</property>
+                <widget class="StoreCardExpiryEntry" id="card_expiry">
+                    <property name="required" type="boolean">true</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="card_inception_field">
+                <property name="title" translatable="yes">Inception Date</property>
+                <property name="note" translatable="yes">Required for debit cards.</property>
+                <widget class="StoreCardInceptionEntry" id="card_inception" />
+            </widget>
+            <widget class="SwatFormField" id="card_verification_value_field">
+                <property name="title" translatable="yes">Card Security Code</property>
+                <widget class="StoreCardVerificationValueEntry" id="card_verification_value">
+                    <property name="required" type="boolean">true</property>
+                    <property name="maxlength" type="integer">4</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="card_issue_number_field">
+                <property name="title" translatable="yes">Card Issue Number</property>
+                <property name="note" translatable="yes">Required for debit cards.</property>
+                <widget class="SwatEntry" id="card_issue_number">
+                    <property name="maxlength" type="integer">2</property>
+                    <property name="size" type="integer">4</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="card_fullname_field">
+                <property name="title" translatable="yes">Name on Card</property>
+                <widget class="SwatEntry" id="card_fullname">
+                    <property name="required" type="boolean">true</property>
+                    <property name="maxlength" type="integer">255</property>
+                    <property name="size" type="integer">35</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="payment_amount_field">
+                <property name="title" translatable="yes">Amount to Pay</property>
+                <property name="note" translatable="yes">
+                    Amount to pay using this payment method when splitting the total across multiple payment methods.
+                </property>
+                <widget class="SwatMoneyEntry" id="payment_amount">
+                    <property name="minimum_value" type="integer">0</property>
+                    <property name="required" type="boolean">true</property>
+                </widget>
+            </widget>
+            <widget class="SwatFormField" id="save_account_payment_method_field">
+                <property name="title" translatable="yes">
+                    If creating an account than save my credit card information with my account for future web orders.
+                </property>
+                <widget class="SwatCheckbox" id="save_account_payment_method">
+                    <property name="value" type="boolean">true</property>
+                </widget>
+            </widget>
+        </widget>
+        <widget class="SwatContentBlock" id="payment_method_note">
+            <property
+                name="content"
+                translatable="yes"
+            ><![CDATA[<p class="small-print">As you have opted to checkout as a guest, your debit or credit card information will <em>not</em> be saved for future visits to the website. See our <a href="about/website/privacy">privacy &amp; security policy</a> for more information about how your information will be used.</p>]]></property>
+            <property name="content_type">text/xml</property>
+        </widget>
+    </widget>
+    <widget class="SwatFieldset" id="current_payments">
+        <property name="title">Current Payments</property>
+        <property name="visible" type="boolean">false</property>
+        <widget class="SwatContentBlock" id="current_payment_methods">
+            <property name="content_type">text/xml</property>
+        </widget>
+    </widget>
 </swatml>

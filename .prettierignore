@@ -1,5 +1,7 @@
 /composer.lock
 /pnpm-lock.yaml
-/.pnpm-store
 /www/admin/javascript/jquery-1.8.3.min.js
 /www/admin/javascript/jquery.flot.js
+
+# SVG files will be optimized/prettified with other tools
+**/*.svg
